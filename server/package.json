@@ -1,0 +1,38 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "dist/index.js",
+  "registry": "https://registry.yarnpkg.com",
+  "scripts": {
+    "compile": "tsc && tsc-alias",
+    "start": "yarn run compile && node ./dist/index.js",
+    "codegen": "graphql-codegen",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/server": "^4.11.0",
+    "@graphql-tools/schema": "^10.0.6",
+    "google-auth-library": "^9.14.1",
+    "graphql": "^16.9.0",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.11.0",
+    "@graphql-codegen/cli": "^5.0.2",
+    "@graphql-codegen/typescript": "^4.0.9",
+    "@graphql-codegen/typescript-resolvers": "^4.2.1",
+    "@types/eslint__js": "^8.42.3",
+    "dotenv": "^16.4.5",
+    "eslint": "^9.11.0",
+    "prettier": "^3.3.3",
+    "tsc-alias": "1.8.10",
+    "typescript": "^5.6.2",
+    "typescript-eslint": "^8.6.0"
+  }
+}

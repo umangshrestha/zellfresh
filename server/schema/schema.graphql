@@ -1,0 +1,25 @@
+type User {
+  email: String!
+  name: String
+  imageUrl: String
+}
+
+type Product {
+  id: ID!
+  name: String!
+  price: Float!
+  description: String!
+  imageUrl: String!
+  quantity: Int!
+  category: String!
+  tags: [String]!
+}
+
+type Mutation {
+  validateUser: User!
+}
+
+type Query {
+  products: [Product]
+  me: User
+}
