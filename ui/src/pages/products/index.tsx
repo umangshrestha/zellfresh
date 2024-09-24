@@ -1,5 +1,6 @@
 import { useQuery, gql } from "@apollo/client";
 import ProductItem from "../../components/ProductItem";
+import ProductSkeleton from "../../components/ProductItem/ProductSkeletor";
 
 const VALIDATE_USER = gql`
   query {
@@ -13,22 +14,25 @@ const VALIDATE_USER = gql`
       category
       badgeText
       maxQuantity
+      rating
       tags
     }
   }
 `;
 
 export default function Products() {
+  const { data, loading, error } = useQuery(VALIDATE_USER);
+  if (error) return <p>Error :</p>;
 
-    const { data, loading, error } = useQuery(VALIDATE_USER);
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error :</p>;
-
-    return (
-        <div className="grid grid-cols-4 gap-4">
-        {data.products.map((product: any) => (
+  return (
+    <div className="flex flex-wrap justify-center gap-4 p-4">
+      {loading
+        ? Array(8)
+            .fill(0)
+            .map((_, index) => <ProductSkeleton key={index} />)
+        : data.products.map((product: any) => (
             <ProductItem key={product.id} {...product} />
-        ))}
-        </div>
-    );
+          ))}
+    </div>
+  );
 }

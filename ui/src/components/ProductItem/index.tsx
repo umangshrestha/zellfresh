@@ -7,28 +7,31 @@ import { ProductType as ProductProps } from "./types";
 import Badge from "../Badge";
 import Viel from "../Viel";
 import Card from "@mui/material/Card";
+import Rating from "@mui/material/Rating";
 
-export default function Product({
+const Product = ({
   name,
   description,
   price,
   imageUrl,
   quantity,
+  rating,
   badgeText,
-}: ProductProps) {
-  const imageSize = 300;
+}: ProductProps) => {
+  console.log(rating);
+  const imageSize = "192px";
   const isProductAvailable = quantity > 0;
   badgeText = isProductAvailable ? badgeText : "Out of Stock";
   return (
     <Viel enable={!isProductAvailable}>
-      <Card className="h-full w-64">
+      <Card className="h-full w-64 max-w-xs">
         <Badge badgeText={badgeText} />
         <CardMedia
           component="img"
           title={name}
-          src={imageUrl}
+          image={imageUrl}
           alt={name}
-          className="h-48 object-full"
+          className="h-48 w-48 object-cover"
           width={imageSize}
           height={imageSize}
         />
@@ -55,15 +58,19 @@ export default function Product({
         </CardContent>
         <span className="flex-1 auto" />
         <CardActions>
-          <Button size="small" disabled={!isProductAvailable}>
-            Buy
-          </Button>
-          <span className="flex-1" />
-          <Button size="small" disabled={!isProductAvailable}>
+          <Rating name="read-only" value={rating} precision={0.5} readOnly />
+          <Button
+            size="small"
+            disabled={!isProductAvailable}
+            color="error"
+            variant="contained"
+          >
             Add to Cart
           </Button>
         </CardActions>
       </Card>
     </Viel>
   );
-}
+};
+
+export default Product;

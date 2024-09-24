@@ -11,14 +11,7 @@ import Box from "@mui/material/Box";
 import Badge from "../Badge";
 import Viel from "../Viel";
 
-
-
-const Product = ({
-  name,
-  price,
-  imageUrl,
-  quantity,
-}: ProductProps) => {
+const Product = ({ name, price, imageUrl, quantity }: ProductProps) => {
   const imageSize = 50;
   const isProductAvailable = quantity > 0;
   // const totalPrice = price * quantity;
@@ -86,6 +79,6 @@ const Product = ({
       </Card>
     </Viel>
   );
-}
+};
 
 export default Product;

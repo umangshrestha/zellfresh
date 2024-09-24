@@ -9,7 +9,7 @@
     "esModuleInterop": true,
     "types": ["node"]
   },
-  "exclude": ["codegen.ts"],
+  "exclude": ["codegen.ts", "node_modules"],
   "tsc-alias": {
     "resolveFullPaths": true,
     "verbose": false

@@ -27,7 +27,13 @@ export default function Account() {
 
   if (!data) {
     return (
-      <Button aria-label="login button" component={Link} href="/auth/login">
+      <Button
+        aria-label="login button"
+        component={Link}
+        href="/auth/login"
+        variant="contained"
+        color="secondary"
+      >
         Login
       </Button>
     );

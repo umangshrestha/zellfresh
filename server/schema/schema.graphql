@@ -12,6 +12,7 @@ type Product {
   imageUrl: String!
   quantity: Int!
   category: String!
+  rating: Float!
   badgeText: String
   maxQuantity: Int!
   tags: [String]!

@@ -7,20 +7,14 @@ import context from "./context";
 
 const IS_PROD = process.env.NODE_ENV === "production";
 
-if (!IS_PROD) {
-  const dotenv = await import("dotenv");
-  dotenv.config();
-}
-
+console.log(process.env.GOOGLE_CLIENT_SECRET)
 const server = new ApolloServer<ContextInterface>({
   schema,
   introspection: !IS_PROD,
   ...(IS_PROD ? { plugins: [ApolloServerPluginLandingPageDisabled()] } : {}),
 });
 
-const { url } = await startStandaloneServer(server, {
+startStandaloneServer(server, {
   listen: { port: 4000 },
   context,
-});
-
-console.log(`🚀 Server ready at ${url}`);
+}).then(({ url }) => console.log(`🚀 Server ready at ${url}`));

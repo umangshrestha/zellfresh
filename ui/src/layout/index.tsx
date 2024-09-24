@@ -59,7 +59,7 @@ export default function Layout() {
           <Account />
         </Toolbar>
       </AppBar>
-      <Paper>
+      <Paper className="min-h-screen">
         <Outlet />
         <Notification />
       </Paper>
