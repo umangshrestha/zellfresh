@@ -8,7 +8,6 @@ export const ThemeModeProvider = ({
 }: Readonly<{ children: React.ReactNode }>) => {
   const mode = useStorageStore((state) => state.theme);
 
-
   const theme = useMemo(() => {
     return createTheme({
       palette: {
@@ -17,11 +16,10 @@ export const ThemeModeProvider = ({
     });
   }, [mode]);
 
-
   return (
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        {children}
-      </ThemeProvider>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      {children}
+    </ThemeProvider>
   );
 };

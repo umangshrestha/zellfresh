@@ -4,10 +4,10 @@ import Fingerprint from "@mui/icons-material/Fingerprint";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import type { CredentialResponse } from "@react-oauth/google";
-import { useStorageStore } from "../../lib/store";
+import { useStorageStore } from "../../../lib/store";
 import { useMutation, gql } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
-import { useNotification } from "../../components/Notification/hooks";
+import { useNotification } from "../../../components/Notification/hooks";
 
 const VALIDATE_USER = gql`
   mutation {

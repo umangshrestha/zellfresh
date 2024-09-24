@@ -1,14 +1,11 @@
-"use client";
-import * as React from "react";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import Image from "next/image";
 import { ProductType as ProductProps } from "./types";
-import Badge from "@/components/Badge";
-import Viel from "@/components/Viel";
+import Badge from "../Badge";
+import Viel from "../Viel";
 import Card from "@mui/material/Card";
 
 export default function Product({
@@ -26,15 +23,15 @@ export default function Product({
     <Viel enable={!isProductAvailable}>
       <Card className="h-full w-64">
         <Badge badgeText={badgeText} />
-        <CardMedia title={name}>
-          <Image
-            src={imageUrl}
-            alt={name}
-            className="h-48 object-full"
-            width={imageSize}
-            height={imageSize}
-          />
-        </CardMedia>
+        <CardMedia
+          component="img"
+          title={name}
+          src={imageUrl}
+          alt={name}
+          className="h-48 object-full"
+          width={imageSize}
+          height={imageSize}
+        />
         <CardContent>
           <Typography
             gutterBottom

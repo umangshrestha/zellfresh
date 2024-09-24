@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "../layout";
 import LoginPage from "../pages/auth/login";
+import Products from "../pages/products";
 
 export const router = createBrowserRouter([
   {
@@ -8,8 +9,8 @@ export const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: "/app",
-        element: <p>Contact</p>,
+        path: "/",
+        element: <Products />,
       },
     ],
   },

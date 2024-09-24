@@ -1,23 +1,24 @@
-import * as React from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import Image from "next/image";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import { ProductType as ProductProps } from "./types";
 import Box from "@mui/material/Box";
-import Badge from "@/components/Badge";
-import Viel from "@/components/Viel";
-export default function Product({
+import Badge from "../Badge";
+import Viel from "../Viel";
+
+
+
+const Product = ({
   name,
   price,
   imageUrl,
   quantity,
-}: ProductProps) {
+}: ProductProps) => {
   const imageSize = 50;
   const isProductAvailable = quantity > 0;
   // const totalPrice = price * quantity;
@@ -33,14 +34,14 @@ export default function Product({
           padding: 1,
         }}
       >
-        <CardMedia title={name}>
-          <Image
-            src={imageUrl}
-            alt={name}
-            width={imageSize}
-            height={imageSize}
-          />
-        </CardMedia>
+        <CardMedia
+          title={name}
+          component="img"
+          src={imageUrl}
+          alt={name}
+          width={imageSize}
+          height={imageSize}
+        />
 
         <Box
           sx={{
@@ -86,3 +87,5 @@ export default function Product({
     </Viel>
   );
 }
+
+export default Product;

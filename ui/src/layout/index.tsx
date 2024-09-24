@@ -17,7 +17,6 @@ import Footer from "../components/Footer";
 import { APP_NAME } from "../config";
 
 export default function Layout() {
-
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {

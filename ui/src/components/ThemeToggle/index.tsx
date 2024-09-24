@@ -6,13 +6,19 @@ import { useStorageStore } from "../../lib/store";
 const ThemeToggle = () => {
   const mode = useStorageStore((state) => state.theme);
   const toggle = useStorageStore((state) => state.toggleTheme);
-    const isDarkMode = mode === "dark";
+  const isDarkMode = mode === "dark";
 
   return (
     <IconButton onClick={toggle}>
-      {isDarkMode ? <DarkModeRoundedIcon /> : <LightModeIcon sx={{
-        color: "white",
-      }}/>}
+      {isDarkMode ? (
+        <DarkModeRoundedIcon />
+      ) : (
+        <LightModeIcon
+          sx={{
+            color: "white",
+          }}
+        />
+      )}
     </IconButton>
   );
 };
