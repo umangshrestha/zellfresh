@@ -1,5 +1,5 @@
 import { OAuth2Client } from "google-auth-library";
-import {  User} from "../__generated__/types";
+import { User } from "../__generated__/types";
 
 export const verifyGoogleIdToken = async (idToken: string) => {
   try {

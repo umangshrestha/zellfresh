@@ -12,7 +12,6 @@ if (!IS_PROD) {
   dotenv.config();
 }
 
-
 const server = new ApolloServer<ContextInterface>({
   schema,
   introspection: !IS_PROD,

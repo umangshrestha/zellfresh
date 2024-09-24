@@ -1,4 +1,4 @@
-import { MutationResolvers , User} from "../__generated__/types";
+import { MutationResolvers, User } from "../__generated__/types";
 
 export default {
   validateUser: async (_parent, _args, context): Promise<User> => {
