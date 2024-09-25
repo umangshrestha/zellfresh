@@ -3,13 +3,13 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { ProductType as ProductProps } from "./types";
+import { ProductProps } from "./Product.types";
 import Badge from "../Badge";
 import Viel from "../Viel";
 import Card from "@mui/material/Card";
 import Rating from "@mui/material/Rating";
 
-const Product = ({
+export const Product = ({
   name,
   description,
   price,
@@ -17,9 +17,8 @@ const Product = ({
   quantity,
   rating,
   badgeText,
+  onClick,
 }: ProductProps) => {
-  console.log(rating);
-  const imageSize = "192px";
   const isProductAvailable = quantity > 0;
   badgeText = isProductAvailable ? badgeText : "Out of Stock";
   return (
@@ -32,8 +31,6 @@ const Product = ({
           image={imageUrl}
           alt={name}
           className="h-48 w-48 object-cover"
-          width={imageSize}
-          height={imageSize}
         />
         <CardContent>
           <Typography
@@ -64,6 +61,7 @@ const Product = ({
             disabled={!isProductAvailable}
             color="error"
             variant="contained"
+            onAbort={onClick}
           >
             Add to Cart
           </Button>
@@ -72,5 +70,3 @@ const Product = ({
     </Viel>
   );
 };
-
-export default Product;

@@ -1,9 +1,9 @@
 import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
-import { useNotification } from "./hooks";
+import { useNotification } from "./Notification.hooks";
 
-const Notification = () => {
-  const [notification, setNotification] = useNotification();
+export const Notification = () => {
+  const { notification, setNotification } = useNotification();
   const duration = 5000; // Set the desired duration
   return (
     <Snackbar
@@ -15,5 +15,3 @@ const Notification = () => {
     </Snackbar>
   );
 };
-
-export default Notification;

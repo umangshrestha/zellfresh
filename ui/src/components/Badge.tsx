@@ -1,6 +1,8 @@
-import React from "react";
+export interface BadgeProps {
+  badgeText: string | null;
+}
 
-export default function Badge({ badgeText }: { badgeText: string | null }) {
+export default function Badge({ badgeText }: BadgeProps) {
   if (!badgeText) {
     return null;
   }

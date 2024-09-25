@@ -1,6 +1,6 @@
 import { useQuery, gql } from "@apollo/client";
-import ProductItem from "../../components/ProductItem";
-import ProductSkeleton from "../../components/ProductItem/ProductSkeletor";
+import ProductItem from "../../components/Product";
+import ProductSkeleton from "../../components/Product/ProductSkeleton";
 
 const VALIDATE_USER = gql`
   query {

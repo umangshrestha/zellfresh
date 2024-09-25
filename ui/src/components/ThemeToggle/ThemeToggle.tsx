@@ -3,7 +3,7 @@ import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
 import IconButton from "@mui/material/IconButton";
 import { useStorageStore } from "../../lib/store";
 
-const ThemeToggle = () => {
+export const ThemeToggle = () => {
   const mode = useStorageStore((state) => state.theme);
   const toggle = useStorageStore((state) => state.toggleTheme);
   const isDarkMode = mode === "dark";
@@ -22,5 +22,3 @@ const ThemeToggle = () => {
     </IconButton>
   );
 };
-
-export default ThemeToggle;

@@ -6,18 +6,18 @@ import { RouterProvider } from "react-router-dom";
 import { router } from "./routes";
 import { ApolloProvider } from "@apollo/client";
 import { apolloClient } from "./lib/apollo";
-import { ThemeModeProvider } from "./components/ThemeToggle/provider";
-import { NotificationProvider } from "./components/Notification/provider";
+import { ThemeToggleProvider } from "./components/ThemeToggle";
+import { NotificationProvider } from "./components/Notification";
 
 createRoot(document.getElementById("root")!).render(
   <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID!}>
     <ApolloProvider client={apolloClient}>
       <StrictMode>
-        <ThemeModeProvider>
+        <ThemeToggleProvider>
           <NotificationProvider>
             <RouterProvider router={router} />
           </NotificationProvider>
-        </ThemeModeProvider>
+        </ThemeToggleProvider>
       </StrictMode>
     </ApolloProvider>
   </GoogleOAuthProvider>,

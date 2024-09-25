@@ -7,7 +7,7 @@ import type { CredentialResponse } from "@react-oauth/google";
 import { useStorageStore } from "../../../lib/store";
 import { useMutation, gql } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
-import { useNotification } from "../../../components/Notification/hooks";
+import { useNotification } from "../../../components/Notification/Notification.hooks";
 
 const VALIDATE_USER = gql`
   mutation {
@@ -19,7 +19,7 @@ const VALIDATE_USER = gql`
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const [_, setNofication] = useNotification();
+  const { setNotification } = useNotification();
 
   const login = useStorageStore((state) => state.login);
   const [validateUser] = useMutation(VALIDATE_USER);
@@ -43,7 +43,7 @@ export default function LoginPage() {
       })
       .catch((error) => {
         login(prevProvider, prevToken);
-        setNofication({
+        setNotification({
           message: error.message,
           severity: "error",
         });
@@ -51,7 +51,10 @@ export default function LoginPage() {
   };
 
   const onError = () => {
-    console.log("Error");
+    setNotification({
+      message: "Failed to sign in",
+      severity: "error",
+    });
   };
 
   return (

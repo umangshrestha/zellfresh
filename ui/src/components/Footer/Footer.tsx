@@ -3,7 +3,7 @@ import { SOCIAL_MEDIA_HANDLES } from "../../config/social";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 
-export default function Footer() {
+export const Footer = () => {
   return (
     <Box
       component="footer"
@@ -34,4 +34,4 @@ export default function Footer() {
       </Box>
     </Box>
   );
-}
+};

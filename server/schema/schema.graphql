@@ -4,19 +4,22 @@ type User {
   imageUrl: String
 }
 
+
+
 type Product {
   id: ID!
   name: String!
-  price: Float!
-  description: String
   imageUrl: String!
+  description: String
+  price: Float!
   quantity: Int!
+  maxQuantity: Int!
   category: String!
   rating: Float!
   badgeText: String
-  maxQuantity: Int!
   tags: [String]!
 }
+
 
 type Mutation {
   validateUser: User!
