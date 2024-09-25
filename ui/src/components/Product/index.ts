@@ -1,3 +1,2 @@
-export { Product as default } from "./Product";
-import { ProductType } from "./Product";
+import { ProductType } from "./Product.types";
 export type { ProductType };

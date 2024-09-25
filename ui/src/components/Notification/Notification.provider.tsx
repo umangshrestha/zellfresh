@@ -12,7 +12,6 @@ export const NotificationProvider = ({
   const [notification, setNotification] = useState<NotificationProps | null>(
     null,
   );
-
   const contextValue: NotificationContextType = {
     notification,
     setNotification,

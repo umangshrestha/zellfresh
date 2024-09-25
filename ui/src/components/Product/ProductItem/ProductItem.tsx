@@ -3,13 +3,14 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { ProductProps } from "./Product.types";
-import Badge from "../Badge";
-import Viel from "../Viel";
+import { ProductProps } from "./ProductItem.types";
+import Badge from "../../Badge";
+import Viel from "../../Viel";
 import Card from "@mui/material/Card";
 import Rating from "@mui/material/Rating";
 
-export const Product = ({
+export const ProductItem = ({
+  id,
   name,
   description,
   price,
@@ -61,7 +62,7 @@ export const Product = ({
             disabled={!isProductAvailable}
             color="error"
             variant="contained"
-            onAbort={onClick}
+            onAbort={() => onClick(id)}
           >
             Add to Cart
           </Button>

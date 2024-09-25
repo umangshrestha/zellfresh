@@ -1,4 +1,4 @@
 export { ThemeToggle as default } from "./ThemeToggle";
-import { useNotification } from "./ThemeToggle.hooks";
+import { ThemeToggleProvider } from "./ThemeToggle.provider";
 
 export { ThemeToggleProvider };

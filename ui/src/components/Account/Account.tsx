@@ -14,7 +14,7 @@ export const Account = () => {
   const logout = useStorageStore((state) => state.logout);
   const token = useStorageStore((state) => state.token);
   const provider = useStorageStore((state) => state.provider);
-  const [data, setData] = useState<Record<string, any> | null>(null);
+  const [data, setData] = useState<Record<string, object> | null>(null);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   useEffect(() => {

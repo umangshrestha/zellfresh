@@ -4,12 +4,19 @@ import { useNotification } from "./Notification.hooks";
 
 export const Notification = () => {
   const { notification, setNotification } = useNotification();
-  const duration = 5000; // Set the desired duration
+  if (!notification) {
+    return null;
+  }
+
   return (
     <Snackbar
-      open={notification !== null}
-      autoHideDuration={duration}
+      open={true}
+      autoHideDuration={notification.duration || 50000}
       onClose={() => setNotification(null)}
+      anchorOrigin={{
+        vertical: notification.verticalPosition || "bottom",
+        horizontal: notification.horizontalPosition || "center",
+      }}
     >
       <Alert severity={notification?.severity}>{notification?.message}</Alert>
     </Snackbar>
