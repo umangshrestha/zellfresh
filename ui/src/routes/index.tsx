@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
-import Layout from "../layout";
+import Layout from "../components/Layout";
 import LoginPage from "../pages/auth/login";
-import Products from "../pages/products";
+import ProductPageWithException from "../components/Product/ProductPage";
 
 export const router = createBrowserRouter([
   {
@@ -10,7 +10,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Products />,
+        element: <ProductPageWithException />,
       },
     ],
   },

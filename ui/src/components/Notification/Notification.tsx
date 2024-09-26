@@ -11,7 +11,7 @@ export const Notification = () => {
   return (
     <Snackbar
       open={true}
-      autoHideDuration={notification.duration || 50000}
+      autoHideDuration={notification.duration || 10000}
       onClose={() => setNotification(null)}
       anchorOrigin={{
         vertical: notification.verticalPosition || "bottom",

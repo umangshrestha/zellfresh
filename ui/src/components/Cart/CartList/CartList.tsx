@@ -5,6 +5,7 @@ import ListItem from "@mui/material/ListItem";
 import { useNotification } from "../../Notification";
 import CartItemSkeleton from "../CartItemSkeleton";
 import { CartListProps } from "./CartList.types";
+import { useEffect } from "react";
 
 export const CartList = ({
   data,
@@ -14,13 +15,14 @@ export const CartList = ({
   onChange,
 }: CartListProps) => {
   const { setNotification } = useNotification();
-
-  if (error) {
-    setNotification({
-      message: error.message,
-      severity: "error",
-    });
-  }
+  useEffect(() => {
+    if (error) {
+      setNotification({
+        message: error.message,
+        severity: "error",
+      });
+    }
+  }, [error, setNotification]);
 
   if (loading) {
     return (

@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
-import Account from "../components/Account";
-import Notification from "../components/Notification";
+import Account from "../Account";
+import Notification from "../Notification";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
@@ -12,11 +12,11 @@ import Link from "@mui/material/Link";
 import React, { useState } from "react";
 
 import Paper from "@mui/material/Paper";
-import ThemeToggle from "../components/ThemeToggle";
-import Footer from "../components/Footer";
-import { APP_NAME } from "../config";
+import ThemeToggle from "../ThemeToggle";
+import Footer from "../Footer";
+import { APP_NAME } from "../../config";
 
-export default function Layout() {
+export const Layout = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -66,4 +66,4 @@ export default function Layout() {
       <Footer />
     </Box>
   );
-}
+};

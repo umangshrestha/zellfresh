@@ -1,16 +1,24 @@
+import { useEffect } from "react";
 import ProductItem from "../ProductItem";
 import ProductSkeleton from "../ProductSkeleton";
 import { useNotification } from "../../Notification";
 import { ProductListProps } from "./ProductList.types";
 
-export const ProductList = ({ data, loading, error, onAddToCart }: ProductListProps) => {
+export const ProductList = ({
+  data,
+  loading,
+  error,
+  onAddToCart,
+}: ProductListProps) => {
   const { setNotification } = useNotification();
-  if (error) {
-    setNotification({
-      message: error.message,
-      severity: "error",
-    });
-  }
+  useEffect(() => {
+    if (error) {
+      setNotification({
+        message: error.message,
+        severity: "error",
+      });
+    }
+  }, [error, setNotification]);
 
   if (loading) {
     return (

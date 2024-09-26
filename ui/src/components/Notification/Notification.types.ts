@@ -13,7 +13,3 @@ export type NotificationContextType = {
   notification: NotificationProps | null;
   setNotification: Dispatch<React.SetStateAction<NotificationProps | null>>;
 };
-
-export type NotificationProviderProps = Readonly<{
-  children: React.ReactNode;
-}>;
