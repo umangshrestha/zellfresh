@@ -1,0 +1,56 @@
+type Product {
+  id: ID!
+  name: String!
+  imageUrl: String!
+  description: String
+  price: Float!
+  availableQuantity: Int!
+  limitPerTransaction: Int!
+  category: String!
+  rating: Float!
+  badgeText: String
+  tags: [String]!
+}
+
+input ProductInput {
+  id: ID
+  name: String!
+  imageUrl: String!
+  description: String
+  price: Float!
+  availableQuantity: Int!
+  limitPerTransaction: Int!
+  category: String!
+  rating: Float!
+  badgeText: String
+  tags: [String]!
+}
+
+
+
+type Pagination {
+  limit: Int!
+  prev: String
+  next: String
+}
+ 
+type PaginatedProducts {
+  items: [Product]
+  pagination: Pagination
+}
+
+type Query {
+  hello(name: String): String!
+  product(id: ID!): Product
+  products(limit: Int = 10, cursor: String): PaginatedProducts!
+}
+
+
+type Mutation {
+  putProduct(product: ProductInput!): Product!
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}

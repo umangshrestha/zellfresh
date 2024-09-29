@@ -7,7 +7,7 @@ services:
       - "127.0.0.1:4510-4559:4510-4559"  # external services port range
       - "127.0.0.1:443:443"              # LocalStack HTTPS Gateway (Pro)
     environment:
-      - DEBUG=${DEBUG-}
+      - DEBUG=${DEBUG:-0}
       - PERSISTENCE=${PERSISTENCE-}
       - LOCALSTACK_API_KEY=${LOCALSTACK_API_KEY-}  # required for Pro
     volumes:

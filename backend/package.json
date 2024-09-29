@@ -1,0 +1,33 @@
+{
+  "name": "backend",
+  "version": "0.1.0",
+  "registry": "https://registry.yarnpkg.com",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest",
+    "predeploy": "node build.mjs",
+    "codegen": "cd graphql; npx @aws-amplify/cli codegen",
+    "local:diff": "cd infrastructure; tflocal plan",
+    "local:bootstrap": "cd infrastructure; tflocal init",
+    "local:deploy": "cd infrastructure; tflocal apply -auto-approve",
+    "local:destroy": "cd infrastructure; tflocal destroy -auto-approve"
+  },
+  "devDependencies": {
+    "@aws-amplify/cli": "^12.12.6",
+    "@aws-appsync/utils": "^1.9.0",
+    "@aws-sdk/client-appsync": "^3.658.1",
+    "@aws-sdk/client-dynamodb": "^3.658.1",
+    "@types/jest": "^29.5.12",
+    "@types/node": "22.5.4",
+    "axios": "^1.7.7",
+    "codegen": "^0.1.0",
+    "esbuild": "^0.24.0",
+    "glob": "^11.0.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
+    "typescript": "~5.6.2"
+  }
+}
