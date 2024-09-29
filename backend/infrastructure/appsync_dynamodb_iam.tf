@@ -39,7 +39,8 @@ data "aws_iam_policy_document" "dynamodb_read_write_document" {
     ]
 
     resources = [
-      aws_dynamodb_table.products_table.arn
+      aws_dynamodb_table.products_table.arn,
+      aws_dynamodb_table.order_table.arn
     ]
   }
 }

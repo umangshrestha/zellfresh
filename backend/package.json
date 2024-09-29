@@ -7,12 +7,14 @@
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
+    "format": "prettier --write .",
     "predeploy": "node build.mjs",
     "codegen": "cd graphql; npx @aws-amplify/cli codegen",
     "local:diff": "cd infrastructure; tflocal plan",
     "local:bootstrap": "cd infrastructure; tflocal init",
     "local:deploy": "cd infrastructure; tflocal apply -auto-approve",
-    "local:destroy": "cd infrastructure; tflocal destroy -auto-approve"
+    "local:destroy": "cd infrastructure; tflocal destroy -auto-approve",
+    "dev": "yarn run format; yarn run predeploy; yarn run codegen; yarn run local:deploy; yarn run test"
   },
   "devDependencies": {
     "@aws-amplify/cli": "^12.12.6",
@@ -26,6 +28,7 @@
     "esbuild": "^0.24.0",
     "glob": "^11.0.0",
     "jest": "^29.7.0",
+    "prettier": "^3.3.3",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "typescript": "~5.6.2"

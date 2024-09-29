@@ -29,7 +29,8 @@ export const product = /* GraphQL */ `query Product($id: ID!) {
   }
 }
 ` as GeneratedQuery<APITypes.ProductQueryVariables, APITypes.ProductQuery>;
-export const products = /* GraphQL */ `query Products($limit: Int = 10, $cursor: String) {
+export const products =
+  /* GraphQL */ `query Products($limit: Int = 10, $cursor: String) {
   products(limit: $limit, cursor: $cursor) {
     items {
       id

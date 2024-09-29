@@ -8,7 +8,8 @@ type GeneratedMutation<InputType, OutputType> = string & {
   __generatedMutationOutput: OutputType;
 };
 
-export const putProduct = /* GraphQL */ `mutation PutProduct($product: ProductInput!) {
+export const putProduct =
+  /* GraphQL */ `mutation PutProduct($product: ProductInput!) {
   putProduct(product: $product) {
     id
     name
@@ -25,6 +26,6 @@ export const putProduct = /* GraphQL */ `mutation PutProduct($product: ProductIn
   }
 }
 ` as GeneratedMutation<
-  APITypes.PutProductMutationVariables,
-  APITypes.PutProductMutation
->;
+    APITypes.PutProductMutationVariables,
+    APITypes.PutProductMutation
+  >;

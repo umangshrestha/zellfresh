@@ -2,13 +2,13 @@ type Product {
   id: ID!
   name: String!
   imageUrl: String!
-  description: String
+  description: String!
   price: Float!
   availableQuantity: Int!
   limitPerTransaction: Int!
   category: String!
   rating: Float!
-  badgeText: String
+  badgeText: String!
   tags: [String]!
 }
 
@@ -26,18 +26,30 @@ input ProductInput {
   tags: [String]!
 }
 
-
-
 type Pagination {
   limit: Int!
   prev: String
   next: String
 }
- 
+
 type PaginatedProducts {
-  items: [Product]
+  items: [Product!]!
   pagination: Pagination
 }
+
+type Cart {
+  id: ID!
+  userId: ID!
+  count: Int!
+  items: [CartItem!]!
+  total: Float!
+}
+
+type CartItem {
+  productId: ID!
+  quantity: Int!
+}
+
 
 type Query {
   hello(name: String): String!
@@ -45,9 +57,12 @@ type Query {
   products(limit: Int = 10, cursor: String): PaginatedProducts!
 }
 
-
 type Mutation {
-  putProduct(product: ProductInput!): Product!
+  putProduct(product: ProductInput!): Product
+  addToCart(productId: ID!, quantity: Int!): Cart
+  removeFromCart(productId: ID!, quantity: Int!): Cart
+  clearCart: Cart
+
 }
 
 schema {
