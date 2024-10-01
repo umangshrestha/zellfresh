@@ -17,14 +17,14 @@ export const CartItem = ({
   name,
   price,
   imageUrl,
-  quantity,
-  maxQuantity,
+  availableQuantity,
+  limitPerTransaction,
   description,
   onChange,
   onRemove,
 }: CartItemProps) => {
-  const totalPrice = price * quantity;
-  const isProductAvailable = quantity > 0;
+  const totalPrice = price * availableQuantity;
+  const isProductAvailable = availableQuantity > 0;
   const badgeText = !isProductAvailable ? "Out of Stock" : null;
 
   return (
@@ -60,13 +60,13 @@ export const CartItem = ({
           <ClearIcon />
         </Typography>
         <Select
-          value={quantity}
+          value={availableQuantity}
           onChange={(e) => onChange(id, +e.target.value)}
         >
           {!isProductAvailable ? (
             <MenuItem value={0}>0</MenuItem>
           ) : (
-            Array.from({ length: maxQuantity }, (_, i) => (
+            Array.from({ length: limitPerTransaction }, (_, i) => (
               <MenuItem key={i + 1} value={i + 1}>
                 {i + 1}
               </MenuItem>

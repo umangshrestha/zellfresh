@@ -19,8 +19,8 @@ const products: CartType[] = [
     price: 12.99,
     imageUrl:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiXM1f7aFP4rKF-wJZ2juCb-7JcQCspEYUVwLK4JrpBdVtRB-ELAqpUCmkg6znfoG4fh8&usqp=CAU",
-    quantity: 10,
-    maxQuantity: 10,
+    availableQuantity: 10,
+    limitPerTransaction: 10,
     description: "Delicious chicken breast",
   },
   {
@@ -29,8 +29,8 @@ const products: CartType[] = [
     price: 100,
     imageUrl:
       "https://132625588.cdn6.editmysite.com/uploads/1/3/2/6/132625588/s782101613657948031_p29_i2_w1920.jpeg?width=2400&optimize=medium",
-    quantity: 0,
-    maxQuantity: 10,
+    availableQuantity: 0,
+    limitPerTransaction: 10,
     description: "Tasty pork butt roast",
   },
 ];

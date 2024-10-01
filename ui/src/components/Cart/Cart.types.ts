@@ -1,12 +1,12 @@
-import { ProductType } from "../Product";
+import { Product } from "../../types/graphql";
 
 export type CartType = Pick<
-  ProductType,
+  Product,
   | "id"
   | "name"
   | "price"
   | "imageUrl"
-  | "quantity"
-  | "maxQuantity"
+  | "availableQuantity"
+  | "limitPerTransaction"
   | "description"
 >;

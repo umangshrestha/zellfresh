@@ -46,7 +46,7 @@ export const CartList = ({
   }
 
   const totalPrice = data.reduce(
-    (acc: number, product) => acc + product.price * product.quantity,
+    (acc: number, product) => acc + product.price * product.availableQuantity,
     0,
   );
 

@@ -1,19 +1,21 @@
 import { gql } from "@apollo/client";
 
-export const VALIDATE_USER = gql`
+export const PRODUCTS = gql`
   query {
     products {
-      id
-      name
-      price
-      description
-      imageUrl
-      quantity
-      category
-      badgeText
-      maxQuantity
-      rating
-      tags
+      items {
+        id
+        name
+        imageUrl
+        description
+        price
+        availableQuantity
+        limitPerTransaction
+        category
+        rating
+        badgeText
+        tags
+      }
     }
-  }
-`;
+  }`;
+

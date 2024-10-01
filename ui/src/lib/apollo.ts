@@ -2,10 +2,11 @@ import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { useStorageStore } from "./store";
 import { onError } from "@apollo/client/link/error";
+import { X_API_KEY, GRPAHQL_URL } from "../config/graphql";
+
+
 const httpLink = createHttpLink({
-  uri:
-    (import.meta.env.VITE_GRAPHQL_URL as string) ||
-    "http://localhost:4000/graphql",
+  uri: GRPAHQL_URL,
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -13,14 +14,16 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
+      "accept": "application/json",
       Authorization: token ? `Bearer ${token}` : "",
-      provider: provider ? provider : "",
     },
   };
 });
 
 const errorLink = onError(({ networkError }) => {
-  if (networkError && networkError?.statusCode === 401) {
+  if (networkError && 
+    // @ts-ignore
+    networkError?.statusCode === 401) {
     useStorageStore.getState().logout();
   }
 });

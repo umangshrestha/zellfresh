@@ -1,12 +1,12 @@
-import { ProductType } from "../Product.types";
+import { Product } from "../../../types/graphql";
 export type ProductItemType = Pick<
-  ProductType,
+  Product,
   | "id"
   | "name"
   | "description"
   | "price"
   | "imageUrl"
-  | "quantity"
+  | "availableQuantity"
   | "rating"
   | "badgeText"
 >;

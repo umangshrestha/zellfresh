@@ -15,12 +15,12 @@ export const ProductItem = ({
   description,
   price,
   imageUrl,
-  quantity,
+  availableQuantity,
   rating,
   badgeText,
   onClick,
 }: ProductProps) => {
-  const isProductAvailable = quantity > 0;
+  const isProductAvailable = availableQuantity > 0;
   badgeText = isProductAvailable ? badgeText : "Out of Stock";
   return (
     <Viel enable={!isProductAvailable}>

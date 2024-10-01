@@ -14,7 +14,7 @@ export const Default: Story = {
     price: 12.99,
     imageUrl:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiXM1f7aFP4rKF-wJZ2juCb-7JcQCspEYUVwLK4JrpBdVtRB-ELAqpUCmkg6znfoG4fh8&usqp=CAU",
-    quantity: 10,
+    availableQuantity: 10,
     description: "Fresh, skinless chicken breast fillets",
     name: "Chicken Breast",
     rating: 4.5,
@@ -28,7 +28,7 @@ export const WithBadge: Story = {
     price: 12.99,
     imageUrl:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiXM1f7aFP4rKF-wJZ2juCb-7JcQCspEYUVwLK4JrpBdVtRB-ELAqpUCmkg6znfoG4fh8&usqp=CAU",
-    quantity: 10,
+    availableQuantity: 10,
     description: "Fresh, skinless chicken breast fillets",
     name: "Chicken Breast",
     rating: 4.5,
@@ -42,7 +42,7 @@ export const Disabled: Story = {
     price: 12.99,
     imageUrl:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiXM1f7aFP4rKF-wJZ2juCb-7JcQCspEYUVwLK4JrpBdVtRB-ELAqpUCmkg6znfoG4fh8&usqp=CAU",
-    quantity: 0,
+    availableQuantity: 0,
     description: "Fresh, skinless chicken breast fillets",
     name: "Chicken Breast",
     rating: 4.5,
