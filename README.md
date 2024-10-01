@@ -13,7 +13,7 @@ Download localstack wrapper for
 
 
 note:
-alternative to AWS cli:
+alternative to AWS Local cli:
 ```sh
 alias awslocal='aws --endpoint-url http://127.0.0.1:4566' 
 ```

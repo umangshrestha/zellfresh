@@ -9,7 +9,7 @@ projects:
     extensions:
       amplify:
         codeGenTarget: typescript
-        generatedFileName: ./types/graphql.ts
+        generatedFileName: types/graphql.ts
         docsFilePath: types
         region: us-east-1
         apiId: null

@@ -8,8 +8,7 @@ type GeneratedMutation<InputType, OutputType> = string & {
   __generatedMutationOutput: OutputType;
 };
 
-export const putProduct =
-  /* GraphQL */ `mutation PutProduct($product: ProductInput!) {
+export const putProduct = /* GraphQL */ `mutation PutProduct($product: ProductInput!) {
   putProduct(product: $product) {
     id
     name
@@ -26,6 +25,60 @@ export const putProduct =
   }
 }
 ` as GeneratedMutation<
-    APITypes.PutProductMutationVariables,
-    APITypes.PutProductMutation
-  >;
+  APITypes.PutProductMutationVariables,
+  APITypes.PutProductMutation
+>;
+export const addToCart = /* GraphQL */ `mutation AddToCart($productId: ID!, $quantity: Int!) {
+  addToCart(productId: $productId, quantity: $quantity) {
+    id
+    userId
+    count
+    items {
+      productId
+      quantity
+      __typename
+    }
+    total
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.AddToCartMutationVariables,
+  APITypes.AddToCartMutation
+>;
+export const removeFromCart = /* GraphQL */ `mutation RemoveFromCart($productId: ID!, $quantity: Int!) {
+  removeFromCart(productId: $productId, quantity: $quantity) {
+    id
+    userId
+    count
+    items {
+      productId
+      quantity
+      __typename
+    }
+    total
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.RemoveFromCartMutationVariables,
+  APITypes.RemoveFromCartMutation
+>;
+export const clearCart = /* GraphQL */ `mutation ClearCart {
+  clearCart {
+    id
+    userId
+    count
+    items {
+      productId
+      quantity
+      __typename
+    }
+    total
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.ClearCartMutationVariables,
+  APITypes.ClearCartMutation
+>;

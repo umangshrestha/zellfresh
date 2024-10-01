@@ -9,7 +9,7 @@ type Product {
   category: String!
   rating: Float!
   badgeText: String!
-  tags: [String]!
+  tags: [String!]!
 }
 
 input ProductInput {
@@ -50,9 +50,8 @@ type CartItem {
   quantity: Int!
 }
 
-
 type Query {
-  hello(name: String): String!
+  hello(name: String): String! @aws_oidc
   product(id: ID!): Product
   products(limit: Int = 10, cursor: String): PaginatedProducts!
 }
@@ -62,7 +61,6 @@ type Mutation {
   addToCart(productId: ID!, quantity: Int!): Cart
   removeFromCart(productId: ID!, quantity: Int!): Cart
   clearCart: Cart
-
 }
 
 schema {

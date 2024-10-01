@@ -7,14 +7,14 @@
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
-    "format": "prettier --write .",
+    "format": "prettier --write . && cd infrastructure && terraform fmt",
     "predeploy": "node build.mjs",
     "codegen": "cd graphql; npx @aws-amplify/cli codegen",
     "local:diff": "cd infrastructure; tflocal plan",
     "local:bootstrap": "cd infrastructure; tflocal init",
-    "local:deploy": "cd infrastructure; tflocal apply -auto-approve",
+    "local:deploy": "cd infrastructure; tflocal apply -auto-approve -var-file=terraform.tfvars",
     "local:destroy": "cd infrastructure; tflocal destroy -auto-approve",
-    "dev": "yarn run format; yarn run predeploy; yarn run codegen; yarn run local:deploy; yarn run test"
+    "dev": "yarn run predeploy; yarn run codegen; yarn run local:deploy; yarn run test"
   },
   "devDependencies": {
     "@aws-amplify/cli": "^12.12.6",

@@ -12,9 +12,10 @@ provider "aws" {
 }
 
 
-variable "aws_region" {
-  type        = string
-  description = "AWS Region"
-  default     = "us-east-1"
+module "iam" {
+  source = "./iam"
+  dynabodb_table_arns = [
+    aws_dynamodb_table.products_table.arn,
+    aws_dynamodb_table.order_table.arn
+  ]
 }
-

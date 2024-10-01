@@ -2,14 +2,12 @@
 !jest.config.js
 *.d.ts
 node_modules
+.env
 
 # CDK asset staging directory
 .cdk.staging
 cdk.out
 ./graphql/js-resolvers
 
-# terraform
+.DS_Store
 .terraform
-terraform.tfstate
-terraform.tfstate.backup
-localstack_providers_override.tf

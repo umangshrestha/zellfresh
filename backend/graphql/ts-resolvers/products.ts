@@ -2,7 +2,6 @@ import * as ddb from "@aws-appsync/utils/dynamodb";
 import { Context } from "@aws-appsync/utils";
 import { ProductsQueryVariables } from "../types/graphql";
 import * as APITypes from "../types/graphql";
-import { Product } from "../types/graphql";
 
 export function request(ctx: Context<ProductsQueryVariables>) {
   const maxLimit = 20;
