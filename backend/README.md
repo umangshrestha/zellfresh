@@ -1,14 +1,19 @@
-# Welcome to your CDK TypeScript project
+# Pre requisite
+Make sure localstack is running.
 
-This is a blank project for CDK development with TypeScript.
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+| Script                             | Description                                          |
+| ---------------------------------- | ---------------------------------------------------- |
+| ```sh yarn run local:bootstrap ``` | Initialize terraform provider with localstack        |
+| ```sh  yarn run codegen     ```    | Compiling graphql schema to types and queries        |
+| ```sh  yarn run predeploy  ```     | Convert Typescript resolvers to javascript resolvers |
+| ```sh  yarn run local:deploy ```   | to deploy appsync shema                              |
+| ```sh yarn run test ```            | Do quick sanity of resolvers using jest              |
+| ```sh yarn run format ```          | Format the code based on project guideline           |
 
-## Useful commands
 
-- `npm run build` compile typescript to js
-- `npm run watch` watch for changes and compile
-- `npm run test` perform the jest unit tests
-- `npx cdk deploy` deploy this stack to your default AWS account/region
-- `npx cdk diff` compare deployed stack with current state
-- `npx cdk synth` emits the synthesized CloudFormation template
+The local:deploy requires google_client_id. Please create the file `./infrastrucre/terrafom.tfvars` and add the secrets as:
+
+```
+google_client_id = Your google client id
+```
