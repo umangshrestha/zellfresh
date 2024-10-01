@@ -13,6 +13,6 @@ VITE_GOOGLE_CLIENT_ID=
 
 | Script                            | Description                                |
 | --------------------------------- | ------------------------------------------ |
-| ```sh yarn run dev ```            | To start a dev server                      |
-| ```sh  yarn run storybook     ``` | To view react components in storybook      |
-| ```sh yarn run format ```         | Format the code based on project guideline |
+| `yarn run dev `            | To start a dev server                      |
+| `yarn run storybook     ` | To view react components in storybook      |
+| `yarn run format `         | Format the code based on project guideline |
