@@ -4,7 +4,6 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
-
 variable "google_client_id" {
   type        = string
   sensitive   = true

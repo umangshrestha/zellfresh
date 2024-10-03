@@ -12,7 +12,7 @@
     "local:bootstrap": "cd infrastructure; tflocal init",
     "local:deploy": "cd infrastructure; tflocal apply -auto-approve -var-file=terraform.tfvars",
     "local:destroy": "cd infrastructure; tflocal destroy -auto-approve",
-    "dev": "yarn run predeploy; yarn run codegen; yarn run local:deploy; yarn run test"
+    "dev": "yarn run local:bootstrap && yarn run predeploy && yarn run codegen && yarn run local:deploy && yarn run test"
   },
   "devDependencies": {
     "@aws-amplify/cli": "^12.12.6",

@@ -9,7 +9,6 @@ import * as APITypes from "../graphql/types/graphql";
 import * as queries from "../graphql/types/queries";
 import * as mutation from "../graphql/types/mutations";
 import * as fs from "fs";
-import exp = require("constants");
 
 let apiKey: string;
 let graphqlApiId: string;
@@ -35,6 +34,10 @@ const sendGraphQLQuery = async <TVariables, TResult>(
       },
     },
   );
+  if (response.data.errors)
+    for (const error of response.data.errors) {
+      console.error(error.message);
+    }
   return response.data;
 };
 
@@ -137,13 +140,24 @@ describe("GraphQL Tests", () => {
       const variables = { product };
       const result = await sendGraphQLQuery<
         typeof variables,
-        APITypes.PutProductMutation
-      >(mutation.putProduct, variables);
+        APITypes.AddProductMutation
+      >(mutation.addProduct, variables);
       expect(result.error).toBe(undefined);
-      expect(result.data.putProduct).toMatchObject({
+      expect(result.data.addProduct).toMatchObject({
         __typename: "Product",
         ...product,
       });
     },
   );
+
+  test.each(mockData)("Product query test (return)", async (product) => {
+    const id = product.id as string;
+    const variables = { id };
+    const result = await sendGraphQLQuery<
+      typeof variables,
+      APITypes.ProductQuery
+    >(queries.product, variables);
+    expect(result.error).toBe(undefined);
+    expect(result.data.product).toMatchObject(product);
+  });
 });

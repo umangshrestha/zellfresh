@@ -1,11 +1,9 @@
 import { Context, util } from "@aws-appsync/utils";
-import { PutProductMutationVariables } from "../types/graphql";
-import * as APITypes from "../types/graphql";
+import { AddProductMutationVariables } from "../types/graphql";
 
-export function request(ctx: Context<PutProductMutationVariables>) {
+export function request(ctx: Context<AddProductMutationVariables>) {
   const product = ctx.args.product;
   const id = product.id || util.autoId();
-
   return {
     operation: "PutItem",
     key: { id },
@@ -27,9 +25,13 @@ export function request(ctx: Context<PutProductMutationVariables>) {
   };
 }
 
-export function response(ctx: Context): APITypes.Product | null {
-  if (!ctx.result || Object.keys(ctx.result).length === 0) {
+export function response(ctx: Context) {
+  const { error, result } = ctx;
+  if (error) {
+    return util.appendError(error.message, error.type, result);
+  }
+  if (!result || Object.keys(result).length === 0) {
     return null;
   }
-  return ctx.result as APITypes.Product;
+  return result;
 }

@@ -8,8 +8,9 @@ type GeneratedMutation<InputType, OutputType> = string & {
   __generatedMutationOutput: OutputType;
 };
 
-export const putProduct = /* GraphQL */ `mutation PutProduct($product: ProductInput!) {
-  putProduct(product: $product) {
+export const addProduct =
+  /* GraphQL */ `mutation AddProduct($product: ProductInput!) {
+  addProduct(product: $product) {
     id
     name
     imageUrl
@@ -25,16 +26,16 @@ export const putProduct = /* GraphQL */ `mutation PutProduct($product: ProductIn
   }
 }
 ` as GeneratedMutation<
-  APITypes.PutProductMutationVariables,
-  APITypes.PutProductMutation
->;
-export const addToCart = /* GraphQL */ `mutation AddToCart($productId: ID!, $quantity: Int!) {
-  addToCart(productId: $productId, quantity: $quantity) {
+    APITypes.AddProductMutationVariables,
+    APITypes.AddProductMutation
+  >;
+export const addToCart =
+  /* GraphQL */ `mutation AddToCart($userId: ID!, $cart: CartInput!) {
+  addToCart(userId: $userId, cart: $cart) {
     id
     userId
     count
     items {
-      productId
       quantity
       __typename
     }
@@ -43,16 +44,16 @@ export const addToCart = /* GraphQL */ `mutation AddToCart($productId: ID!, $qua
   }
 }
 ` as GeneratedMutation<
-  APITypes.AddToCartMutationVariables,
-  APITypes.AddToCartMutation
->;
-export const removeFromCart = /* GraphQL */ `mutation RemoveFromCart($productId: ID!, $quantity: Int!) {
+    APITypes.AddToCartMutationVariables,
+    APITypes.AddToCartMutation
+  >;
+export const removeFromCart =
+  /* GraphQL */ `mutation RemoveFromCart($productId: ID!, $quantity: Int!) {
   removeFromCart(productId: $productId, quantity: $quantity) {
     id
     userId
     count
     items {
-      productId
       quantity
       __typename
     }
@@ -61,16 +62,15 @@ export const removeFromCart = /* GraphQL */ `mutation RemoveFromCart($productId:
   }
 }
 ` as GeneratedMutation<
-  APITypes.RemoveFromCartMutationVariables,
-  APITypes.RemoveFromCartMutation
->;
+    APITypes.RemoveFromCartMutationVariables,
+    APITypes.RemoveFromCartMutation
+  >;
 export const clearCart = /* GraphQL */ `mutation ClearCart {
   clearCart {
     id
     userId
     count
     items {
-      productId
       quantity
       __typename
     }

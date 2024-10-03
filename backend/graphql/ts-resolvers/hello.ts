@@ -6,9 +6,7 @@ export function request(ctx: Context<HelloQueryVariables>) {
   return {};
 }
 
-export function response(
-  ctx: Context,
-):   APITypes.HelloQuery["hello"] {
+export function response(ctx: Context): APITypes.HelloQuery["hello"] {
   const name = ctx.arguments.name || "World";
   return `Hello, ${name}!`;
 }
