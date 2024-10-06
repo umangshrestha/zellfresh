@@ -1,15 +1,16 @@
 # Overview
 
-| Technologies Used    | Description                                                     |
-| -------------------- | --------------------------------------------------------------- |
-| Programming Language | TypeScript                                                      |
-| Runtime              | Node.js ~v20                                                    |
-| AWS AppSync          | Managed GraphQL service for real-time data queries and updates. |
-| appsync_js           | JavaScript SDK for interacting with AWS AppSync                 |
-| AWS Lambda           | Serverless compute service for executing backend logic          |
-| HashiCorp Terraform  | Infrastructure as code tool for managing AWS resources          |
-| Localstack  | Mocking AWS resources for local development          |
-
+| Technologies Used         | Description                                                                                            |
+| ------------------------- | ------------------------------------------------------------------------------------------------------ |
+| Programming Language      | TypeScript                                                                                             |
+| Runtime                   | Node.js ~v20                                                                                           |
+| AWS AppSync               | Managed GraphQL service for real-time data queries and updates.                                        |
+| appsync_js                | JavaScript SDK for interacting with AWS AppSync                                                        |
+| AWS Lambda                | Serverless compute service for executing backend logic                                                 |
+| HashiCorp Terraform       | Infrastructure as code tool for managing AWS resources                                                 |
+| Localstack                | Mocking AWS resources for local development                                                            |
+| AWS Cognito User Pool     | Manages authentication, user registration, and login for apps.                                         |
+| AWS Cognito Identity Pool | Provides temporary AWS credentials to access AWS services for authenticated and unauthenticated users. |
 
 --- 
 
