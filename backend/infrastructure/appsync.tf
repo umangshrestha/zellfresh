@@ -8,7 +8,7 @@ resource "aws_appsync_graphql_api" "appsync_api" {
   xray_enabled = true
   log_config {
     field_log_level          = "ALL"
-    cloudwatch_logs_role_arn = aws_iam_role.logging_role.arn
+    cloudwatch_logs_role_arn = module.cloudwatch.cloudwatch_logs_role_arn
   }
 
   additional_authentication_provider {

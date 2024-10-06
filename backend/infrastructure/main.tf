@@ -13,3 +13,7 @@ module "cognito" {
   frontend_url = var.frontend_url
   aws_region   = var.aws_region
 }
+
+module "cloudwatch" {
+  source = "./cloudwatch"
+}
