@@ -2,6 +2,11 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
+export type User = {
+  __typename: "User";
+  id: string;
+};
+
 export type ProductInput = {
   id?: string | null;
   name: string;
@@ -62,6 +67,17 @@ export type Pagination = {
   limit: number;
   prev?: string | null;
   next?: string | null;
+};
+
+export type LoginMutationVariables = {
+  id: string;
+};
+
+export type LoginMutation = {
+  login?: {
+    __typename: "User";
+    id: string;
+  } | null;
 };
 
 export type AddProductMutationVariables = {
@@ -136,6 +152,27 @@ export type ClearCartMutation = {
       quantity: number;
     }>;
     total: number;
+  } | null;
+};
+
+export type DeleteProductMutationVariables = {
+  id: string;
+};
+
+export type DeleteProductMutation = {
+  deleteProduct?: {
+    __typename: "Product";
+    id: string;
+    name: string;
+    imageUrl: string;
+    description: string;
+    price: number;
+    availableQuantity: number;
+    limitPerTransaction: number;
+    category: string;
+    rating: number;
+    badgeText: string;
+    tags: Array<string>;
   } | null;
 };
 

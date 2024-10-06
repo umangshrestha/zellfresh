@@ -55,17 +55,25 @@ input CartInput {
   quantity: Int!
 }
 
+type User {
+  id: ID!
+}
+
 type Query {
-  hello(name: String): String! @aws_oidc
+  hello(name: String): String!
   product(id: ID!): Product
   products(limit: Int = 10, cursor: String): PaginatedProducts!
 }
 
 type Mutation {
+  login(id: ID): User
   addProduct(product: ProductInput!): Product
+    @aws_auth(cognito_groups: ["admin"])
+    @aws_iam
   addToCart(userId: ID!, cart: CartInput!): Cart
   removeFromCart(productId: ID!, quantity: Int!): Cart
   clearCart: Cart
+  deleteProduct(id: ID!): ID! @aws_auth(cognito_groups: ["admin"]) @aws_iam
 }
 
 type Subscription {

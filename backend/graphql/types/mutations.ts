@@ -8,6 +8,13 @@ type GeneratedMutation<InputType, OutputType> = string & {
   __generatedMutationOutput: OutputType;
 };
 
+export const login = /* GraphQL */ `mutation Login($id: ID!) {
+  login(id: $id) {
+    id
+    __typename
+  }
+}
+` as GeneratedMutation<APITypes.LoginMutationVariables, APITypes.LoginMutation>;
 export const addProduct =
   /* GraphQL */ `mutation AddProduct($product: ProductInput!) {
   addProduct(product: $product) {
@@ -81,4 +88,24 @@ export const clearCart = /* GraphQL */ `mutation ClearCart {
 ` as GeneratedMutation<
   APITypes.ClearCartMutationVariables,
   APITypes.ClearCartMutation
+>;
+export const deleteProduct = /* GraphQL */ `mutation DeleteProduct($id: ID!) {
+  deleteProduct(id: $id) {
+    id
+    name
+    imageUrl
+    description
+    price
+    availableQuantity
+    limitPerTransaction
+    category
+    rating
+    badgeText
+    tags
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.DeleteProductMutationVariables,
+  APITypes.DeleteProductMutation
 >;

@@ -1,12 +1,15 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
-    }
-  }
+module "dynamodb" {
+  source = "./dynamodb"
 }
 
-provider "aws" {
-  region = var.aws_region
+
+module "cognito" {
+  source = "./cognito"
+  arns = {
+    products_table = module.dynamodb.products_table.arn
+    orders_table   = module.dynamodb.orders_table.arn
+    appsync_api    = aws_appsync_graphql_api.appsync_api.arn
+  }
+  frontend_url = var.frontend_url
+  aws_region   = var.aws_region
 }

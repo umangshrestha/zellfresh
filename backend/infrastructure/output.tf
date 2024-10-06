@@ -5,3 +5,11 @@ output "appsync_url" {
 output "appsync_api_id" {
   value = aws_appsync_graphql_api.appsync_api.id
 }
+
+output "user_pool_id" {
+  value = module.cognito.user_pool_id
+}
+
+output "user_pool_client_id" {
+  value = module.cognito.user_pool_client_id
+}
