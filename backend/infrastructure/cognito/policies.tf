@@ -1,4 +1,8 @@
 data "aws_iam_policy_document" "policy_document" {
+ for_each = toset([
+   "authenticated",
+   "unauthenticated"
+   ])
   statement {
     effect = "Allow"
     principals {
@@ -9,13 +13,13 @@ data "aws_iam_policy_document" "policy_document" {
     condition {
       test     = "StringEquals"
       variable = "cognito-identity.amazonaws.com:aud"
-      values   = [var.identity_pool_id]
+      values   = [aws_cognito_identity_pool.identity_pool.id]
     }
 
     condition {
       test     = "StringLike"
       variable = "cognito-identity.amazonaws.com:amr"
-      values   = [var.state]
+      values   = [each.key]
     }
   }
 }

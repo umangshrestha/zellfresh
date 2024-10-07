@@ -1,14 +1,18 @@
-module "appsync_null_resolver" {
+resource "aws_appsync_resolver" "resolver" {
   for_each = {
     "hello" = {
       type = "Query",
     }
   }
-  source         = "./appsync_null_resolver"
-  appsync_api_id = aws_appsync_graphql_api.appsync_api.id
+  api_id =      aws_appsync_graphql_api.appsync_api.id
   type           = each.value.type
   field          = each.key
+  data_source = null
   code           = file("${local.resolvers_dir}/${each.value.type}.${each.key}.js")
+  runtime {
+    name            = "APPSYNC_JS"
+    runtime_version = "1.0.0"
+  }
 }
 
 

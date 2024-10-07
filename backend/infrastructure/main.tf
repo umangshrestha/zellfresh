@@ -5,15 +5,24 @@ module "dynamodb" {
 
 module "cognito" {
   source = "./cognito"
-  arns = {
-    products_table = module.dynamodb.products_table.arn
-    orders_table   = module.dynamodb.orders_table.arn
-    appsync_api    = aws_appsync_graphql_api.appsync_api.arn
-  }
+
+  admin_policies = [
+    data.aws_iam_policy_document.appsync_policy_document.json,
+    data.aws_iam_policy_document.admin_policy.json,
+  ]
+  user_policies = [
+    data.aws_iam_policy_document.appsync_policy_document.json,
+    data.aws_iam_policy_document.user_policy.json,
+  ]
+  guest_policies = [
+    data.aws_iam_policy_document.appsync_policy_document.json,
+    data.aws_iam_policy_document.guest_policy.json,
+  ]
+
   frontend_url = var.frontend_url
   aws_region   = var.aws_region
 }
 
 module "cloudwatch" {
-  source = "./cloudwatch"
+  source = "./iam/cloudwatch_role"
 }

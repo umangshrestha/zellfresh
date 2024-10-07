@@ -8,8 +8,7 @@ type GeneratedSubscription<InputType, OutputType> = string & {
   __generatedSubscriptionOutput: OutputType;
 };
 
-export const onCartUpdate =
-  /* GraphQL */ `subscription OnCartUpdate($userId: ID!) {
+export const onCartUpdate = /* GraphQL */ `subscription OnCartUpdate($userId: ID!) {
   onCartUpdate(userId: $userId) {
     id
     userId
@@ -23,6 +22,6 @@ export const onCartUpdate =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnCartUpdateSubscriptionVariables,
-    APITypes.OnCartUpdateSubscription
-  >;
+  APITypes.OnCartUpdateSubscriptionVariables,
+  APITypes.OnCartUpdateSubscription
+>;

@@ -1,6 +1,11 @@
+module "assume_role_policy_document" {
+  source = "../iam/assume_role_policy_document"
+}
+
+
 resource "aws_iam_role" "role" {
  name = local.iam_role_name
-  assume_role_policy = data.aws_iam_policy_document.assume_role_document.json
+  assume_role_policy = module.assume_role_policy_document.json
 }
 
 resource "aws_iam_role_policy" "policy" {

@@ -3,253 +3,241 @@
 //  This file was automatically generated and should not be edited.
 
 export type User = {
-  __typename: "User";
-  id: string;
+  __typename: "User",
+  id: string,
 };
 
 export type ProductInput = {
-  id?: string | null;
-  name: string;
-  imageUrl: string;
-  description?: string | null;
-  price: number;
-  availableQuantity: number;
-  limitPerTransaction: number;
-  category: string;
-  rating: number;
-  badgeText?: string | null;
-  tags: Array<string | null>;
+  id?: string | null,
+  name: string,
+  imageUrl: string,
+  description?: string | null,
+  price: number,
+  availableQuantity: number,
+  limitPerTransaction: number,
+  category: string,
+  rating: number,
+  badgeText?: string | null,
+  tags: Array< string | null >,
 };
 
 export type Product = {
-  __typename: "Product";
-  id: string;
-  name: string;
-  imageUrl: string;
-  description: string;
-  price: number;
-  availableQuantity: number;
-  limitPerTransaction: number;
-  category: string;
-  rating: number;
-  badgeText: string;
-  tags: Array<string>;
+  __typename: "Product",
+  id: string,
+  name: string,
+  imageUrl: string,
+  description: string,
+  price: number,
+  availableQuantity: number,
+  limitPerTransaction: number,
+  category: string,
+  rating: number,
+  badgeText: string,
+  tags: Array< string >,
 };
 
 export type CartInput = {
-  productId: string;
-  quantity: number;
+  productId: string,
+  quantity: number,
 };
 
 export type Cart = {
-  __typename: "Cart";
-  id: string;
-  userId: string;
-  count: number;
-  items: Array<CartItem>;
-  total: number;
+  __typename: "Cart",
+  id: string,
+  userId: string,
+  count: number,
+  items:  Array<CartItem >,
+  total: number,
 };
 
 export type CartItem = {
-  __typename: "CartItem";
-  product: Product;
-  quantity: number;
+  __typename: "CartItem",
+  product: Product,
+  quantity: number,
 };
 
 export type PaginatedProducts = {
-  __typename: "PaginatedProducts";
-  items: Array<Product>;
-  pagination?: Pagination | null;
+  __typename: "PaginatedProducts",
+  items:  Array<Product >,
+  pagination?: Pagination | null,
 };
 
 export type Pagination = {
-  __typename: "Pagination";
-  limit: number;
-  prev?: string | null;
-  next?: string | null;
+  __typename: "Pagination",
+  limit: number,
+  prev?: string | null,
+  next?: string | null,
 };
 
 export type LoginMutationVariables = {
-  id: string;
+  id?: string | null,
 };
 
 export type LoginMutation = {
-  login?: {
-    __typename: "User";
-    id: string;
-  } | null;
+  login?:  {
+    __typename: "User",
+    id: string,
+  } | null,
 };
 
 export type AddProductMutationVariables = {
-  product: ProductInput;
+  product: ProductInput,
 };
 
 export type AddProductMutation = {
-  addProduct?: {
-    __typename: "Product";
-    id: string;
-    name: string;
-    imageUrl: string;
-    description: string;
-    price: number;
-    availableQuantity: number;
-    limitPerTransaction: number;
-    category: string;
-    rating: number;
-    badgeText: string;
-    tags: Array<string>;
-  } | null;
+  addProduct?:  {
+    __typename: "Product",
+    id: string,
+    name: string,
+    imageUrl: string,
+    description: string,
+    price: number,
+    availableQuantity: number,
+    limitPerTransaction: number,
+    category: string,
+    rating: number,
+    badgeText: string,
+    tags: Array< string >,
+  } | null,
 };
 
 export type AddToCartMutationVariables = {
-  userId: string;
-  cart: CartInput;
+  userId: string,
+  cart: CartInput,
 };
 
 export type AddToCartMutation = {
-  addToCart?: {
-    __typename: "Cart";
-    id: string;
-    userId: string;
-    count: number;
-    items: Array<{
-      __typename: "CartItem";
-      quantity: number;
-    }>;
-    total: number;
-  } | null;
+  addToCart?:  {
+    __typename: "Cart",
+    id: string,
+    userId: string,
+    count: number,
+    items:  Array< {
+      __typename: "CartItem",
+      quantity: number,
+    } >,
+    total: number,
+  } | null,
 };
 
 export type RemoveFromCartMutationVariables = {
-  productId: string;
-  quantity: number;
+  productId: string,
+  quantity: number,
 };
 
 export type RemoveFromCartMutation = {
-  removeFromCart?: {
-    __typename: "Cart";
-    id: string;
-    userId: string;
-    count: number;
-    items: Array<{
-      __typename: "CartItem";
-      quantity: number;
-    }>;
-    total: number;
-  } | null;
+  removeFromCart?:  {
+    __typename: "Cart",
+    id: string,
+    userId: string,
+    count: number,
+    items:  Array< {
+      __typename: "CartItem",
+      quantity: number,
+    } >,
+    total: number,
+  } | null,
 };
 
-export type ClearCartMutationVariables = {};
+export type ClearCartMutationVariables = {
+};
 
 export type ClearCartMutation = {
-  clearCart?: {
-    __typename: "Cart";
-    id: string;
-    userId: string;
-    count: number;
-    items: Array<{
-      __typename: "CartItem";
-      quantity: number;
-    }>;
-    total: number;
-  } | null;
+  clearCart?:  {
+    __typename: "Cart",
+    id: string,
+    userId: string,
+    count: number,
+    items:  Array< {
+      __typename: "CartItem",
+      quantity: number,
+    } >,
+    total: number,
+  } | null,
 };
 
 export type DeleteProductMutationVariables = {
-  id: string;
+  id: string,
 };
 
 export type DeleteProductMutation = {
-  deleteProduct?: {
-    __typename: "Product";
-    id: string;
-    name: string;
-    imageUrl: string;
-    description: string;
-    price: number;
-    availableQuantity: number;
-    limitPerTransaction: number;
-    category: string;
-    rating: number;
-    badgeText: string;
-    tags: Array<string>;
-  } | null;
+  deleteProduct: string,
 };
 
 export type HelloQueryVariables = {
-  name?: string | null;
+  name?: string | null,
 };
 
 export type HelloQuery = {
-  hello: string;
+  hello: string,
 };
 
 export type ProductQueryVariables = {
-  id: string;
+  id: string,
 };
 
 export type ProductQuery = {
-  product?: {
-    __typename: "Product";
-    id: string;
-    name: string;
-    imageUrl: string;
-    description: string;
-    price: number;
-    availableQuantity: number;
-    limitPerTransaction: number;
-    category: string;
-    rating: number;
-    badgeText: string;
-    tags: Array<string>;
-  } | null;
+  product?:  {
+    __typename: "Product",
+    id: string,
+    name: string,
+    imageUrl: string,
+    description: string,
+    price: number,
+    availableQuantity: number,
+    limitPerTransaction: number,
+    category: string,
+    rating: number,
+    badgeText: string,
+    tags: Array< string >,
+  } | null,
 };
 
 export type ProductsQueryVariables = {
-  limit?: number | null;
-  cursor?: string | null;
+  limit?: number | null,
+  cursor?: string | null,
 };
 
 export type ProductsQuery = {
-  products: {
-    __typename: "PaginatedProducts";
-    items: Array<{
-      __typename: "Product";
-      id: string;
-      name: string;
-      imageUrl: string;
-      description: string;
-      price: number;
-      availableQuantity: number;
-      limitPerTransaction: number;
-      category: string;
-      rating: number;
-      badgeText: string;
-      tags: Array<string>;
-    }>;
-    pagination?: {
-      __typename: "Pagination";
-      limit: number;
-      prev?: string | null;
-      next?: string | null;
-    } | null;
-  };
+  products:  {
+    __typename: "PaginatedProducts",
+    items:  Array< {
+      __typename: "Product",
+      id: string,
+      name: string,
+      imageUrl: string,
+      description: string,
+      price: number,
+      availableQuantity: number,
+      limitPerTransaction: number,
+      category: string,
+      rating: number,
+      badgeText: string,
+      tags: Array< string >,
+    } >,
+    pagination?:  {
+      __typename: "Pagination",
+      limit: number,
+      prev?: string | null,
+      next?: string | null,
+    } | null,
+  },
 };
 
 export type OnCartUpdateSubscriptionVariables = {
-  userId: string;
+  userId: string,
 };
 
 export type OnCartUpdateSubscription = {
-  onCartUpdate?: {
-    __typename: "Cart";
-    id: string;
-    userId: string;
-    count: number;
-    items: Array<{
-      __typename: "CartItem";
-      quantity: number;
-    }>;
-    total: number;
-  } | null;
+  onCartUpdate?:  {
+    __typename: "Cart",
+    id: string,
+    userId: string,
+    count: number,
+    items:  Array< {
+      __typename: "CartItem",
+      quantity: number,
+    } >,
+    total: number,
+  } | null,
 };
