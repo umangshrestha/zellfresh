@@ -1,18 +1,15 @@
 services:
   localstack:
-    container_name: "aws-localstack"
-    image: localstack/localstack-pro:latest # required for Pro
+    container_name: 'aws-localstack'
+    image: localstack/localstack
     ports:
-      - "127.0.0.1:4566:4566"            # LocalStack Gateway
-      - "127.0.0.1:4510-4559:4510-4559"  # external services port range
-      - "127.0.0.1:443:443"              # LocalStack HTTPS Gateway (Pro)
+      - '127.0.0.1:4566:4566' # LocalStack Gateway
+      - '127.0.0.1:4510-4559:4510-4559' # external services port range
+      - '127.0.0.1:443:443' # LocalStack HTTPS Gateway (Pro)
     environment:
       - DEBUG=${DEBUG:-1}
       - PERSISTENCE=${PERSISTENCE-}
-      - LOCALSTACK_API_KEY=${LOCALSTACK_API_KEY-}  # required for Pro
-      - EXTRA_CORS_ALLOWED_ORIGINS=http://localhost:5173,http://localhost # required for React
-      - EXTRA_CORS_ALLOWED_HEADERS=
       - ENABLE_CONFIG_UPDATES=1
     volumes:
-      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
-      - "/var/run/docker.sock:/var/run/docker.sock"
+      - '${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack'
+      - '/var/run/docker.sock:/var/run/docker.sock'
