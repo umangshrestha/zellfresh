@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { AccessTokenGuard } from './access-token.gaurd';
 import { AccessTokenService } from './access-token.service';
 import { AccessTokenStrategy } from './access-token.strategy';
 
 @Module({
-  providers: [AccessTokenStrategy, AccessTokenService],
+  providers: [AccessTokenStrategy, AccessTokenService, AccessTokenGuard],
   imports: [
     ConfigModule,
     JwtModule.registerAsync({
@@ -19,6 +20,6 @@ import { AccessTokenStrategy } from './access-token.strategy';
       }),
     }),
   ],
-  exports: [JwtModule, AccessTokenService],
+  exports: [JwtModule, AccessTokenService, AccessTokenGuard],
 })
 export class AccessTokenModule {}

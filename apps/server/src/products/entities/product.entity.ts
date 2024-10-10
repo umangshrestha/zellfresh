@@ -1,5 +1,5 @@
 import { AttributeValue } from '@aws-sdk/client-dynamodb';
-import { ObjectType, Field, Int, Float } from '@nestjs/graphql';
+import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class Product {
@@ -52,25 +52,19 @@ export class Product {
     };
   }
 
-  static fromDynamodbObject(
-    item: Record<string, AttributeValue>,
-  ): Product | null {
-    try {
-      const product = new Product();
-      product.productId = item.productId.S;
-      product.name = item.name.S;
-      product.description = item.description.S;
-      product.price = parseFloat(item.price.N);
-      product.imageUrl = item.imageUrl.S;
-      product.availableQuantity = parseInt(item.availableQuantity.N);
-      product.limitPerTransaction = parseInt(item.limitPerTransaction.N);
-      product.category = item.category.S;
-      product.rating = parseFloat(item.rating.N);
-      product.badgeText = item.badgeText.S;
-      product.tags = item.tags.SS;
-      return product;
-    } catch (error) {
-      return null;
-    }
+  static fromDynamodbObject(item: Record<string, AttributeValue>): Product {
+    const product = new Product();
+    product.productId = item.productId.S;
+    product.name = item.name.S;
+    product.description = item.description.S;
+    product.price = parseFloat(item.price.N);
+    product.imageUrl = item.imageUrl.S;
+    product.availableQuantity = parseInt(item.availableQuantity.N);
+    product.limitPerTransaction = parseInt(item.limitPerTransaction.N);
+    product.category = item.category.S;
+    product.rating = parseFloat(item.rating.N);
+    product.badgeText = item.badgeText.S;
+    product.tags = item.tags.SS;
+    return product;
   }
 }

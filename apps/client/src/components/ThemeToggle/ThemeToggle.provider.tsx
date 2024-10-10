@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { useMemo } from 'react';
 import { useStorageStore } from '../../lib/store';
 import { ThemeToggleProviderProps } from './ThemeToggle.types';
 

@@ -1,6 +1,5 @@
-import { InputType, Int, Field, Float } from '@nestjs/graphql';
-import { IsUrl, Max, Min } from 'class-validator';
-import { IsUUID } from 'class-validator';
+import { Field, Float, InputType, Int } from '@nestjs/graphql';
+import { IsUrl, IsUUID, Max, Min } from 'class-validator';
 
 @InputType()
 export class CreateProductInput {

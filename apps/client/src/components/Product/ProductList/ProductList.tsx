@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
+import { useNotification } from '../../Notification';
 import ProductItem from '../ProductItem';
 import ProductSkeleton from '../ProductSkeleton';
-import { useNotification } from '../../Notification';
 import { ProductListProps } from './ProductList.types';
 
 export const ProductList = ({
@@ -39,7 +39,11 @@ export const ProductList = ({
   return (
     <div className="flex flex-wrap justify-center gap-4 p-4">
       {data.map((product) => (
-        <ProductItem key={product.id} {...product} onClick={onAddToCart} />
+        <ProductItem
+          key={product.productId}
+          {...product}
+          onClick={onAddToCart}
+        />
       ))}
     </div>
   );

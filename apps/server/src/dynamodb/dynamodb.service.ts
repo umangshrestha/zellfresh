@@ -1,8 +1,6 @@
-import {
-  DynamoDB,
-} from '@aws-sdk/client-dynamodb';
-import { ConfigService } from '@nestjs/config';
+import { DynamoDB } from '@aws-sdk/client-dynamodb';
 import { Injectable, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class DynamodbService {

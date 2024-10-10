@@ -1,19 +1,15 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { useStorageStore } from './store';
 import { onError } from '@apollo/client/link/error';
+import { useStorageStore } from './store';
 
 const httpLink = createHttpLink({
   uri: '/graphql',
 });
 
 const authLink = setContext((_, { headers }) => {
-  const { token } = useStorageStore.getState();
   return {
-    headers: {
-      ...headers,
-      Authorization: token ? `Bearer ${token}` : '',
-    },
+    headers,
   };
 });
 
@@ -23,7 +19,7 @@ const errorLink = onError(({ networkError }) => {
     // @ts-ignore
     networkError?.statusCode === 401
   ) {
-    useStorageStore.getState().logout();
+    useStorageStore.getState().logout({});
   }
 });
 export const apolloClient = new ApolloClient({

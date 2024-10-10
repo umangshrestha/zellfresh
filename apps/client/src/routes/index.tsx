@@ -1,7 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom';
 import Layout from '../components/Layout';
-import LoginPage from '../pages/auth/login';
-import ProductPageWithException from '../components/Product/ProductPage';
+
+import CartPage from '../components/Cart/CartPage';
+import LoginPage from '../components/LoginPage';
+import ProductPage from '../components/Product/ProductPage';
 
 export const router = createBrowserRouter([
   {
@@ -10,7 +12,11 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <ProductPageWithException />,
+        element: <ProductPage />,
+      },
+      {
+        path: '/cart',
+        element: <CartPage />,
       },
     ],
   },

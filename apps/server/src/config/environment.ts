@@ -1,4 +1,3 @@
-import { ConfigModuleOptions } from '@nestjs/config';
 import { plainToInstance } from 'class-transformer';
 import {
   IsBoolean,
@@ -8,6 +7,9 @@ import {
   IsString,
   validateSync,
 } from 'class-validator';
+import { v4 as uuidv4 } from 'uuid';
+
+const daysToMilliseconds = (days: number) => days * 24 * 60 * 60 * 1000;
 
 export class EnvironmentVariables {
   @IsEnum(['development', 'production', 'test'])
@@ -39,7 +41,7 @@ export class EnvironmentVariables {
 
   @IsNumber()
   @IsNotEmpty()
-  ACCESS_TOKEN_EXPIRATION_TIME: number = 3600;
+  ACCESS_TOKEN_EXPIRATION_TIME: number = daysToMilliseconds(7);
 
   @IsString()
   @IsNotEmpty()
@@ -51,7 +53,7 @@ export class EnvironmentVariables {
 
   @IsNumber()
   @IsNotEmpty()
-  REFRESH_TOKEN_EXPIRATION_TIME: number = 3600;
+  REFRESH_TOKEN_EXPIRATION_TIME: number = daysToMilliseconds(14);
 
   @IsString()
   @IsNotEmpty()
@@ -60,6 +62,18 @@ export class EnvironmentVariables {
   @IsBoolean()
   @IsNotEmpty()
   COOKIE_HTTP_ONLY: boolean = true;
+
+  @IsString()
+  @IsNotEmpty()
+  GUEST_TOKEN_SECRET: string = uuidv4();
+
+  @IsString()
+  @IsNotEmpty()
+  GUEST_TOKEN_COOKIE_NAME: string = 'guest_token';
+
+  @IsNumber()
+  @IsNotEmpty()
+  GUEST_TOKEN_EXPIRATION_TIME: number = daysToMilliseconds(7);
 }
 
 export function validate(config: Record<string, unknown>) {

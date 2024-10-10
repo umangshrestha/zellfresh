@@ -1,3 +1,3 @@
 export { ProductItem as default } from './ProductItem';
-import type { ProductProps, ProductItemType } from './ProductItem.types';
-export type { ProductProps, ProductItemType };
+export type { ProductItemType, ProductProps };
+import type { ProductItemType, ProductProps } from './ProductItem.types';

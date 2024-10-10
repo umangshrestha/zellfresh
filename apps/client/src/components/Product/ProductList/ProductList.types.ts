@@ -1,5 +1,5 @@
-import { ProductItemType } from '../ProductItem';
 import { ApolloError } from '@apollo/client';
+import { ProductItemType } from '../ProductItem';
 
 export interface ProductListProps {
   data: ProductItemType[];

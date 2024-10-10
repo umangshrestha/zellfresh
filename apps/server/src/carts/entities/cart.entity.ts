@@ -1,6 +1,7 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { AttributeValue } from '@aws-sdk/client-dynamodb';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { CartItem } from './cart-item.entity';
+
+export type CartDynamodb = ReturnType<typeof Cart.toDynamodbObject>;
 
 @ObjectType()
 export class Cart {
@@ -13,21 +14,23 @@ export class Cart {
   @Field(() => Int)
   count: number;
 
-  static toDynamodbObject(item: Cart): Record<string, AttributeValue> {
+  static toDynamodbObject(item: Cart) {
     return {
       userId: { S: item.userId },
-      items: { L: item.items.map((item) => CartItem.toDynamodbObject(item)) },
+      items: {
+        L: item.items.map((item) => ({ M: CartItem.toDynamodbObject(item) })),
+      },
       count: { N: item.count.toString() },
     };
   }
 
-  static fromDynamodbObject(item: any): Cart {
+  static fromDynamodbObject(item: CartDynamodb): Cart {
     const cart = new Cart();
     cart.userId = item.userId.S;
     cart.items = item.items.L.map((item: any) =>
       CartItem.fromDynamodbObject(item.M),
     );
-    cart.count = item.count.N;
+    cart.count = +item.count.N;
     return cart;
   }
 }

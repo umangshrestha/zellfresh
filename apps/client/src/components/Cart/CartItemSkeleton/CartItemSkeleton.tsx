@@ -1,14 +1,14 @@
+import ClearIcon from '@mui/icons-material/Clear';
+import DeleteIcon from '@mui/icons-material/Delete';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
-import Typography from '@mui/material/Typography';
-import DeleteIcon from '@mui/icons-material/Delete';
 import CardHeader from '@mui/material/CardHeader';
-import IconButton from '@mui/material/IconButton';
-import ClearIcon from '@mui/icons-material/Clear';
 import Divider from '@mui/material/Divider';
-import Select from '@mui/material/Select';
+import IconButton from '@mui/material/IconButton';
 import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 import Skeleton from '@mui/material/Skeleton';
+import Typography from '@mui/material/Typography';
 
 export const CartItemSkeleton = () => {
   return (

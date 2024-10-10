@@ -1,11 +1,11 @@
 import Box from '@mui/material/Box';
-import CartItem from '../CartItem';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
+import { useEffect } from 'react';
 import { useNotification } from '../../Notification';
+import CartItem from '../CartItem';
 import CartItemSkeleton from '../CartItemSkeleton';
 import { CartListProps } from './CartList.types';
-import { useEffect } from 'react';
 
 export const CartList = ({
   data,

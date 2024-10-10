@@ -1,7 +1,7 @@
-import { Product } from '../../../types/graphql';
+import { Product } from '../../../__generated__/types';
 export type ProductItemType = Pick<
   Product,
-  | 'id'
+  | 'productId'
   | 'name'
   | 'description'
   | 'price'

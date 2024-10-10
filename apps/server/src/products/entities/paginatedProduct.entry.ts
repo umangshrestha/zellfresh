@@ -3,7 +3,7 @@ import { Product } from './product.entity';
 
 @ObjectType()
 class Pagination {
-  @Field(type => Int)
+  @Field((type) => Int)
   limit: number;
   @Field({ nullable: true })
   next: string | null;

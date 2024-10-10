@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { CreateProductInput } from './dto/create-product.input';
-import { v4 as uuidv4 } from 'uuid';
 import { DynamodbService } from 'src/dynamodb/dynamodb.service';
+import { v4 as uuidv4 } from 'uuid';
+import { CreateProductInput } from './dto/create-product.input';
 import { PaginatedProduct } from './entities/paginatedProduct.entry';
 import { Product } from './entities/product.entity';
 
@@ -59,7 +59,9 @@ export class ProductsService {
       TableName,
       Key: { productId: { S: productId } },
     });
-    this.loggerService.log(data);
+    if (!data.Item) {
+      return null;
+    }
     return Product.fromDynamodbObject(data.Item as any);
   }
 

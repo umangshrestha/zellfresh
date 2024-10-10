@@ -1,9 +1,8 @@
+import { PaletteMode } from '@mui/material';
+import axios from 'axios';
 import { create } from 'zustand';
 import { persist, PersistOptions } from 'zustand/middleware';
 import { StorageState } from './types';
-import { PaletteMode } from '@mui/material';
-
-const generateRandomGuestId = () => Math.random().toString(36).substring(2);
 
 const DEFAULT_MODE: PaletteMode = window.matchMedia(
   '(prefers-color-scheme: dark)',
@@ -13,14 +12,38 @@ const DEFAULT_MODE: PaletteMode = window.matchMedia(
 export const useStorageStore = create(
   persist(
     (set, get) => ({
-      token: get()?.token,
       theme: get()?.theme || DEFAULT_MODE,
+      userDetails: get()?.userDetails || null,
       toggleTheme: () =>
         set({ theme: get().theme === 'dark' ? 'light' : 'dark' }),
-      logout: () => set({ guestID: generateRandomGuestId() }),
-      login: (token: string) => set({ token }),
-
-      isLoggedIn: () => !!get().token,
+      logout: ({ onError, onSuccess }) => {
+        axios
+          .get('/api/auth/logout')
+          .then(() => {
+            set({ userDetails: null });
+            if (onSuccess) onSuccess();
+          })
+          .catch((error) => {
+            if (onError) {
+              onError(error);
+            }
+          });
+      },
+      login: (provider: string, token: string, { onError, onSuccess }) => {
+        axios
+          .get(`/api/auth/${provider}/login`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then((response) => {
+            set({ userDetails: response.data });
+            if (onSuccess) onSuccess();
+          })
+          .catch((error) => {
+            if (onError) onError(error);
+          });
+      },
     }),
     {
       name: 'app-storage',

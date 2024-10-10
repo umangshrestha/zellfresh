@@ -1,20 +1,22 @@
-import { Outlet } from 'react-router-dom';
-import Account from '../Account';
-import Notification from '../Notification';
+import MenuIcon from '@mui/icons-material/Menu';
+import MenuOpen from '@mui/icons-material/MenuOpen';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
+import Link from '@mui/material/Link';
+import Paper from '@mui/material/Paper';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import MenuOpen from '@mui/icons-material/MenuOpen';
-import Link from '@mui/material/Link';
-import React, { useState } from 'react';
-
-import Paper from '@mui/material/Paper';
-import ThemeToggle from '../ThemeToggle';
-import Footer from '../Footer';
+import React, { Suspense, useState } from 'react';
+import { Outlet } from 'react-router-dom';
 import { APP_NAME } from '../../config';
+import Account from '../Account';
+import CartIcon from '../Cart/CartIcon';
+import ErrorBoundary from '../ErrorBoundary';
+import Footer from '../Footer';
+import Notification from '../Notification';
+import ThemeToggle from '../ThemeToggle';
 
 export const Layout = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -55,11 +57,16 @@ export const Layout = () => {
             </Link>
           </Typography>
           <ThemeToggle />
+          <CartIcon />
           <Account />
         </Toolbar>
       </AppBar>
       <Paper className="min-h-screen">
-        <Outlet />
+        <ErrorBoundary>
+          <Suspense fallback={<CircularProgress />}>
+            <Outlet />
+          </Suspense>
+        </ErrorBoundary>
         <Notification />
       </Paper>
       <Footer />

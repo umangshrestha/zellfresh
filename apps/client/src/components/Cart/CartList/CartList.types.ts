@@ -1,5 +1,5 @@
-import { CartType } from '../Cart.types';
 import { ApolloError } from '@apollo/client';
+import { CartType } from '../Cart.types';
 
 export interface CartListProps {
   data: CartType[];

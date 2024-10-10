@@ -1,13 +1,15 @@
 import { PaletteMode } from '@mui/material';
+import { AxiosError } from 'axios';
+
+interface CallBackProps {
+  onSuccess?: () => void;
+  onError?: (error: AxiosError) => void;
+}
+
 export interface StorageState {
-  accessToken?: string;
-  refreshToken?: string;
-  guestID?: string;
-
   theme: PaletteMode;
+  userDetails: Record<string, string> | null;
   toggleTheme: () => void;
-
-  logout: () => void;
-  login: (accessToken: string, refreshToken: string) => void;
-  isLoggedIn: () => boolean;
+  logout: (callback: CallBackProps) => void;
+  login: (provider: string, token: string, callback: CallBackProps) => void;
 }

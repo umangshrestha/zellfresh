@@ -1,7 +1,6 @@
 import type { Preview } from '@storybook/react';
-import '../src/index.css';
 import { NotificationProvider } from '../src/components/Notification';
-import React from 'react';
+import '../src/index.css';
 
 const preview: Preview = {
   parameters: {

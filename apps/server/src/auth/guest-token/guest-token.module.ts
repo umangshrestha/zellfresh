@@ -1,24 +1,25 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { GuestTokenGuard } from './guest-token.gaurd';
 import { GuestTokenService } from './guest-token.service';
 import { GuestTokenStrategy } from './guest-token.strategy';
 
 @Module({
-  providers: [GuestTokenStrategy, GuestTokenService],
+  providers: [GuestTokenStrategy, GuestTokenService, GuestTokenGuard],
   imports: [
     ConfigModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (ConfigService: ConfigService) => ({
-        secret: ConfigService.getOrThrow('Guest_TOKEN_SECRET'),
+        secret: ConfigService.getOrThrow('GUEST_TOKEN_SECRET'),
         signOptions: {
-          expiresIn: ConfigService.getOrThrow('Guest_TOKEN_EXPIRATION_TIME'),
+          expiresIn: ConfigService.getOrThrow('GUEST_TOKEN_EXPIRATION_TIME'),
         },
       }),
     }),
   ],
-  exports: [JwtModule, GuestTokenService],
+  exports: [JwtModule, GuestTokenService, GuestTokenGuard],
 })
 export class GuestTokenModule {}

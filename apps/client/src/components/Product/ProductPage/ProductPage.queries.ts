@@ -4,7 +4,7 @@ export const PRODUCTS = gql`
   query {
     products {
       items {
-        id
+        productId
         name
         imageUrl
         description
@@ -16,6 +16,15 @@ export const PRODUCTS = gql`
         badgeText
         tags
       }
+    }
+  }
+`;
+
+export const ADD_ITEM_TO_CART = gql`
+  mutation addItemToCart($cartInput: CartInput!) {
+    addItemToCart(cartInput: $cartInput) {
+      id
+      quantity
     }
   }
 `;

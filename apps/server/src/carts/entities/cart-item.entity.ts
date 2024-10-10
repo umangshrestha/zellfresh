@@ -1,5 +1,6 @@
-import { AttributeValue } from '@aws-sdk/client-dynamodb';
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
+
+export type CartItemDynamodb = ReturnType<typeof CartItem.toDynamodbObject>;
 
 @ObjectType()
 export class CartItem {
@@ -9,19 +10,17 @@ export class CartItem {
   @Field(() => Int)
   quantity: number;
 
-  static toDynamodbObject(cartItem: CartItem): AttributeValue.MMember {
+  static toDynamodbObject(cartItem: CartItem) {
     return {
-      M: {
-        productId: { S: cartItem.productId },
-        quantity: { N: cartItem.quantity.toString() },
-      },
+      productId: { S: cartItem.productId },
+      quantity: { N: cartItem.quantity.toString() },
     };
   }
 
-  static fromDynamodbObject(item: AttributeValue.MMember): CartItem {
+  static fromDynamodbObject(item: CartItemDynamodb): CartItem {
     const cartItem = new CartItem();
-    cartItem.productId = item.M.productId.S;
-    cartItem.quantity = +item.M.quantity.N;
+    cartItem.productId = item.productId.S;
+    cartItem.quantity = +item.quantity.N;
     return cartItem;
   }
 }

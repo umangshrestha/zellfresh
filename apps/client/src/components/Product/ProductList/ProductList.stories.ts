@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { ProductList } from './ProductList';
-import { ProductItemType } from '../ProductItem';
 import { ApolloError } from '@apollo/client';
+import type { Meta, StoryObj } from '@storybook/react';
+import { ProductItemType } from '../ProductItem';
+import { ProductList } from './ProductList';
 
 const meta = {
   title: 'Product/List',

@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import {
-  NotificationProps,
-  NotificationContextType,
-} from './Notification.types';
 import { LayoutProps as NotificationProviderProps } from '../Layout';
 import { NotificationContext } from './Notification.context';
+import {
+  NotificationContextType,
+  NotificationProps,
+} from './Notification.types';
 
 export const NotificationProvider = ({
   children,

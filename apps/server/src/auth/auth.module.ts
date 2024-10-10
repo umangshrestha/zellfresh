@@ -1,16 +1,18 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AccessTokenModule } from './access-token/access-token.module';
 import { AuthController } from './auth.controller';
 import { GoogleService } from './google/google.service';
+import { GuestTokenModule } from './guest-token/guest-token.module';
 import { RefreshTokenModule } from './refresh-token/refresh-token.module';
-import { AccessTokenModule } from './access-token/access-token.module';
 
 @Module({
   imports: [
     AccessTokenModule,
     RefreshTokenModule,
+    GuestTokenModule,
     ConfigModule,
     PassportModule.register({
       session: true,

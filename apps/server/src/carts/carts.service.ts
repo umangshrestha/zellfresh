@@ -1,15 +1,14 @@
+import { AttributeValue } from '@aws-sdk/client-dynamodb';
 import {
   BadRequestException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Cart } from './entities/cart.entity';
 import { DynamodbService } from 'src/dynamodb/dynamodb.service';
 import { ProductsService } from 'src/products/products.service';
-import { CartItem } from './entities/cart-item.entity';
-import { AttributeValue } from '@aws-sdk/client-dynamodb';
 import { CartInput } from './dto/cart-input.input';
-import { count } from 'console';
+import { CartItem } from './entities/cart-item.entity';
+import { Cart, CartDynamodb } from './entities/cart.entity';
 
 const TableName = 'ORDERS_TABLE';
 const orderId = { S: 'CART' };
@@ -24,10 +23,19 @@ export class CartsService {
     private readonly productsService: ProductsService,
   ) {}
 
+  async getCartItem(userId: string, productId: string) {
+    const cart = await this.findOne(userId);
+    if (!cart) {
+      return null;
+    }
+    const item = cart.items.L.find((item) => item.M.productId.S === productId);
+    return item ? CartItem.fromDynamodbObject(item.M) : null;
+  }
+
   async addItemToCart(userId: string, cartItem: CartInput) {
     const product = await this.productsService.findOne(cartItem.productId);
     if (!product) {
-      return new NotFoundException('Product not found');
+      throw new NotFoundException('Product not found');
     }
     if (product.availableQuantity < cartItem.quantity) {
       throw new BadRequestException('Product not available');
@@ -45,20 +53,19 @@ export class CartsService {
     if (cartItem.quantity === 0) {
       items = items.filter((item) => item.M.productId.S !== cartItem.productId);
     } else {
-      items.push(CartItem.toDynamodbObject(cartItem));
+      items.push({ M: CartItem.toDynamodbObject(cartItem) });
     }
 
-    return Cart.fromDynamodbObject(
-      this.dynamodbService.client.putItem({
-        TableName,
-        Item: {
-          userId: { S: userId },
-          orderId,
-          items: { L: items },
-          count: { N: items.length.toString() },
-        },
-      }),
-    );
+    const data = await this.dynamodbService.client.putItem({
+      TableName,
+      Item: {
+        userId: { S: userId },
+        orderId,
+        items: { L: items },
+        count: { N: items.length.toString() },
+      },
+    });
+    return Cart.fromDynamodbObject(data.Attributes as CartDynamodb);
   }
 
   async findOne(userId: string) {
@@ -67,7 +74,7 @@ export class CartsService {
         TableName,
         Key: { userId: { S: userId }, orderId },
       });
-      return data.Item;
+      return data.Item as CartDynamodb;
     } catch (error) {
       return null;
     }
@@ -82,7 +89,7 @@ export class CartsService {
   }
 
   async removeAll(userId: string) {
-    const data = await this.dynamodbService.client.deleteItem({
+    return await this.dynamodbService.client.deleteItem({
       TableName,
       Key: { orderId, userId: { S: userId } },
     });

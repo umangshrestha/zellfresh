@@ -1,13 +1,12 @@
 # Overview
 
-| Technologies Used         | Description                                                                                            |
-| ------------------------- | ------------------------------------------------------------------------------------------------------ |
-| Programming Language      | TypeScript                                                                                             |
-| Runtime                   | Node.js ~v20                                                                                           |
-| Nestjs               | For fullstack backend                                        |
-| HashiCorp Terraform       | Infrastructure as code tool for managing AWS resources                                                 |
-| Localstack                | Mocking AWS resources for local development                                                            |
-
+| Technologies Used    | Description                                            |
+| -------------------- | ------------------------------------------------------ |
+| Programming Language | TypeScript                                             |
+| Runtime              | Node.js ~v20                                           |
+| Nestjs               | For fullstack backend                                  |
+| HashiCorp Terraform  | Infrastructure as code tool for managing AWS resources |
+| Localstack           | Mocking AWS resources for local development            |
 
 ---
 

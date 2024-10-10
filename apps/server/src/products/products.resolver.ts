@@ -1,9 +1,9 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import { ProductsService } from './products.service';
-import { Product } from './entities/product.entity';
-import { CreateProductInput } from './dto/create-product.input';
 import { ParseUUIDPipe } from '@nestjs/common';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { CreateProductInput } from './dto/create-product.input';
 import { PaginatedProduct } from './entities/paginatedProduct.entry';
+import { Product } from './entities/product.entity';
+import { ProductsService } from './products.service';
 
 @Resolver(() => Product)
 export class ProductsResolver {
@@ -25,12 +25,14 @@ export class ProductsResolver {
   }
 
   @Query(() => Product, { name: 'product', nullable: true })
-  findOne(@Args('id', new ParseUUIDPipe({ version: '4' })) id: string) {
-    return this.productsService.findOne(id);
+  findOne(@Args('id', new ParseUUIDPipe({ version: '4' })) productId: string) {
+    return this.productsService.findOne(productId);
   }
 
   @Mutation(() => String)
-  removeProduct(@Args('id', new ParseUUIDPipe({ version: '4' })) id: string) {
-    return this.productsService.remove(id);
+  removeProduct(
+    @Args('id', new ParseUUIDPipe({ version: '4' })) productId: string,
+  ) {
+    return this.productsService.remove(productId);
   }
 }

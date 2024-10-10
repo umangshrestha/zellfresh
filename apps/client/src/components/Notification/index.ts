@@ -1,5 +1,5 @@
 export { Notification as default } from './Notification';
-import { NotificationProvider } from './Notification.provider';
 import { useNotification } from './Notification.hooks';
+import { NotificationProvider } from './Notification.provider';
 
 export { NotificationProvider, useNotification };

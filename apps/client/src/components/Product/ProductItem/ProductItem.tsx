@@ -1,16 +1,16 @@
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
+import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
-import { ProductProps } from './ProductItem.types';
 import Badge from '../../Badge';
 import Viel from '../../Viel';
-import Card from '@mui/material/Card';
-import Rating from '@mui/material/Rating';
+import { ProductProps } from './ProductItem.types';
 
 export const ProductItem = ({
-  id,
+  productId,
   name,
   description,
   price,
@@ -54,15 +54,17 @@ export const ProductItem = ({
           </Typography>
           <div className="flex-1" />
         </CardContent>
+        <Rating name="read-only" value={rating} precision={0.5} readOnly />
+
         <span className="flex-1 auto" />
         <CardActions>
-          <Rating name="read-only" value={rating} precision={0.5} readOnly />
           <Button
-            size="small"
+            className="w-full"
+            size="large"
             disabled={!isProductAvailable}
             color="error"
             variant="contained"
-            onAbort={() => onClick(id)}
+            onAbort={() => onClick(productId)}
           >
             Add to Cart
           </Button>

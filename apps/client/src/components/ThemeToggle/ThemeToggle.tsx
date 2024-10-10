@@ -1,5 +1,5 @@
-import LightModeIcon from '@mui/icons-material/LightModeRounded';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
+import LightModeIcon from '@mui/icons-material/LightModeRounded';
 import IconButton from '@mui/material/IconButton';
 import { useStorageStore } from '../../lib/store';
 

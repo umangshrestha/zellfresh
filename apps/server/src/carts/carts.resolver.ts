@@ -1,21 +1,30 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import { CartsService } from './carts.service';
-import { Cart } from './entities/cart.entity';
 import { UseGuards } from '@nestjs/common';
-import { AccessOrGuestTokenGuard } from 'src/auth/guards/AccessOrGuestTokenGuard';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { AccessTokenGuard } from 'src/auth/access-token/access-token.gaurd';
 import { AuthUser } from 'src/auth/auth.decorator';
 import { Auth } from 'src/auth/entities/auth.entity';
+import { GuestTokenGuard } from 'src/auth/guest-token/guest-token.gaurd';
+import { CartsService } from './carts.service';
 import { CartInput } from './dto/cart-input.input';
+import { Cart } from './entities/cart.entity';
 
 @Resolver(() => Cart)
-@UseGuards(AccessOrGuestTokenGuard)
+@UseGuards(AccessTokenGuard, GuestTokenGuard)
 export class CartsResolver {
   constructor(private readonly cartsService: CartsService) {}
 
-  @Query(() => [Cart], { name: 'carts' })
-  find(@AuthUser() { sub }: Auth) {
+  @Query(() => Cart, { name: 'cart' })
+  findAll(@AuthUser() { sub }: Auth) {
     return this.cartsService.getCart(sub);
   }
+
+  // @Query(() => [Cart], { name: 'cart' })
+  // findOne(
+  //   @AuthUser() { sub }: Auth,
+  //   @Args('id', { type: () => String }) productId: string,
+  // ) {
+  //   return this.cartsService.getCartItem(sub, productId);
+  // }
 
   @Mutation(() => Cart)
   addItemToCart(
@@ -26,12 +35,7 @@ export class CartsResolver {
   }
 
   @Mutation(() => Cart)
-  clearCart(@AuthUser() { sub }: Auth): boolean {
-    try {
-      this.cartsService.removeAll(sub);
-      return true;
-    } catch (error) {
-      return false;
-    }
+  clearCart(@AuthUser() { sub }: Auth) {
+    this.cartsService.removeAll(sub);
   }
 }

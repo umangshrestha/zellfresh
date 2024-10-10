@@ -1,16 +1,16 @@
+import ClearIcon from '@mui/icons-material/Clear';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
+import CardHeader from '@mui/material/CardHeader';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
-import DeleteIcon from '@mui/icons-material/Delete';
 import Badge from '../../Badge';
 import { CartItemProps } from './CartItem.types';
-import CardHeader from '@mui/material/CardHeader';
-import IconButton from '@mui/material/IconButton';
-import Avatar from '@mui/material/Avatar';
-import ClearIcon from '@mui/icons-material/Clear';
-import Divider from '@mui/material/Divider';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
 
 export const CartItem = ({
   id,

@@ -1,10 +1,10 @@
-import path from 'path';
-import { fileURLToPath } from 'url';
 import { FlatCompat } from '@eslint/eslintrc';
 import eslintPluginTypeScript from '@typescript-eslint/eslint-plugin';
+import parser from '@typescript-eslint/parser';
 import eslintPluginPrettier from 'eslint-plugin-prettier';
 import globals from 'globals';
-import parser from '@typescript-eslint/parser';
+import path from 'path';
+import { fileURLToPath } from 'url';
 // Fix for `import.meta.url`
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
