@@ -10,6 +10,7 @@ import { Role } from '../entities/role.enum';
 export class GuestTokenService {
   cookieName: string;
   cookieOptions: CookieOptions;
+  clearCookieOptions: CookieOptions;
 
   constructor(
     private jwtService: JwtService,
@@ -19,12 +20,16 @@ export class GuestTokenService {
     const httpOnly = configService.getOrThrow('COOKIE_HTTP_ONLY');
     const domain = configService.getOrThrow('COOKIE_DOMAIN');
     const maxAge = configService.getOrThrow('GUEST_TOKEN_EXPIRATION_TIME');
-    this.cookieOptions = {
+    this.clearCookieOptions = {
       httpOnly,
       path: '/',
-      maxAge,
       domain,
     };
+    this.cookieOptions = {
+      ...this.clearCookieOptions,
+      maxAge,
+    };
+
     console.log(this.cookieOptions);
   }
 
@@ -45,6 +50,6 @@ export class GuestTokenService {
   }
 
   clearCookie(res: Response) {
-    res.clearCookie(this.cookieName, this.cookieOptions);
+    res.clearCookie(this.cookieName, this.clearCookieOptions);
   }
 }

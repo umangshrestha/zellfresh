@@ -8,9 +8,10 @@ export type ProductItemType = Pick<
   | 'imageUrl'
   | 'availableQuantity'
   | 'rating'
+  | 'limitPerTransaction'
   | 'badgeText'
 >;
 
 export type ProductProps = ProductItemType & {
-  onClick: (id: string) => void;
+  onClick: (id: string, quantity: number) => void;
 };

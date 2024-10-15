@@ -1,18 +1,42 @@
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
+import { useEffect } from 'react';
+import { useNotification } from '../../Notification';
 import CartList from '../CartList';
-import { CARTS } from './CartPage.queries';
+import { ADD_ITEM_TO_CART, CARTS } from './CartPage.queries';
 
 export const CartPage = () => {
+  const { setNotification } = useNotification();
   const { data, loading, error } = useQuery(CARTS);
+  const [addItemToCart] = useMutation(ADD_ITEM_TO_CART);
 
-  const onChange = (id: string, quantity: number) => {};
+  const onChange = (productId: string, quantity: number) => {
+    addItemToCart({
+      variables: {
+        productId,
+        quantity,
+      },
+    }).catch((error) => {
+      setNotification({
+        message: error.message,
+        severity: 'error',
+      });
+    });
+  };
 
-  const onRemove = (id: string) => {};
+  useEffect(() => {
+    if (error) {
+      setNotification({
+        message: error.message,
+        severity: 'error',
+      });
+    }
+  }, [error, setNotification]);
+
+  const onRemove = (productId: string) => onChange(productId, 0);
   return (
     <CartList
       data={data?.products?.items}
       loading={loading}
-      error={error}
       onRemove={onRemove}
       onChange={onChange}
     />

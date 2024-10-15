@@ -109,7 +109,7 @@ export type Product = {
 
 export type Query = {
   __typename?: 'Query';
-  carts: Array<Cart>;
+  cart: Cart;
   product?: Maybe<Product>;
   products: PaginatedProduct;
 };

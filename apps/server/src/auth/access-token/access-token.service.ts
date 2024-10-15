@@ -2,12 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { CookieOptions, Response } from 'express';
+import { v4 as uuidv4 } from 'uuid';
 import { Auth } from '../entities/auth.entity';
+import { Role } from '../entities/role.enum';
 
 @Injectable()
 export class AccessTokenService {
   cookieName: string;
   cookieOptions: CookieOptions;
+  clearCookieOptions: CookieOptions;
 
   constructor(
     private jwtService: JwtService,
@@ -17,12 +20,17 @@ export class AccessTokenService {
     const httpOnly = configService.getOrThrow('COOKIE_HTTP_ONLY');
     const domain = configService.getOrThrow('COOKIE_DOMAIN');
     const maxAge = configService.getOrThrow('ACCESS_TOKEN_EXPIRATION_TIME');
-    this.cookieOptions = {
+    this.clearCookieOptions = {
       httpOnly,
       path: '/',
-      maxAge,
       domain,
     };
+
+    this.cookieOptions = {
+      ...this.clearCookieOptions,
+      maxAge,
+    };
+
     console.log(this.cookieOptions);
   }
 
@@ -33,6 +41,17 @@ export class AccessTokenService {
   }
 
   clearCookie(res: Response) {
-    res.clearCookie(this.cookieName, this.cookieOptions);
+    res.clearCookie(this.cookieName, this.clearCookieOptions);
+  }
+
+  generateGuestDetails(): Auth {
+    const sub = uuidv4();
+    return {
+      sub: `guest-${sub}`,
+      role: Role.GUEST,
+      email: `${sub}@guest.pw`,
+      name: 'Guest User',
+      imageUrl: '',
+    };
   }
 }

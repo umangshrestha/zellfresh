@@ -4,8 +4,8 @@ import { AuthGuard } from '@nestjs/passport';
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class AccessTokenGuard extends AuthGuard('jwt') {
-  private readonly loggerService = new Logger(AccessTokenGuard.name);
+export class AccessOrGuestTokenGuard extends AuthGuard(['jwt', 'jwt-guest']) {
+  private readonly loggerService = new Logger(AccessOrGuestTokenGuard.name);
 
   getRequest(context: ExecutionContext) {
     const ctx = GqlExecutionContext.create(context);
@@ -19,9 +19,11 @@ export class AccessTokenGuard extends AuthGuard('jwt') {
 
     if (result instanceof Promise) {
       return result
-        .then((allowed) => allowed)
+        .then((allowed) => {
+          return allowed;
+        })
         .catch((error) => {
-          this.loggerService.error('Error', error);
+          this.loggerService.error(`Error: ${error}`);
           return false;
         });
     }

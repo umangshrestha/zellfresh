@@ -1,12 +1,11 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
 import { CartsModule } from './carts/carts.module';
 import { validate } from './config/environment';
-import { LoggerMiddleware } from './interceptors/LoggerMiddleware';
 import { ProductsModule } from './products/products.module';
 
 @Module({
@@ -31,7 +30,9 @@ import { ProductsModule } from './products/products.module';
   providers: [],
 })
 export class AppModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('*');
-  }
+  // configure(consumer: MiddlewareConsumer) {
+  //   if (process.env.NODE_ENV !== 'production') {
+  //     consumer.apply(LoggerMiddleware).forRoutes('*');
+  //   }
+  // }
 }

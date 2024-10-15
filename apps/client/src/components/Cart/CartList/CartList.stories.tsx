@@ -1,4 +1,3 @@
-import { ApolloError } from '@apollo/client';
 import type { Meta, StoryObj } from '@storybook/react';
 import { CartType } from '../Cart.types';
 import { CartList } from './CartList';
@@ -39,7 +38,6 @@ export const Default: Story = {
   args: {
     data: products,
     loading: false,
-    error: undefined,
     onChange: () => {},
     onRemove: () => {},
   },
@@ -49,17 +47,6 @@ export const Loading: Story = {
   args: {
     data: [],
     loading: true,
-    error: undefined,
-    onChange: () => {},
-    onRemove: () => {},
-  },
-};
-
-export const Error: Story = {
-  args: {
-    data: [],
-    loading: false,
-    error: new ApolloError({ errorMessage: 'An error occurred' }),
     onChange: () => {},
     onRemove: () => {},
   },
@@ -69,7 +56,6 @@ export const Empty: Story = {
   args: {
     data: [],
     loading: false,
-    error: undefined,
     onChange: () => {},
     onRemove: () => {},
   },

@@ -19,12 +19,3 @@ export const PRODUCTS = gql`
     }
   }
 `;
-
-export const ADD_ITEM_TO_CART = gql`
-  mutation addItemToCart($cartInput: CartInput!) {
-    addItemToCart(cartInput: $cartInput) {
-      id
-      quantity
-    }
-  }
-`;

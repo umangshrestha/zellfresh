@@ -1,4 +1,3 @@
-import { ApolloError } from '@apollo/client';
 import type { Meta, StoryObj } from '@storybook/react';
 import { ProductItemType } from '../ProductItem';
 import { ProductList } from './ProductList';
@@ -14,9 +13,10 @@ type Story = StoryObj<typeof meta>;
 
 const products: ProductItemType[] = [
   {
-    id: '1',
+    productId: '1',
     name: 'Chicken Breast',
     price: 12.99,
+    limitPerTransaction: 5,
     imageUrl:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiXM1f7aFP4rKF-wJZ2juCb-7JcQCspEYUVwLK4JrpBdVtRB-ELAqpUCmkg6znfoG4fh8&usqp=CAU',
     availableQuantity: 10,
@@ -25,9 +25,10 @@ const products: ProductItemType[] = [
     description: 'Delicious chicken breast',
   },
   {
-    id: '2',
+    productId: '2',
     name: 'BONELESS PORK BUTT ROAST',
     price: 100,
+    limitPerTransaction: 2,
     imageUrl:
       'https://132625588.cdn6.editmysite.com/uploads/1/3/2/6/132625588/s782101613657948031_p29_i2_w1920.jpeg?width=2400&optimize=medium',
     availableQuantity: 0,
@@ -41,7 +42,6 @@ export const Default: Story = {
   args: {
     data: products,
     loading: false,
-    error: undefined,
     onAddToCart: () => {},
   },
 };
@@ -50,16 +50,6 @@ export const Loading: Story = {
   args: {
     data: [],
     loading: true,
-    error: undefined,
-    onAddToCart: () => {},
-  },
-};
-
-export const Error: Story = {
-  args: {
-    data: [],
-    loading: false,
-    error: new ApolloError({ errorMessage: 'An error occurred' }),
     onAddToCart: () => {},
   },
 };
@@ -68,7 +58,6 @@ export const Empty: Story = {
   args: {
     data: [],
     loading: false,
-    error: undefined,
     onAddToCart: () => {},
   },
 };

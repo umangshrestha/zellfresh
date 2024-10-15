@@ -40,13 +40,14 @@ type Cart {
 
 type Query {
   products(limit: Int! = 20, cursor: String): PaginatedProduct!
-  product(id: String!): Product
+  product(productId: String!): Product
   cart: Cart!
+  cartItem(productId: String!): CartItem!
 }
 
 type Mutation {
   createProduct(createProductInput: CreateProductInput!): Product!
-  removeProduct(id: String!): String!
+  removeProduct(productId: String!): String!
   addItemToCart(cartInput: CartInput!): Cart!
   clearCart: Cart!
 }

@@ -3,14 +3,18 @@ import { NextFunction, Request, Response } from 'express';
 
 @Injectable()
 export class LoggerMiddleware {
+  private readonly loggerService = new Logger(LoggerMiddleware.name);
+
   use(req: Request, res: Response, next: NextFunction): void {
-    Logger.log(`Request ==> ${req.ip} ${req.method} ${req.url}`);
-    Logger.log(`Request Cookies ${JSON.stringify(req.cookies)}]`);
-    Logger.log(`Request Headers ${JSON.stringify(req.headers)}]`);
-    Logger.log(`[Request Body ${JSON.stringify(req.body)}]`);
+    this.loggerService.debug(`Request ==> ${req.ip} ${req.method} ${req.url}`);
+    this.loggerService.debug(`Request Cookies ${JSON.stringify(req.cookies)}]`);
+    this.loggerService.debug(`Request Headers ${JSON.stringify(req.headers)}]`);
+    this.loggerService.debug(`[Request Body ${JSON.stringify(req.body)}]`);
     res.on('close', () => {
-      Logger.log(`Response Status ${res.statusCode}`);
-      Logger.log(`Response Cookies ${JSON.stringify(res.getHeaders())}`);
+      this.loggerService.debug(`Response Status ${res.statusCode}`);
+      this.loggerService.debug(
+        `Response Cookies ${JSON.stringify(res.getHeaders())}`,
+      );
     });
 
     next();

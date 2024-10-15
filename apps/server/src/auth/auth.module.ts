@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { CartsModule } from 'src/carts/carts.module';
+import { AccessOrGuestTokenGuard } from './access-or-guest-token.gaurd';
 import { AccessTokenModule } from './access-token/access-token.module';
 import { AuthController } from './auth.controller';
 import { GoogleService } from './google/google.service';
@@ -13,6 +15,7 @@ import { RefreshTokenModule } from './refresh-token/refresh-token.module';
     AccessTokenModule,
     RefreshTokenModule,
     GuestTokenModule,
+    CartsModule,
     ConfigModule,
     PassportModule.register({
       session: true,
@@ -28,7 +31,7 @@ import { RefreshTokenModule } from './refresh-token/refresh-token.module';
       inject: [ConfigService],
     }),
   ],
-  providers: [GoogleService],
+  providers: [GoogleService, AccessOrGuestTokenGuard],
   controllers: [AuthController],
 })
 export class AuthModule {}

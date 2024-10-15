@@ -7,5 +7,6 @@ import { CartsService } from './carts.service';
 @Module({
   providers: [CartsResolver, CartsService],
   imports: [ProductsModule, DynamodbModule],
+  exports: [CartsService],
 })
 export class CartsModule {}

@@ -9,42 +9,54 @@ import { useStorageStore } from '../../lib/store';
 
 import Avatar from '@mui/material/Avatar';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { useNotification } from '../../components/Notification/Notification.hooks';
-
-const fetchData = async (hasUserDetails: boolean) => {
-  try {
-    const response = await axios.get('/api/auth/me');
-    return response.data;
-  } catch (error) {
-    if (hasUserDetails && axios.isAxiosError(error) && error.response) {
-      if (error.response.status !== 401) {
-        try {
-          await axios.get('/api/auth/refresh');
-          return fetchData(false);
-        } catch (_) {}
-      }
-    }
-  }
-};
+import { logout, me } from '../../lib/axios';
 
 export const Account = () => {
+  const navigate = useNavigate();
   const { setNotification } = useNotification();
-  const logoutFn = useStorageStore((state) => state.logout);
   const userDetails = useStorageStore((state) => state.userDetails);
+  const setUserDetails = useStorageStore((state) => state.setUserDetails);
+
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const isGuest = !userDetails || userDetails?.role === 'guest';
+
+  const onLogout = () => {
+    logout()
+      .then(() => {
+        setUserDetails(null);
+        navigate('/');
+      })
+      .catch((error) => {
+        setNotification({
+          message: error.message,
+          severity: 'error',
+        });
+      });
+    setAnchorEl(null);
+  };
 
   useEffect(() => {
-    if (userDetails?.role === 'guest') return;
-
-    fetchData(!!userDetails).catch((error) => {
-      setNotification({
-        message: error.message,
-        severity: 'error',
+    const controller = new AbortController();
+    const signal = controller.signal;
+    me({ signal })
+      .then((response) => {
+        setUserDetails(response.data);
+      })
+      .catch((error) => {
+        if (axios.isCancel(error)) return;
+        setUserDetails(null);
+        setNotification({
+          message: error.message,
+          severity: 'error',
+        });
       });
-    });
-  }, [userDetails, setNotification]);
 
-  const isGuest = !userDetails || userDetails?.role === 'guest';
+    return () => {
+      controller.abort();
+    };
+  }, [setNotification]);
 
   return (
     <Box>
@@ -72,17 +84,7 @@ export const Account = () => {
       >
         <MenuItem
           style={{ display: isGuest ? 'none' : 'block' }}
-          onClick={() => {
-            logoutFn({
-              onError: (error) => {
-                setNotification({
-                  message: error.message,
-                  severity: 'error',
-                });
-              },
-            });
-            setAnchorEl(null);
-          }}
+          onClick={onLogout}
         >
           <Button
             aria-label="login button"

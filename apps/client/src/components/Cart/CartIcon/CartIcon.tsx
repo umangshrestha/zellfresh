@@ -6,7 +6,7 @@ import { CartIconProps } from './CartIcon.types';
 export const CartIcon = ({ count, onClick }: CartIconProps) => (
   <IconButton onClick={onClick}>
     <Badge badgeContent={count} color="secondary">
-      <ShoppingCartIcon color="info" />
+      <ShoppingCartIcon className="color-white" />
     </Badge>
   </IconButton>
 );

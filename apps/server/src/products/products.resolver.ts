@@ -25,13 +25,15 @@ export class ProductsResolver {
   }
 
   @Query(() => Product, { name: 'product', nullable: true })
-  findOne(@Args('id', new ParseUUIDPipe({ version: '4' })) productId: string) {
+  findOne(
+    @Args('productId', new ParseUUIDPipe({ version: '4' })) productId: string,
+  ) {
     return this.productsService.findOne(productId);
   }
 
   @Mutation(() => String)
   removeProduct(
-    @Args('id', new ParseUUIDPipe({ version: '4' })) productId: string,
+    @Args('productId', new ParseUUIDPipe({ version: '4' })) productId: string,
   ) {
     return this.productsService.remove(productId);
   }

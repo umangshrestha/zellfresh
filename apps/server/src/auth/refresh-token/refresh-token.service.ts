@@ -8,6 +8,7 @@ import { Auth } from '../entities/auth.entity';
 export class RefreshTokenService {
   cookieName: string;
   cookieOptions: CookieOptions;
+  clearCookieOptions: CookieOptions;
 
   constructor(
     private jwtService: JwtService,
@@ -17,11 +18,14 @@ export class RefreshTokenService {
     const httpOnly = configService.getOrThrow('COOKIE_HTTP_ONLY');
     const domain = configService.getOrThrow('COOKIE_DOMAIN');
     const maxAge = configService.getOrThrow('REFRESH_TOKEN_EXPIRATION_TIME');
-    this.cookieOptions = {
+    this.clearCookieOptions = {
       httpOnly,
-      path: '/auth/refresh',
-      maxAge,
+      path: '/',
       domain,
+    };
+    this.cookieOptions = {
+      ...this.clearCookieOptions,
+      maxAge,
     };
   }
 
@@ -31,6 +35,6 @@ export class RefreshTokenService {
   }
 
   clearCookie(res: Response) {
-    res.clearCookie(this.cookieName, this.cookieOptions);
+    res.clearCookie(this.cookieName, this.clearCookieOptions);
   }
 }

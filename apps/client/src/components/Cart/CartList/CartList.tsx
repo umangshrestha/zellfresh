@@ -1,8 +1,6 @@
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import { useEffect } from 'react';
-import { useNotification } from '../../Notification';
 import CartItem from '../CartItem';
 import CartItemSkeleton from '../CartItemSkeleton';
 import { CartListProps } from './CartList.types';
@@ -10,20 +8,9 @@ import { CartListProps } from './CartList.types';
 export const CartList = ({
   data,
   loading,
-  error,
   onRemove,
   onChange,
 }: CartListProps) => {
-  const { setNotification } = useNotification();
-  useEffect(() => {
-    if (error) {
-      setNotification({
-        message: error.message,
-        severity: 'error',
-      });
-    }
-  }, [error, setNotification]);
-
   if (loading) {
     return (
       <Box justifyContent="space-around" sx={{ maxWidth: '100%', padding: 2 }}>

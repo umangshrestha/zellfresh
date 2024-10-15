@@ -1,20 +1,13 @@
-import {
-  Controller,
-  Get,
-  Headers,
-  HttpCode,
-  HttpStatus,
-  Res,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Headers, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
-import { AccessTokenGuard } from './access-token/access-token.gaurd';
+import { CartsService } from 'src/carts/carts.service';
+import { AccessOrGuestTokenGuard } from './access-or-guest-token.gaurd';
 import { AccessTokenService } from './access-token/access-token.service';
 import { AuthUser } from './auth.decorator';
 import { Auth } from './entities/auth.entity';
 import { Role } from './entities/role.enum';
+import { User } from './entities/user.entity';
 import { GoogleService } from './google/google.service';
-import { GuestTokenGuard } from './guest-token/guest-token.gaurd';
 import { GuestTokenService } from './guest-token/guest-token.service';
 import { RefreshTokenGuard } from './refresh-token/refresh-token.gaurd';
 import { RefreshTokenService } from './refresh-token/refresh-token.service';
@@ -26,10 +19,11 @@ export class AuthController {
     private readonly refreshTokenService: RefreshTokenService,
     private readonly guestTokenService: GuestTokenService,
     private readonly googleStrategy: GoogleService,
+    private readonly cartsService: CartsService,
   ) {}
 
   @Get('logout')
-  async logout(@Res({ passthrough: true }) response: Response) {
+  logout(@Res({ passthrough: true }) response: Response) {
     this.refreshTokenService.clearCookie(response);
     this.accessTokenService.clearCookie(response);
     this.guestTokenService.clearCookie(response);
@@ -37,7 +31,7 @@ export class AuthController {
   }
 
   @Get('guest/login')
-  async guestLogin(
+  guestLogin(
     @AuthUser() payload: Auth,
     @Res({ passthrough: true }) response: Response,
   ) {
@@ -45,15 +39,18 @@ export class AuthController {
       return payload;
     }
     const data = this.guestTokenService.generateGuestDetails();
+    this.cartsService.createEmptyCartIfNotExists(data.sub);
     this.guestTokenService.sendCookie(response, data);
     return data;
   }
 
   @Get('google/login')
   async googleLoginWithFrontend(
+    @AuthUser({ required: false }) guest: Auth,
     @Headers('Authorization') authorization: string,
     @Res({ passthrough: true }) res: Response,
   ) {
+    console.log('guest', guest);
     const {
       sub,
       picture: imageUrl,
@@ -67,21 +64,26 @@ export class AuthController {
       imageUrl,
       role: Role.USER,
     };
+    this.cartsService.moveCartItemsFromGuestToUser(guest?.sub, sub);
     this.accessTokenService.sendCookie(res, payload);
     this.refreshTokenService.sendCookie(res, payload);
     return payload;
   }
 
   @Get('me')
-  @UseGuards(AccessTokenGuard, GuestTokenGuard)
-  async me(@AuthUser() payload: Auth) {
-    return payload;
+  @UseGuards(AccessOrGuestTokenGuard)
+  me(@AuthUser({}) payload: Auth): User {
+    return {
+      name: payload.name,
+      email: payload.email,
+      role: payload.role,
+      imageUrl: payload.imageUrl,
+    };
   }
 
   @Get('refresh')
-  @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(RefreshTokenGuard)
-  async refresh(
+  refresh(
     @AuthUser() payload: Auth,
     @Res({ passthrough: true }) response: Response,
   ) {

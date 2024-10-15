@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-import { useNotification } from '../../Notification';
 import ProductItem from '../ProductItem';
 import ProductSkeleton from '../ProductSkeleton';
 import { ProductListProps } from './ProductList.types';
@@ -7,19 +5,8 @@ import { ProductListProps } from './ProductList.types';
 export const ProductList = ({
   data,
   loading,
-  error,
   onAddToCart,
 }: ProductListProps) => {
-  const { setNotification } = useNotification();
-  useEffect(() => {
-    if (error) {
-      setNotification({
-        message: error.message,
-        severity: 'error',
-      });
-    }
-  }, [error, setNotification]);
-
   if (loading) {
     return (
       <div className="flex flex-wrap justify-center gap-4 p-4">

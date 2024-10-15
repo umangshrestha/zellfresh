@@ -12,7 +12,7 @@ export class AccessTokenStrategy extends PassportStrategy(Strategy, 'jwt') {
     const secretOrKey = configService.getOrThrow('ACCESS_TOKEN_SECRET');
     const jwtFromRequest = ExtractJwt.fromExtractors([
       (request: Request) => {
-        return request?.cookies?.[cookieName] || null;
+        return request.cookies?.[cookieName] || null;
       },
     ]);
 

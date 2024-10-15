@@ -1,13 +1,61 @@
+import { useQuery } from '@apollo/client';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
+import MenuItem from '@mui/material/MenuItem';
 import Rating from '@mui/material/Rating';
+import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
+import { useEffect, useState } from 'react';
 import Badge from '../../Badge';
+import { CART_ITEM } from '../../Cart/CartPage/CartPage.queries';
+import { useNotification } from '../../Notification';
 import Viel from '../../Viel';
-import { ProductProps } from './ProductItem.types';
+import { ProductAddItemProps, ProductProps } from './ProductItem.types';
+
+export const ProductAddItem = ({
+  productId,
+  availableQuantity,
+  limitPerTransaction,
+  onClick,
+}: ProductAddItemProps) => {
+  const { setNotification } = useNotification();
+
+  const { data, loading, error } = useQuery(CART_ITEM, {
+    variables: {
+      productId,
+    },
+  });
+
+  useEffect(() => {
+    if (error) {
+      setNotification({
+        message: error.message,
+        severity: 'error',
+      });
+    }
+  }, [error, setNotification]);
+  if (loading) return <p>Loading...</p>;
+
+  return (
+    <Select
+      value={data.cartItem.quantity.toString()}
+      onChange={(e) => onClick(productId, +e.target.value)}
+      className="w-full h-12"
+    >
+      {Array.from(
+        { length: Math.min(limitPerTransaction + 1, availableQuantity) },
+        (_, i) => (
+          <MenuItem key={i} value={i.toString()}>
+            {i}
+          </MenuItem>
+        ),
+      )}
+    </Select>
+  );
+};
 
 export const ProductItem = ({
   productId,
@@ -15,11 +63,20 @@ export const ProductItem = ({
   description,
   price,
   imageUrl,
+  limitPerTransaction,
   availableQuantity,
   rating,
   badgeText,
   onClick,
 }: ProductProps) => {
+  const [isAddedToCartClicked, setIsAddedToCartClicked] = useState(false);
+
+  const onChange = (productId: string, quantity: number) => {};
+
+  const handleIsAddedToCartClicked = () => {
+    setIsAddedToCartClicked(true);
+  };
+
   const isProductAvailable = availableQuantity > 0;
   badgeText = isProductAvailable ? badgeText : 'Out of Stock';
   return (
@@ -58,16 +115,27 @@ export const ProductItem = ({
 
         <span className="flex-1 auto" />
         <CardActions>
-          <Button
-            className="w-full"
-            size="large"
-            disabled={!isProductAvailable}
-            color="error"
-            variant="contained"
-            onAbort={() => onClick(productId)}
-          >
-            Add to Cart
-          </Button>
+          {!isAddedToCartClicked ? (
+            <Button
+              className="w-full"
+              size="large"
+              disabled={!isProductAvailable}
+              color="error"
+              variant="contained"
+              onClick={() => handleIsAddedToCartClicked()}
+            >
+              Add to Cart
+            </Button>
+          ) : (
+            <ProductAddItem
+              {...{
+                productId,
+                availableQuantity,
+                limitPerTransaction,
+                onClick,
+              }}
+            />
+          )}
         </CardActions>
       </Card>
     </Viel>
