@@ -42,7 +42,7 @@ export const Default: Story = {
   args: {
     data: products,
     loading: false,
-    onAddToCart: () => {},
+    onAddItemToCart: () => {},
   },
 };
 
@@ -50,7 +50,7 @@ export const Loading: Story = {
   args: {
     data: [],
     loading: true,
-    onAddToCart: () => {},
+    onAddItemToCart: () => {},
   },
 };
 
@@ -58,6 +58,6 @@ export const Empty: Story = {
   args: {
     data: [],
     loading: false,
-    onAddToCart: () => {},
+    onAddItemToCart: () => {},
   },
 };

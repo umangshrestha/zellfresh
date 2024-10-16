@@ -9,7 +9,7 @@ export const CartList = ({
   data,
   loading,
   onRemove,
-  onChange,
+  onAddItemToCart,
 }: CartListProps) => {
   if (loading) {
     return (
@@ -43,7 +43,11 @@ export const CartList = ({
         <List>
           {data.map((product) => (
             <ListItem key={product.id}>
-              <CartItem {...product} onRemove={onRemove} onChange={onChange} />
+              <CartItem
+                {...product}
+                onRemove={onRemove}
+                onAddItemToCart={onAddItemToCart}
+              />
             </ListItem>
           ))}
         </List>

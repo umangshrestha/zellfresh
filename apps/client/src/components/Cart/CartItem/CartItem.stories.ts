@@ -19,7 +19,7 @@ export const Default: Story = {
     availableQuantity: 10,
     limitPerTransaction: 10,
     name: 'Chicken Breast',
-    onChange: () => {},
+    onAddItemToCart: () => {},
     onRemove: () => {},
   },
 };

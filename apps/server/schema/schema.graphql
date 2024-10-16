@@ -50,6 +50,7 @@ type Query {
   product(productId: String!): Product
   carts(limit: Int! = 20, cursor: String): PaginatedProduct!
   cart: Cart!
+  cartItem(productId: String!): CartItem!
 }
 
 type Mutation {

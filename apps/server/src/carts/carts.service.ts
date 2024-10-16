@@ -1,17 +1,22 @@
-import { AttributeValue } from '@aws-sdk/client-dynamodb';
+import {
+  AttributeValue,
+  ConditionalCheckFailedException,
+} from '@aws-sdk/client-dynamodb';
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
-import { Injectable } from '@nestjs/common';
-import { DynamodbService } from 'src/dynamodb/dynamodb.service';
+import { Injectable, Logger } from '@nestjs/common';
+import { DynamodbService } from 'src/common/dynamodb/dynamodb.service';
+import { get_date_time_string } from 'src/common/get-date-time';
 import { ProductsService } from 'src/products/products.service';
 import { CartInput } from './dto/cart-input.input';
 import { Cart } from './entities/cart.entity';
 import { PaginatedCart } from './entities/paginated-cart.entry';
-
 const TableName = 'ORDERS_TABLE';
 const orderId = { S: 'CART' };
 
 @Injectable()
 export class CartsService {
+  private readonly loggerService = new Logger(CartsService.name);
+
   constructor(
     private readonly dynamodbService: DynamodbService,
     private readonly productsService: ProductsService,
@@ -46,17 +51,28 @@ export class CartsService {
   async createEmptyCart(userId: string, overwrite = false) {
     const cart = new Cart();
     cart.userId = userId;
+    cart.items = [];
+    cart.count = 0;
+    cart.createdAt = get_date_time_string();
+    cart.updatedAt = get_date_time_string();
+
     try {
       await this.dynamodbService.client.putItem({
         TableName,
-        Item: marshall({ cart, orderId: 'CART' }),
+        Item: marshall({ ...cart, orderId: 'CART' }),
         ConditionExpression: overwrite
           ? undefined
           : 'attribute_not_exists(userId)',
       });
       return cart;
     } catch (error) {
-      return null;
+      if (error instanceof ConditionalCheckFailedException) {
+        return null;
+      }
+      this.loggerService.error(
+        `Error creating cart: ${error} for data: ${JSON.stringify(cart)}`,
+      );
+      throw error;
     }
   }
 
@@ -110,11 +126,10 @@ export class CartsService {
     if (!item) {
       return defaultItem;
     }
-    return unmarshall(item);
+    return unmarshall(item.M);
   }
 
   async addItemToCart(userId: string, cartItem: CartInput) {
-    await this.productsService.update(cartItem.productId, cartItem.quantity);
     const cart = await this.findOne(userId);
     let items: AttributeValue[] = (
       cart ? cart.items.L : []
@@ -126,16 +141,16 @@ export class CartsService {
       let found = false;
       for (const item of items) {
         if (item.M.productId.S === cartItem.productId) {
-          item.M.quantity.N = (
-            +item.M.quantity.N + cartItem.quantity
-          ).toString();
+          item.M.quantity.N = cartItem.quantity.toString();
           item.M.updatedAt.S = cartItem.updatedAt;
           found = true;
           break;
         }
       }
       if (!found) {
-        items.push({ M: marshall(cartItem) });
+        items.push({
+          M: marshall({ ...cartItem, updatedAt: cartItem.updatedAt }),
+        });
       }
     }
 

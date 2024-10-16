@@ -19,7 +19,7 @@ export const Default: Story = {
     name: 'Chicken Breast',
     rating: 4.5,
     badgeText: undefined,
-    onClick: () => {},
+    onAddItemToCart: () => {},
   },
 };
 
@@ -33,7 +33,7 @@ export const WithBadge: Story = {
     name: 'Chicken Breast',
     rating: 4.5,
     badgeText: 'NEW',
-    onClick: () => {},
+    onAddItemToCart: () => {},
   },
 };
 
@@ -47,6 +47,6 @@ export const Disabled: Story = {
     name: 'Chicken Breast',
     rating: 4.5,
     badgeText: undefined,
-    onClick: () => {},
+    onAddItemToCart: () => {},
   },
 };

@@ -38,7 +38,7 @@ export const Default: Story = {
   args: {
     data: products,
     loading: false,
-    onChange: () => {},
+    onAddItemToCart: () => {},
     onRemove: () => {},
   },
 };
@@ -47,7 +47,7 @@ export const Loading: Story = {
   args: {
     data: [],
     loading: true,
-    onChange: () => {},
+    onAddItemToCart: () => {},
     onRemove: () => {},
   },
 };
@@ -56,7 +56,7 @@ export const Empty: Story = {
   args: {
     data: [],
     loading: false,
-    onChange: () => {},
+    onAddItemToCart: () => {},
     onRemove: () => {},
   },
 };

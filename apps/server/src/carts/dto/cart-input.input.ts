@@ -1,15 +1,21 @@
 import { Field, InputType, Int } from '@nestjs/graphql';
-import { Min } from 'class-validator';
+import { IsInt, IsString, IsUUID, Min } from 'class-validator';
+import { get_date_time_string } from 'src/common/get-date-time';
 
 @InputType()
 export class CartInput {
+  @IsUUID()
   @Field(() => String)
   productId: string;
 
-  @Min(1)
+  @Min(0)
+  @IsInt()
   @Field(() => Int)
   quantity: number;
 
-  createdAt: string = new Date().toISOString();
-  updatedAt: string = new Date().toISOString();
+  @IsString()
+  createdAt: string = get_date_time_string();
+
+  @IsString()
+  updatedAt: string = get_date_time_string();
 }

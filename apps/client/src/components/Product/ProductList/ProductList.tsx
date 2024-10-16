@@ -5,7 +5,7 @@ import { ProductListProps } from './ProductList.types';
 export const ProductList = ({
   data,
   loading,
-  onAddToCart,
+  onAddItemToCart,
 }: ProductListProps) => {
   if (loading) {
     return (
@@ -29,7 +29,7 @@ export const ProductList = ({
         <ProductItem
           key={product.productId}
           {...product}
-          onClick={onAddToCart}
+          onAddItemToCart={onAddItemToCart}
         />
       ))}
     </div>

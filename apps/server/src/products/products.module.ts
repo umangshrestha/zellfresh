@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { DynamodbModule } from 'src/dynamodb/dynamodb.module';
+import { DynamodbModule } from 'src/common/dynamodb/dynamodb.module';
 import { ProductsResolver } from './products.resolver';
 import { ProductsService } from './products.service';
 

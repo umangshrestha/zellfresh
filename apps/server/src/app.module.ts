@@ -5,13 +5,16 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { AuthModule } from 'src/auth/auth.module';
 import { CartsModule } from 'src/carts/carts.module';
-import { validate } from 'src/config/environment';
+import { validate } from 'src/common/environment';
 import { ProductsModule } from 'src/products/products.module';
+import { ValidationProvider } from './common/validator.provider';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ validate }),
     ProductsModule,
+    CartsModule,
+    AuthModule,
     GraphQLModule.forRootAsync<ApolloDriverConfig>({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -26,11 +29,9 @@ import { ProductsModule } from 'src/products/products.module';
         },
       }),
     }),
-    CartsModule,
-    AuthModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [ValidationProvider],
 })
 export class AppModule {
   // configure(consumer: MiddlewareConsumer) {

@@ -13,5 +13,10 @@ export type ProductItemType = Pick<
 >;
 
 export type ProductProps = ProductItemType & {
-  onClick: (id: string, quantity: number) => void;
+  onAddItemToCart: (id: string, quantity: number) => void;
 };
+
+export type ProductAddItemProps = Pick<
+  ProductProps,
+  'productId' | 'availableQuantity' | 'limitPerTransaction' | 'onAddItemToCart'
+>;

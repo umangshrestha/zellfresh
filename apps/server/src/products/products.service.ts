@@ -5,7 +5,7 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { DynamodbService } from 'src/dynamodb/dynamodb.service';
+import { DynamodbService } from 'src/common/dynamodb/dynamodb.service';
 import { v4 as uuidv4 } from 'uuid';
 import { CreateProductInput } from './dto/create-product.input';
 import { PaginatedProduct } from './entities/paginated-product.entry';

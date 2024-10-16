@@ -1,6 +1,6 @@
-import { useMutation, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { useEffect } from 'react';
-import { ADD_ITEM_TO_CART } from '../../Cart/CartPage/CartPage.queries';
+import { useAddItemToCart } from '../../Cart/hooks/AddItemToCart/AddItemToCart.hooks';
 import { useNotification } from '../../Notification';
 import ProductList from '../ProductList';
 import { PRODUCTS } from './ProductPage.queries';
@@ -8,7 +8,7 @@ import { PRODUCTS } from './ProductPage.queries';
 export const ProductPage = () => {
   const { setNotification } = useNotification();
   const { data, loading, error } = useQuery(PRODUCTS);
-  const [addItemToCart] = useMutation(ADD_ITEM_TO_CART);
+  const { addItemToCart } = useAddItemToCart();
 
   useEffect(() => {
     if (error) {
@@ -19,25 +19,11 @@ export const ProductPage = () => {
     }
   }, [error, setNotification]);
 
-  const onAddToCart = (id: string, quantity: number) => {
-    addItemToCart({
-      variables: {
-        productId: id,
-        quantity,
-      },
-    }).catch((error) => {
-      setNotification({
-        message: error.message,
-        severity: 'error',
-      });
-    });
-  };
-
   return (
     <ProductList
       data={data?.products?.items}
       loading={loading}
-      onAddToCart={onAddToCart}
+      onAddItemToCart={addItemToCart}
     />
   );
 };

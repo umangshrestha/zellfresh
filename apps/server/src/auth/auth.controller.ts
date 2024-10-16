@@ -65,8 +65,9 @@ export class AuthController {
     };
     if (guest && guest.sub && guest.sub.startsWith('guest-')) {
       this.cartsService.moveCartItemsFromGuestToUser(guest.sub, sub);
+    } else {
+      this.cartsService.createEmptyCart(sub);
     }
-    this.cartsService.createEmptyCart(sub);
     this.accessTokenService.sendCookie(res, payload);
     this.refreshTokenService.sendCookie(res, payload);
     return payload;
