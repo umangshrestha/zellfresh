@@ -1,17 +1,15 @@
 import { AttributeValue } from '@aws-sdk/client-dynamodb';
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
+import { Injectable } from '@nestjs/common';
 import { DynamodbService } from 'src/dynamodb/dynamodb.service';
 import { ProductsService } from 'src/products/products.service';
 import { CartInput } from './dto/cart-input.input';
-import { CartItem } from './entities/cart-item.entity';
-import { Cart, CartDynamodb } from './entities/cart.entity';
+import { Cart } from './entities/cart.entity';
+import { PaginatedCart } from './entities/paginated-cart.entry';
 
 const TableName = 'ORDERS_TABLE';
 const orderId = { S: 'CART' };
+
 @Injectable()
 export class CartsService {
   constructor(
@@ -19,20 +17,44 @@ export class CartsService {
     private readonly productsService: ProductsService,
   ) {}
 
-  async createEmptyCartIfNotExists(userId: string) {
+  async findAll(limit: number, cursor: string): Promise<PaginatedCart> {
+    const data = await this.dynamodbService.client.scan({
+      TableName,
+      Limit: limit,
+      ExclusiveStartKey: cursor ? { id: { S: cursor } } : undefined,
+    });
+
+    return {
+      items: data.Items.map((item) => unmarshall(item) as Cart),
+      pagination: {
+        limit,
+        prev: cursor,
+        next: data.LastEvaluatedKey ? data.LastEvaluatedKey.id.S : null,
+      },
+    };
+  }
+
+  async getCartCount(userId: string) {
+    const data = await this.dynamodbService.client.getItem({
+      TableName,
+      Key: { userId: { S: userId }, orderId },
+      ProjectionExpression: 'count',
+    });
+    return data.Item ? +data.Item.count.N : 0;
+  }
+
+  async createEmptyCart(userId: string, overwrite = false) {
+    const cart = new Cart();
+    cart.userId = userId;
     try {
-      return await this.dynamodbService.client.putItem({
+      await this.dynamodbService.client.putItem({
         TableName,
-        Item: {
-          userId: { S: userId },
-          orderId,
-          items: { L: [] },
-          count: { N: '0' },
-          updatedAt: { N: Date.now().toString() },
-          createdAt: { N: Date.now().toString() },
-        },
-        ConditionExpression: 'attribute_not_exists(userId)',
+        Item: marshall({ cart, orderId: 'CART' }),
+        ConditionExpression: overwrite
+          ? undefined
+          : 'attribute_not_exists(userId)',
       });
+      return cart;
     } catch (error) {
       return null;
     }
@@ -41,15 +63,15 @@ export class CartsService {
   async moveCartItemsFromGuestToUser(guestId: string, userId: string) {
     const guestCart = await this.findOne(guestId);
     if (!guestCart) {
-      return this.createEmptyCartIfNotExists(userId);
+      return this.createEmptyCart(userId, false);
     }
     if (guestCart.count.N === '0') {
       this.deleteCart(guestId);
-      return this.createEmptyCartIfNotExists(userId);
+      return this.createEmptyCart(userId, false);
     }
     const userCart = await this.findOne(userId);
     if (!userCart) {
-      return this.createEmptyCartIfNotExists(userId);
+      return this.createEmptyCart(userId, false);
     }
 
     let items: AttributeValue[] = (
@@ -85,22 +107,14 @@ export class CartsService {
       return defaultItem;
     }
     const item = cart.items.L.find((item) => item.M.productId.S === productId);
-    return item ? CartItem.fromDynamodbObject(item.M) : defaultItem;
+    if (!item) {
+      return defaultItem;
+    }
+    return unmarshall(item);
   }
 
   async addItemToCart(userId: string, cartItem: CartInput) {
-    const product = await this.productsService.findOne(cartItem.productId);
-    if (!product) {
-      throw new NotFoundException('Product not found');
-    }
-    if (product.availableQuantity < cartItem.quantity) {
-      throw new BadRequestException('Product not available');
-    }
-
-    if (product.limitPerTransaction < cartItem.quantity) {
-      throw new BadRequestException('Product limit exceeded');
-    }
-
+    await this.productsService.update(cartItem.productId, cartItem.quantity);
     const cart = await this.findOne(userId);
     let items: AttributeValue[] = (
       cart ? cart.items.L : []
@@ -109,10 +123,23 @@ export class CartsService {
     if (cartItem.quantity === 0) {
       items = items.filter((item) => item.M.productId.S !== cartItem.productId);
     } else {
-      items.push({ M: CartItem.toDynamodbObject(cartItem) });
+      let found = false;
+      for (const item of items) {
+        if (item.M.productId.S === cartItem.productId) {
+          item.M.quantity.N = (
+            +item.M.quantity.N + cartItem.quantity
+          ).toString();
+          item.M.updatedAt.S = cartItem.updatedAt;
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        items.push({ M: marshall(cartItem) });
+      }
     }
 
-    const data = await this.dynamodbService.client.putItem({
+    await this.dynamodbService.client.putItem({
       TableName,
       Item: {
         userId: { S: userId },
@@ -130,7 +157,7 @@ export class CartsService {
         TableName,
         Key: { userId: { S: userId }, orderId },
       });
-      return data.Item as CartDynamodb;
+      return data.Item;
     } catch (error) {
       return null;
     }
@@ -141,21 +168,7 @@ export class CartsService {
     if (!data) {
       return null;
     }
-    return Cart.fromDynamodbObject(data);
-  }
-
-  async removeAll(userId: string) {
-    const data = await this.dynamodbService.client.putItem({
-      TableName,
-      Item: {
-        orderId,
-        userId: { S: userId },
-        count: { N: '0' },
-        items: { L: [] },
-        updatedAt: { N: Date.now().toString() },
-      },
-    });
-    return Cart.fromDynamodbObject(data.Attributes as CartDynamodb);
+    return unmarshall(data) as Cart;
   }
 
   deleteCart(userId: string) {

@@ -21,7 +21,6 @@ export class AccessTokenGuard extends AuthGuard('jwt') {
       return result
         .then((allowed) => allowed)
         .catch((error) => {
-          this.loggerService.error('Error', error);
           return false;
         });
     }

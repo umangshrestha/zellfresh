@@ -9,4 +9,7 @@ export class CartInput {
   @Min(1)
   @Field(() => Int)
   quantity: number;
+
+  createdAt: string = new Date().toISOString();
+  updatedAt: string = new Date().toISOString();
 }

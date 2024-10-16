@@ -1,8 +1,14 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { DynamodbService } from 'src/dynamodb/dynamodb.service';
 import { v4 as uuidv4 } from 'uuid';
 import { CreateProductInput } from './dto/create-product.input';
-import { PaginatedProduct } from './entities/paginatedProduct.entry';
+import { PaginatedProduct } from './entities/paginated-product.entry';
 import { Product } from './entities/product.entity';
 
 const TableName = 'PRODUCTS_TABLE';
@@ -11,30 +17,30 @@ export class ProductsService {
   private readonly loggerService = new Logger(ProductsService.name);
 
   constructor(private readonly dynamodbService: DynamodbService) {
-    this.seed();
-  }
-
-  async seed() {
-    const MOCK_DATA_PATH = `../../mock/mockproduct.json`;
-    for (const product of require(MOCK_DATA_PATH)) {
-      this.loggerService.debug(`Seeding product ${product.name}`);
-      await this.create(product);
-    }
-    this.loggerService.log(`Seeding completed`);
-  }
-
-  create(createProductInput: CreateProductInput) {
-    if (!createProductInput.productId) {
-      createProductInput.productId = uuidv4();
-    }
-    return this.dynamodbService.client.putItem({
-      TableName,
-      Item: {
-        ...Product.toDynamodbObject(createProductInput),
-        createdAt: { S: new Date().toISOString() },
-        updatedAt: { S: new Date().toISOString() },
-      },
+    this.seed().catch((error) => {
+      this.loggerService.error(error);
     });
+  }
+
+  seed() {
+    const mock_data = require('../../test/mock-products.json');
+    return Promise.all(
+      mock_data.map((item: CreateProductInput) => {
+        this.create(item);
+        this.loggerService.log(`Seeding product: ${item.name}`);
+      }),
+    );
+  }
+
+  async create(item: CreateProductInput) {
+    if (!item.productId) {
+      item.productId = uuidv4();
+    }
+    await this.dynamodbService.client.putItem({
+      TableName,
+      Item: marshall(item),
+    });
+    return item;
   }
 
   async findAll(limit: number, cursor: string): Promise<PaginatedProduct> {
@@ -45,7 +51,7 @@ export class ProductsService {
     });
 
     return {
-      items: data.Items.map((item) => Product.fromDynamodbObject(item)),
+      items: data.Items.map((item) => unmarshall(item) as Product),
       pagination: {
         limit,
         prev: cursor,
@@ -62,10 +68,22 @@ export class ProductsService {
     if (!data.Item) {
       return null;
     }
-    return Product.fromDynamodbObject(data.Item as any);
+    return unmarshall(data.Item) as Product;
   }
 
-  update(productId: string, count: number) {
+  async update(productId: string, count: number) {
+    const product = await this.findOne(productId);
+    if (!product) {
+      throw new NotFoundException('Product not found');
+    }
+    if (product.availableQuantity < count) {
+      throw new BadRequestException('Product not available');
+    }
+
+    if (product.limitPerTransaction < count) {
+      throw new BadRequestException('Product limit exceeded');
+    }
+
     return this.dynamodbService.client.updateItem({
       TableName,
       Key: { productId: { S: productId } },
@@ -79,10 +97,10 @@ export class ProductsService {
   }
 
   async remove(productId: string) {
-    const data = await this.dynamodbService.client.deleteItem({
+    await this.dynamodbService.client.deleteItem({
       TableName,
       Key: { productId: { S: productId } },
     });
-    return data;
+    return productId;
   }
 }

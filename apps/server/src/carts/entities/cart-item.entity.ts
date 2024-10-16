@@ -1,26 +1,20 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-
-export type CartItemDynamodb = ReturnType<typeof CartItem.toDynamodbObject>;
+import { Product } from 'src/products/entities/product.entity';
 
 @ObjectType()
 export class CartItem {
   @Field(() => String)
   productId: string;
 
+  @Field(() => Product, { nullable: true })
+  product: Product | null;
+
   @Field(() => Int)
   quantity: number;
 
-  static toDynamodbObject(cartItem: CartItem) {
-    return {
-      productId: { S: cartItem.productId },
-      quantity: { N: cartItem.quantity.toString() },
-    };
-  }
+  @Field(() => String)
+  createdAt: string;
 
-  static fromDynamodbObject(item: CartItemDynamodb): CartItem {
-    const cartItem = new CartItem();
-    cartItem.productId = item.productId.S;
-    cartItem.quantity = +item.quantity.N;
-    return cartItem;
-  }
+  @Field(() => String)
+  updatedAt: string;
 }

@@ -7,3 +7,9 @@ export const COUNT_QUERY = gql`
     }
   }
 `;
+
+export const COUNT_SUBSCRIPTION = gql`
+  subscription {
+    cartCountUpdated
+  }
+`;

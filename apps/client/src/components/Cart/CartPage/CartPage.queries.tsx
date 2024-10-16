@@ -5,6 +5,10 @@ export const CARTS = gql`
     cart {
       items {
         productId
+        quantity
+        product {
+          productId
+        }
       }
     }
   }

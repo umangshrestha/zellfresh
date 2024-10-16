@@ -30,13 +30,10 @@ export class AccessTokenService {
       ...this.clearCookieOptions,
       maxAge,
     };
-
-    console.log(this.cookieOptions);
   }
 
   sendCookie(res: Response, data: Auth) {
     const token = this.jwtService.sign(data);
-    console.log(this.cookieName);
     res.cookie(this.cookieName, token, this.cookieOptions);
   }
 

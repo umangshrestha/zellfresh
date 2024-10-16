@@ -1,7 +1,7 @@
 import { ParseUUIDPipe } from '@nestjs/common';
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateProductInput } from './dto/create-product.input';
-import { PaginatedProduct } from './entities/paginatedProduct.entry';
+import { PaginatedProduct } from './entities/paginated-product.entry';
 import { Product } from './entities/product.entity';
 import { ProductsService } from './products.service';
 

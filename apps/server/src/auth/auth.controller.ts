@@ -39,7 +39,7 @@ export class AuthController {
       return payload;
     }
     const data = this.guestTokenService.generateGuestDetails();
-    this.cartsService.createEmptyCartIfNotExists(data.sub);
+    this.cartsService.createEmptyCart(data.sub);
     this.guestTokenService.sendCookie(response, data);
     return data;
   }
@@ -50,7 +50,6 @@ export class AuthController {
     @Headers('Authorization') authorization: string,
     @Res({ passthrough: true }) res: Response,
   ) {
-    console.log('guest', guest);
     const {
       sub,
       picture: imageUrl,
@@ -64,7 +63,10 @@ export class AuthController {
       imageUrl,
       role: Role.USER,
     };
-    this.cartsService.moveCartItemsFromGuestToUser(guest?.sub, sub);
+    if (guest && guest.sub && guest.sub.startsWith('guest-')) {
+      this.cartsService.moveCartItemsFromGuestToUser(guest.sub, sub);
+    }
+    this.cartsService.createEmptyCart(sub);
     this.accessTokenService.sendCookie(res, payload);
     this.refreshTokenService.sendCookie(res, payload);
     return payload;

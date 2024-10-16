@@ -3,10 +3,10 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
-import { AuthModule } from './auth/auth.module';
-import { CartsModule } from './carts/carts.module';
-import { validate } from './config/environment';
-import { ProductsModule } from './products/products.module';
+import { AuthModule } from 'src/auth/auth.module';
+import { CartsModule } from 'src/carts/carts.module';
+import { validate } from 'src/config/environment';
+import { ProductsModule } from 'src/products/products.module';
 
 @Module({
   imports: [
@@ -21,6 +21,9 @@ import { ProductsModule } from './products/products.module';
         debug: config.getOrThrow('NODE_ENV') !== 'production',
         playground: config.getOrThrow('NODE_ENV') !== 'production',
         autoSchemaFile: join(process.cwd(), 'schema/schema.graphql'),
+        subscriptions: {
+          'graphql-ws': true,
+        },
       }),
     }),
     CartsModule,

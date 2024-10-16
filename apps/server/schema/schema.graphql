@@ -2,6 +2,12 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Pagination {
+  limit: Int!
+  next: String
+  prev: String
+}
+
 type Product {
   productId: String!
   name: String!
@@ -14,12 +20,8 @@ type Product {
   rating: Float!
   badgeText: String!
   tags: [String!]!
-}
-
-type Pagination {
-  limit: Int!
-  next: String
-  prev: String
+  createdAt: String!
+  updatedAt: String!
 }
 
 type PaginatedProduct {
@@ -29,20 +31,25 @@ type PaginatedProduct {
 
 type CartItem {
   productId: String!
+  product: Product
   quantity: Int!
+  createdAt: String!
+  updatedAt: String!
 }
 
 type Cart {
   userId: String!
   items: [CartItem!]!
   count: Int!
+  createdAt: String!
+  updatedAt: String!
 }
 
 type Query {
   products(limit: Int! = 20, cursor: String): PaginatedProduct!
   product(productId: String!): Product
+  carts(limit: Int! = 20, cursor: String): PaginatedProduct!
   cart: Cart!
-  cartItem(productId: String!): CartItem!
 }
 
 type Mutation {
@@ -69,4 +76,8 @@ input CreateProductInput {
 input CartInput {
   productId: String!
   quantity: Int!
+}
+
+type Subscription {
+  cartCountUpdated: Int!
 }

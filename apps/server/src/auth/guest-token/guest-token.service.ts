@@ -29,8 +29,6 @@ export class GuestTokenService {
       ...this.clearCookieOptions,
       maxAge,
     };
-
-    console.log(this.cookieOptions);
   }
 
   generateGuestDetails(): Auth {
