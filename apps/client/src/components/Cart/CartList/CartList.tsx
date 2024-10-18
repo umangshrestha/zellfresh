@@ -1,11 +1,18 @@
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
+import Skeleton from '@mui/material/Skeleton';
+import EmptyPage from '../../EmptyPage';
 import CartItem from '../CartItem';
 import CartItemSkeleton from '../CartItemSkeleton';
 import { CartListProps } from './CartList.types';
 
-export const CartList = ({ data, loading, onAddItemToCart }: CartListProps) => {
+export const CartList = ({
+  data,
+  loading,
+  onAddItemToCart,
+  onEmptyStateClicked,
+}: CartListProps) => {
   if (loading) {
     return (
       <Box justifyContent="space-around" sx={{ maxWidth: '100%', padding: 2 }}>
@@ -18,13 +25,25 @@ export const CartList = ({ data, loading, onAddItemToCart }: CartListProps) => {
               </ListItem>
             ))}
         </List>
-        <Box sx={{ padding: 2 }}>Total: 0</Box>
+        <Skeleton variant="rectangular" height={40} />
       </Box>
     );
   }
 
   if (!data || data.length === 0) {
-    return <Box sx={{ padding: 2 }}>No products available</Box>;
+    return (
+      <EmptyPage
+        title="Your cart is empty"
+        description={[
+          'You have no items in your cart',
+          'Start adding items to your cart by clicking the button below',
+        ]}
+        buttonText="Add items"
+        image="/public/empty-cart.png"
+        alt="Empty cart"
+        onClick={onEmptyStateClicked}
+      />
+    );
   }
 
   const totalPrice = data.reduce(

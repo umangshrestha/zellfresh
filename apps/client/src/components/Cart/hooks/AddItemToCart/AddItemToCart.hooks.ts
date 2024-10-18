@@ -1,10 +1,12 @@
 import { useMutation } from '@apollo/client';
 import { useNotification } from '../../../Notification';
+import { ADD_ITEM_TO_CART_MUTATION, CART_ITEM_QUERY } from '../../Cart.queries';
 import { useCartCount } from '../CartCount';
-import { ADD_ITEM_TO_CART_MUTATION } from './AddItemToCart.queries';
 
 export const useAddItemToCart = () => {
-  const [executeMutation] = useMutation(ADD_ITEM_TO_CART_MUTATION);
+  const [executeMutation] = useMutation(ADD_ITEM_TO_CART_MUTATION, {
+    refetchQueries: [CART_ITEM_QUERY],
+  });
   const { setNotification } = useNotification();
   const { setCartCount } = useCartCount();
 

@@ -2,12 +2,12 @@ import { useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { LayoutProps as CartCountProviderProps } from '../../../Layout';
 import { useNotification } from '../../../Notification';
+import { CART_COUNT_QUERY } from '../../Cart.queries';
 import { CartCountContext } from './CartCount.context';
-import { CART_COUNT_QUERY } from './CartCount.queries';
 import { CartCountContextType } from './CartCount.types';
 
 export const CartCountProvider = ({ children }: CartCountProviderProps) => {
-  const { data, error, refetch } = useQuery(CART_COUNT_QUERY);
+  const { data, error } = useQuery(CART_COUNT_QUERY);
   const { setNotification } = useNotification();
   const [cartCount, setCartCount] = useState<number>(0);
 
@@ -29,7 +29,6 @@ export const CartCountProvider = ({ children }: CartCountProviderProps) => {
   const contextValue: CartCountContextType = {
     cartCount,
     setCartCount,
-    refetch,
   };
   return (
     <CartCountContext.Provider value={contextValue}>

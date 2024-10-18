@@ -32,7 +32,7 @@ export class AuthController {
 
   @Get('guest/login')
   guestLogin(
-    @AuthUser() payload: Auth,
+    @AuthUser({ required: false }) payload: Auth,
     @Res({ passthrough: true }) response: Response,
   ) {
     if (payload) {

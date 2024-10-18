@@ -1,8 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom';
-import Layout from '../components/Layout';
-
 import CartPage from '../components/Cart/CartPage';
+import Layout from '../components/Layout';
 import LoginPage from '../components/LoginPage';
+import NotFoundPage from '../components/NotFoundPage';
 import ProductPage from '../components/Product/ProductPage';
 
 export const router = createBrowserRouter([
@@ -17,6 +17,10 @@ export const router = createBrowserRouter([
       {
         path: '/cart',
         element: <CartPage />,
+      },
+      {
+        path: '*',
+        element: <NotFoundPage />,
       },
     ],
   },

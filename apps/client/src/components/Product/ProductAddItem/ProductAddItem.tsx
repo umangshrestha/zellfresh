@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { useEffect, useState } from 'react';
-import { CART_ITEM_QUERY } from '../../Cart/CartItem/CartItem.queries';
+import { CART_ITEM_QUERY } from '../../Cart/Cart.queries';
 import { useNotification } from '../../Notification';
 import { ProductAddItemProps } from './ProductAddItem.types';
 
@@ -15,11 +15,10 @@ export const ProductAddItem = ({
   const { setNotification } = useNotification();
   const [quantity, setQuantity] = useState(0);
 
-  const { data, loading, error, refetch } = useQuery(CART_ITEM_QUERY, {
+  const { data, loading, error } = useQuery(CART_ITEM_QUERY, {
     variables: {
       productId,
     },
-    fetchPolicy: 'network-only',
   });
 
   useEffect(() => {
@@ -31,7 +30,6 @@ export const ProductAddItem = ({
   const onProductChange = (productId: string, quantity: number) => {
     onAddItemToCart(productId, quantity);
     setQuantity(quantity);
-    refetch();
   };
 
   useEffect(() => {

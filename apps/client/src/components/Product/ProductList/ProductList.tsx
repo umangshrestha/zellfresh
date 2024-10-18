@@ -1,3 +1,4 @@
+import EmptyPage from '../../EmptyPage';
 import ProductItem from '../ProductItem';
 import ProductSkeleton from '../ProductSkeleton';
 import { ProductListProps } from './ProductList.types';
@@ -6,6 +7,7 @@ export const ProductList = ({
   data,
   loading,
   onAddItemToCart,
+  onEmptyStateClicked,
 }: ProductListProps) => {
   if (loading) {
     return (
@@ -20,7 +22,19 @@ export const ProductList = ({
   }
 
   if (!data || data.length === 0) {
-    return <div className="p-4">No products available</div>;
+    return (
+      <EmptyPage
+        title="No products available"
+        description={[
+          'There are no products available at the moment',
+          'Please check back later',
+        ]}
+        buttonText="Refresh"
+        image="/public/empty-product.png"
+        alt="No products available"
+        onClick={onEmptyStateClicked}
+      />
+    );
   }
 
   return (

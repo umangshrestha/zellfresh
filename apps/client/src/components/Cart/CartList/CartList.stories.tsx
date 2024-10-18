@@ -55,5 +55,6 @@ export const Empty: Story = {
     data: [],
     loading: false,
     onAddItemToCart: () => {},
+    onEmptyStateClicked: () => {},
   },
 };

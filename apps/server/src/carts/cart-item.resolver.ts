@@ -16,16 +16,13 @@ export class CartsItemResolver {
     private readonly productsService: ProductsService,
   ) {}
 
-  @ResolveField('product', () => Product, { nullable: true })
+  @ResolveField(() => Product, { nullable: true })
   product(@Parent() cartItem: CartItem) {
     return this.productsService.findOne(cartItem.productId);
   }
 
-  @Query(() => CartItem, { name: 'cartItem' })
-  findCartItem(
-    @AuthUser() { sub }: Auth,
-    @Args('productId') productId: string,
-  ) {
+  @Query(() => CartItem)
+  cartItem(@AuthUser() { sub }: Auth, @Args('productId') productId: string) {
     return this.cartsService.getCartItem(sub, productId);
   }
 }
