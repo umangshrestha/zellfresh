@@ -1,8 +1,7 @@
-import { CartType } from '../Cart.types';
+import { CartItemType } from '../CartItem/CartItem.types';
+import { AddItemToCartMutationFunction } from '../hooks/AddItemToCart/AddItemToCart.types';
 
-export interface CartListProps {
-  data: CartType[];
+export interface CartListProps extends AddItemToCartMutationFunction {
+  data: CartItemType[];
   loading: boolean;
-  onRemove: (id: string) => void;
-  onAddItemToCart: (id: string, quantity: number) => void;
 }

@@ -8,7 +8,7 @@ import { CARTS_QUERY } from './CartPage.queries';
 export const CartPage = () => {
   const { setNotification } = useNotification();
   const { data, loading, error } = useQuery(CARTS_QUERY);
-  const { addItemToCart, removeItemFromCart } = useAddItemToCart();
+  const { addItemToCart } = useAddItemToCart();
 
   useEffect(() => {
     if (error) {
@@ -21,10 +21,12 @@ export const CartPage = () => {
 
   return (
     <CartList
-      data={data?.products?.items}
+      data={data?.cart?.items?.map((item: any) => ({
+        ...item.product,
+        quantity: item.quantity,
+      }))}
       loading={loading}
-      onRemove={removeItemFromCart}
-      onChange={addItemToCart}
+      onAddItemToCart={addItemToCart}
     />
   );
 };

@@ -1,4 +1,4 @@
-import { Logger, UseGuards } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
 import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { AccessOrGuestTokenGuard } from 'src/auth/access-or-guest-token.gaurd';
 import { AuthUser } from 'src/auth/auth.decorator';
@@ -11,16 +11,13 @@ import { CartItem } from './entities/cart-item.entity';
 @Resolver(() => CartItem)
 @UseGuards(AccessOrGuestTokenGuard)
 export class CartsItemResolver {
-  private readonly loggerService = new Logger(CartsItemResolver.name);
-
   constructor(
     private readonly cartsService: CartsService,
     private readonly productsService: ProductsService,
   ) {}
 
   @ResolveField('product', () => Product, { nullable: true })
-  findOneProduct(@Parent() cartItem: CartItem) {
-    this.loggerService.log(cartItem);
+  product(@Parent() cartItem: CartItem) {
     return this.productsService.findOne(cartItem.productId);
   }
 

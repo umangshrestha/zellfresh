@@ -32,6 +32,5 @@ export const useAddItemToCart = () => {
 
   return {
     addItemToCart,
-    removeItemFromCart: (productId: string) => addItemToCart(productId, 0),
   };
 };

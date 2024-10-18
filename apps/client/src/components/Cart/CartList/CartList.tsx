@@ -5,12 +5,7 @@ import CartItem from '../CartItem';
 import CartItemSkeleton from '../CartItemSkeleton';
 import { CartListProps } from './CartList.types';
 
-export const CartList = ({
-  data,
-  loading,
-  onRemove,
-  onAddItemToCart,
-}: CartListProps) => {
+export const CartList = ({ data, loading, onAddItemToCart }: CartListProps) => {
   if (loading) {
     return (
       <Box justifyContent="space-around" sx={{ maxWidth: '100%', padding: 2 }}>
@@ -42,12 +37,8 @@ export const CartList = ({
       <Box sx={{ padding: 2 }}>
         <List>
           {data.map((product) => (
-            <ListItem key={product.id}>
-              <CartItem
-                {...product}
-                onRemove={onRemove}
-                onAddItemToCart={onAddItemToCart}
-              />
+            <ListItem key={product.productId}>
+              <CartItem {...product} onAddItemToCart={onAddItemToCart} />
             </ListItem>
           ))}
         </List>

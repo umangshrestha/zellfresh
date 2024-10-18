@@ -1,6 +1,15 @@
-import { CartType } from '../Cart.types';
+import { Product } from '../../../__generated__/types';
+import { AddItemToCartMutationFunction } from '../hooks/AddItemToCart/AddItemToCart.types';
 
-export type CartItemProps = CartType & {
-  onAddItemToCart: (id: string, count: number) => void;
-  onRemove: (id: string) => void;
-};
+export type CartItemType = Pick<
+  Product,
+  | 'productId'
+  | 'name'
+  | 'price'
+  | 'imageUrl'
+  | 'availableQuantity'
+  | 'limitPerTransaction'
+  | 'description'
+>;
+
+export type CartItemProps = CartItemType & AddItemToCartMutationFunction;

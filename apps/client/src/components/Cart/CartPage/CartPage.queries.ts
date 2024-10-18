@@ -5,8 +5,16 @@ export const CARTS_QUERY = gql`
     cart {
       count
       items {
-        productId
         quantity
+        product {
+          productId
+          name
+          price
+          imageUrl
+          availableQuantity
+          limitPerTransaction
+          description
+        }
       }
     }
   }

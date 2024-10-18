@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { CartType } from '../Cart.types';
+import { CartItemType } from '../CartItem/CartItem.types';
 import { CartList } from './CartList';
 
 const meta = {
@@ -11,9 +11,9 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const products: CartType[] = [
+const products: CartItemType[] = [
   {
-    id: '1',
+    productId: '1',
     name: 'Chicken Breast',
     price: 12.99,
     imageUrl:
@@ -23,7 +23,7 @@ const products: CartType[] = [
     description: 'Delicious chicken breast',
   },
   {
-    id: '2',
+    productId: '2',
     name: 'BONELESS PORK BUTT ROAST',
     price: 100,
     imageUrl:
@@ -39,7 +39,6 @@ export const Default: Story = {
     data: products,
     loading: false,
     onAddItemToCart: () => {},
-    onRemove: () => {},
   },
 };
 
@@ -48,7 +47,6 @@ export const Loading: Story = {
     data: [],
     loading: true,
     onAddItemToCart: () => {},
-    onRemove: () => {},
   },
 };
 
@@ -57,6 +55,5 @@ export const Empty: Story = {
     data: [],
     loading: false,
     onAddItemToCart: () => {},
-    onRemove: () => {},
   },
 };

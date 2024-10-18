@@ -13,20 +13,18 @@ import Badge from '../../Badge';
 import { CartItemProps } from './CartItem.types';
 
 export const CartItem = ({
-  id,
+  productId,
   name,
   price,
   imageUrl,
   availableQuantity,
   limitPerTransaction,
   description,
-  onChange,
-  onRemove,
+  onAddItemToCart,
 }: CartItemProps) => {
   const totalPrice = price * availableQuantity;
   const isProductAvailable = availableQuantity > 0;
   const badgeText = !isProductAvailable ? 'Out of Stock' : null;
-
   return (
     <Card className="flex flex-col justify-between max-w-xl w-full">
       <Badge badgeText={badgeText} />
@@ -46,7 +44,10 @@ export const CartItem = ({
           </Typography>
         }
         action={
-          <IconButton color="error" onClick={() => onRemove(id)}>
+          <IconButton
+            color="error"
+            onClick={() => onAddItemToCart(productId, 0)}
+          >
             <DeleteIcon />
           </IconButton>
         }
@@ -61,7 +62,7 @@ export const CartItem = ({
         </Typography>
         <Select
           value={availableQuantity}
-          onChange={(e) => onChange(id, +e.target.value)}
+          onChange={(e) => onAddItemToCart(productId, +e.target.value)}
         >
           {!isProductAvailable ? (
             <MenuItem value={0}>0</MenuItem>
