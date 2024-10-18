@@ -12,16 +12,14 @@ import ProductAddItem from '../ProductAddItem';
 import { ProductProps } from './ProductItem.types';
 
 export const ProductItem = ({
-  productId,
   name,
   description,
   price,
   imageUrl,
-  limitPerTransaction,
   availableQuantity,
   rating,
   badgeText,
-  onAddItemToCart,
+  ...mutationFunctions
 }: ProductProps) => {
   const [isAddedToCartClicked, setIsAddedToCartClicked] = useState(false);
 
@@ -80,12 +78,8 @@ export const ProductItem = ({
             </Button>
           ) : (
             <ProductAddItem
-              {...{
-                productId,
-                availableQuantity,
-                limitPerTransaction,
-                onAddItemToCart,
-              }}
+              availableQuantity={availableQuantity}
+              {...mutationFunctions}
             />
           )}
         </CardActions>

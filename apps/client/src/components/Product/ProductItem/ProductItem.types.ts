@@ -1,4 +1,5 @@
 import { Product } from '../../../__generated__/types';
+import { UseCartMutationFunctions } from '../../Cart/hooks/useCart';
 export type ProductItemType = Pick<
   Product,
   | 'productId'
@@ -12,11 +13,4 @@ export type ProductItemType = Pick<
   | 'badgeText'
 >;
 
-export type ProductProps = ProductItemType & {
-  onAddItemToCart: (id: string, quantity: number) => void;
-};
-
-export type ProductAddItemProps = Pick<
-  ProductProps,
-  'productId' | 'availableQuantity' | 'limitPerTransaction' | 'onAddItemToCart'
->;
+export type ProductProps = ProductItemType & UseCartMutationFunctions;

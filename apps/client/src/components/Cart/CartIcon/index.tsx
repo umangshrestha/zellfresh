@@ -3,7 +3,7 @@ import ErrorBoundary from '../../ErrorBoundary';
 import { useCartCount } from '../hooks/CartCount';
 import { CartIcon } from './CartIcon';
 
-export default () => {
+const CartIconWithCount = () => {
   const { cartCount } = useCartCount();
   const navigate = useNavigate();
 
@@ -13,3 +13,5 @@ export default () => {
     </ErrorBoundary>
   );
 };
+
+export default CartIconWithCount;

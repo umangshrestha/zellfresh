@@ -1,9 +1,6 @@
 import { EmptyPageProps } from '../../EmptyPage';
-import { CartItemType } from '../CartItem/CartItem.types';
-import { AddItemToCartMutationFunction } from '../hooks/AddItemToCart/AddItemToCart.types';
+import { UseCartMutation } from '../hooks/useCart';
 
-export interface CartListProps extends AddItemToCartMutationFunction {
-  data: CartItemType[];
-  loading: boolean;
+export interface CartListProps extends UseCartMutation {
   onEmptyStateClicked: EmptyPageProps['onClick'];
 }

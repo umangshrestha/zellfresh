@@ -44,7 +44,7 @@ export const LoginPage = () => {
           <GoogleLogin
             useOneTap
             onSuccess={(response) => {
-              response.credential &&
+              if (response.credential)
                 login('google', {
                   headers: {
                     Authorization: `Bearer ${response.credential}`,

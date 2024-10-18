@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAddItemToCart } from '../../Cart/hooks/AddItemToCart/AddItemToCart.hooks';
+import { useCart } from '../../Cart/hooks/useCart';
 import { useNotification } from '../../Notification';
 import { PRODUCTS } from '../Product.queries';
 import ProductList from '../ProductList';
@@ -9,7 +9,7 @@ import ProductList from '../ProductList';
 export const ProductPage = () => {
   const { setNotification } = useNotification();
   const { data, loading, error } = useQuery(PRODUCTS);
-  const { addItemToCart } = useAddItemToCart();
+  const { onAddItemToCart, getProductCount } = useCart();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,7 +25,8 @@ export const ProductPage = () => {
     <ProductList
       data={data?.products?.items}
       loading={loading}
-      onAddItemToCart={addItemToCart}
+      onAddItemToCart={onAddItemToCart}
+      getProductCount={getProductCount}
       onEmptyStateClicked={() => navigate('/')}
     />
   );

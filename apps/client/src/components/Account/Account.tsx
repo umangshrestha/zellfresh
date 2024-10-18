@@ -56,7 +56,7 @@ export const Account = () => {
     return () => {
       controller.abort();
     };
-  }, [setNotification]);
+  }, [setNotification, setUserDetails]);
 
   return (
     <Box>

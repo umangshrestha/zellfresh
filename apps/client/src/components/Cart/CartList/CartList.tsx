@@ -12,6 +12,7 @@ export const CartList = ({
   loading,
   onAddItemToCart,
   onEmptyStateClicked,
+  getProductCount,
 }: CartListProps) => {
   if (loading) {
     return (
@@ -57,7 +58,11 @@ export const CartList = ({
         <List>
           {data.map((product) => (
             <ListItem key={product.productId}>
-              <CartItem {...product} onAddItemToCart={onAddItemToCart} />
+              <CartItem
+                {...product}
+                onAddItemToCart={onAddItemToCart}
+                getProductCount={getProductCount}
+              />
             </ListItem>
           ))}
         </List>

@@ -32,6 +32,7 @@ axiosClient.interceptors.response.use(
         await refresh();
         return axiosClient(originalRequest);
       } catch (refreshError) {
+        console.error('Refresh token failed:', refreshError);
         try {
           await logout();
           await login();

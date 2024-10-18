@@ -9,4 +9,6 @@ export interface StorageState {
     role: string;
     imageUrl: string;
   } | null;
+
+  setUserDetails: (userDetails: StorageState['userDetails']) => void;
 }

@@ -6,10 +6,9 @@ import CardActions from '@mui/material/CardActions';
 import CardHeader from '@mui/material/CardHeader';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 import Badge from '../../Badge';
+import ProductAddItem from '../../Product/ProductAddItem';
 import { CartItemProps } from './CartItem.types';
 
 export const CartItem = ({
@@ -21,6 +20,7 @@ export const CartItem = ({
   limitPerTransaction,
   description,
   onAddItemToCart,
+  getProductCount,
 }: CartItemProps) => {
   const totalPrice = price * availableQuantity;
   const isProductAvailable = availableQuantity > 0;
@@ -34,12 +34,12 @@ export const CartItem = ({
             alt={name}
             src={imageUrl}
             variant="square"
-            sx={{ width: 100, height: 100 }}
+            sx={{ width: 80, height: 80 }}
           />
         }
         title={<Typography variant="h6">{name}</Typography>}
         subheader={
-          <Typography variant="h6" color="error">
+          <Typography variant="subtitle2" color="textSecondary">
             {description}
           </Typography>
         }
@@ -60,20 +60,15 @@ export const CartItem = ({
         <Typography variant="body2" color="textSecondary">
           <ClearIcon />
         </Typography>
-        <Select
-          value={availableQuantity}
-          onChange={(e) => onAddItemToCart(productId, +e.target.value)}
-        >
-          {!isProductAvailable ? (
-            <MenuItem value={0}>0</MenuItem>
-          ) : (
-            Array.from({ length: limitPerTransaction }, (_, i) => (
-              <MenuItem key={i + 1} value={i + 1}>
-                {i + 1}
-              </MenuItem>
-            ))
-          )}
-        </Select>
+        <ProductAddItem
+          {...{
+            productId,
+            availableQuantity,
+            limitPerTransaction,
+            onAddItemToCart,
+            getProductCount,
+          }}
+        />
         <Typography variant="body2" color="textSecondary">
           =
         </Typography>
