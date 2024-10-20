@@ -1,5 +1,5 @@
 import { Product } from '../../../__generated__/types';
-import { UseCartMutationFunctions } from '../../Cart/hooks/useCart';
+import { CartMutationFunctions } from '../../Cart';
 export type ProductItemType = Pick<
   Product,
   | 'productId'
@@ -14,4 +14,4 @@ export type ProductItemType = Pick<
   | 'unit'
 >;
 
-export type ProductProps = ProductItemType & UseCartMutationFunctions;
+export type ProductProps = ProductItemType & CartMutationFunctions;

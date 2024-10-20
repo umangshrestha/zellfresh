@@ -1,18 +1,27 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-const CartIconWithBackground = (props: CartIconProps) => (
+const CartIconWithProvider = (props: CartIconProps & {count: number}) => {
+  const {setCartCount} = useCartIcon();
+
+  useEffect(() => {
+    setCartCount(props.count);
+  }, [props.count, setCartCount]);
+  
+  return (
   <div style={{ backgroundColor: 'gray' }}>
     <CartIcon {...props} />
-  </div>
-);
+  </div>);
+};
 
 import { CartIcon } from './CartIcon';
 import { CartIconProps } from './CartIcon.types';
+import { useEffect } from 'react';
+import { useCartIcon } from './CartCount.hooks';
 const meta = {
   title: 'Cart/Icon',
-  component: CartIconWithBackground,
+  component: CartIconWithProvider,
   tags: ['autodocs'],
-} as Meta<typeof CartIconWithBackground>;
+} as Meta<typeof CartIconWithProvider>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
 import { useEffect } from 'react';
-import { useCart } from '../../Cart/hooks/useCart';
+import { useCart } from '../../Cart';
 import { useNotification } from '../../Notification';
 import { PRODUCTS } from '../Product.queries';
 import ProductList from '../ProductList';

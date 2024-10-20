@@ -3,7 +3,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Skeleton from '@mui/material/Skeleton';
 import EmptyPage from '../../EmptyPage';
-import CartItem from '../CartItem';
+import CartItem, { CartItemType } from '../CartItem';
 import CartItemSkeleton from '../CartItemSkeleton';
 import { CartListProps } from './CartList.types';
 
@@ -48,7 +48,7 @@ export const CartList = ({
   }
 
   const totalPrice = data.reduce(
-    (acc: number, product) => acc + product.price * product.availableQuantity,
+    (acc: number, product: CartItemType) => acc + product.price * product.availableQuantity,
     0,
   );
 
@@ -56,7 +56,7 @@ export const CartList = ({
     <Box justifyContent="space-around" sx={{ maxWidth: '100%', padding: 2 }}>
       <Box sx={{ padding: 2 }}>
         <List>
-          {data.map((product) => (
+          {data.map((product: CartItemType) => (
             <ListItem key={product.productId}>
               <CartItem
                 {...product}
@@ -66,7 +66,9 @@ export const CartList = ({
             </ListItem>
           ))}
         </List>
-        Total: {totalPrice}
+        <Box sx={{ padding: 2 }}>
+          Total: {totalPrice}
+        </Box>
       </Box>
     </Box>
   );

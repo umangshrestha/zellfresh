@@ -35,8 +35,11 @@ export const ProductItem = ({
   badgeText = isProductAvailable ? badgeText : 'Out of Stock';
 
   useEffect(() => {
+    if (isAddedToCartClicked)
+      return
     setIsAddedToCartClicked(getProductCount(productId) > 0);
   }, [getProductCount]);
+
   return (
     <Viel enable={!isProductAvailable}>
       <Card className="h-full w-64 max-w-xs flex flex-col">

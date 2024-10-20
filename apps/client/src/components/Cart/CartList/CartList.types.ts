@@ -1,6 +1,6 @@
 import { EmptyPageProps } from '../../EmptyPage';
-import { UseCartMutation } from '../hooks/useCart';
+import { CartMutation } from '..';
 
-export interface CartListProps extends UseCartMutation {
+export interface CartListProps extends CartMutation {
   onEmptyStateClicked: EmptyPageProps['onClick'];
 }

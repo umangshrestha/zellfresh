@@ -1,8 +1,8 @@
 import { useContext } from 'react';
-import { CartCountContext } from './CartCount.context';
+import { CartIconContext } from './CartIcon.context';
 
-export const useCartCount = () => {
-  const context = useContext(CartCountContext);
+export const useCartIcon = () => {
+  const context = useContext(CartIconContext);
   if (!context) {
     throw new Error('useCartCount must be used within a CartCountProvider');
   }

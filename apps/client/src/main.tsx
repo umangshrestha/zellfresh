@@ -3,7 +3,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
-import { CartCountProvider } from './components/Cart/hooks/CartCount';
+import { CartIconProvider } from './components/Cart/CartIcon';
 import { NotificationProvider } from './components/Notification';
 import { ThemeToggleProvider } from './components/ThemeToggle';
 import './index.css';
@@ -16,9 +16,9 @@ createRoot(document.getElementById('root')!).render(
       <StrictMode>
         <ThemeToggleProvider>
           <NotificationProvider>
-            <CartCountProvider>
+            <CartIconProvider>
               <RouterProvider router={router} />
-            </CartCountProvider>
+            </CartIconProvider>
           </NotificationProvider>
         </ThemeToggleProvider>
       </StrictMode>

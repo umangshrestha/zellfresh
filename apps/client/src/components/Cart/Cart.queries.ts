@@ -1,20 +1,5 @@
 import { gql } from '@apollo/client';
 
-export const CART_ITEM_QUERY = gql`
-  query CartItem($productId: String!) {
-    cartItem(productId: $productId) {
-      quantity
-    }
-  }
-`;
-
-export const CART_COUNT_QUERY = gql`
-  query {
-    cart {
-      count
-    }
-  }
-`;
 
 export const ADD_ITEM_TO_CART_MUTATION = gql`
   mutation AddItemToCart($productId: String!, $quantity: Int!) {
@@ -33,6 +18,7 @@ export const CARTS_QUERY_VERBOSE = gql`
         product {
           productId
           name
+          unit
           price
           imageUrl
           availableQuantity

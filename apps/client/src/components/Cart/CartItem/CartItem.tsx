@@ -1,18 +1,19 @@
-import DeleteIcon from '@mui/icons-material/Delete';
 import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardHeader from '@mui/material/CardHeader';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Badge from '../../Badge';
 import ProductAddItem from '../../Product/ProductAddItem';
 import { CartItemProps } from './CartItem.types';
+import { CardContent } from '@mui/material';
 
 export const CartItem = ({
   productId,
   name,
+  unit,
   price,
   imageUrl,
   availableQuantity,
@@ -40,34 +41,35 @@ export const CartItem = ({
         subheader={
           <Typography variant="subtitle2" color="textSecondary">
             {description}
+            <br />
+            Rs. {price} / {unit}
           </Typography>
         }
         action={
-          <IconButton
-            color="error"
-            onClick={() => onAddItemToCart(productId, 0)}
-          >
-            <DeleteIcon />
-          </IconButton>
+          <Typography
+          sx={{mt: 1}}
+          variant="h6"
+          color="textSecondary">      
+           Rs. {totalPrice}
+        </Typography>
         }
       />
-      <Divider />
-      <CardActions className="flex justify-between">
-        <Typography variant="h6" color="textSecondary">
-          Rs. {price}
-        </Typography>
+
+      <CardActions className="flex flex-row">
+        <Box className="flex-1"/>
         <ProductAddItem
-          {...{
-            productId,
-            availableQuantity,
-            limitPerTransaction,
-            onAddItemToCart,
-            getProductCount,
-          }}
+          productId={productId}
+          availableQuantity={availableQuantity}
+          limitPerTransaction={limitPerTransaction}
+          onAddItemToCart={onAddItemToCart}
+          getProductCount={getProductCount}
         />
-        <Typography variant="h6" color="error">
-          Rs. {totalPrice}
-        </Typography>
+        <Button
+          color="error"
+          onClick={() => onAddItemToCart(productId, 0)}
+        >
+          delete
+        </Button>
       </CardActions>
     </Card>
   );

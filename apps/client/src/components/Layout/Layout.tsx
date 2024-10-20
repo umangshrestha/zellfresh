@@ -6,7 +6,7 @@ import Paper from '@mui/material/Paper';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Suspense } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { APP_NAME } from '../../config';
 import Account from '../Account';
 import CartIcon from '../Cart/CartIcon';
@@ -16,6 +16,7 @@ import Notification from '../Notification';
 import ThemeToggle from '../ThemeToggle';
 
 export const Layout = () => {
+  const navigate = useNavigate();
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -26,8 +27,10 @@ export const Layout = () => {
             </Link>
           </Typography>
           <ThemeToggle />
-          <CartIcon />
-          <Account />
+          <ErrorBoundary>
+      <CartIcon  onClick={() => navigate('/cart')} />
+    </ErrorBoundary>
+        <Account />
         </Toolbar>
       </AppBar>
       <Paper className="min-h-screen">
