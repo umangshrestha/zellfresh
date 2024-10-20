@@ -1,14 +1,19 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { useEffect } from 'react';
 import { useNotification } from '../../../Notification';
-import { ADD_ITEM_TO_CART_MUTATION, CARTS_QUERY } from '../../Cart.queries';
+import {
+  ADD_ITEM_TO_CART_MUTATION,
+  CARTS_QUERY_SIMPLE,
+  CARTS_QUERY_VERBOSE,
+} from '../../Cart.queries';
 import { useCartCount } from '../CartCount';
 import { UseCartMutation } from './useCart.types';
 
-export const useCart = (): UseCartMutation => {
-  const { data, loading, error } = useQuery(CARTS_QUERY);
+export const useCart = ({ verbose = false }): UseCartMutation => {
+  const query = verbose ? CARTS_QUERY_VERBOSE : CARTS_QUERY_SIMPLE;
+  const { data, loading, error } = useQuery(query);
   const [executeMutation] = useMutation(ADD_ITEM_TO_CART_MUTATION, {
-    refetchQueries: [CARTS_QUERY],
+    refetchQueries: [query],
   });
   const { setNotification } = useNotification();
   const { setCartCount } = useCartCount();

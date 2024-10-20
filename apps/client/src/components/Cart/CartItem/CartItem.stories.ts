@@ -20,5 +20,6 @@ export const Default: Story = {
     limitPerTransaction: 10,
     name: 'Chicken Breast',
     onAddItemToCart: () => {},
+    getProductCount: () => 0,
   },
 };

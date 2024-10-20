@@ -1,4 +1,3 @@
-import ClearIcon from '@mui/icons-material/Clear';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
@@ -57,9 +56,6 @@ export const CartItem = ({
         <Typography variant="h6" color="textSecondary">
           Rs. {price}
         </Typography>
-        <Typography variant="body2" color="textSecondary">
-          <ClearIcon />
-        </Typography>
         <ProductAddItem
           {...{
             productId,
@@ -69,9 +65,6 @@ export const CartItem = ({
             getProductCount,
           }}
         />
-        <Typography variant="body2" color="textSecondary">
-          =
-        </Typography>
         <Typography variant="h6" color="error">
           Rs. {totalPrice}
         </Typography>

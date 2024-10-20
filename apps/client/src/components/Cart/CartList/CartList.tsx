@@ -40,7 +40,7 @@ export const CartList = ({
           'Start adding items to your cart by clicking the button below',
         ]}
         buttonText="Add items"
-        image="/public/empty-cart.png"
+        image="/empty-cart.png"
         alt="Empty cart"
         onClick={onEmptyStateClicked}
       />

@@ -4,12 +4,13 @@ import { useCart } from '../hooks/useCart';
 
 export const CartPage = () => {
   const navigate = useNavigate();
-  const functions = useCart();
+  const functions = useCart({
+    verbose: true,
+  });
 
   return (
-    <CartList
-      {...functions}
-      onEmptyStateClicked={() => navigate('/')}
-    />
+    <>
+      <CartList {...functions} onEmptyStateClicked={() => navigate('/')} />
+    </>
   );
 };

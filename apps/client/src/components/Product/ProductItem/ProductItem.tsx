@@ -5,7 +5,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Badge from '../../Badge';
 import Viel from '../../Viel';
 import ProductAddItem from '../ProductAddItem';
@@ -13,13 +13,17 @@ import { ProductProps } from './ProductItem.types';
 
 export const ProductItem = ({
   name,
+  unit,
   description,
   price,
   imageUrl,
   availableQuantity,
   rating,
   badgeText,
-  ...mutationFunctions
+  productId,
+  limitPerTransaction,
+  onAddItemToCart,
+  getProductCount,
 }: ProductProps) => {
   const [isAddedToCartClicked, setIsAddedToCartClicked] = useState(false);
 
@@ -29,9 +33,13 @@ export const ProductItem = ({
 
   const isProductAvailable = availableQuantity > 0;
   badgeText = isProductAvailable ? badgeText : 'Out of Stock';
+
+  useEffect(() => {
+    setIsAddedToCartClicked(getProductCount(productId) > 0);
+  }, [getProductCount]);
   return (
     <Viel enable={!isProductAvailable}>
-      <Card className="h-full w-64 max-w-xs">
+      <Card className="h-full w-64 max-w-xs flex flex-col">
         <Badge badgeText={badgeText} />
         <CardMedia
           component="img"
@@ -40,7 +48,7 @@ export const ProductItem = ({
           alt={name}
           className="h-48 w-48 object-cover"
         />
-        <CardContent>
+        <CardContent sx={{ flexGrow: 1 }}>
           <Typography
             gutterBottom
             variant="h5"
@@ -59,12 +67,12 @@ export const ProductItem = ({
           <Typography variant="h6" className="text-red-500">
             Rs. {price}
           </Typography>
-          <div className="flex-1" />
+          <Typography variant="subtitle2" color="textSecondary">
+            {unit}
+          </Typography>
+          <Rating name="read-only" value={rating} precision={0.5} readOnly />
         </CardContent>
-        <Rating name="read-only" value={rating} precision={0.5} readOnly />
-
-        <span className="flex-1 auto" />
-        <CardActions>
+        <CardActions disableSpacing sx={{ mt: 'auto' }}>
           {!isAddedToCartClicked ? (
             <Button
               className="w-full"
@@ -79,7 +87,10 @@ export const ProductItem = ({
           ) : (
             <ProductAddItem
               availableQuantity={availableQuantity}
-              {...mutationFunctions}
+              limitPerTransaction={limitPerTransaction}
+              productId={productId}
+              onAddItemToCart={onAddItemToCart}
+              getProductCount={getProductCount}
             />
           )}
         </CardActions>

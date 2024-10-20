@@ -47,15 +47,14 @@ export class ProductsService {
     const data = await this.dynamodbService.client.scan({
       TableName,
       Limit: limit,
-      ExclusiveStartKey: cursor ? { id: { S: cursor } } : undefined,
+      ExclusiveStartKey: cursor ? { productId: { S: cursor } } : undefined,
     });
-
     return {
       items: data.Items.map((item) => unmarshall(item) as Product),
       pagination: {
         limit,
         prev: cursor,
-        next: data.LastEvaluatedKey ? data.LastEvaluatedKey.id.S : null,
+        next: data.LastEvaluatedKey ? data.LastEvaluatedKey.productId.S : null,
       },
     };
   }

@@ -30,7 +30,7 @@ export const ProductList = ({
           'Please check back later',
         ]}
         buttonText="Refresh"
-        image="/public/empty-product.png"
+        image="/empty-product.png"
         alt="No products available"
         onClick={onEmptyStateClicked}
       />

@@ -11,6 +11,7 @@ export type ProductItemType = Pick<
   | 'rating'
   | 'limitPerTransaction'
   | 'badgeText'
+  | 'unit'
 >;
 
 export type ProductProps = ProductItemType & UseCartMutationFunctions;

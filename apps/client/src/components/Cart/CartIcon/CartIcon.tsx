@@ -5,7 +5,7 @@ import { CartIconProps } from './CartIcon.types';
 
 export const CartIcon = ({ count, onClick }: CartIconProps) => (
   <IconButton onClick={onClick}>
-    <Badge badgeContent={count} color="secondary">
+    <Badge badgeContent={count} className="text-white">
       <ShoppingCartIcon className="color-white" />
     </Badge>
   </IconButton>

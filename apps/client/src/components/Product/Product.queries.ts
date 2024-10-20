@@ -9,6 +9,7 @@ export const PRODUCTS = gql`
         imageUrl
         description
         price
+        unit
         availableQuantity
         limitPerTransaction
         category

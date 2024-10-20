@@ -30,7 +30,9 @@ export type Scalars = {
 export type Cart = {
   __typename?: 'Cart';
   count: Scalars['Int']['output'];
+  createdAt: Scalars['String']['output'];
   items: Array<CartItem>;
+  updatedAt: Scalars['String']['output'];
   userId: Scalars['String']['output'];
 };
 
@@ -41,8 +43,11 @@ export type CartInput = {
 
 export type CartItem = {
   __typename?: 'CartItem';
+  createdAt: Scalars['String']['output'];
+  product?: Maybe<Product>;
   productId: Scalars['String']['output'];
   quantity: Scalars['Int']['output'];
+  updatedAt: Scalars['String']['output'];
 };
 
 export type CreateProductInput = {
@@ -57,6 +62,7 @@ export type CreateProductInput = {
   productId?: InputMaybe<Scalars['String']['input']>;
   rating?: Scalars['Float']['input'];
   tags: Array<Scalars['String']['input']>;
+  unit: Scalars['String']['input'];
 };
 
 export type Mutation = {
@@ -76,7 +82,7 @@ export type MutationCreateProductArgs = {
 };
 
 export type MutationRemoveProductArgs = {
-  id: Scalars['String']['input'];
+  productId: Scalars['String']['input'];
 };
 
 export type PaginatedProduct = {
@@ -97,6 +103,7 @@ export type Product = {
   availableQuantity: Scalars['Int']['output'];
   badgeText: Scalars['String']['output'];
   category: Scalars['String']['output'];
+  createdAt: Scalars['String']['output'];
   description?: Maybe<Scalars['String']['output']>;
   imageUrl: Scalars['String']['output'];
   limitPerTransaction: Scalars['Int']['output'];
@@ -105,20 +112,38 @@ export type Product = {
   productId: Scalars['String']['output'];
   rating: Scalars['Float']['output'];
   tags: Array<Scalars['String']['output']>;
+  unit: Scalars['String']['output'];
+  updatedAt: Scalars['String']['output'];
 };
 
 export type Query = {
   __typename?: 'Query';
   cart: Cart;
+  cartItem: CartItem;
+  carts: PaginatedProduct;
   product?: Maybe<Product>;
   products: PaginatedProduct;
 };
 
+export type QueryCartItemArgs = {
+  productId: Scalars['String']['input'];
+};
+
+export type QueryCartsArgs = {
+  cursor?: InputMaybe<Scalars['String']['input']>;
+  limit?: Scalars['Int']['input'];
+};
+
 export type QueryProductArgs = {
-  id: Scalars['String']['input'];
+  productId: Scalars['String']['input'];
 };
 
 export type QueryProductsArgs = {
   cursor?: InputMaybe<Scalars['String']['input']>;
   limit?: Scalars['Int']['input'];
+};
+
+export type Subscription = {
+  __typename?: 'Subscription';
+  cartCountUpdated: Scalars['Int']['output'];
 };

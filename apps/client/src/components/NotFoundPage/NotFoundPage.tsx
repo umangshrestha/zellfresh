@@ -9,7 +9,7 @@ export const NotFoundPage = () => {
       alt="Page not found"
       description={['The page you are looking for does not exist']}
       buttonText="Go back"
-      image="/public/not-found.png"
+      image="/not-found.png"
       onClick={() => navigate(-1)}
     />
   );

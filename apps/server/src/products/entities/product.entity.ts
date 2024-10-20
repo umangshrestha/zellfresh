@@ -24,6 +24,9 @@ export class Product {
   limitPerTransaction: number;
 
   @Field()
+  unit: string;
+
+  @Field()
   category: string;
 
   @Field(() => Float)

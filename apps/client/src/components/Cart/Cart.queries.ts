@@ -24,7 +24,7 @@ export const ADD_ITEM_TO_CART_MUTATION = gql`
   }
 `;
 
-export const CARTS_QUERY = gql`
+export const CARTS_QUERY_VERBOSE = gql`
   query {
     cart {
       count
@@ -38,6 +38,20 @@ export const CARTS_QUERY = gql`
           availableQuantity
           limitPerTransaction
           description
+        }
+      }
+    }
+  }
+`;
+
+export const CARTS_QUERY_SIMPLE = gql`
+  query {
+    cart {
+      count
+      items {
+        quantity
+        product {
+          productId
         }
       }
     }

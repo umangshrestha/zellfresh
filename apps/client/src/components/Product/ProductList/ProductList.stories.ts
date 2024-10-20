@@ -23,6 +23,7 @@ const products: ProductItemType[] = [
     rating: 4.5,
     badgeText: '',
     description: 'Delicious chicken breast',
+    unit: '1 lb',
   },
   {
     productId: '2',
@@ -35,6 +36,7 @@ const products: ProductItemType[] = [
     rating: 3.5,
     badgeText: 'New',
     description: 'Tasty pork butt roast',
+    unit: '1 lb',
   },
 ];
 

@@ -25,6 +25,10 @@ export class CreateProductInput {
   @IsUrl()
   imageUrl: string;
 
+  @Field()
+  @IsString()
+  unit: string;
+
   @IsString()
   @Field({ nullable: true })
   description: string | null;
