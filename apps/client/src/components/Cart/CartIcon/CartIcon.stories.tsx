@@ -1,22 +1,23 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { useEffect } from 'react';
+import { useCartIcon } from './CartCount.hooks';
+import { CartIcon } from './CartIcon';
+import { CartIconProps } from './CartIcon.types';
 
-const CartIconWithProvider = (props: CartIconProps & {count: number}) => {
-  const {setCartCount} = useCartIcon();
+const CartIconWithProvider = (props: CartIconProps & { count: number }) => {
+  const { setCartCount } = useCartIcon();
 
   useEffect(() => {
     setCartCount(props.count);
   }, [props.count, setCartCount]);
-  
+
   return (
-  <div style={{ backgroundColor: 'gray' }}>
-    <CartIcon {...props} />
-  </div>);
+    <div style={{ backgroundColor: 'gray' }}>
+      <CartIcon {...props} />
+    </div>
+  );
 };
 
-import { CartIcon } from './CartIcon';
-import { CartIconProps } from './CartIcon.types';
-import { useEffect } from 'react';
-import { useCartIcon } from './CartCount.hooks';
 const meta = {
   title: 'Cart/Icon',
   component: CartIconWithProvider,

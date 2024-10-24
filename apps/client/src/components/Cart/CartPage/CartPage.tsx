@@ -1,6 +1,7 @@
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import CartList from '../CartList';
 import { useCart } from '..';
+import CartList from '../CartList';
 
 export const CartPage = () => {
   const navigate = useNavigate();
@@ -9,8 +10,8 @@ export const CartPage = () => {
   });
 
   return (
-    <>
+    <React.Fragment>
       <CartList {...functions} onEmptyStateClicked={() => navigate('/')} />
-    </>
+    </React.Fragment>
   );
 };

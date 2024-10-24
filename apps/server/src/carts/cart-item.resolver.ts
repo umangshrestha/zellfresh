@@ -17,8 +17,8 @@ export class CartsItemResolver {
   ) {}
 
   @ResolveField(() => Product, { nullable: true })
-  product(@Parent() cartItem: CartItem) {
-    return this.productsService.findOne(cartItem.productId);
+  product(@Parent() { productId }: CartItem) {
+    return this.productsService.findOne(productId);
   }
 
   @Query(() => CartItem)

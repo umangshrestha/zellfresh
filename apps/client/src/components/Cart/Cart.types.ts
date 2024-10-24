@@ -1,8 +1,9 @@
+import { ProductKey } from '../Product';
 import { CartItemType } from './CartItem';
 
 export type CartMutationFunctions = {
-  onAddItemToCart: (id: string, count: number) => void;
-  getProductCount: (id: string) => number;
+  onAddItemToCart: (uniqueProductInput: ProductKey, count: number) => void;
+  getProductCount: (uniqueProductInput: ProductKey) => number;
 };
 
 export type CartMutation = {

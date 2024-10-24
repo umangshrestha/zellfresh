@@ -19,7 +19,7 @@ export const Layout = () => {
   const navigate = useNavigate();
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="sticky">
         <Toolbar disableGutters className="pl-4 pr-4">
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link href="/" color="inherit" underline="none">
@@ -28,9 +28,9 @@ export const Layout = () => {
           </Typography>
           <ThemeToggle />
           <ErrorBoundary>
-      <CartIcon  onClick={() => navigate('/cart')} />
-    </ErrorBoundary>
-        <Account />
+            <CartIcon onClick={() => navigate('/cart')} />
+          </ErrorBoundary>
+          <Account />
         </Toolbar>
       </AppBar>
       <Paper className="min-h-screen">

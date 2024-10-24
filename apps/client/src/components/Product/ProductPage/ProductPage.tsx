@@ -1,33 +1,29 @@
-import { useQuery } from '@apollo/client';
-import { useEffect } from 'react';
-import { useCart } from '../../Cart';
-import { useNotification } from '../../Notification';
-import { PRODUCTS } from '../Product.queries';
+import Box from '@mui/material/Box';
+import { useProduct } from '../Product.hooks';
+import ProductFilter from '../ProductFilter';
 import ProductList from '../ProductList';
 
 export const ProductPage = () => {
-  const { setNotification } = useNotification();
-  const { data, loading, error, refetch } = useQuery(PRODUCTS);
-  const { onAddItemToCart, getProductCount } = useCart({
-    verbose: false,
-  });
-
-  useEffect(() => {
-    if (error) {
-      setNotification({
-        message: error.message,
-        severity: 'error',
-      });
-    }
-  }, [error, setNotification]);
-
+  const {
+    data,
+    loading,
+    onAddItemToCart,
+    getProductCount,
+    onEmptyStateClicked,
+  } = useProduct();
+  const maxPrice = data.products?.items.reduce(
+    (acc: number, item: any) => Math.max(acc, item.price),
+    0
+  )
   return (
-    <ProductList
-      loading={loading}
-      data={data?.products?.items}
-      onAddItemToCart={onAddItemToCart}
-      getProductCount={getProductCount}
-      onEmptyStateClicked={() => refetch()}
-    />
+    <Box>
+      <ProductList
+        loading={loading}
+        data={data}
+        onAddItemToCart={onAddItemToCart}
+        getProductCount={getProductCount}
+        onEmptyStateClicked={onEmptyStateClicked}
+      />
+    </Box>
   );
 };

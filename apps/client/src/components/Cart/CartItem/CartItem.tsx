@@ -1,17 +1,15 @@
 import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardHeader from '@mui/material/CardHeader';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Badge from '../../Badge';
 import ProductAddItem from '../../Product/ProductAddItem';
 import { CartItemProps } from './CartItem.types';
-import { CardContent } from '@mui/material';
 
 export const CartItem = ({
-  productId,
   name,
   unit,
   price,
@@ -21,6 +19,7 @@ export const CartItem = ({
   description,
   onAddItemToCart,
   getProductCount,
+  ...key
 }: CartItemProps) => {
   const totalPrice = price * availableQuantity;
   const isProductAvailable = availableQuantity > 0;
@@ -46,28 +45,22 @@ export const CartItem = ({
           </Typography>
         }
         action={
-          <Typography
-          sx={{mt: 1}}
-          variant="h6"
-          color="textSecondary">      
-           Rs. {totalPrice}
-        </Typography>
+          <Typography sx={{ mt: 1 }} variant="h6" color="textSecondary">
+            Rs. {totalPrice}
+          </Typography>
         }
       />
 
       <CardActions className="flex flex-row">
-        <Box className="flex-1"/>
+        <Box className="flex-1" />
         <ProductAddItem
-          productId={productId}
+          {...key}
           availableQuantity={availableQuantity}
           limitPerTransaction={limitPerTransaction}
           onAddItemToCart={onAddItemToCart}
           getProductCount={getProductCount}
         />
-        <Button
-          color="error"
-          onClick={() => onAddItemToCart(productId, 0)}
-        >
+        <Button color="error" onClick={() => onAddItemToCart(key, 0)}>
           delete
         </Button>
       </CardActions>

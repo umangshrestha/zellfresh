@@ -11,6 +11,7 @@ export type CartItemType = Pick<
   | 'limitPerTransaction'
   | 'description'
   | 'unit'
+  | 'category'
 >;
 
 export type CartItemProps = CartItemType & CartMutationFunctions;

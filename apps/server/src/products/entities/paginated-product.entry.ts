@@ -1,12 +1,19 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import {
-  PaginatedResponse,
-  Pagination,
-} from 'src/common/entities/pagination.entity';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
+
 import { Product } from './product.entity';
 
 @ObjectType()
-export class PaginatedProduct implements PaginatedResponse<Product> {
+export class Pagination {
+  @Field(() => Int)
+  limit: number;
+  @Field(() => String, { nullable: true })
+  next: string | null;
+  @Field(() => String, { nullable: true })
+  prev: string | null;
+}
+
+@ObjectType()
+export class PaginatedProduct {
   @Field(() => [Product])
   items: Product[];
   @Field(() => Pagination)

@@ -21,6 +21,7 @@ const products: CartItemType[] = [
     availableQuantity: 10,
     limitPerTransaction: 10,
     description: 'Delicious chicken breast',
+    unit: 'kg',
   },
   {
     productId: '2',
@@ -31,6 +32,7 @@ const products: CartItemType[] = [
     availableQuantity: 0,
     limitPerTransaction: 10,
     description: 'Tasty pork butt roast',
+    unit: 'kg',
   },
 ];
 
@@ -39,6 +41,7 @@ export const Default: Story = {
     data: products,
     loading: false,
     onAddItemToCart: () => {},
+    getProductCount: () => 0,
   },
 };
 
@@ -47,6 +50,7 @@ export const Loading: Story = {
     data: [],
     loading: true,
     onAddItemToCart: () => {},
+    getProductCount: () => 0,
   },
 };
 
@@ -56,5 +60,6 @@ export const Empty: Story = {
     loading: false,
     onAddItemToCart: () => {},
     onEmptyStateClicked: () => {},
+    getProductCount: () => 0,
   },
 };

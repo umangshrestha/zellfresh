@@ -8,6 +8,7 @@ import { CartsModule } from 'src/carts/carts.module';
 import { validate } from 'src/common/environment';
 import { ProductsModule } from 'src/products/products.module';
 import { ValidationProvider } from './common/validator.provider';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -24,11 +25,9 @@ import { ValidationProvider } from './common/validator.provider';
         debug: config.getOrThrow('NODE_ENV') !== 'production',
         playground: config.getOrThrow('NODE_ENV') !== 'production',
         autoSchemaFile: join(process.cwd(), 'schema/schema.graphql'),
-        subscriptions: {
-          'graphql-ws': true,
-        },
       }),
     }),
+    UsersModule,
   ],
   controllers: [],
   providers: [ValidationProvider],

@@ -20,10 +20,10 @@ export const ProductItem = ({
   availableQuantity,
   rating,
   badgeText,
-  productId,
   limitPerTransaction,
   onAddItemToCart,
   getProductCount,
+  ...key
 }: ProductProps) => {
   const [isAddedToCartClicked, setIsAddedToCartClicked] = useState(false);
 
@@ -35,9 +35,8 @@ export const ProductItem = ({
   badgeText = isProductAvailable ? badgeText : 'Out of Stock';
 
   useEffect(() => {
-    if (isAddedToCartClicked)
-      return
-    setIsAddedToCartClicked(getProductCount(productId) > 0);
+    if (isAddedToCartClicked) return;
+    setIsAddedToCartClicked(getProductCount(key) > 0);
   }, [getProductCount]);
 
   return (
@@ -91,7 +90,7 @@ export const ProductItem = ({
             <ProductAddItem
               availableQuantity={availableQuantity}
               limitPerTransaction={limitPerTransaction}
-              productId={productId}
+              {...key}
               onAddItemToCart={onAddItemToCart}
               getProductCount={getProductCount}
             />

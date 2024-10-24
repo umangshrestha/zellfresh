@@ -6,10 +6,8 @@ import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
 import { Injectable, Logger } from '@nestjs/common';
 import { DynamodbService } from 'src/common/dynamodb/dynamodb.service';
 import { get_date_time_string } from 'src/common/get-date-time';
-import { ProductsService } from 'src/products/products.service';
 import { CartInput } from './dto/cart-input.input';
 import { Cart } from './entities/cart.entity';
-import { PaginatedCart } from './entities/paginated-cart.entry';
 const TableName = 'ORDERS_TABLE';
 const orderId = { S: 'CART' };
 
@@ -17,27 +15,7 @@ const orderId = { S: 'CART' };
 export class CartsService {
   private readonly loggerService = new Logger(CartsService.name);
 
-  constructor(
-    private readonly dynamodbService: DynamodbService,
-    private readonly productsService: ProductsService,
-  ) {}
-
-  async findAll(limit: number, cursor: string): Promise<PaginatedCart> {
-    const data = await this.dynamodbService.client.scan({
-      TableName,
-      Limit: limit,
-      ExclusiveStartKey: cursor ? { id: { S: cursor } } : undefined,
-    });
-
-    return {
-      items: data.Items.map((item) => unmarshall(item) as Cart),
-      pagination: {
-        limit,
-        prev: cursor,
-        next: data.LastEvaluatedKey ? data.LastEvaluatedKey.id.S : null,
-      },
-    };
-  }
+  constructor(private readonly dynamodbService: DynamodbService) {}
 
   async getCartCount(userId: string) {
     const data = await this.dynamodbService.client.getItem({

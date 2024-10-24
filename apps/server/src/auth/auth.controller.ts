@@ -1,12 +1,12 @@
 import { Controller, Get, Headers, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { CartsService } from 'src/carts/carts.service';
+import { User } from 'src/users/entities/user.entity';
 import { AccessOrGuestTokenGuard } from './access-or-guest-token.gaurd';
 import { AccessTokenService } from './access-token/access-token.service';
 import { AuthUser } from './auth.decorator';
 import { Auth } from './entities/auth.entity';
 import { Role } from './entities/role.enum';
-import { User } from './entities/user.entity';
 import { GoogleService } from './google/google.service';
 import { GuestTokenService } from './guest-token/guest-token.service';
 import { RefreshTokenGuard } from './refresh-token/refresh-token.gaurd';
@@ -77,6 +77,7 @@ export class AuthController {
   @UseGuards(AccessOrGuestTokenGuard)
   me(@AuthUser({}) payload: Auth): User {
     return {
+      id: payload.sub,
       name: payload.name,
       email: payload.email,
       role: payload.role,

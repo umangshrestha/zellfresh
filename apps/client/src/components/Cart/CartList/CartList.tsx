@@ -48,7 +48,8 @@ export const CartList = ({
   }
 
   const totalPrice = data.reduce(
-    (acc: number, product: CartItemType) => acc + product.price * product.availableQuantity,
+    (acc: number, product: CartItemType) =>
+      acc + product.price * product.availableQuantity,
     0,
   );
 
@@ -66,9 +67,7 @@ export const CartList = ({
             </ListItem>
           ))}
         </List>
-        <Box sx={{ padding: 2 }}>
-          Total: {totalPrice}
-        </Box>
+        <Box sx={{ padding: 2 }}>Total: {totalPrice}</Box>
       </Box>
     </Box>
   );

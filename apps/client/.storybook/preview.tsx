@@ -1,5 +1,7 @@
 import type { Preview } from '@storybook/react';
+import { CartIconProvider } from '../src/components/Cart/CartIcon';
 import { NotificationProvider } from '../src/components/Notification';
+
 import '../src/index.css';
 
 const preview: Preview = {
@@ -18,7 +20,9 @@ export default preview;
 export const decorators = [
   (Story) => (
     <NotificationProvider>
-      <Story />
+      <CartIconProvider>
+        <Story />
+      </CartIconProvider>
     </NotificationProvider>
   ),
 ];

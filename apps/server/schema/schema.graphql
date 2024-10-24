@@ -2,12 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Pagination {
-  limit: Int!
-  next: String
-  prev: String
-}
-
 type Product {
   productId: String!
   name: String!
@@ -25,6 +19,12 @@ type Product {
   updatedAt: String!
 }
 
+type Pagination {
+  limit: Int!
+  next: String
+  prev: String
+}
+
 type PaginatedProduct {
   items: [Product!]!
   pagination: Pagination!
@@ -32,6 +32,7 @@ type PaginatedProduct {
 
 type CartItem {
   productId: String!
+  category: String!
   product: Product
   quantity: Int!
   createdAt: String!
@@ -40,18 +41,43 @@ type CartItem {
 
 type Cart {
   userId: String!
+  orderId: String!
   items: [CartItem!]!
   count: Int!
   createdAt: String!
   updatedAt: String!
 }
 
+type User {
+  id: String!
+  name: String
+  email: String
+  role: String!
+  imageUrl: String
+}
+
 type Query {
-  products(limit: Int! = 20, cursor: String): PaginatedProduct!
-  product(productId: String!): Product
-  carts(limit: Int! = 20, cursor: String): PaginatedProduct!
+  products(filter: FilterProductsInput!): PaginatedProduct!
+  product(productId: String!): Product!
   cart: Cart!
   cartItem(productId: String!): CartItem!
+  users: [User!]!
+  user(id: Int!): User!
+}
+
+input FilterProductsInput {
+  limit: Int! = 10
+  cursor: String
+  name: String
+  category: String
+  tags: [String!]
+  minRating: Float
+  maxRating: Float
+  minPrice: Float
+  maxPrice: Float
+  showOutOfStock: Boolean
+  sortBy: String = "name"
+  sortAsc: Boolean! = true
 }
 
 type Mutation {
@@ -59,6 +85,9 @@ type Mutation {
   removeProduct(productId: String!): String!
   addItemToCart(cartInput: CartInput!): Cart!
   clearCart: Cart!
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: Int!): User!
 }
 
 input CreateProductInput {
@@ -81,6 +110,13 @@ input CartInput {
   quantity: Int!
 }
 
-type Subscription {
-  cartCountUpdated: Int!
+input CreateUserInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateUserInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
 }

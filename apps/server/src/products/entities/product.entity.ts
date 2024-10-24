@@ -1,7 +1,12 @@
 import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
 
+export interface ProductKey {
+  productId: string;
+  category: string;
+}
+
 @ObjectType()
-export class Product {
+export class Product implements ProductKey {
   @Field(() => String)
   productId: string;
 

@@ -5,4 +5,4 @@ export type ProductAddItemProps = Pick<
   ProductProps,
   'productId' | 'availableQuantity' | 'limitPerTransaction'
 > &
-CartMutationFunctions;
+  CartMutationFunctions;

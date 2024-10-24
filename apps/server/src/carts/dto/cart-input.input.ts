@@ -1,13 +1,10 @@
 import { Field, InputType, Int } from '@nestjs/graphql';
-import { IsInt, IsString, IsUUID, Min } from 'class-validator';
+import { IsInt, IsString, Min } from 'class-validator';
 import { get_date_time_string } from 'src/common/get-date-time';
+import { ReadProductInput } from 'src/products/dto/read-product.input';
 
 @InputType()
-export class CartInput {
-  @IsUUID()
-  @Field(() => String)
-  productId: string;
-
+export class CartInput extends ReadProductInput {
   @Min(0)
   @IsInt()
   @Field(() => Int)

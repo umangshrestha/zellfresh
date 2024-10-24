@@ -1,10 +1,13 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { Product } from 'src/products/entities/product.entity';
+import { Product, ProductKey } from 'src/products/entities/product.entity';
 
 @ObjectType()
-export class CartItem {
+export class CartItem implements ProductKey {
   @Field(() => String)
   productId: string;
+
+  @Field()
+  category: string;
 
   @Field(() => Product, { nullable: true })
   product: Product | null;

@@ -1,5 +1,6 @@
 import { Field, Float, InputType, Int } from '@nestjs/graphql';
 import {
+  IsEnum,
   IsInt,
   IsOptional,
   IsString,
@@ -50,6 +51,7 @@ export class CreateProductInput {
 
   @IsString()
   @Field()
+  @IsEnum(['chicken', 'beef', 'pork'])
   category: string;
 
   @IsInt()

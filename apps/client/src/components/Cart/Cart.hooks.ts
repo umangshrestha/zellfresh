@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { useEffect } from 'react';
 import { useNotification } from '../Notification';
+import { ProductKey } from '../Product';
 import {
   ADD_ITEM_TO_CART_MUTATION,
   CARTS_QUERY_SIMPLE,
@@ -18,7 +19,7 @@ export const useCart = ({ verbose = false }): CartMutation => {
   const { setNotification } = useNotification();
   const { setCartCount } = useCartIcon();
 
-  const getProductCount = (productId: string) => {
+  const getProductCount = ({ productId }: ProductKey) => {
     const items = data?.cart?.items?.filter(
       (item: any) => item.product.productId === productId,
     );
@@ -40,11 +41,10 @@ export const useCart = ({ verbose = false }): CartMutation => {
     }
   }, [data]);
 
-
-  const onAddItemToCart = (productId: string, quantity: number) => {
+  const onAddItemToCart = (key: ProductKey, quantity: number) => {
     executeMutation({
       variables: {
-        productId,
+        ...key,
         quantity,
       },
     })

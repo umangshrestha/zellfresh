@@ -5,17 +5,17 @@ import Select from '@mui/material/Select';
 import { ProductAddItemProps } from './ProductAddItem.types';
 
 export const ProductAddItem = ({
-  productId,
   availableQuantity,
   limitPerTransaction,
   onAddItemToCart,
   getProductCount,
+  ...key
 }: ProductAddItemProps) => (
-  <FormControl  variant="standard" fullWidth>
+  <FormControl variant="standard" fullWidth>
     <InputLabel id="product-quantity-label">Quantity</InputLabel>
     <Select
-      value={getProductCount(productId).toString()}
-      onChange={(e) => onAddItemToCart(productId, +e.target.value)}
+      value={getProductCount(key).toString()}
+      onChange={(e) => onAddItemToCart(key, +e.target.value)}
     >
       {Array.from(
         { length: Math.min(limitPerTransaction + 1, availableQuantity) },
