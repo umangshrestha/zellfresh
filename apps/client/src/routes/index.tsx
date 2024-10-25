@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 import CartPage from '../components/Cart/CartPage';
 import Layout from '../components/Layout';
 import LoginPage from '../components/LoginPage';
@@ -11,12 +11,20 @@ export const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: '/',
+        path: '/products',
+        element: <ProductPage />,
+      },
+      {
+        path: '/products/:category',
         element: <ProductPage />,
       },
       {
         path: '/cart',
         element: <CartPage />,
+      },
+      {
+        path: '/',
+        element: <Navigate to="/products" />,
       },
       {
         path: '*',

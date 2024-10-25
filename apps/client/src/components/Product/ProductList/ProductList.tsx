@@ -11,7 +11,7 @@ export const ProductList = ({
 }: ProductListProps) => {
   if (loading) {
     return (
-      <div className="flex flex-wrap justify-center gap-4 p-4">
+      <div className="flex flex-wrap justify-center gap-4 p-4 flex-start">
         {Array(8)
           .fill(0)
           .map((_, index) => (
@@ -26,10 +26,10 @@ export const ProductList = ({
       <EmptyPage
         title="No products available"
         description={[
-          'There are no products available at the moment',
-          'Please check back later',
+          'There are no products with the selected filters.',
+          'Please try again with different filters.',
         ]}
-        buttonText="Refresh"
+        buttonText="Reset Filters"
         image="/empty-product.png"
         alt="No products available"
         onClick={onEmptyStateClicked}

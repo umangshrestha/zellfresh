@@ -13,10 +13,11 @@ export const ProductPage = () => {
   } = useProduct();
   const maxPrice = data.products?.items.reduce(
     (acc: number, item: any) => Math.max(acc, item.price),
-    0
-  )
+    0,
+  );
   return (
     <Box>
+      <ProductFilter />
       <ProductList
         loading={loading}
         data={data}

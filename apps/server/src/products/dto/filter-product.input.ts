@@ -2,7 +2,6 @@ import { Field, Float, InputType, Int } from '@nestjs/graphql';
 import {
   IsBoolean,
   IsEnum,
-  IsNumber,
   IsOptional,
   IsPositive,
   IsString,
@@ -46,11 +45,9 @@ export class FilterProductsInput {
   @Field(() => Float, { nullable: true })
   maxRating?: number;
 
-  @Max(5)
   @IsOptional()
   @Field(() => Float, { nullable: true })
   @Min(0)
-  @IsPositive()
   @IsOptional()
   minPrice?: number;
 
@@ -60,11 +57,10 @@ export class FilterProductsInput {
   maxPrice?: number;
 
   @IsOptional()
-  @Field({nullable: true})
+  @Field({ nullable: true })
   showOutOfStock?: boolean;
 
   @ValidateIf((o) => o.maxPrice !== undefined && o.minPrice !== undefined)
-  @IsNumber()
   validatePriceRange() {
     if (this.maxPrice <= this.minPrice) {
       throw new Error('maxPrice must be greater than minPrice');
@@ -72,7 +68,6 @@ export class FilterProductsInput {
   }
 
   @ValidateIf((o) => o.maxRating !== undefined && o.minRating !== undefined)
-  @IsNumber()
   validateRatingRange() {
     if (this.maxRating <= this.minRating) {
       throw new Error('maxRating must be greater than minRating');

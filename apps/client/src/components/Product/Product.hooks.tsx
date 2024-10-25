@@ -6,15 +6,12 @@ import { PRODUCTS_QUERY } from './Product.queries';
 import { useProductFilter } from './ProductFilter';
 
 export const useProduct = () => {
-  const { params: variables } = useProductFilter();
+  const { productFilter: variables, resetProductFilter } = useProductFilter();
   const { setNotification } = useNotification();
-  const { data, loading, error, refetch } = useQuery(PRODUCTS_QUERY, {
+  const { data, loading, error } = useQuery(PRODUCTS_QUERY, {
     variables,
   });
-
-  const { onAddItemToCart, getProductCount } = useCart({
-    verbose: false,
-  });
+  const { onAddItemToCart, getProductCount } = useCart({ verbose: false });
 
   useEffect(() => {
     if (error) {
@@ -30,6 +27,6 @@ export const useProduct = () => {
     data: data?.products?.items || [],
     onAddItemToCart,
     getProductCount,
-    onEmptyStateClicked: () => refetch(),
+    onEmptyStateClicked: resetProductFilter,
   };
 };

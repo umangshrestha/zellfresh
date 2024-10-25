@@ -97,19 +97,25 @@ export class ProductsService {
       expressionAttributeValues[':count'] = { N: '0' };
     }
 
-    const scanParams = filterExpressions.length > 0?
-      {
-        TableName,
-        Limit: limit,
-        FilterExpression: filterExpressions.join(' AND '),
-        ExpressionAttributeValues: expressionAttributeValues,
-        ExclusiveStartKey: cursor ? marshall({ productId: cursor }) : undefined,
-      } : {
-        TableName,
-        Limit: limit,
-        ExclusiveStartKey: cursor ? marshall({ productId: cursor }) : undefined,
-      };
-  
+    const scanParams =
+      filterExpressions.length > 0
+        ? {
+            TableName,
+            Limit: limit,
+            FilterExpression: filterExpressions.join(' AND '),
+            ExpressionAttributeValues: expressionAttributeValues,
+            ExclusiveStartKey: cursor
+              ? marshall({ productId: cursor })
+              : undefined,
+          }
+        : {
+            TableName,
+            Limit: limit,
+            ExclusiveStartKey: cursor
+              ? marshall({ productId: cursor })
+              : undefined,
+          };
+
     const data = await this.dynamodbService.client.scan(scanParams);
     return {
       items: data.Items.map((item) => unmarshall(item) as Product).sort(

@@ -2,16 +2,16 @@ import { gql } from '@apollo/client';
 
 export const PRODUCTS_QUERY = gql`
   query (
-  $category: String
-  $maxPrice: Float
-  $minPrice: Float
-  $maxRating: Float
-  $minRating: Float
-  $tags: [String!]
-  $sortBy: String
-  $sortAsc: Boolean
-  $name: String
-  $showOutOfStock: Boolean
+    $category: String
+    $maxPrice: Float
+    $minPrice: Float
+    $maxRating: Float
+    $minRating: Float
+    $tags: [String!]
+    $sortBy: String
+    $sortAsc: Boolean
+    $name: String
+    $showOutOfStock: Boolean
   ) {
     products(
       filter: {
@@ -25,7 +25,8 @@ export const PRODUCTS_QUERY = gql`
         sortAsc: $sortAsc
         name: $name
         showOutOfStock: $showOutOfStock
-    }) {
+      }
+    ) {
       items {
         productId
         name
