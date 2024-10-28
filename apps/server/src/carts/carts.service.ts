@@ -17,15 +17,6 @@ export class CartsService {
 
   constructor(private readonly dynamodbService: DynamodbService) {}
 
-  async getCartCount(userId: string) {
-    const data = await this.dynamodbService.client.getItem({
-      TableName,
-      Key: { userId: { S: userId }, orderId },
-      ProjectionExpression: 'count',
-    });
-    return data.Item ? +data.Item.count.N : 0;
-  }
-
   async createEmptyCart(userId: string, overwrite = false) {
     const cart = new Cart();
     cart.userId = userId;
@@ -60,7 +51,7 @@ export class CartsService {
       return this.createEmptyCart(userId, false);
     }
     if (guestCart.count.N === '0') {
-      this.deleteCart(guestId);
+      await this.deleteCart(guestId);
       return this.createEmptyCart(userId, false);
     }
     const userCart = await this.findOne(userId);

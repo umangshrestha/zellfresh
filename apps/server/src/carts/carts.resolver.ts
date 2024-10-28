@@ -15,7 +15,8 @@ export class CartsResolver {
   constructor(private readonly cartsService: CartsService) {}
 
   @Query(() => Cart, { name: 'cart' })
-  findCart(@AuthUser() { sub }: Auth) {
+  async findCart(@AuthUser() { sub }: Auth) {
+    await this.cartsService.createEmptyCart(sub, false);
     return this.cartsService.getCart(sub);
   }
 
