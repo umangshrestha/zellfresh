@@ -48,12 +48,27 @@ type Cart {
   updatedAt: String!
 }
 
+type Address {
+  apartmentNumber: Int
+  street: String!
+  city: String!
+  state: String!
+  zip: String!
+  country: String!
+  additionalInfo: String
+}
+
 type User {
-  id: String!
+  userId: String!
   name: String
   email: String
   role: String!
   imageUrl: String
+  phone: String!
+  address: Address
+  blocked: Boolean!
+  createdAt: String!
+  updatedAt: String!
 }
 
 type Query {
@@ -61,8 +76,7 @@ type Query {
   product(productId: String!): Product!
   cart: Cart!
   cartItem(productId: String!): CartItem!
-  users: [User!]!
-  user(id: Int!): User!
+  me: User!
 }
 
 input FilterProductsInput {
@@ -77,7 +91,7 @@ input FilterProductsInput {
   maxPrice: Float
   showOutOfStock: Boolean
   sortBy: String = "name"
-  sortAsc: Boolean! = true
+  sortAsc: Boolean = true
 }
 
 type Mutation {
@@ -85,9 +99,7 @@ type Mutation {
   removeProduct(productId: String!): String!
   addItemToCart(cartInput: CartInput!): Cart!
   clearCart: Cart!
-  createUser(createUserInput: CreateUserInput!): User!
-  updateUser(updateUserInput: UpdateUserInput!): User!
-  removeUser(id: Int!): User!
+  putAddress(putAddressInput: PutAddressInput!): User!
 }
 
 input CreateProductInput {
@@ -110,17 +122,12 @@ input CartInput {
   quantity: Int!
 }
 
-input CreateUserInput {
-  """
-  Example field (placeholder)
-  """
-  exampleField: Int!
-}
-
-input UpdateUserInput {
-  """
-  Example field (placeholder)
-  """
-  exampleField: Int
-  id: Int!
+input PutAddressInput {
+  apartmentNumber: Int
+  street: String!
+  city: String!
+  state: String!
+  zip: String!
+  country: String!
+  additionalInfo: String
 }

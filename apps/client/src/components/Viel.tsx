@@ -1,11 +1,12 @@
 import clsx from 'clsx';
+import { ReactNode } from 'react';
 
 export default function Viel({
   enable,
   children,
 }: Readonly<{
   enable: boolean;
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
     <div

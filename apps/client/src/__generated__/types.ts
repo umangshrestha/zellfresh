@@ -27,6 +27,19 @@ export type Scalars = {
   Float: { input: number; output: number };
 };
 
+export type Address = {
+  __typename?: 'Address';
+  additionalInfo?: Maybe<Scalars['String']['output']>;
+  apartmentNumber?: Maybe<Scalars['Int']['output']>;
+  city: Scalars['String']['output'];
+  country: Scalars['String']['output'];
+  createdAt: Scalars['String']['output'];
+  state: Scalars['String']['output'];
+  street: Scalars['String']['output'];
+  updatedAt: Scalars['String']['output'];
+  zip: Scalars['String']['output'];
+};
+
 export type Cart = {
   __typename?: 'Cart';
   count: Scalars['Int']['output'];
@@ -67,11 +80,6 @@ export type CreateProductInput = {
   unit: Scalars['String']['input'];
 };
 
-export type CreateUserInput = {
-  /** Example field (placeholder) */
-  exampleField: Scalars['Int']['input'];
-};
-
 export type FilterProductsInput = {
   category?: InputMaybe<Scalars['String']['input']>;
   cursor?: InputMaybe<Scalars['String']['input']>;
@@ -79,21 +87,25 @@ export type FilterProductsInput = {
   maxPrice?: InputMaybe<Scalars['Float']['input']>;
   maxRating?: InputMaybe<Scalars['Float']['input']>;
   minPrice?: InputMaybe<Scalars['Float']['input']>;
+  minRating?: InputMaybe<Scalars['Float']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  sortAsc?: Scalars['Boolean']['input'];
+  showOutOfStock?: InputMaybe<Scalars['Boolean']['input']>;
+  sortAsc?: InputMaybe<Scalars['Boolean']['input']>;
   sortBy?: InputMaybe<Scalars['String']['input']>;
   tags?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addAddress: User;
   addItemToCart: Cart;
   clearCart: Cart;
   createProduct: Product;
-  createUser: User;
   removeProduct: Scalars['String']['output'];
-  removeUser: User;
-  updateUser: User;
+};
+
+export type MutationAddAddressArgs = {
+  putAddressInput: PutAddressInput;
 };
 
 export type MutationAddItemToCartArgs = {
@@ -104,20 +116,8 @@ export type MutationCreateProductArgs = {
   createProductInput: CreateProductInput;
 };
 
-export type MutationCreateUserArgs = {
-  createUserInput: CreateUserInput;
-};
-
 export type MutationRemoveProductArgs = {
   productId: Scalars['String']['input'];
-};
-
-export type MutationRemoveUserArgs = {
-  id: Scalars['Int']['input'];
-};
-
-export type MutationUpdateUserArgs = {
-  updateUserInput: UpdateUserInput;
 };
 
 export type PaginatedProduct = {
@@ -151,14 +151,24 @@ export type Product = {
   updatedAt: Scalars['String']['output'];
 };
 
+export type PutAddressInput = {
+  apartment: Scalars['Int']['input'];
+  city: Scalars['String']['input'];
+  country: Scalars['String']['input'];
+  createdAt: Scalars['String']['input'];
+  state: Scalars['String']['input'];
+  street: Scalars['String']['input'];
+  updatedAt: Scalars['String']['input'];
+  zip: Scalars['String']['input'];
+};
+
 export type Query = {
   __typename?: 'Query';
   cart: Cart;
   cartItem: CartItem;
+  me: User;
   product: Product;
   products: PaginatedProduct;
-  user: User;
-  users: Array<User>;
 };
 
 export type QueryCartItemArgs = {
@@ -173,21 +183,16 @@ export type QueryProductsArgs = {
   filter: FilterProductsInput;
 };
 
-export type QueryUserArgs = {
-  id: Scalars['Int']['input'];
-};
-
-export type UpdateUserInput = {
-  /** Example field (placeholder) */
-  exampleField?: InputMaybe<Scalars['Int']['input']>;
-  id: Scalars['Int']['input'];
-};
-
 export type User = {
   __typename?: 'User';
+  address: Address;
+  blocked: Scalars['Boolean']['output'];
+  createdAt: Scalars['String']['output'];
   email?: Maybe<Scalars['String']['output']>;
-  id: Scalars['String']['output'];
   imageUrl?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  phone: Scalars['String']['output'];
   role: Scalars['String']['output'];
+  updatedAt: Scalars['String']['output'];
+  userId: Scalars['String']['output'];
 };

@@ -8,4 +8,5 @@ export type ProductFilterType = z.infer<typeof ProductFilterSchema>;
 export type ProductFilterContextType = {
   productFilter: ProductFilterType;
   updateProductFilter: (val: ProductFilterType | object) => void;
+  resetProductFilter: () => void;
 };

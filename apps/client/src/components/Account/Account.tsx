@@ -10,8 +10,8 @@ import { useStorageStore } from '../../lib/store';
 import Avatar from '@mui/material/Avatar';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useNotification } from '../../components/Notification/Notification.hooks';
 import { logout, me } from '../../lib/axios';
+import { useNotification } from '../Notification';
 
 export const Account = () => {
   const navigate = useNavigate();
@@ -82,34 +82,38 @@ export const Account = () => {
         open={Boolean(anchorEl)}
         onClose={() => setAnchorEl(null)}
       >
-        <MenuItem
-          style={{ display: isGuest ? 'none' : 'block' }}
-          onClick={onLogout}
-        >
-          <Button
-            aria-label="login button"
-            variant="contained"
-            color="secondary"
+        {isGuest ? (
+          <MenuItem
+            onClick={() => {
+              setAnchorEl(null);
+            }}
           >
-            Logout
-          </Button>
-        </MenuItem>
-        <MenuItem
-          style={{ display: isGuest ? 'block' : 'none' }}
-          onClick={() => {
-            setAnchorEl(null);
-          }}
-        >
-          <Button
-            aria-label="login button"
-            component={Link}
-            href="/auth/login"
-            variant="contained"
-            color="secondary"
-          >
-            Login
-          </Button>
-        </MenuItem>
+            <Button
+              aria-label="login button"
+              component={Link}
+              href="/auth/login"
+              variant="contained"
+              color="secondary"
+            >
+              Login
+            </Button>
+          </MenuItem>
+        ) : (
+          [
+            <MenuItem key="profile" onClick={() => navigate('/profile')}>
+              <Button aria-label="user profile button">Profile</Button>
+            </MenuItem>,
+            <MenuItem onClick={onLogout} key="logout">
+              <Button
+                aria-label="login button"
+                variant="contained"
+                color="secondary"
+              >
+                Logout
+              </Button>
+            </MenuItem>,
+          ]
+        )}
       </Menu>
     </Box>
   );

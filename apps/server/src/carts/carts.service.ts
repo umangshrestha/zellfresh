@@ -143,6 +143,7 @@ export class CartsService {
       });
       return data.Item;
     } catch (error) {
+      this.loggerService.error(`Error fetching cart: ${error}`);
       return null;
     }
   }

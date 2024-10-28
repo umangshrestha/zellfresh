@@ -15,6 +15,7 @@ export const ProductFilterSchema = z
     tags: z.array(z.string()).optional(),
     sortBy: z.enum(['name', 'price', 'rating']).optional(),
     sortAsc: z.boolean().optional(),
+    showOutOfStock: z.boolean().optional(),
   })
   .refine(({ minRating, maxRating, minPrice, maxPrice }) => {
     if (minRating && maxRating && minRating > maxRating) {

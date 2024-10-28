@@ -4,6 +4,7 @@ import Layout from '../components/Layout';
 import LoginPage from '../components/LoginPage';
 import NotFoundPage from '../components/NotFoundPage';
 import ProductPage from '../components/Product/ProductPage';
+import ProfilePage from '../components/Profile/ProfilePage';
 
 export const router = createBrowserRouter([
   {
@@ -11,7 +12,15 @@ export const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
+        path: '/',
+        element: <Navigate to="/products" />,
+      },
+      {
         path: '/products',
+        element: <ProductPage />,
+      },
+      {
+        path: '/products/:category',
         element: <ProductPage />,
       },
       {
@@ -19,8 +28,8 @@ export const router = createBrowserRouter([
         element: <CartPage />,
       },
       {
-        path: '/',
-        element: <Navigate to="/products" />,
+        path: '/profile',
+        element: <ProfilePage />,
       },
       {
         path: '*',

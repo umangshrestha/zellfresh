@@ -80,6 +80,6 @@ export class FilterProductsInput {
   sortBy: string = 'name';
 
   @IsBoolean()
-  @Field()
+  @Field(() => Boolean, { nullable: true })
   sortAsc: boolean = true;
 }

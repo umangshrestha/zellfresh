@@ -27,6 +27,7 @@ export const ProductFilterProvider = ({
   const contextValue: ProductFilterContextType = {
     productFilter,
     updateProductFilter,
+    resetProductFilter: () => setProductFilter({}),
   };
 
   return (

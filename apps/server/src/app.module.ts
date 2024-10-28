@@ -20,6 +20,7 @@ import { UsersModule } from './users/users.module';
     ProductsModule,
     CartsModule,
     AuthModule,
+    UsersModule,
     GraphQLModule.forRootAsync<ApolloDriverConfig>({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -31,7 +32,6 @@ import { UsersModule } from './users/users.module';
         autoSchemaFile: join(process.cwd(), 'schema/schema.graphql'),
       }),
     }),
-    UsersModule,
   ],
   controllers: [],
   providers: [ValidationProvider],

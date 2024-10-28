@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
 import SplitButton from '../../SplitButton';
@@ -37,13 +38,25 @@ export const ProductFilter = () => {
         getAriaValueText={priceText}
         disableSwap
       />
-      <Divider />
       <SplitButton
         options={ProductOrderOptions}
         onClick={(options: ProductPageOrderBy) =>
           updateProductFilter({
             ...options,
           })
+        }
+      />
+      <FormControlLabel
+        label="In stock"
+        control={
+          <Checkbox
+            checked={productFilter.showOutOfStock || false}
+            onChange={() =>
+              updateProductFilter({
+                showOutOfStock: !productFilter.showOutOfStock,
+              })
+            }
+          />
         }
       />
     </Box>

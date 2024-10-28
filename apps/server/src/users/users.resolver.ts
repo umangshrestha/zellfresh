@@ -1,6 +1,10 @@
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { CreateUserInput } from './dto/create-user.input';
-import { UpdateUserInput } from './dto/update-user.input';
+import { UseGuards } from '@nestjs/common';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { AccessOrGuestTokenGuard } from '../auth/access-or-guest-token.gaurd';
+import { AuthUser } from '../auth/auth.decorator';
+import { Auth } from '../auth/entities/auth.entity';
+import { Role } from '../auth/entities/role.enum';
+import { PutAddressInput } from './dto/put-address.input';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 
@@ -8,28 +12,24 @@ import { UsersService } from './users.service';
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
+  @Query(() => User)
+  @UseGuards(AccessOrGuestTokenGuard)
+  me(@AuthUser({ required: true }) payload: Auth) {
+    if (payload.role === Role.GUEST) {
+      const user = new User();
+      user.userId = payload.sub;
+      user.role = Role.USER;
+      return user;
+    }
+    return this.usersService.findOne(payload.sub);
+  }
+
+  @UseGuards(AccessOrGuestTokenGuard)
   @Mutation(() => User)
-  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    return this.usersService.create(createUserInput);
-  }
-
-  @Query(() => [User], { name: 'users' })
-  findAll() {
-    return this.usersService.findAll();
-  }
-
-  @Query(() => User, { name: 'user' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.usersService.findOne(id);
-  }
-
-  @Mutation(() => User)
-  updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-    return this.usersService.update(updateUserInput.id, updateUserInput);
-  }
-
-  @Mutation(() => User)
-  removeUser(@Args('id', { type: () => Int }) id: number) {
-    return this.usersService.remove(id);
+  putAddress(
+    @AuthUser({ required: true }) payload: Auth,
+    @Args('putAddressInput') address: PutAddressInput,
+  ) {
+    return this.usersService.addAddress(payload.sub, address);
   }
 }
