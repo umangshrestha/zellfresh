@@ -12,7 +12,8 @@
     "start": "turbo run start",
     "format": "prettier --write .",
     "lint": "turbo run lint",
-    "codegen": "graphql-codegen"
+    "codegen": "graphql-codegen",
+    "storybook": "turbo run storybook"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.3",

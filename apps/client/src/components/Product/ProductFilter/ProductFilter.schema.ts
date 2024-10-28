@@ -3,6 +3,7 @@ import { SUPPORTED_PRODUCTS } from '../../../config/products';
 
 const productList = SUPPORTED_PRODUCTS.map((x) => x.name);
 const MAX_PRICE = 1000;
+
 export const ProductFilterSchema = z
   .object({
     category: z.enum([productList[0], ...productList]).optional(),
@@ -18,8 +19,7 @@ export const ProductFilterSchema = z
   .refine(({ minRating, maxRating, minPrice, maxPrice }) => {
     if (minRating && maxRating && minRating > maxRating) {
       return false;
-    }
-    if (minPrice && maxPrice && minPrice > maxPrice) {
+    } else if (minPrice && maxPrice && minPrice > maxPrice) {
       return false;
     }
     return true;

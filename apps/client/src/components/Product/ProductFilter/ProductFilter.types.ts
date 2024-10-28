@@ -1,4 +1,3 @@
-import { Dispatch } from 'react';
 import { z } from 'zod';
 import { ProductFilterSchema } from './ProductFilter.schema';
 
@@ -8,6 +7,5 @@ export type ProductFilterType = z.infer<typeof ProductFilterSchema>;
 
 export type ProductFilterContextType = {
   productFilter: ProductFilterType;
-  updateProductFilter: Dispatch<React.SetStateAction<ProductFilterType>>;
-  resetProductFilter: () => void;
+  updateProductFilter: (val: ProductFilterType | object) => void;
 };

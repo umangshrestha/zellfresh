@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { useEffect } from 'react';
+import { CartItem } from '../../__generated__/types.ts';
 import { useNotification } from '../Notification';
 import { ProductKey } from '../Product';
 import {
@@ -8,7 +9,7 @@ import {
   CARTS_QUERY_VERBOSE,
 } from './Cart.queries';
 import { CartMutation } from './Cart.types';
-import { useCartIcon } from './CartIcon';
+import { useCartIcon } from './CartIcon/CartIcon.hooks';
 
 export const useCart = ({ verbose = false }): CartMutation => {
   const query = verbose ? CARTS_QUERY_VERBOSE : CARTS_QUERY_SIMPLE;
@@ -21,7 +22,7 @@ export const useCart = ({ verbose = false }): CartMutation => {
 
   const getProductCount = ({ productId }: ProductKey) => {
     const items = data?.cart?.items?.filter(
-      (item: any) => item.product.productId === productId,
+      (item: CartItem) => item.product?.productId === productId,
     );
     return items?.length ? items[0].quantity : 0;
   };
@@ -36,10 +37,10 @@ export const useCart = ({ verbose = false }): CartMutation => {
   }, [error, setNotification]);
 
   useEffect(() => {
-    if (data) {
+    if (data && data.cart) {
       setCartCount(data.cart.count);
     }
-  }, [data]);
+  }, [data, setCartCount]);
 
   const onAddItemToCart = (key: ProductKey, quantity: number) => {
     executeMutation({
@@ -64,7 +65,7 @@ export const useCart = ({ verbose = false }): CartMutation => {
   };
 
   return {
-    data: data?.cart?.items?.map((item: any) => ({
+    data: data?.cart?.items?.map((item: CartItem) => ({
       ...item.product,
       quantity: item.quantity,
     })),

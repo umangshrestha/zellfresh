@@ -47,6 +47,7 @@ export const Default: Story = {
     data: products,
     loading: false,
     onAddItemToCart: () => {},
+    getProductCount: () => 0,
   },
 };
 
@@ -55,13 +56,6 @@ export const Loading: Story = {
     data: [],
     loading: true,
     onAddItemToCart: () => {},
-  },
-};
-
-export const Empty: Story = {
-  args: {
-    data: [],
-    loading: false,
-    onAddItemToCart: () => {},
+    getProductCount: () => 0,
   },
 };

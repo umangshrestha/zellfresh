@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { ErrorPage } from '../ErrorPage';
 import { LayoutProps as ErrorBoundaryProps } from '../Layout';
 import { ErrorBoundaryState } from './ErrorBoundary.types';
 
@@ -22,7 +23,7 @@ export class ErrorBoundary extends Component<
 
   render() {
     if (this.state.hasError) {
-      return <h1>Something went wrong.</h1>;
+      return <ErrorPage />;
     }
 
     return this.props.children;

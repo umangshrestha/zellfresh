@@ -1,4 +1,4 @@
-export interface EmptyPageProps {
+export interface ErrorComponentProps {
   title: string;
   description: string[];
   buttonText: string;

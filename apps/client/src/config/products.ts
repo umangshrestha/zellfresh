@@ -1,18 +1,22 @@
 export const SUPPORTED_PRODUCTS = [
   {
-    name: 'Chicken',
+    name: 'chicken',
     icon: '🐔',
+    path: '/products?category=chicken',
   },
   {
-    name: 'Beef',
+    name: 'beef',
     icon: '🐄',
+    path: '/products?category=beef',
   },
   {
-    name: 'Pork',
+    name: 'pork',
     icon: '🐖',
+    path: '/products?category=pork',
   },
   {
-    name: 'Mutton',
+    name: 'mutton',
     icon: '🐑',
+    path: '/products?category=mutton',
   },
 ];

@@ -12,19 +12,21 @@ export const ProductFilterProvider = ({
 }: ProductFilterProviderProps) => {
   const [productFilter, setProductFilter] = useState<ProductFilterType>({});
 
-  const updateProductFilter = (newParams: Object) => {
-    const parsedParams = ProductFilterSchema.safeParse({
+  const updateProductFilter = (newParams: ProductFilterType) => {
+    const { data, success } = ProductFilterSchema.safeParse({
       ...productFilter,
       ...newParams,
     });
-    if (!parsedParams.success || parsedParams.data === productFilter) return;
-    setProductFilter(parsedParams.data);
+
+    if (!success || JSON.stringify(data) === JSON.stringify(productFilter))
+      return;
+    setProductFilter(data);
+    return;
   };
 
   const contextValue: ProductFilterContextType = {
     productFilter,
     updateProductFilter,
-    resetProductFilter: () => setProductFilter({}),
   };
 
   return (

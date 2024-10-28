@@ -3,12 +3,12 @@ import Divider from '@mui/material/Divider';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
 import SplitButton from '../../SplitButton';
-import { ProuctOrderOptions } from './ProductFilter.config';
+import { ProductOrderOptions } from './ProductFilter.config';
 import { useProductFilter } from './ProductFilter.hooks';
 import { ProductPageOrderBy } from './ProductFilter.types';
 
 const LowestPrice = 0;
-const HighestPrice = 100;
+const HighestPrice = 1000;
 
 function priceText(value: number) {
   return `${value}°C`;
@@ -39,7 +39,7 @@ export const ProductFilter = () => {
       />
       <Divider />
       <SplitButton
-        options={ProuctOrderOptions}
+        options={ProductOrderOptions}
         onClick={(options: ProductPageOrderBy) =>
           updateProductFilter({
             ...options,

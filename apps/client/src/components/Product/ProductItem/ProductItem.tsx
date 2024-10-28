@@ -37,7 +37,7 @@ export const ProductItem = ({
   useEffect(() => {
     if (isAddedToCartClicked) return;
     setIsAddedToCartClicked(getProductCount(key) > 0);
-  }, [getProductCount]);
+  }, [getProductCount, isAddedToCartClicked, key]);
 
   return (
     <Viel enable={!isProductAvailable}>

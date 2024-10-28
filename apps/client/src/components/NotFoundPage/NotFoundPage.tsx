@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
-import EmptyPage from '../EmptyPage';
+import ErrorComponent from '../ErrorComponent';
 
 export const NotFoundPage = () => {
   const navigate = useNavigate();
   return (
-    <EmptyPage
+    <ErrorComponent
       title="Page not found"
       alt="Page not found"
       description={['The page you are looking for does not exist']}

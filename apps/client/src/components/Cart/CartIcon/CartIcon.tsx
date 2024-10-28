@@ -1,7 +1,7 @@
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Badge from '@mui/material/Badge';
 import IconButton from '@mui/material/IconButton';
-import { useCartIcon } from './CartCount.hooks';
+import { useCartIcon } from './CartIcon.hooks.ts';
 import { CartIconProps } from './CartIcon.types';
 
 export const CartIcon = ({ onClick }: CartIconProps) => {

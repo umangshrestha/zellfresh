@@ -20,6 +20,7 @@ const products: CartItemType[] = [
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiXM1f7aFP4rKF-wJZ2juCb-7JcQCspEYUVwLK4JrpBdVtRB-ELAqpUCmkg6znfoG4fh8&usqp=CAU',
     availableQuantity: 10,
     limitPerTransaction: 10,
+    category: 'chicken',
     description: 'Delicious chicken breast',
     unit: 'kg',
   },
@@ -30,6 +31,7 @@ const products: CartItemType[] = [
     imageUrl:
       'https://132625588.cdn6.editmysite.com/uploads/1/3/2/6/132625588/s782101613657948031_p29_i2_w1920.jpeg?width=2400&optimize=medium',
     availableQuantity: 0,
+    category: 'pork',
     limitPerTransaction: 10,
     description: 'Tasty pork butt roast',
     unit: 'kg',
@@ -50,16 +52,6 @@ export const Loading: Story = {
     data: [],
     loading: true,
     onAddItemToCart: () => {},
-    getProductCount: () => 0,
-  },
-};
-
-export const Empty: Story = {
-  args: {
-    data: [],
-    loading: false,
-    onAddItemToCart: () => {},
-    onEmptyStateClicked: () => {},
     getProductCount: () => 0,
   },
 };

@@ -16,6 +16,8 @@ export const ProductAddItem = ({
     <Select
       value={getProductCount(key).toString()}
       onChange={(e) => onAddItemToCart(key, +e.target.value)}
+      variant="standard"
+      labelId="product-quantity-label"
     >
       {Array.from(
         { length: Math.min(limitPerTransaction + 1, availableQuantity) },

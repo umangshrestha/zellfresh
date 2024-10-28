@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { EmptyPage } from './EmptyPage';
+import { ErrorComponent } from './ErrorComponent.tsx';
 
 const meta = {
   title: 'EmptyPage',
-  component: EmptyPage,
+  component: ErrorComponent,
   tags: ['autodocs'],
   args: {},
-} as Meta<typeof EmptyPage>;
+} as Meta<typeof ErrorComponent>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -20,7 +20,7 @@ export const Default: Story = {
       'Please check back later',
     ],
     buttonText: 'Refresh',
-    image: '/public/empty-product.png',
+    image: '/empty-product.png',
     alt: 'No products available',
     onClick: () => {},
   },

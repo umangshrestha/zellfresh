@@ -3,16 +3,16 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import React from 'react';
-import { EmptyPageProps } from './EmptyPage.types';
+import { ErrorComponentProps } from './ErrorComponent.types.ts';
 
-export const EmptyPage = ({
+export const ErrorComponent = ({
   title,
   description,
   buttonText,
   image,
   alt,
   onClick,
-}: EmptyPageProps) => (
+}: ErrorComponentProps) => (
   <Container component="main" maxWidth="sm">
     <Box
       padding={4}

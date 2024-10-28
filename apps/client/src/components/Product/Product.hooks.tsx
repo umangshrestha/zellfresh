@@ -3,10 +3,8 @@ import { useEffect } from 'react';
 import { useCart } from '../Cart';
 import { useNotification } from '../Notification';
 import { PRODUCTS_QUERY } from './Product.queries';
-import { useProductFilter } from './ProductFilter';
 
-export const useProduct = () => {
-  const { productFilter: variables, resetProductFilter } = useProductFilter();
+export const useProduct = (variables: object) => {
   const { setNotification } = useNotification();
   const { data, loading, error } = useQuery(PRODUCTS_QUERY, {
     variables,
@@ -27,6 +25,5 @@ export const useProduct = () => {
     data: data?.products?.items || [],
     onAddItemToCart,
     getProductCount,
-    onEmptyStateClicked: resetProductFilter,
   };
 };

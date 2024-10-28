@@ -1,7 +1,7 @@
 import { SplitButtonType } from '../../SplitButton/SplitButton.types';
 import { ProductPageOrderBy } from './ProductFilter.types';
 
-export const ProuctOrderOptions: SplitButtonType<ProductPageOrderBy>[] = [
+export const ProductOrderOptions: SplitButtonType<ProductPageOrderBy>[] = [
   {
     label: 'Name: A to Z',
     value: {

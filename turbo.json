@@ -5,6 +5,16 @@
       "persistent": true,
       "cache": false
     },
+    "storybook": {
+      "dependsOn": [],
+      "outputs": [],
+      "inputs": ["apps/client/**"]
+    },
+    "start": {
+      "dependsOn": ["^build"],
+      "outputs": [],
+      "inputs": ["apps/server/**"]
+    },
     "lint": {},
     "build": {
       "dependsOn": ["^build"],

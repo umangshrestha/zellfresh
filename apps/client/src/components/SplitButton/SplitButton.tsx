@@ -21,10 +21,6 @@ export function SplitButton<T>({ options, onClick }: SplitButtonProps<T>) {
     onClick(options[selectedIndex].value as T);
   };
 
-  const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen);
-  };
-
   const handleClose = (event: Event) => {
     if (
       anchorRef.current &&
@@ -50,7 +46,7 @@ export function SplitButton<T>({ options, onClick }: SplitButtonProps<T>) {
           aria-expanded={open ? 'true' : undefined}
           aria-label="select merge strategy"
           aria-haspopup="menu"
-          onClick={handleToggle}
+          onClick={() => setOpen((prevOpen) => !prevOpen)}
         >
           <ArrowDropDownIcon />
         </Button>
@@ -76,6 +72,9 @@ export function SplitButton<T>({ options, onClick }: SplitButtonProps<T>) {
                 <MenuList id="split-button-menu" autoFocusItem>
                   {options.map((option, index) => (
                     <MenuItem
+                      sx={{
+                        width: anchorRef.current?.clientWidth,
+                      }}
                       key={option.label}
                       disabled={index === selectedIndex}
                       selected={index === selectedIndex}
