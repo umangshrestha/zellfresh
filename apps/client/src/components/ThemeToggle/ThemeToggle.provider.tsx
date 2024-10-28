@@ -1,4 +1,4 @@
-import { CssBaseline } from '@mui/material';
+import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
 import { useStorageStore } from '../../lib/store';

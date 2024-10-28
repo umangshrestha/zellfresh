@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useEffect } from 'react';
-import { useCartIcon } from './CartIcon.hooks';
 import { CartIcon } from './CartIcon';
+import { useCartIcon } from './CartIcon.hooks';
 import { CartIconProps } from './CartIcon.types';
 
 const CartIconWithProvider = (props: CartIconProps & { count: number }) => {

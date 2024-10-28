@@ -56,7 +56,9 @@ export const Layout = () => {
           <ErrorBoundary>
             <CartIcon onClick={() => navigate('/cart')} />
           </ErrorBoundary>
-          <Account />
+          <Suspense fallback={<CircularProgress />}>
+            <Account />
+          </Suspense>
         </Toolbar>
       </AppBar>
       <Drawer
