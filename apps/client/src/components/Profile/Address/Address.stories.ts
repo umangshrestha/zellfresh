@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Address } from './Address';
 
 const meta = {
-  title: 'Address',
+  title: 'Profile/Address',
   component: Address,
   tags: ['autodocs'],
 } as Meta<typeof Address>;

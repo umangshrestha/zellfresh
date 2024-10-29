@@ -19,7 +19,7 @@ export const CartItem = ({
   description,
   onAddItemToCart,
   getProductCount,
-  ...key
+  productId,
 }: CartItemProps) => {
   const totalPrice = price * availableQuantity;
   const isProductAvailable = availableQuantity > 0;
@@ -50,17 +50,16 @@ export const CartItem = ({
           </Typography>
         }
       />
-
       <CardActions className="flex flex-row">
         <Box className="flex-1" />
         <ProductAddItem
-          {...key}
+          productId={productId}
           availableQuantity={availableQuantity}
           limitPerTransaction={limitPerTransaction}
           onAddItemToCart={onAddItemToCart}
           getProductCount={getProductCount}
         />
-        <Button color="error" onClick={() => onAddItemToCart(key, 0)}>
+        <Button color="error" onClick={() => onAddItemToCart({ productId }, 0)}>
           delete
         </Button>
       </CardActions>

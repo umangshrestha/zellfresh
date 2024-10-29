@@ -1,20 +1,30 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
-import { DEFAULT_ADDRESS } from '../../config/address.ts';
+import { DEFAULT_ADDRESS } from '../../../config/address.ts';
+import { useNotification } from '../../Notification';
 import {
   AddressMutationFunction,
   AddressType,
 } from '../Address/Address.types.ts';
-import { useNotification } from '../Notification';
+import {
+  ContactDetailsMutationFunction,
+  ContactDetailsType,
+} from '../ContactDetails/ContactDetails.types.ts';
 import { ADDRESS_QUERY, PUT_ADDRESS_MUTATION } from './Profile.queries.ts';
 
 export const useProfile = () => {
   const { setNotification } = useNotification();
-  const { data, loading, error } = useQuery(ADDRESS_QUERY);
+  const query = ADDRESS_QUERY;
+  const { data, loading, error } = useQuery(query);
   const [executeMutation] = useMutation(PUT_ADDRESS_MUTATION, {
-    refetchQueries: [ADDRESS_QUERY],
+    refetchQueries: [query],
   });
   const [address, setAddress] = useState<AddressType>({} as AddressType);
+  const [me, setMe] = useState<ContactDetailsType>({
+    email: '',
+    name: '',
+    phone: '',
+  });
 
   useEffect(() => {
     if (data?.me?.address) {
@@ -31,16 +41,34 @@ export const useProfile = () => {
     }
   }, [error, setNotification]);
 
-  const addressMutationFunctions: AddressMutationFunction = {
-    onChange: (key, value) => {
-      const newAddress = {
-        ...address,
+  const onAddressChange: AddressMutationFunction['onAddressChange'] = (
+    key,
+    value,
+  ) => {
+    const newAddress = {
+      ...address,
+      [key]: value,
+    };
+    setAddress(newAddress);
+  };
+
+  const onUserDetailsChange: ContactDetailsMutationFunction['onUserDetailsChange'] =
+    (key, value) => {
+      const newMe = {
+        ...me,
         [key]: value,
       };
-      setAddress(newAddress);
-    },
+      setMe(newMe);
+    };
+
+  return {
+    loading,
+    address,
+    me,
+    onUserDetailsChange,
+    onAddressChange,
     onSave: () => {
-      executeMutation({ variables: { ...address, ...DEFAULT_ADDRESS } })
+      executeMutation({ variables: { ...address, ...DEFAULT_ADDRESS, ...me } })
         .then(() => {
           setNotification({
             message: 'Address Updated',
@@ -54,10 +82,5 @@ export const useProfile = () => {
           });
         });
     },
-  };
-  return {
-    loading,
-    data: address,
-    address: addressMutationFunctions,
   };
 };

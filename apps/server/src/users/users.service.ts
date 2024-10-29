@@ -6,6 +6,7 @@ import { DynamodbService } from '../common/dynamodb/dynamodb.service';
 import { get_date_time_string } from '../common/get-date-time';
 import { PutAddressInput } from './dto/put-address.input';
 import { PutUserInput } from './dto/put-user.input';
+import { UpdateUserInput } from './dto/update-user.input';
 import { Address } from './entities/address.entity';
 import { User } from './entities/user.entity';
 
@@ -78,5 +79,28 @@ export class UsersService {
       ),
     });
     return user;
+  }
+
+  async updateDetails(userId: string, putUserInput: UpdateUserInput) {
+    await this.dynamodbService.client.updateItem({
+      TableName,
+      Key: marshall({ userId }),
+      UpdateExpression: `SET #name = :name, email = :email, phone = :phone, imageUrl = :imageUrl, updatedAt = :updatedAt`,
+      ExpressionAttributeNames: {
+        '#name': 'name',
+        '#imageUrl': 'imageUrl',
+        '#email': 'email',
+        '#phone': 'phone',
+        '#updatedAt': 'updatedAt',
+      },
+      ExpressionAttributeValues: marshall({
+        ':name': putUserInput.name,
+        ':imageUrl': putUserInput.imageUrl,
+        ':email': putUserInput.email,
+        ':phone': putUserInput.phone,
+        ':updatedAt': get_date_time_string(),
+      }),
+    });
+    return this.findOne(userId);
   }
 }

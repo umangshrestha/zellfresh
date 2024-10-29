@@ -64,7 +64,7 @@ type User {
   email: String
   role: String!
   imageUrl: String
-  phone: String!
+  phone: String
   address: Address
   blocked: Boolean!
   createdAt: String!
@@ -100,6 +100,7 @@ type Mutation {
   addItemToCart(cartInput: CartInput!): Cart!
   clearCart: Cart!
   putAddress(putAddressInput: PutAddressInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
 }
 
 input CreateProductInput {
@@ -130,4 +131,11 @@ input PutAddressInput {
   zip: String!
   country: String!
   additionalInfo: String
+}
+
+input UpdateUserInput {
+  name: String!
+  imageUrl: String
+  email: String!
+  phone: String!
 }

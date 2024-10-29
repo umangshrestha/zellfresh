@@ -5,6 +5,7 @@ import { AuthUser } from '../auth/auth.decorator';
 import { Auth } from '../auth/entities/auth.entity';
 import { Role } from '../auth/entities/role.enum';
 import { PutAddressInput } from './dto/put-address.input';
+import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 
@@ -31,5 +32,14 @@ export class UsersResolver {
     @Args('putAddressInput') address: PutAddressInput,
   ) {
     return this.usersService.addAddress(payload.sub, address);
+  }
+
+  @UseGuards(AccessOrGuestTokenGuard)
+  @Mutation(() => User)
+  updateUser(
+    @AuthUser({ required: true }) payload: Auth,
+    @Args('updateUserInput') user: UpdateUserInput,
+  ) {
+    return this.usersService.updateDetails(payload.sub, user);
   }
 }

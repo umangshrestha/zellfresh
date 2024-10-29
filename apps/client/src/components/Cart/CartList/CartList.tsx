@@ -4,12 +4,7 @@ import CartItem, { CartItemType } from '../CartItem';
 import CartItemSkeleton from '../CartItemSkeleton';
 import { CartListProps } from './CartList.types';
 
-export const CartList = ({
-  data,
-  loading,
-  onAddItemToCart,
-  getProductCount,
-}: CartListProps) => {
+export const CartList = ({ data, loading, ...functions }: CartListProps) => {
   if (loading)
     return (
       <List>
@@ -26,11 +21,7 @@ export const CartList = ({
     <List>
       {data.map((product: CartItemType) => (
         <ListItem key={product.productId}>
-          <CartItem
-            {...product}
-            onAddItemToCart={onAddItemToCart}
-            getProductCount={getProductCount}
-          />
+          <CartItem {...product} {...functions} />
         </ListItem>
       ))}
     </List>

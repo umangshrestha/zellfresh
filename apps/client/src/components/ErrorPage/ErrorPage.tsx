@@ -8,7 +8,7 @@ export const ErrorPage = () => (
       'If you need immediate assistance, please contact support.',
     ]}
     buttonText="Go to Support"
-    image="/public/error.png"
+    image="/error.png"
     alt="Error"
     onClick={() => {}}
   />

@@ -2,6 +2,9 @@ import { gql } from '@apollo/client';
 
 export const PUT_ADDRESS_MUTATION = gql`
   mutation (
+    $name: String!
+    $email: String!
+    $phone: String!
     $apartmentNumber: Int
     $city: String!
     $street: String!
@@ -23,12 +26,18 @@ export const PUT_ADDRESS_MUTATION = gql`
     ) {
       userId
     }
+    updateUser(updateUserInput: { email: $email, name: $name, phone: $phone }) {
+      userId
+    }
   }
 `;
 
 export const ADDRESS_QUERY = gql`
   query {
     me {
+      email
+      name
+      phone
       address {
         apartmentNumber
         street

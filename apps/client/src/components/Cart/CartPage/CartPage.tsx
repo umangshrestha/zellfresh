@@ -16,11 +16,12 @@ export const CartPage = () => {
     return <CartEmptyPage onClick={() => navigate('/')} />;
   }
 
-  const totalPrice = data?.reduce(
-    (acc: number, product: CartItemType) =>
-      acc + product.price * product.availableQuantity,
-    0,
-  ) || 0;
+  const totalPrice =
+    data?.reduce(
+      (acc: number, product: CartItemType) =>
+        acc + product.price * product.availableQuantity,
+      0,
+    ) || 0;
 
   return (
     <Box className="flex flex-col gap-4 max-w-xl mx-auto pt-3">
@@ -28,7 +29,12 @@ export const CartPage = () => {
       <Box className="flex  justify-end gap-4 pb-10">
         Total: <b>{totalPrice}</b>
       </Box>
-      <Button variant="contained" color="warning" className="w-full">
+      <Button
+        variant="contained"
+        color="warning"
+        className="w-full"
+        onClick={() => navigate('/checkout')}
+      >
         Checkout
       </Button>
     </Box>

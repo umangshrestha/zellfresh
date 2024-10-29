@@ -1,7 +1,6 @@
-import Button from '@mui/material/Button';
 import FormGroup from '@mui/material/FormGroup';
 import TextField from '@mui/material/TextField';
-import { DEFAULT_ADDRESS } from '../../config/address.ts';
+import { DEFAULT_ADDRESS } from '../../../config/address.ts';
 import { AddressProps } from './Address.types.ts';
 
 export const Address = ({
@@ -9,36 +8,34 @@ export const Address = ({
   street,
   zip,
   additionalInfo,
-  onSave,
-  onChange,
+  onAddressChange,
 }: AddressProps) => (
   <FormGroup className="flex gap-4">
     <TextField
       label="Apartment Number"
       name="apartmentNumber"
       type="number"
-      error={!!apartmentNumber && !Number.isInteger(apartmentNumber)}
+      error={!!apartmentNumber && Number.isInteger(apartmentNumber)}
       value={apartmentNumber || ''}
-      onChange={(e) => onChange('apartmentNumber', e.target.value)}
+      onChange={(e) => onAddressChange('apartmentNumber', e.target.value)}
       variant="outlined"
     />
     <TextField
       label="Street"
       name="street"
-      value={street}
+      value={street || ''}
       error={!street}
-      onChange={(e) => onChange('street', e.target.value)}
+      onChange={(e) => onAddressChange('street', e.target.value)}
       variant="outlined"
       required
     />
-
     <TextField
       label="ZIP"
       name="zip"
-      value={zip}
+      value={zip || ''}
       variant="outlined"
       error={!zip}
-      onChange={(e) => onChange('zip', e.target.value)}
+      onChange={(e) => onAddressChange('zip', e.target.value)}
       required
     />
     <div className="flex flex-wrap gap-4">
@@ -70,11 +67,8 @@ export const Address = ({
       label="Additional Info"
       name="additionalInfo"
       value={additionalInfo}
-      onChange={(e) => onChange('additionalInfo', e.target.value)}
+      onChange={(e) => onAddressChange('additionalInfo', e.target.value)}
       variant="outlined"
     />
-    <Button variant="contained" color="primary" onClick={onSave}>
-      Save
-    </Button>
   </FormGroup>
 );

@@ -18,7 +18,7 @@ export class User {
   @Field(() => String, { nullable: true })
   imageUrl?: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   phone?: string;
 
   @Field(() => Address, { nullable: true })
