@@ -11,11 +11,13 @@ import Avatar from '@mui/material/Avatar';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { logout, me } from '../../lib/axios';
+import { useCartIcon } from '../Cart/CartIcon/CartIcon.hooks.ts';
 import { useNotification } from '../Notification';
 
 export const Account = () => {
   const navigate = useNavigate();
   const { setNotification } = useNotification();
+  const { setCartCount } = useCartIcon();
   const userDetails = useStorageStore((state) => state.userDetails);
   const setUserDetails = useStorageStore((state) => state.setUserDetails);
 
@@ -25,6 +27,7 @@ export const Account = () => {
   const onLogout = () => {
     logout()
       .then(() => {
+        setCartCount(0);
         setUserDetails(null);
         navigate('/');
       })

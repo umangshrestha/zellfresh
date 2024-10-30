@@ -16,7 +16,8 @@ export class CartsResolver {
 
   @Query(() => Cart, { name: 'cart' })
   async findCart(@AuthUser() { sub }: Auth) {
-    await this.cartsService.createEmptyCart(sub, false);
+    const createdCart = await this.cartsService.createEmptyCart(sub, false);
+    if (createdCart) return createdCart;
     return this.cartsService.getCart(sub);
   }
 

@@ -43,7 +43,6 @@ export const Address = ({
         label="City"
         name="city"
         defaultValue={DEFAULT_ADDRESS.city}
-        variant="outlined"
         disabled
         required
       />
@@ -58,7 +57,6 @@ export const Address = ({
         label="Country"
         name="country"
         defaultValue={DEFAULT_ADDRESS.country}
-        variant="outlined"
         disabled
         required
       />

@@ -4,22 +4,26 @@ export const CHECKOUT_QUERY = gql`
   query {
     cart {
       items {
-        quantity
         product {
-          category
           name
-          unit
           price
           imageUrl
+          availableQuantity
+          description
+          unit
+          category
         }
       }
     }
+    addresses {
+      apartmentNumber
+      street
+      zip
+    }
     me {
-      address {
-        apartmentNumber
-        street
-        zip
-      }
+      email
+      name
+      phone
     }
   }
 `;

@@ -4,18 +4,22 @@ import { SUPPORTED_PRODUCTS } from '../../../config/products';
 const productList = SUPPORTED_PRODUCTS.map((x) => x.name);
 const MAX_PRICE = 1000;
 
+const booleanFromString = z
+  .union([z.boolean(), z.string()])
+  .transform((val) => val === true || val === 'true');
+
 export const ProductFilterSchema = z
   .object({
     category: z.enum([productList[0], ...productList]).optional(),
-    maxPrice: z.number().int().min(0).max(MAX_PRICE).optional(),
-    minPrice: z.number().int().min(0).max(MAX_PRICE).optional(),
-    maxRating: z.number().int().min(0).max(5).optional(),
-    minRating: z.number().int().min(0).max(5).optional(),
+    maxPrice: z.coerce.number().int().min(0).max(MAX_PRICE).optional(),
+    minPrice: z.coerce.number().int().min(0).max(MAX_PRICE).optional(),
+    maxRating: z.coerce.number().int().min(0).max(5).optional(),
+    minRating: z.coerce.number().int().min(0).max(5).optional(),
     name: z.string().trim().optional(),
     tags: z.array(z.string()).optional(),
     sortBy: z.enum(['name', 'price', 'rating']).optional(),
-    sortAsc: z.boolean().optional(),
-    showOutOfStock: z.boolean().optional(),
+    sortAsc: booleanFromString.optional(),
+    showOutOfStock: booleanFromString.optional(),
   })
   .refine(({ minRating, maxRating, minPrice, maxPrice }) => {
     if (minRating && maxRating && minRating > maxRating) {

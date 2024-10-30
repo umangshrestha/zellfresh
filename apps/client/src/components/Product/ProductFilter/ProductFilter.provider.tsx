@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { z } from 'zod';
 import { LayoutProps as ProductFilterProviderProps } from '../../Layout';
 import { ProductFilterContext } from './ProductFilter.context';
 import { ProductFilterSchema } from './ProductFilter.schema';
@@ -10,24 +12,41 @@ import {
 export const ProductFilterProvider = ({
   children,
 }: ProductFilterProviderProps) => {
-  const [productFilter, setProductFilter] = useState<ProductFilterType>({});
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { data: productFilter, error } = ProductFilterSchema.safeParse(
+    Object.fromEntries(searchParams),
+  );
+  useEffect(() => {
+    if (error) setSearchParams(new URLSearchParams());
+  }, [error, setSearchParams]);
 
   const updateProductFilter = (newParams: ProductFilterType) => {
-    const { data, success } = ProductFilterSchema.safeParse({
-      ...productFilter,
-      ...newParams,
+    const newUrlSearchParams = new URLSearchParams(searchParams.toString());
+    Object.entries(newParams).forEach(([key, value]) => {
+      if (value !== undefined) {
+        newUrlSearchParams.set(key, value.toString());
+      } else {
+        newUrlSearchParams.delete(key);
+      }
     });
-
-    if (!success || JSON.stringify(data) === JSON.stringify(productFilter))
-      return;
-    setProductFilter(data);
-    return;
+    if (newUrlSearchParams.toString() === searchParams.toString()) return;
+    ProductFilterSchema.parseAsync(Object.fromEntries(newUrlSearchParams))
+      .then(() => {
+        setSearchParams(newUrlSearchParams);
+      })
+      .catch((error) => {
+        if (error instanceof z.ZodError) {
+          console.error(error.errors);
+        } else {
+          console.error(error, typeof error);
+        }
+      });
   };
 
   const contextValue: ProductFilterContextType = {
     productFilter,
     updateProductFilter,
-    resetProductFilter: () => setProductFilter({}),
+    resetProductFilter: () => setSearchParams(new URLSearchParams()),
   };
 
   return (

@@ -33,7 +33,7 @@ export const CartPage = () => {
         variant="contained"
         color="warning"
         className="w-full"
-        onClick={() => navigate('/checkout')}
+        onClick={() => navigate('/cart/checkout')}
       >
         Checkout
       </Button>

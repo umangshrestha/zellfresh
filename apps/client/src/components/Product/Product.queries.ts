@@ -14,18 +14,16 @@ export const PRODUCTS_QUERY = gql`
     $showOutOfStock: Boolean
   ) {
     products(
-      filter: {
-        category: $category
-        maxPrice: $maxPrice
-        minPrice: $minPrice
-        maxRating: $maxRating
-        minRating: $minRating
-        tags: $tags
-        sortBy: $sortBy
-        sortAsc: $sortAsc
-        name: $name
-        showOutOfStock: $showOutOfStock
-      }
+      category: $category
+      maxPrice: $maxPrice
+      minPrice: $minPrice
+      maxRating: $maxRating
+      minRating: $minRating
+      tags: $tags
+      sortBy: $sortBy
+      sortAsc: $sortAsc
+      name: $name
+      showOutOfStock: $showOutOfStock
     ) {
       items {
         productId

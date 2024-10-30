@@ -1,4 +1,4 @@
-import { Field, Float, InputType, Int } from '@nestjs/graphql';
+import { ArgsType, Field, Float, Int } from '@nestjs/graphql';
 import {
   IsBoolean,
   IsEnum,
@@ -11,7 +11,7 @@ import {
 } from 'class-validator';
 import { SUPPORTED_PRODUCTS } from 'src/common/supported-products';
 
-@InputType()
+@ArgsType()
 export class FilterProductsInput {
   @Field(() => Int, { defaultValue: 10 })
   @IsOptional()
@@ -58,7 +58,7 @@ export class FilterProductsInput {
 
   @IsOptional()
   @Field({ nullable: true })
-  showOutOfStock?: boolean;
+  showOutOfStock: boolean = false;
 
   @ValidateIf((o) => o.maxPrice !== undefined && o.minPrice !== undefined)
   validatePriceRange() {

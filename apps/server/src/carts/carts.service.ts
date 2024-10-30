@@ -41,7 +41,7 @@ export class CartsService {
       this.loggerService.error(
         `Error creating cart: ${error} for data: ${JSON.stringify(cart)}`,
       );
-      throw error;
+      return null;
     }
   }
 

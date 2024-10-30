@@ -17,7 +17,7 @@ export class ProductsResolver {
   }
 
   @Query(() => PaginatedProduct, { name: 'products' })
-  findAll(@Args('filter') filter: FilterProductsInput) {
+  findAll(@Args() filter: FilterProductsInput) {
     return this.productsService.findAll(filter);
   }
 

@@ -52,7 +52,7 @@ export function SplitButton<T>({ options, onClick }: SplitButtonProps<T>) {
         </Button>
       </ButtonGroup>
       <Popper
-        sx={{ zIndex: 10 }}
+        sx={{ zIndex: 1 }}
         open={open}
         anchorEl={anchorRef.current}
         role={undefined}

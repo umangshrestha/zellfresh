@@ -3,6 +3,10 @@ import { IsOptional, IsString } from 'class-validator';
 
 @ObjectType()
 export class Address {
+  @Field(() => String)
+  addressId: string;
+  userId: string;
+
   @Field(() => Int, { nullable: true })
   apartmentNumber?: number;
 
@@ -27,4 +31,10 @@ export class Address {
   @IsOptional()
   @Field(() => String, { nullable: true })
   additionalInfo?: string;
+
+  @Field(() => String)
+  createdAt: string;
+
+  @Field(() => String)
+  updatedAt: string;
 }

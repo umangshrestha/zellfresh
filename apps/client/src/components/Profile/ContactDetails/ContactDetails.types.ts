@@ -1,12 +1,9 @@
-import { User } from '../../../__generated__/types.ts';
+import { z } from 'zod';
+import { ContactDetailsSchema } from './ContactDetails.schema.ts';
 
-type ContactDetailsKeys = 'email' | 'phone' | 'name';
-export type ContactDetailsType = Pick<User, ContactDetailsKeys>;
+export type ContactDetailsType = z.infer<typeof ContactDetailsSchema>;
 export type ContactDetailsMutationFunction = {
-  onUserDetailsChange: (
-    key: ContactDetailsKeys,
-    value: string | number,
-  ) => void;
+  onSave: (obj: ContactDetailsType) => void;
 };
 
 export type ContactDetailsProps = ContactDetailsType &

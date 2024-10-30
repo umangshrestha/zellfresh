@@ -29,6 +29,7 @@ import CartIcon from '../Cart/CartIcon';
 import ErrorBoundary from '../ErrorBoundary';
 import Footer from '../Footer';
 import Notification from '../Notification';
+import { useProductFilter } from '../Product/ProductFilter';
 import ThemeToggle from '../ThemeToggle';
 
 export const Layout = () => {
@@ -36,10 +37,11 @@ export const Layout = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [productsOpen, setProductsOpen] = useState(true);
   const location = useLocation();
+  const { productFilter, updateProductFilter } = useProductFilter();
   const pathNames = location.pathname.split('/').filter((x) => x);
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box className="flex flex-col min-h-3">
       <AppBar
         position="sticky"
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -86,9 +88,10 @@ export const Layout = () => {
                 <ListItemButton
                   sx={{ pl: 4 }}
                   key={product.name}
+                  disabled={productFilter?.category === product.name}
                   onClick={() => {
                     setDrawerOpen(false);
-                    navigate(product.path);
+                    updateProductFilter({ category: product.name });
                   }}
                 >
                   <ListItemIcon>{product.icon}</ListItemIcon>

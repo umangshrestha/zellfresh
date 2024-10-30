@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
+import Divider from '@mui/material/Divider';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
@@ -17,13 +18,15 @@ function priceText(value: number) {
 
 export const ProductFilter = () => {
   const { productFilter, updateProductFilter } = useProductFilter();
-
   return (
-    <Box sx={{ overflow: 'auto', p: 2, maxWidth: 300 }}>
-      <Typography variant="h6">Price</Typography>
+    <Box sx={{ minWidth: 250, pl: 2 }}>
+      <Typography variant="h5">Filter</Typography>
+      <Divider />
+      <br />
+      <Typography variant="subtitle1">Price</Typography>
       <Slider
         getAriaLabel={() => 'Price range'}
-        value={[productFilter.minPrice || 0, productFilter.maxPrice || 1000]}
+        value={[productFilter?.minPrice || 0, productFilter?.maxPrice || 1000]}
         onChange={(_, newValue) => {
           if (Array.isArray(newValue))
             updateProductFilter({
@@ -38,6 +41,8 @@ export const ProductFilter = () => {
         getAriaValueText={priceText}
         disableSwap
       />
+      <br />
+      <br />
       <SplitButton
         options={ProductOrderOptions}
         onClick={(options: ProductPageOrderBy) =>
@@ -46,14 +51,16 @@ export const ProductFilter = () => {
           })
         }
       />
+      <br />
+      <br />
       <FormControlLabel
         label="In stock"
         control={
           <Checkbox
-            checked={productFilter.showOutOfStock || false}
-            onChange={() =>
+            id="showOutOfStock"
+            onChange={(e) =>
               updateProductFilter({
-                showOutOfStock: !productFilter.showOutOfStock,
+                showOutOfStock: e.target.checked,
               })
             }
           />

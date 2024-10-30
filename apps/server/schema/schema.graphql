@@ -49,6 +49,7 @@ type Cart {
 }
 
 type Address {
+  addressId: String!
   apartmentNumber: Int
   street: String!
   city: String!
@@ -56,6 +57,8 @@ type Address {
   zip: String!
   country: String!
   additionalInfo: String
+  createdAt: String!
+  updatedAt: String!
 }
 
 type User {
@@ -65,33 +68,32 @@ type User {
   role: String!
   imageUrl: String
   phone: String
-  address: Address
+  address: [Address!]!
   blocked: Boolean!
   createdAt: String!
   updatedAt: String!
 }
 
 type Query {
-  products(filter: FilterProductsInput!): PaginatedProduct!
+  products(
+    limit: Int! = 10
+    cursor: String
+    name: String
+    category: String
+    tags: [String!]
+    minRating: Float
+    maxRating: Float
+    minPrice: Float
+    maxPrice: Float
+    showOutOfStock: Boolean = false
+    sortBy: String = "name"
+    sortAsc: Boolean = true
+  ): PaginatedProduct!
   product(productId: String!): Product!
   cart: Cart!
   cartItem(productId: String!): CartItem!
-  me: User!
-}
-
-input FilterProductsInput {
-  limit: Int! = 10
-  cursor: String
-  name: String
-  category: String
-  tags: [String!]
-  minRating: Float
-  maxRating: Float
-  minPrice: Float
-  maxPrice: Float
-  showOutOfStock: Boolean
-  sortBy: String = "name"
-  sortAsc: Boolean = true
+  me: User
+  addresses(limit: Float = 5): [Address!]!
 }
 
 type Mutation {
@@ -99,8 +101,8 @@ type Mutation {
   removeProduct(productId: String!): String!
   addItemToCart(cartInput: CartInput!): Cart!
   clearCart: Cart!
-  putAddress(putAddressInput: PutAddressInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
+  putAddress(putAddressInput: PutAddressInput!): Address!
 }
 
 input CreateProductInput {
@@ -123,7 +125,15 @@ input CartInput {
   quantity: Int!
 }
 
+input UpdateUserInput {
+  name: String!
+  imageUrl: String
+  email: String!
+  phone: String!
+}
+
 input PutAddressInput {
+  addressId: String
   apartmentNumber: Int
   street: String!
   city: String!
@@ -131,11 +141,4 @@ input PutAddressInput {
   zip: String!
   country: String!
   additionalInfo: String
-}
-
-input UpdateUserInput {
-  name: String!
-  imageUrl: String
-  email: String!
-  phone: String!
 }

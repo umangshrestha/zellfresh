@@ -8,6 +8,7 @@ import { AuthModule } from 'src/auth/auth.module';
 import { CartsModule } from 'src/carts/carts.module';
 import { validate } from 'src/common/environment';
 import { ProductsModule } from 'src/products/products.module';
+import { AddressesModule } from './addresses/addresses.module';
 import { ValidationProvider } from './common/validator.provider';
 import { UsersModule } from './users/users.module';
 
@@ -32,6 +33,7 @@ import { UsersModule } from './users/users.module';
         autoSchemaFile: join(process.cwd(), 'schema/schema.graphql'),
       }),
     }),
+    AddressesModule,
   ],
   controllers: [],
   providers: [ValidationProvider],

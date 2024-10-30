@@ -5,7 +5,6 @@ import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
 import { CartIconProvider } from './components/Cart/CartIcon';
 import { NotificationProvider } from './components/Notification';
-import { ProductFilterProvider } from './components/Product/ProductFilter/ProductFilter.provider';
 import { ThemeToggleProvider } from './components/ThemeToggle';
 import './index.css';
 import { apolloClient } from './lib/apollo';
@@ -18,9 +17,7 @@ createRoot(document.getElementById('root')!).render(
         <ThemeToggleProvider>
           <NotificationProvider>
             <CartIconProvider>
-              <ProductFilterProvider>
-                <RouterProvider router={router} />
-              </ProductFilterProvider>
+              <RouterProvider router={router} />
             </CartIconProvider>
           </NotificationProvider>
         </ThemeToggleProvider>

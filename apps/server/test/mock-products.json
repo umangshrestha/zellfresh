@@ -185,7 +185,7 @@
     "name": "Goat Boneless",
     "imageUrl": "https://proteinfresh.in/wp-content/uploads/2020/09/GOAT-BONELESS-300x200.png",
     "price": 12.99,
-    "availableQuantity": 10,
+    "availableQuantity": 0,
     "category": "mutton",
     "description": "Boneless & Fatless Chops, perfect for grilling.",
     "limitPerTransaction": 10,

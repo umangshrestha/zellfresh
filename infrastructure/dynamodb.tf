@@ -20,6 +20,22 @@ resource "aws_dynamodb_table" "users_table" {
   }
 }
 
+resource "aws_dynamodb_table" "address_table" {
+  name         = "ADDRESS_TABLE"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "userId"
+  range_key    = "addressId"
+
+  attribute {
+    name = "userId"
+    type = "S"
+  }
+  attribute {
+    name = "addressId"
+    type = "S"
+  }
+}
+
 resource "aws_dynamodb_table" "orders_table" {
   name         = "ORDERS_TABLE"
   billing_mode = "PAY_PER_REQUEST"
