@@ -39,18 +39,16 @@ export class AuthService {
       imageUrl,
       role: Role.USER,
     };
-
     const newUser = new PutUserInput();
     newUser.userId = sub;
     newUser.email = email;
     newUser.name = name;
     newUser.imageUrl = imageUrl;
-
     await this.usersService.create(newUser);
     if (guest && guest.sub && guest.sub.startsWith('guest-')) {
-      this.cartsService.moveCartItemsFromGuestToUser(guest.sub, sub);
+      await this.cartsService.moveCartItemsFromGuestToUser(guest.sub, sub);
     } else {
-      this.cartsService.createEmptyCart(sub);
+      await this.cartsService.createEmptyCart(sub, false);
     }
     return payload;
   }

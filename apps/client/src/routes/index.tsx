@@ -1,11 +1,13 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
-import CartPage from '../components/Cart/CartPage';
-import CheckoutPage from '../components/CheckoutPage';
+import { createBrowserRouter } from 'react-router-dom';
 import Layout from '../components/Layout';
-import LoginPage from '../components/LoginPage';
-import NotFoundPage from '../components/NotFoundPage';
-import ProductPage from '../components/Product/ProductPage';
-import ProfilePage from '../components/Profile/ProfilePage';
+import CartPage from '../pages/CartPage';
+import CheckoutPage from '../pages/CheckoutPage';
+import ErrorPage from '../pages/ErrorPage';
+import HomePage from '../pages/HomePage';
+import LoginPage from '../pages/LoginPage';
+import NotFoundPage from '../pages/NotFoundPage';
+import ProductPage from '../pages/ProductPage';
+import ProfilePage from '../pages/ProfilePage';
 
 export const router = createBrowserRouter([
   {
@@ -14,7 +16,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Navigate to="/products" />,
+        element: <HomePage />,
       },
       {
         path: '/cart',
@@ -23,6 +25,10 @@ export const router = createBrowserRouter([
       {
         path: '/cart/checkout',
         element: <CheckoutPage />,
+      },
+      {
+        path: '/error',
+        element: <ErrorPage />,
       },
       {
         path: '/profile',

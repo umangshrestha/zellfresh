@@ -6,9 +6,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { DynamodbService } from 'src/common/dynamodb/dynamodb.service';
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuid } from 'uuid';
 import { CreateProductInput } from './dto/create-product.input';
-import { FilterProductsInput } from './dto/filter-product.input';
+import { FilterProductsInput } from './dto/filter-product.args';
 import { PaginatedProduct } from './entities/paginated-product.entry';
 import { Product } from './entities/product.entity';
 
@@ -37,7 +37,7 @@ export class ProductsService {
 
   async create(item: CreateProductInput) {
     if (!item.productId) {
-      item.productId = uuidv4();
+      item.productId = uuid();
     }
     await this.dynamodbService.client.putItem({
       TableName,
@@ -92,7 +92,7 @@ export class ProductsService {
       filterExpressions.push('contains(tags, :tags)');
       expressionAttributeValues[':tags'] = { SS: tags };
     }
-    if (showOutOfStock) {
+    if (!showOutOfStock) {
       filterExpressions.push('availableQuantity > :count');
       expressionAttributeValues[':count'] = { N: '0' };
     }

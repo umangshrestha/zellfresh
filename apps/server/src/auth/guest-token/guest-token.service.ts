@@ -34,7 +34,7 @@ export class GuestTokenService {
   generateGuestDetails(): Auth {
     const sub = uuidv4();
     return {
-      sub,
+      sub: `guest-${sub}`,
       role: Role.GUEST,
       email: `${sub}@guest.pw`,
       name: 'Guest User',

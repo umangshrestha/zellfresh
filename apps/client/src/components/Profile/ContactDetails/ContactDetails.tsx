@@ -2,40 +2,18 @@ import Button from '@mui/material/Button';
 import FormGroup from '@mui/material/FormGroup';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
+import { CONTACT_DETAILS_FIELDS_MAPPING } from './ContactDetails.fields.ts';
 import { ContactDetailsSchema } from './ContactDetails.schema.ts';
 import {
   ContactDetailsProps,
   ContactDetailsType,
 } from './ContactDetails.types';
 
-const FIELDS_MAPPING = [
-  {
-    label: 'Name',
-    name: 'name',
-    required: true,
-    disabled: false,
-  },
-  {
-    label: 'Email',
-    name: 'email',
-    required: true,
-    disabled: true,
-    helperText:
-      'This email is used for sending notifications and not for login',
-  },
-  {
-    label: 'Phone',
-    name: 'phone',
-    required: true,
-    disabled: false,
-  },
-];
-
 export const ContactDetails = ({
   email,
   phone,
   name,
-  onSave,
+  onUserDetailsSave,
 }: ContactDetailsProps) => {
   const [userDetails, setUserDetails] = useState<ContactDetailsType>({
     email,
@@ -53,7 +31,7 @@ export const ContactDetails = ({
     ) || {};
   return (
     <FormGroup className="flex gap-4">
-      {FIELDS_MAPPING.map((field) => {
+      {CONTACT_DETAILS_FIELDS_MAPPING.map((field) => {
         const name = field.name as keyof ContactDetailsType;
         const value = userDetails[name] || '';
         const error = errorsMap[name];
@@ -80,7 +58,7 @@ export const ContactDetails = ({
       <Button
         variant="contained"
         color="primary"
-        onClick={() => onSave(userDetails)}
+        onClick={() => onUserDetailsSave(userDetails)}
         disabled={!success}
       >
         Update

@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client';
-import { useEffect } from 'react';
 import { CartItem } from '../../__generated__/types.ts';
+import { useStorageStore } from '../../lib/store';
 import { useNotification } from '../Notification';
 import { ProductKey } from '../Product';
 import {
@@ -9,16 +9,45 @@ import {
   CARTS_QUERY_VERBOSE,
 } from './Cart.queries';
 import { CartMutation } from './Cart.types';
-import { useCartIcon } from './CartIcon/CartIcon.hooks';
+import { useCartIcon } from './CartIcon';
+import { CartItemType } from './CartItem';
 
-export const useCart = ({ verbose = false }): CartMutation => {
+export const useCart = ({
+  verbose = false,
+}): CartMutation & {
+  enableCheckout: boolean;
+  totalPrice: number;
+} => {
   const query = verbose ? CARTS_QUERY_VERBOSE : CARTS_QUERY_SIMPLE;
-  const { data, loading, error } = useQuery(query);
-  const [executeMutation] = useMutation(ADD_ITEM_TO_CART_MUTATION, {
-    refetchQueries: [query],
-  });
   const { setNotification } = useNotification();
   const { setCartCount } = useCartIcon();
+
+  const userDetails = useStorageStore((state) => state.userDetails);
+  const onError = (error: Error) => {
+    setNotification({
+      message: error.message,
+      severity: 'error',
+    });
+  };
+  const { data, loading } = useQuery(query, {
+    fetchPolicy: userDetails ? 'cache-and-network' : 'no-cache',
+    onError,
+    onCompleted: (data) => {
+      setCartCount(data.cart.count);
+    },
+  });
+
+  const [executeMutation] = useMutation(ADD_ITEM_TO_CART_MUTATION, {
+    refetchQueries: [query],
+    onError,
+    onCompleted: (data) => {
+      setCartCount(data.addItemToCart.count);
+      setNotification({
+        message: 'Cart updated',
+        severity: 'success',
+      });
+    },
+  });
 
   const getProductCount = ({ productId }: ProductKey) => {
     const items = data?.cart?.items?.filter(
@@ -27,48 +56,29 @@ export const useCart = ({ verbose = false }): CartMutation => {
     return items?.length ? items[0].quantity : 0;
   };
 
-  useEffect(() => {
-    if (error) {
-      setNotification({
-        message: error.message,
-        severity: 'error',
-      });
-    }
-  }, [error, setNotification]);
-
-  useEffect(() => {
-    if (data && data.cart) {
-      setCartCount(data.cart.count);
-    }
-  }, [data, setCartCount]);
-
   const onAddItemToCart = (key: ProductKey, quantity: number) => {
     executeMutation({
       variables: {
         ...key,
         quantity,
       },
-    })
-      .then((response) => {
-        setCartCount(response.data.addItemToCart.count);
-        setNotification({
-          message: 'Cart updated',
-          severity: 'success',
-        });
-      })
-      .catch((error) => {
-        setNotification({
-          message: error.message,
-          severity: 'error',
-        });
-      });
+    }).then();
   };
 
-  return {
-    data: data?.cart?.items?.map((item: CartItem) => ({
+  const cartItem =
+    (data?.cart?.items?.map((item: CartItem) => ({
       ...item.product,
       quantity: item.quantity,
-    })),
+    })) as CartItemType[]) || [];
+
+  const totalPrice =
+    cartItem.reduce((acc, item) => acc + item.price * item.quantity, 0) || 0;
+
+  const enableCheckout = cartItem.some((item) => item.availableQuantity > 0);
+  return {
+    data: cartItem,
+    enableCheckout,
+    totalPrice,
     loading,
     onAddItemToCart,
     getProductCount,

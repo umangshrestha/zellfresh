@@ -7,7 +7,7 @@ import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import Badge from '../../Badge';
-import Viel from '../../Viel';
+import Veil from '../../Veil.tsx';
 import ProductAddItem from '../ProductAddItem';
 import { ProductProps } from './ProductItem.types';
 
@@ -40,8 +40,8 @@ export const ProductItem = ({
   }, [getProductCount, isAddedToCartClicked, key]);
 
   return (
-    <Viel enable={!isProductAvailable}>
-      <Card className="h-full w-64 max-w-xs flex flex-col">
+    <Veil enable={!isProductAvailable}>
+      <Card className="h-full w-64 max-w-xs flex flex-col ">
         <Badge badgeText={badgeText} />
         <CardMedia
           component="img"
@@ -97,6 +97,6 @@ export const ProductItem = ({
           )}
         </CardActions>
       </Card>
-    </Viel>
+    </Veil>
   );
 };

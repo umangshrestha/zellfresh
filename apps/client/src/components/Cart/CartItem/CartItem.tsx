@@ -14,6 +14,7 @@ export const CartItem = ({
   unit,
   price,
   imageUrl,
+  quantity,
   availableQuantity,
   limitPerTransaction,
   description,
@@ -21,7 +22,7 @@ export const CartItem = ({
   getProductCount,
   productId,
 }: CartItemProps) => {
-  const totalPrice = price * availableQuantity;
+  const totalPrice = price * quantity;
   const isProductAvailable = availableQuantity > 0;
   const badgeText = !isProductAvailable ? 'Out of Stock' : null;
   return (

@@ -8,7 +8,7 @@ export class Address {
   userId: string;
 
   @Field(() => Int, { nullable: true })
-  apartmentNumber?: number;
+  apt?: number;
 
   @Field(() => String)
   street: string;

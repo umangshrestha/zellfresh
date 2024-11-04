@@ -1,5 +1,6 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { FilterLimitArgs } from 'src/common/dto/filter-limit.args';
 import { AddressesService } from '../addresses/addresses.service';
 import { Address } from '../addresses/entities/address.entity';
 import { AccessOrGuestTokenGuard } from '../auth/access-or-guest-token.gaurd';
@@ -38,8 +39,21 @@ export class UsersResolver {
     return this.usersService.updateDetails(payload.sub, user);
   }
 
+  @UseGuards(AccessOrGuestTokenGuard)
+  @Mutation(() => User)
+  setDefaultAddress(
+    @AuthUser({ required: true }) payload: Auth,
+    @Args('addressId') addressId: string,
+  ) {
+    const address = this.addressesService.findOne(payload.sub, addressId);
+    if (!address) {
+      throw new Error('Address not found');
+    }
+    return this.usersService.updateFavoriteAddress(payload.sub, addressId);
+  }
+
   @ResolveField(() => [Address])
-  address(@AuthUser() { sub }: Auth) {
-    return this.addressesService.findAll(sub);
+  address(@AuthUser() { sub }: Auth, @Args() filter: FilterLimitArgs) {
+    return this.addressesService.findAll(sub, filter);
   }
 }

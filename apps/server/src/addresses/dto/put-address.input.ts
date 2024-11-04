@@ -1,11 +1,5 @@
-import { Field, InputType, Int } from '@nestjs/graphql';
-import {
-  IsNumber,
-  IsOptional,
-  IsPositive,
-  IsString,
-  IsUUID,
-} from 'class-validator';
+import { Field, InputType } from '@nestjs/graphql';
+import { IsOptional, IsString, IsUUID } from 'class-validator';
 import { get_date_time_string } from '../../common/get-date-time';
 
 @InputType()
@@ -19,10 +13,9 @@ export class PutAddressInput {
   userId?: string;
 
   @IsOptional()
-  @IsNumber()
-  @IsPositive()
-  @Field(() => Int, { nullable: true })
-  apartmentNumber?: number;
+  @IsString()
+  @Field(() => String, { nullable: true })
+  apt?: string;
 
   @IsString()
   @Field(() => String)
