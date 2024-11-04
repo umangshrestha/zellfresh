@@ -11,6 +11,10 @@ export class CartInput extends ReadProductInput {
   quantity: number;
 
   @IsString()
+  @Field(() => String)
+  productId: string;
+
+  @IsString()
   createdAt: string = get_date_time_string();
 
   @IsString()

@@ -50,7 +50,7 @@ type Cart {
 
 type Address {
   addressId: String!
-  apartmentNumber: Int
+  apt: Int
   street: String!
   city: String!
   state: String!
@@ -68,32 +68,27 @@ type User {
   role: String!
   imageUrl: String
   phone: String
-  address: [Address!]!
+  address(limit: Int! = 4): [Address!]!
   blocked: Boolean!
   createdAt: String!
   updatedAt: String!
 }
 
+type Order {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
 type Query {
-  products(
-    limit: Int! = 10
-    cursor: String
-    name: String
-    category: String
-    tags: [String!]
-    minRating: Float
-    maxRating: Float
-    minPrice: Float
-    maxPrice: Float
-    showOutOfStock: Boolean = false
-    sortBy: String = "name"
-    sortAsc: Boolean = true
-  ): PaginatedProduct!
+  products(limit: Int! = 10, cursor: String, name: String, category: String, tags: [String!], minRating: Float, maxRating: Float, minPrice: Float, maxPrice: Float, showOutOfStock: Boolean = false, sortBy: String = "name", sortAsc: Boolean = true): PaginatedProduct!
   product(productId: String!): Product!
   cart: Cart!
   cartItem(productId: String!): CartItem!
   me: User
-  addresses(limit: Float = 5): [Address!]!
+  addresses(limit: Int! = 4): [Address!]!
+  address(addressId: String!): Address!
+  orders: [Order!]!
+  order(id: Int!): Order!
 }
 
 type Mutation {
@@ -102,7 +97,12 @@ type Mutation {
   addItemToCart(cartInput: CartInput!): Cart!
   clearCart: Cart!
   updateUser(updateUserInput: UpdateUserInput!): User!
+  setDefaultAddress(addressId: String!): User!
   putAddress(putAddressInput: PutAddressInput!): Address!
+  deleteAddress(addressId: String!): Address!
+  createOrder(createOrderInput: CreateOrderInput!): Order!
+  updateOrder(updateOrderInput: UpdateOrderInput!): Order!
+  removeOrder(id: Int!): Order!
 }
 
 input CreateProductInput {
@@ -121,8 +121,8 @@ input CreateProductInput {
 }
 
 input CartInput {
-  productId: String!
   quantity: Int!
+  productId: String!
 }
 
 input UpdateUserInput {
@@ -134,11 +134,22 @@ input UpdateUserInput {
 
 input PutAddressInput {
   addressId: String
-  apartmentNumber: Int
+  apt: String
   street: String!
   city: String!
   state: String!
   zip: String!
   country: String!
   additionalInfo: String
+}
+
+input CreateOrderInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateOrderInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
 }

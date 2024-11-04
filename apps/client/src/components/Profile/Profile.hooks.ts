@@ -1,7 +1,7 @@
-import { useMutation, useQuery } from '@apollo/client';
-import { useEffect } from 'react';
-import { DEFAULT_ADDRESS } from '../../config/address.ts';
+import { MutationHookOptions, useMutation, useQuery } from '@apollo/client';
 import { useNotification } from '../Notification';
+import { AddressItemType } from './AddressItem';
+import { ContactDetailsType } from './ContactDetails';
 import {
   PROFILE_QUERY,
   PUT_ADDRESS_MUTATION,
@@ -10,57 +10,42 @@ import {
 
 export const useProfile = () => {
   const { setNotification } = useNotification();
-  const query = PROFILE_QUERY;
-  const { data, loading, error } = useQuery(query);
+  const onError = (error: Error) => {
+    setNotification({
+      message: error.message,
+      severity: 'error',
+    });
+  };
 
-  const [putAddressMutation] = useMutation(PUT_ADDRESS_MUTATION, {
-    refetchQueries: [query],
-  });
-  const [putUserMutation] = useMutation(PUT_USER_MUTATION, {
-    refetchQueries: [query],
-  });
-
-  useEffect(() => {
-    if (error) {
-      setNotification({
-        message: error.message,
-        severity: 'error',
-      });
-    }
-  }, [error, setNotification]);
-
+  const mutationOptions: MutationHookOptions = {
+    refetchQueries: [PROFILE_QUERY],
+    onError,
+  };
+  const { data, loading } = useQuery(PROFILE_QUERY, { onError });
+  const [onAddressSave] = useMutation(PUT_ADDRESS_MUTATION, mutationOptions);
+  const [onUserDetailsSave] = useMutation(PUT_USER_MUTATION, mutationOptions);
   return {
     loading,
     data: data?.me,
-    onUserDetailsSave: (variables: object) => {
-      putUserMutation({ variables })
-        .then(() => {
-          setNotification({
-            message: 'User Details Updated',
-            severity: 'success',
-          });
-        })
-        .catch((error) => {
-          setNotification({
-            message: error.message,
-            severity: 'error',
-          });
+    onUserDetailsSave: (variables: ContactDetailsType) => {
+      onUserDetailsSave({
+        variables,
+      }).then(() => {
+        setNotification({
+          message: 'Profile updated successfully',
+          severity: 'success',
         });
+      });
     },
-    onAddressSave: (variables: object) => {
-      putAddressMutation({ variables: { ...variables, ...DEFAULT_ADDRESS } })
-        .then(() => {
-          setNotification({
-            message: 'Address Updated',
-            severity: 'success',
-          });
-        })
-        .catch((error) => {
-          setNotification({
-            message: error.message,
-            severity: 'error',
-          });
+    onAddressSave: (variables: AddressItemType) => {
+      onAddressSave({
+        variables,
+      }).then(() => {
+        setNotification({
+          message: 'Address updated successfully',
+          severity: 'success',
         });
+      });
     },
   };
 };

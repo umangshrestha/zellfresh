@@ -2,7 +2,8 @@ import { gql } from '@apollo/client';
 
 export const PUT_ADDRESS_MUTATION = gql`
   mutation (
-    $apartmentNumber: Int
+    $addressId: String
+    $apt: String
     $city: String!
     $street: String!
     $zip: String!
@@ -12,7 +13,8 @@ export const PUT_ADDRESS_MUTATION = gql`
   ) {
     putAddress(
       putAddressInput: {
-        apartmentNumber: $apartmentNumber
+        addressId: $addressId
+        apt: $apt
         city: $city
         street: $street
         zip: $zip
@@ -52,10 +54,12 @@ export const PROFILE_QUERY = gql`
       email
       name
       phone
-      address {
-        apartmentNumber
+      address(limit: 1) {
+        addressId
+        apt
         street
         zip
+        additionalInfo
       }
     }
   }

@@ -11,16 +11,15 @@ import Avatar from '@mui/material/Avatar';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { logout, me } from '../../lib/axios';
-import { useCartIcon } from '../Cart/CartIcon/CartIcon.hooks.ts';
+import { useCartIcon } from '../Cart/CartIcon';
 import { useNotification } from '../Notification';
 
 export const Account = () => {
   const navigate = useNavigate();
   const { setNotification } = useNotification();
-  const { setCartCount } = useCartIcon();
   const userDetails = useStorageStore((state) => state.userDetails);
   const setUserDetails = useStorageStore((state) => state.setUserDetails);
-
+  const { setCartCount } = useCartIcon();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const isGuest = !userDetails || userDetails?.role === 'guest';
 
@@ -45,7 +44,9 @@ export const Account = () => {
     const signal = controller.signal;
     me({ signal })
       .then((response) => {
-        setUserDetails(response.data);
+        if (JSON.stringify(userDetails) !== JSON.stringify(response.data)) {
+          setUserDetails(response.data);
+        }
       })
       .catch((error) => {
         if (axios.isCancel(error)) return;
@@ -55,11 +56,10 @@ export const Account = () => {
           severity: 'error',
         });
       });
-
     return () => {
       controller.abort();
     };
-  }, [setNotification, setUserDetails]);
+  }, [setNotification, setUserDetails, userDetails]);
 
   return (
     <Box>
@@ -74,10 +74,7 @@ export const Account = () => {
       >
         <Avatar
           alt={`picture of ${userDetails?.name}`}
-          src={
-            userDetails?.imageUrl ||
-            'https://cdn-icons-png.flaticon.com/512/149/149071.png'
-          }
+          src={userDetails?.imageUrl}
         />
       </IconButton>
       <Menu

@@ -1,5 +1,7 @@
 services:
   localstack:
+    # This is the LocalStack service, which is a mock AWS environment.
+    # Access it at http://localhost:4566
     container_name: 'aws-localstack'
     image: localstack/localstack
     ports:
@@ -13,3 +15,14 @@ services:
     volumes:
       - '${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack'
       - '/var/run/docker.sock:/var/run/docker.sock'
+  dynamodb_admin:
+    # This is the dynamodb-admin service, which is a web-based UI for DynamoDB.
+    # Access it at http://localhost:8001
+    container_name: 'dynamodb-admin'
+    image: aaronshaf/dynamodb-admin
+    ports:
+      - '8001:8001'
+    environment:
+      - DYNAMO_ENDPOINT=http://localstack:4566
+    depends_on:
+      - localstack

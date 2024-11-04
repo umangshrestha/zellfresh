@@ -6,6 +6,7 @@ import { CartIconProps } from './CartIcon.types';
 
 export const CartIcon = ({ onClick }: CartIconProps) => {
   const { cartCount } = useCartIcon();
+
   return (
     <IconButton onClick={onClick}>
       <Badge badgeContent={cartCount} color="error">

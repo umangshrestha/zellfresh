@@ -1,9 +1,9 @@
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
 import { Injectable, Logger } from '@nestjs/common';
-import { Role } from '../auth/entities/role.enum';
-import { DynamodbService } from '../common/dynamodb/dynamodb.service';
-import { get_date_time_string } from '../common/get-date-time';
+import { Role } from 'src/auth/entities/role.enum';
+import { DynamodbService } from 'src/common/dynamodb/dynamodb.service';
+import { get_date_time_string } from 'src/common/get-date-time';
 import { PutUserInput } from './dto/put-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
@@ -79,6 +79,23 @@ export class UsersService {
         ':imageUrl': putUserInput.imageUrl || '',
         ':email': putUserInput.email,
         ':phone': putUserInput.phone,
+        ':updatedAt': get_date_time_string(),
+      }),
+    });
+    return this.findOne(userId);
+  }
+
+  async updateFavoriteAddress(userId: string, addressId: string) {
+    await this.dynamodbService.client.updateItem({
+      TableName,
+      Key: marshall({ userId }),
+      UpdateExpression: `SET #defaultAddressId = :defaultAddressId, #updatedAt = :updatedAt`,
+      ExpressionAttributeNames: {
+        '#defaultAddressId': 'defaultAddressId',
+        '#updatedAt': 'updatedAt',
+      },
+      ExpressionAttributeValues: marshall({
+        ':defaultAddressId': addressId,
         ':updatedAt': get_date_time_string(),
       }),
     });

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { ErrorPage } from '../ErrorPage';
+import React, { Component, Suspense } from 'react';
+import ErrorPage from '../../pages/ErrorPage';
 import { LayoutProps as ErrorBoundaryProps } from '../Layout';
 import { ErrorBoundaryState } from './ErrorBoundary.types';
 
@@ -23,7 +23,11 @@ export class ErrorBoundary extends Component<
 
   render() {
     if (this.state.hasError) {
-      return <ErrorPage />;
+      return (
+        <Suspense fallback={<div>Loading...</div>}>
+          <ErrorPage />
+        </Suspense>
+      );
     }
 
     return this.props.children;

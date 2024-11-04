@@ -1,5 +1,6 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { FilterLimitArgs } from 'src/common/dto/filter-limit.args';
 import { AccessOrGuestTokenGuard } from '../auth/access-or-guest-token.gaurd';
 import { AuthUser } from '../auth/auth.decorator';
 import { Auth } from '../auth/entities/auth.entity';
@@ -13,11 +14,8 @@ export class AddressesResolver {
 
   @UseGuards(AccessOrGuestTokenGuard)
   @Query(() => [Address])
-  addresses(
-    @AuthUser() { sub }: Auth,
-    @Args('limit', { nullable: true, defaultValue: 5 }) limit: number = 5,
-  ) {
-    return this.addressesService.findAll(sub, limit);
+  addresses(@AuthUser() { sub }: Auth, @Args() filter: FilterLimitArgs) {
+    return this.addressesService.findAll(sub, filter);
   }
 
   @UseGuards(AccessOrGuestTokenGuard)
@@ -27,5 +25,23 @@ export class AddressesResolver {
     @Args('putAddressInput') address: PutAddressInput,
   ) {
     return this.addressesService.putAddress(payload.sub, address);
+  }
+
+  @UseGuards(AccessOrGuestTokenGuard)
+  @Query(() => Address)
+  address(
+    @AuthUser({ required: true }) payload: Auth,
+    @Args('addressId') addressId: string,
+  ) {
+    return this.addressesService.findOne(payload.sub, addressId);
+  }
+
+  @UseGuards(AccessOrGuestTokenGuard)
+  @Mutation(() => Address)
+  deleteAddress(
+    @AuthUser({ required: true }) payload: Auth,
+    @Args('addressId') addressId: string,
+  ) {
+    return this.addressesService.delete(payload.sub, addressId);
   }
 }

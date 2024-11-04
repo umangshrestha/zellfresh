@@ -13,6 +13,7 @@ export type ProductItemType = Pick<
   | 'badgeText'
   | 'unit'
   | 'category'
+  | 'tags'
 >;
 
 export type ProductProps = ProductItemType & CartMutationFunctions;

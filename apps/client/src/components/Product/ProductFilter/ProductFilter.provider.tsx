@@ -36,6 +36,7 @@ export const ProductFilterProvider = ({
       })
       .catch((error) => {
         if (error instanceof z.ZodError) {
+          console.log(newUrlSearchParams.toString());
           console.error(error.errors);
         } else {
           console.error(error, typeof error);

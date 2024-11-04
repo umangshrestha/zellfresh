@@ -37,7 +37,6 @@ export const PRODUCTS_QUERY = gql`
         category
         rating
         badgeText
-        tags
       }
     }
   }

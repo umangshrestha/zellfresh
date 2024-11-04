@@ -1,9 +1,9 @@
-import { Field, InputType } from '@nestjs/graphql';
-import { IsUUID } from 'class-validator';
+import { ArgsType, Field, Int } from '@nestjs/graphql';
+import { IsOptional } from 'class-validator';
 
-@InputType()
+@ArgsType()
 export class ReadProductInput {
-  @IsUUID()
-  @Field(() => String)
-  productId: string;
+  @Field(() => Int, { defaultValue: 5 })
+  @IsOptional()
+  limit: number = 5;
 }

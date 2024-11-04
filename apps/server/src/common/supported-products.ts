@@ -1,1 +1,8 @@
-export const SUPPORTED_PRODUCTS = ['chicken', 'beef', 'pork', 'mutton'];
+export const SUPPORTED_PRODUCTS = [
+  'chicken',
+  'beef',
+  'pork',
+  'mutton',
+  'fish',
+  'eggs',
+];

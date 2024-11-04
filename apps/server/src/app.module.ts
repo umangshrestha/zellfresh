@@ -1,6 +1,6 @@
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
@@ -9,7 +9,9 @@ import { CartsModule } from 'src/carts/carts.module';
 import { validate } from 'src/common/environment';
 import { ProductsModule } from 'src/products/products.module';
 import { AddressesModule } from './addresses/addresses.module';
+import { GraphQlConfig } from './common/graphql.config';
 import { ValidationProvider } from './common/validator.provider';
+import { OrdersModule } from './orders/orders.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -22,18 +24,9 @@ import { UsersModule } from './users/users.module';
     CartsModule,
     AuthModule,
     UsersModule,
-    GraphQLModule.forRootAsync<ApolloDriverConfig>({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      driver: ApolloDriver,
-
-      useFactory: (config: ConfigService) => ({
-        debug: config.getOrThrow('NODE_ENV') !== 'production',
-        playground: config.getOrThrow('NODE_ENV') !== 'production',
-        autoSchemaFile: join(process.cwd(), 'schema/schema.graphql'),
-      }),
-    }),
+    GraphQLModule.forRootAsync<ApolloDriverConfig>(GraphQlConfig),
     AddressesModule,
+    OrdersModule,
   ],
   controllers: [],
   providers: [ValidationProvider],

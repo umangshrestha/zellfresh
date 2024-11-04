@@ -1,13 +1,10 @@
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import HomeIcon from '@mui/icons-material/Home';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import MenuCloseIcon from '@mui/icons-material/Menu';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
 import CircularProgress from '@mui/material/CircularProgress';
 import Collapse from '@mui/material/Collapse';
 import Drawer from '@mui/material/Drawer';
@@ -21,7 +18,7 @@ import Paper from '@mui/material/Paper';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Suspense, useState } from 'react';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { APP_NAME } from '../../config';
 import { SUPPORTED_PRODUCTS } from '../../config/products.ts';
 import Account from '../Account';
@@ -29,16 +26,13 @@ import CartIcon from '../Cart/CartIcon';
 import ErrorBoundary from '../ErrorBoundary';
 import Footer from '../Footer';
 import Notification from '../Notification';
-import { useProductFilter } from '../Product/ProductFilter';
 import ThemeToggle from '../ThemeToggle';
+import { Breadcrumbs } from './Breadcrumbs';
 
 export const Layout = () => {
   const navigate = useNavigate();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [productsOpen, setProductsOpen] = useState(true);
-  const location = useLocation();
-  const { productFilter, updateProductFilter } = useProductFilter();
-  const pathNames = location.pathname.split('/').filter((x) => x);
 
   return (
     <Box className="flex flex-col min-h-3">
@@ -76,25 +70,43 @@ export const Layout = () => {
         <Toolbar />
         <List>
           <ListItemButton onClick={() => setProductsOpen((prev) => !prev)}>
-            <ListItemIcon>
+            <ListItemIcon
+              sx={{
+                minWidth: 'auto',
+                mr: 2,
+              }}
+            >
               <InventoryIcon />
             </ListItemIcon>
-            <ListItemText primary="Product" />
+            <ListItemText
+              primary="Product"
+              sx={{
+                opacity: drawerOpen ? 1 : 0,
+              }}
+            />
             {productsOpen ? <ExpandLess /> : <ExpandMore />}
           </ListItemButton>
           <Collapse in={productsOpen} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
               {SUPPORTED_PRODUCTS.map((product) => (
                 <ListItemButton
-                  sx={{ pl: 4 }}
+                  sx={{
+                    pl: 4,
+                  }}
                   key={product.name}
-                  disabled={productFilter?.category === product.name}
                   onClick={() => {
                     setDrawerOpen(false);
-                    updateProductFilter({ category: product.name });
+                    navigate(product.url);
                   }}
                 >
-                  <ListItemIcon>{product.icon}</ListItemIcon>
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 'auto',
+                      mr: 2,
+                    }}
+                  >
+                    {product.icon}
+                  </ListItemIcon>
                   <ListItemText primary={product.name} />
                 </ListItemButton>
               ))}
@@ -103,34 +115,7 @@ export const Layout = () => {
         </List>
       </Drawer>
       <Paper className="min-h-screen p-4">
-        <Breadcrumbs
-          className="p-4"
-          separator={<NavigateNextIcon fontSize="small" />}
-          aria-label="breadcrumb"
-        >
-          <Link
-            underline="hover"
-            key="1"
-            color="inherit"
-            href="/"
-            onClick={() => navigate('/products')}
-          >
-            <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-          </Link>
-          {pathNames.map((name, index) => (
-            <Link
-              underline="hover"
-              key={index + 2}
-              color="inherit"
-              href="/"
-              onClick={() =>
-                navigate(`/${pathNames.slice(0, index + 1).join('/')}`)
-              }
-            >
-              {name}
-            </Link>
-          ))}
-        </Breadcrumbs>
+        <Breadcrumbs />
         <ErrorBoundary>
           <Suspense fallback={<CircularProgress />}>
             <Outlet />
