@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { SUPPORTED_PRODUCTS } from '../../../config/products';
+import { SUPPORTED_CATEGORIES } from '../../../config/categories';
 
-const productList = SUPPORTED_PRODUCTS.map((x) => x.name);
+const productList = SUPPORTED_CATEGORIES.map((x) => x.name);
 const MAX_PRICE = 1000;
 
 const booleanFromString = z

@@ -2,48 +2,35 @@ import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
 import {
   BadRequestException,
   Injectable,
-  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { DynamodbService } from 'src/common/dynamodb/dynamodb.service';
-import { v4 as uuid } from 'uuid';
-import { CreateProductInput } from './dto/create-product.input';
-import { FilterProductsInput } from './dto/filter-product.args';
+import { PrismaService } from 'src/common/prisma/prisma.service';
+import { ReviewsService } from 'src/reviews/reviews.service';
+import { FilterProductsArgs } from './dto/filter-product.args';
+import { PutProductInput } from './dto/put-product.input';
 import { PaginatedProduct } from './entities/paginated-product.entry';
 import { Product } from './entities/product.entity';
+import { ProductsCacheService } from './products-cache.service';
 
 const TableName = 'PRODUCTS_TABLE';
 
 @Injectable()
 export class ProductsService {
-  private readonly loggerService = new Logger(ProductsService.name);
+  constructor(
+    private readonly reviewsService: ReviewsService,
+    private readonly prismService: PrismaService,
+    private readonly productsCacheService: ProductsCacheService,
+    private readonly dynamodbService: DynamodbService,
+  ) {}
 
-  constructor(private readonly dynamodbService: DynamodbService) {
-    this.seed().catch((error) => {
-      this.loggerService.error(error);
-    });
-  }
-
-  seed() {
-    const mock_data = require('../../test/mock-products.json');
-    return this.dynamodbService.client.batchWriteItem({
-      RequestItems: {
-        [TableName]: mock_data.map((item: CreateProductInput) => ({
-          PutRequest: { Item: marshall(item) },
-        })),
-      },
-    });
-  }
-
-  async create(item: CreateProductInput) {
-    if (!item.productId) {
-      item.productId = uuid();
-    }
-    await this.dynamodbService.client.putItem({
+  async put(item: PutProductInput) {
+    const rating = await this.reviewsService.getRating(item.productId);
+    await this.productsCacheService.put(item, rating);
+    return this.dynamodbService.client.putItem({
       TableName,
-      Item: marshall(item),
+      Item: marshall({ ...item, rating: { ...rating } }),
     });
-    return item;
   }
 
   async findAll({
@@ -59,7 +46,7 @@ export class ProductsService {
     sortBy,
     sortAsc,
     showOutOfStock,
-  }: FilterProductsInput): Promise<PaginatedProduct> {
+  }: FilterProductsArgs): Promise<PaginatedProduct> {
     const filterExpressions: string[] = [];
     const expressionAttributeValues: Record<string, any> = {};
     if (category) {
@@ -122,8 +109,11 @@ export class ProductsService {
         (a, b) => {
           switch (sortBy) {
             case 'price':
-            case 'rating':
               return sortAsc ? a.price - b.price : b.price - a.price;
+            case 'rating':
+              return sortAsc
+                ? a.rating.rating - b.rating.rating
+                : b.rating.rating - a.rating.rating;
             case 'name':
               return sortAsc
                 ? a.name.localeCompare(b.name)
@@ -153,16 +143,16 @@ export class ProductsService {
   }
 
   async update(productId: string, count: number) {
-    const product = await this.findOne(productId);
-    if (!product) {
+    const cache = await this.productsCacheService.findOne(productId);
+    if (!cache) {
       throw new NotFoundException('Product not found');
-    }
-    if (product.availableQuantity < count) {
-      throw new BadRequestException('Product not available');
+    } else if (cache.limitPerTransaction < count) {
+      throw new BadRequestException('Product limit exceeded');
     }
 
-    if (product.limitPerTransaction < count) {
-      throw new BadRequestException('Product limit exceeded');
+    const product = await this.findOne(productId);
+    if (product.availableQuantity < count) {
+      throw new BadRequestException('Product not available');
     }
 
     return this.dynamodbService.client.updateItem({
@@ -178,10 +168,42 @@ export class ProductsService {
   }
 
   async remove(productId: string) {
-    await this.dynamodbService.client.deleteItem({
-      TableName,
-      Key: marshall({ productId }),
+    // Delete from DynamoDB
+    try {
+      await this.dynamodbService.client.deleteItem({
+        TableName,
+        Key: marshall({ productId }),
+      });
+      // Delete from Prisma
+      await this.productsCacheService.remove(productId);
+      return productId;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  async syncProducts(ignoreIds: string[]) {
+    const entries = await this.prismService.product.findMany({
+      where: {
+        NOT: {
+          productId: {
+            in: ignoreIds,
+          },
+        },
+      },
     });
-    return productId;
+
+    for (const entry of entries) {
+      const product = new PutProductInput();
+      product.productId = entry.productId;
+      product.name = entry.name;
+      product.description = entry.description;
+      product.price = entry.price;
+      product.availableQuantity = entry.availableQuantity;
+      product.category = entry.category;
+      product.tags = entry.tags.split(',');
+      product.imageUrl = entry.imageUrl;
+      await this.put(product);
+    }
   }
 }

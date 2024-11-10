@@ -11,8 +11,10 @@ import {
 } from 'class-validator';
 import { SUPPORTED_PRODUCTS } from 'src/common/supported-products';
 
+const SORT_BY = ['name', 'price', 'rating'];
+
 @ArgsType()
-export class FilterProductsInput {
+export class FilterProductsArgs {
   @Field(() => Int, { defaultValue: 10 })
   @IsOptional()
   limit: number = 10;
@@ -25,13 +27,27 @@ export class FilterProductsInput {
   @IsOptional()
   name?: string;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => String, {
+    nullable: true,
+    description: `Supported categories: ${SUPPORTED_PRODUCTS.join(', ')}`,
+  })
   @IsEnum(SUPPORTED_PRODUCTS)
   @IsOptional()
   category?: string;
 
   @Field(() => [String], { nullable: true })
   tags?: Array<string>;
+
+  @IsOptional()
+  @Field(() => Float, { nullable: true })
+  @Min(0)
+  @IsOptional()
+  minPrice?: number;
+
+  @IsPositive()
+  @IsOptional()
+  @Field(() => Float, { nullable: true })
+  maxPrice?: number;
 
   @Max(5)
   @Min(0)
@@ -44,17 +60,6 @@ export class FilterProductsInput {
   @IsOptional()
   @Field(() => Float, { nullable: true })
   maxRating?: number;
-
-  @IsOptional()
-  @Field(() => Float, { nullable: true })
-  @Min(0)
-  @IsOptional()
-  minPrice?: number;
-
-  @IsPositive()
-  @IsOptional()
-  @Field(() => Float, { nullable: true })
-  maxPrice?: number;
 
   @IsOptional()
   @Field({ nullable: true })
@@ -75,8 +80,11 @@ export class FilterProductsInput {
   }
 
   @IsString()
-  @IsEnum(['name', 'price', 'rating'])
-  @Field(() => String, { nullable: true })
+  @IsEnum(SORT_BY)
+  @Field(() => String, {
+    nullable: true,
+    description: `Supported values: ${SORT_BY.join(', ')}`,
+  })
   sortBy: string = 'name';
 
   @IsBoolean()

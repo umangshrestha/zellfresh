@@ -4,6 +4,9 @@
 | -------------------- | ------------------------------------------------------ |
 | Programming Language | TypeScript                                             |
 | Runtime              | Node.js ~v20                                           |
+| Sqlite               | For caching products                                   |
+| React                | For frontend                                           |
+| Contentful           | For managing content                                   |
 | Nestjs               | For fullstack backend                                  |
 | HashiCorp Terraform  | Infrastructure as code tool for managing AWS resources |
 | Localstack           | Mocking AWS resources for local development            |

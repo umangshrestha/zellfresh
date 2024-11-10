@@ -20,7 +20,7 @@ import Typography from '@mui/material/Typography';
 import { Suspense, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { APP_NAME } from '../../config';
-import { SUPPORTED_PRODUCTS } from '../../config/products.ts';
+// import { SUPPORTED_PRODUCTS } from '../../config/products.ts';
 import Account from '../Account';
 import CartIcon from '../Cart/CartIcon';
 import ErrorBoundary from '../ErrorBoundary';
@@ -88,28 +88,28 @@ export const Layout = () => {
           </ListItemButton>
           <Collapse in={productsOpen} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              {SUPPORTED_PRODUCTS.map((product) => (
-                <ListItemButton
-                  sx={{
-                    pl: 4,
-                  }}
-                  key={product.name}
-                  onClick={() => {
-                    setDrawerOpen(false);
-                    navigate(product.url);
-                  }}
-                >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 'auto',
-                      mr: 2,
-                    }}
-                  >
-                    {product.icon}
-                  </ListItemIcon>
-                  <ListItemText primary={product.name} />
-                </ListItemButton>
-              ))}
+              {/*{SUPPORTED_PRODUCTS.map((product) => (*/}
+              {/*  <ListItemButton*/}
+              {/*    sx={{*/}
+              {/*      pl: 4,*/}
+              {/*    }}*/}
+              {/*    key={product.name}*/}
+              {/*    onClick={() => {*/}
+              {/*      setDrawerOpen(false);*/}
+              {/*      navigate(product.url);*/}
+              {/*    }}*/}
+              {/*  >*/}
+              {/*    <ListItemIcon*/}
+              {/*      sx={{*/}
+              {/*        minWidth: 'auto',*/}
+              {/*        mr: 2,*/}
+              {/*      }}*/}
+              {/*    >*/}
+              {/*      {product.icon}*/}
+              {/*    </ListItemIcon>*/}
+              {/*    <ListItemText primary={product.name} />*/}
+              {/*  </ListItemButton>*/}
+              {/*))}*/}
             </List>
           </Collapse>
         </List>

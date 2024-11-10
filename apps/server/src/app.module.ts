@@ -9,9 +9,12 @@ import { CartsModule } from 'src/carts/carts.module';
 import { validate } from 'src/common/environment';
 import { ProductsModule } from 'src/products/products.module';
 import { AddressesModule } from './addresses/addresses.module';
+import { CategoriesModule } from './categories/categories.module';
+import { ContentfulModule } from './common/contentful/contentful.module';
 import { GraphQlConfig } from './common/graphql.config';
 import { ValidationProvider } from './common/validator.provider';
 import { OrdersModule } from './orders/orders.module';
+import { ReviewsModule } from './reviews/reviews.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -27,14 +30,11 @@ import { UsersModule } from './users/users.module';
     GraphQLModule.forRootAsync<ApolloDriverConfig>(GraphQlConfig),
     AddressesModule,
     OrdersModule,
+    CategoriesModule,
+    ContentfulModule,
+    ReviewsModule,
   ],
   controllers: [],
   providers: [ValidationProvider],
 })
-export class AppModule {
-  // configure(consumer: MiddlewareConsumer) {
-  //   if (process.env.NODE_ENV !== 'production') {
-  //     consumer.apply(LoggerMiddleware).forRoutes('*');
-  //   }
-  // }
-}
+export class AppModule {}

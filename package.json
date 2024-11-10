@@ -15,12 +15,17 @@
     "codegen": "graphql-codegen",
     "storybook": "turbo run storybook"
   },
+  "dependencies": {
+    "axios": "^1.7.7"
+  },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.3",
+    "@nestjs/cli": "^10.4.7",
     "eslint": "^9.13.0",
     "graphql": "^16.9.0",
     "prettier": "^3.3.3",
     "prettier-plugin-organize-imports": "^4.1.0",
+    "prisma": "^5.22.0",
     "turbo": "^2.2.3",
     "typescript": "^5.6.3"
   },

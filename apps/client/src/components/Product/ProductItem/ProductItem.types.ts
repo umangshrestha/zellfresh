@@ -1,4 +1,4 @@
-import { Product } from '../../../__generated__/types';
+import type { Product } from '../../../__generated__/types';
 import { CartMutationFunctions } from '../../Cart';
 export type ProductItemType = Pick<
   Product,
