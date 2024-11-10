@@ -60,10 +60,11 @@ export const CheckoutPage = () => {
     ) || 0;
 
   const errors: string[] = [];
+  console.log(data.me.address);
   if (!data.me.name) errors.push("Name can't be empty");
   if (!data.me.email) errors.push("Email can't be empty");
   if (!data.me.phone) errors.push("Phone can't be empty");
-  if (!data.me.address) errors.push("Address can't be empty");
+  if (!data.me.address[0]) errors.push("Address can't be empty");
   return (
     <Box className="flex flex-col gap-4 max-w-xl mx-auto pt-3">
       <Typography variant="h4">Checkout Page</Typography>
@@ -118,7 +119,8 @@ export const CheckoutPage = () => {
                 <TableCell>Address</TableCell>
                 <TableCell>
                   <Table>
-                    <TableBody>
+                  {data.me.address[0]&&
+                    <TableBody>                  
                       <TableRow>
                         <TableCell>Apt</TableCell>
                         <TableCell>{data.me.address[0].apt}</TableCell>
@@ -131,7 +133,7 @@ export const CheckoutPage = () => {
                         <TableCell>Zip</TableCell>
                         <TableCell>{data.me.address[0].zip}</TableCell>
                       </TableRow>
-                    </TableBody>
+                    </TableBody>}
                   </Table>
                 </TableCell>
               </TableRow>

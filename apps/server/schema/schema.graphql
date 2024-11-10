@@ -75,8 +75,12 @@ type User {
 }
 
 type Order {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  userId: String!
+  orderId: String!
+  items: [CartItem!]!
+  createdAt: String!
+  updatedAt: String!
+  status: String!
 }
 
 type Query {
