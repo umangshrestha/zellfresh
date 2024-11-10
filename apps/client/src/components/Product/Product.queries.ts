@@ -35,7 +35,10 @@ export const PRODUCTS_QUERY = gql`
         availableQuantity
         limitPerTransaction
         category
-        rating
+        rating {
+          rating
+          count
+        }
         badgeText
       }
     }

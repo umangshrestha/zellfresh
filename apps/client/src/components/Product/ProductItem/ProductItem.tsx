@@ -72,7 +72,16 @@ export const ProductItem = ({
           <Typography variant="subtitle2" color="textSecondary">
             {unit}
           </Typography>
-          <Rating name="read-only" value={rating} precision={0.5} readOnly />
+          <Rating
+            name="read-only"
+            value={rating?.rating}
+            precision={0.5}
+            readOnly
+          />
+          <Typography
+            variant="caption"
+            color="textSecondary"
+          >{`(${rating?.count})`}</Typography>
         </CardContent>
         <CardActions disableSpacing sx={{ mt: 'auto' }}>
           {!isAddedToCartClicked ? (

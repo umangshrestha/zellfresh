@@ -4,6 +4,7 @@ import {
   IsEnum,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   validateSync,
 } from 'class-validator';
@@ -74,6 +75,18 @@ export class EnvironmentVariables {
   @IsNumber()
   @IsNotEmpty()
   GUEST_TOKEN_EXPIRATION_TIME: number = daysToMilliseconds(7);
+
+  @IsString()
+  @IsNotEmpty()
+  CONTENTFUL_SPACE_ID: string;
+
+  @IsString()
+  @IsNotEmpty()
+  CONTENTFUL_DELIVERY_ACCESS_TOKEN: string;
+
+  @IsString()
+  @IsOptional()
+  CONTENTFUL_ENVIRONMENT: string = 'master';
 }
 
 export function validate(config: Record<string, unknown>) {

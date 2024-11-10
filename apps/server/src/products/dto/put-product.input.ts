@@ -1,22 +1,11 @@
 import { Field, Float, InputType, Int } from '@nestjs/graphql';
-import {
-  IsEnum,
-  IsInt,
-  IsOptional,
-  IsString,
-  IsUrl,
-  IsUUID,
-  Max,
-  Min,
-} from 'class-validator';
-import { get_date_time_string } from 'src/common/get-date-time';
+import { IsEnum, IsInt, IsString, IsUrl, Min } from 'class-validator';
+import { SUPPORTED_PRODUCTS } from 'src/common/supported-products';
 
 @InputType()
-export class CreateProductInput {
-  @IsUUID()
-  @IsOptional()
-  @Field(() => String, { nullable: true })
-  productId?: string;
+export class PutProductInput {
+  @Field(() => String)
+  productId: string;
 
   @IsString()
   @Field()
@@ -51,14 +40,8 @@ export class CreateProductInput {
 
   @IsString()
   @Field()
-  @IsEnum(['chicken', 'beef', 'pork'])
+  @IsEnum(SUPPORTED_PRODUCTS)
   category: string;
-
-  @IsInt()
-  @Max(5)
-  @Min(0)
-  @Field(() => Float, { defaultValue: 5 })
-  rating: number;
 
   @IsString()
   @Field()
@@ -67,9 +50,4 @@ export class CreateProductInput {
   @IsString({ each: true })
   @Field(() => [String])
   tags: Array<string>;
-
-  @IsString()
-  createdAt: string = get_date_time_string();
-  @IsString()
-  updatedAt: string = get_date_time_string();
 }

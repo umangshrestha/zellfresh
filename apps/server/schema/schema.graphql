@@ -2,6 +2,20 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Review {
+  userId: String!
+  productId: String!
+  rating: Float!
+  comment: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Rating {
+  rating: Float!
+  count: Int!
+}
+
 type Product {
   productId: String!
   name: String!
@@ -12,11 +26,12 @@ type Product {
   limitPerTransaction: Int!
   unit: String!
   category: String!
-  rating: Float!
+  rating: Rating
   badgeText: String!
   tags: [String!]!
   createdAt: String!
   updatedAt: String!
+  reviews: [Review!]!
 }
 
 type Pagination {
@@ -74,14 +89,49 @@ type User {
   updatedAt: String!
 }
 
+type Category {
+  name: String!
+  icon: String!
+  imageUrl: String!
+  navigateUrl: String!
+}
+
 type Order {
   """Example field (placeholder)"""
   exampleField: Int!
 }
 
 type Query {
-  products(limit: Int! = 10, cursor: String, name: String, category: String, tags: [String!], minRating: Float, maxRating: Float, minPrice: Float, maxPrice: Float, showOutOfStock: Boolean = false, sortBy: String = "name", sortAsc: Boolean = true): PaginatedProduct!
+  products(
+    limit: Int! = 10
+    cursor: String
+    name: String
+
+    """Supported categories: chicken, beef, pork, mutton, fish, eggs"""
+    category: String
+    tags: [String!]
+    minPrice: Float
+    maxPrice: Float
+    minRating: Float
+    maxRating: Float
+    showOutOfStock: Boolean = false
+
+    """Supported values: name, price, rating"""
+    sortBy: String = "name"
+    sortAsc: Boolean = true
+  ): PaginatedProduct!
   product(productId: String!): Product!
+  reviews(
+    productId: String!
+    limit: Int! = 5
+    cursor: String
+    minRating: Float
+    maxRating: Float
+
+    """Sort by rating"""
+    sortAsc: Boolean = true
+  ): [Review!]!
+  review(productId: String!): Review!
   cart: Cart!
   cartItem(productId: String!): CartItem!
   me: User
@@ -89,11 +139,13 @@ type Query {
   address(addressId: String!): Address!
   orders: [Order!]!
   order(id: Int!): Order!
+  categories: [Category!]!
+  category(id: String!): Category!
 }
 
 type Mutation {
-  createProduct(createProductInput: CreateProductInput!): Product!
-  removeProduct(productId: String!): String!
+  putRating(productId: String!, putReviewInput: PutReviewInput!): Review!
+  removeRating(productId: String!): Review!
   addItemToCart(cartInput: CartInput!): Cart!
   clearCart: Cart!
   updateUser(updateUserInput: UpdateUserInput!): User!
@@ -105,22 +157,13 @@ type Mutation {
   removeOrder(id: Int!): Order!
 }
 
-input CreateProductInput {
-  productId: String
-  name: String!
-  imageUrl: String!
-  unit: String!
-  description: String
-  price: Float!
-  availableQuantity: Int!
-  limitPerTransaction: Int!
-  category: String!
-  rating: Float! = 5
-  badgeText: String!
-  tags: [String!]!
+input PutReviewInput {
+  rating: Float!
+  comment: String!
 }
 
 input CartInput {
+  limit: Int! = 5
   quantity: Int!
   productId: String!
 }
