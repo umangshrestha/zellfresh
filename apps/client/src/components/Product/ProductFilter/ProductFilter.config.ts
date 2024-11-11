@@ -5,42 +5,42 @@ export const ProductOrderOptions: SplitButtonType<ProductPageOrderBy>[] = [
   {
     label: 'Name: A to Z',
     value: {
-      sortBy: 'name',
+      sortBy: 'NAME',
       sortAsc: true,
     },
   },
   {
     label: 'Name: Z to A',
     value: {
-      sortBy: 'name',
+      sortBy: 'NAME',
       sortAsc: false,
     },
   },
   {
     label: 'Price: Low to High',
     value: {
-      sortBy: 'price',
+      sortBy: 'PRICE',
       sortAsc: true,
     },
   },
   {
     label: 'Price: High to Low',
     value: {
-      sortBy: 'price',
+      sortBy: 'PRICE',
       sortAsc: false,
     },
   },
   {
     label: 'Rating: Low to High',
     value: {
-      sortBy: 'rating',
+      sortBy: 'RATING',
       sortAsc: true,
     },
   },
   {
     label: 'Rating: High to Low',
     value: {
-      sortBy: 'rating',
+      sortBy: 'RATING',
       sortAsc: false,
     },
   },

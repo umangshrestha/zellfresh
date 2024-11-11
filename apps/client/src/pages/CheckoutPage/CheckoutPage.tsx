@@ -59,12 +59,12 @@ export const CheckoutPage = () => {
       0,
     ) || 0;
 
-  const errors: string[] = [];
-  console.log(data.me.address);
-  if (!data.me.name) errors.push("Name can't be empty");
-  if (!data.me.email) errors.push("Email can't be empty");
-  if (!data.me.phone) errors.push("Phone can't be empty");
-  if (!data.me.address[0]) errors.push("Address can't be empty");
+  const hasError =
+    !data.me.name ||
+    !data.me.email ||
+    !data.me.phone ||
+    !data.me.defaultAddress;
+
   return (
     <Box className="flex flex-col gap-4 max-w-xl mx-auto pt-3">
       <Typography variant="h4">Checkout Page</Typography>
@@ -105,36 +105,57 @@ export const CheckoutPage = () => {
             <TableBody>
               <TableRow>
                 <TableCell>Name</TableCell>
-                <TableCell>{data.me.name}</TableCell>
+                <TableCell>
+                  {data.me.name ? (
+                    data.me.name
+                  ) : (
+                    <Typography color="error">No name found</Typography>
+                  )}
+                </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Email</TableCell>
-                <TableCell>{data.me.email}</TableCell>
+                <TableCell>
+                  {data.me.email ? (
+                    data.me.email
+                  ) : (
+                    <Typography color="error">No email found</Typography>
+                  )}
+                </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Phone</TableCell>
-                <TableCell>{data.me.phone}</TableCell>
+                <TableCell>
+                  {data.me.phone ? (
+                    data.me.phone
+                  ) : (
+                    <Typography color="error">No phone number found</Typography>
+                  )}
+                </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Address</TableCell>
                 <TableCell>
-                  <Table>
-                  {data.me.address[0]&&
-                    <TableBody>                  
-                      <TableRow>
-                        <TableCell>Apt</TableCell>
-                        <TableCell>{data.me.address[0].apt}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Street</TableCell>
-                        <TableCell>{data.me.address[0].street}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Zip</TableCell>
-                        <TableCell>{data.me.address[0].zip}</TableCell>
-                      </TableRow>
-                    </TableBody>}
-                  </Table>
+                  {data.me.defaultAddress ? (
+                    <Table>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell>Apt</TableCell>
+                          <TableCell>{data.me.defaultAddress.apt}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Street</TableCell>
+                          <TableCell>{data.me.defaultAddress.street}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Zip</TableCell>
+                          <TableCell>{data.me.defaultAddress.zip}</TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  ) : (
+                    <Typography color="error">No address found</Typography>
+                  )}
                 </TableCell>
               </TableRow>
             </TableBody>
@@ -176,21 +197,12 @@ export const CheckoutPage = () => {
         <Box className="flex  justify-end gap-4 pb-10">
           Total: <b>{totalPrice}</b>
         </Box>
-        <List>
-          {errors.map((error) => (
-            <ListItem key={error}>
-              <Typography variant="body1" color="error">
-                {error}
-              </Typography>
-            </ListItem>
-          ))}
-        </List>
       </section>
       <Button
         variant="contained"
         color="error"
         className="w-full"
-        disabled={cart.length === 0 || errors.length > 0}
+        disabled={cart.length === 0 || hasError}
         onClick={onPlaceOrder}
       >
         Place Order

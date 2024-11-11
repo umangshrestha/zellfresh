@@ -58,7 +58,7 @@ export class UsersService {
       return unmarshall(userData.Item) as User;
     } catch (error) {
       this.loggerService.error(`Error fetching user: ${error}`);
-      throw error;
+      throw null;
     }
   }
 
@@ -85,7 +85,7 @@ export class UsersService {
     return this.findOne(userId);
   }
 
-  async updateFavoriteAddress(userId: string, addressId: string) {
+  async updateDefaultAddress(userId: string, addressId: string) {
     await this.dynamodbService.client.updateItem({
       TableName,
       Key: marshall({ userId }),
@@ -100,5 +100,13 @@ export class UsersService {
       }),
     });
     return this.findOne(userId);
+  }
+
+  async getDefaultAddressId(userId: string) {
+    const user = await this.findOne(userId);
+    if (!user) {
+      return null;
+    }
+    return user.defaultAddressId;
   }
 }

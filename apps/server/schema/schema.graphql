@@ -56,7 +56,6 @@ type CartItem {
 
 type Cart {
   userId: String!
-  orderId: String!
   items: [CartItem!]!
   count: Int!
   createdAt: String!
@@ -65,7 +64,7 @@ type Cart {
 
 type Address {
   addressId: String!
-  apt: Int
+  apt: String
   street: String!
   city: String!
   state: String!
@@ -83,6 +82,8 @@ type User {
   role: String!
   imageUrl: String
   phone: String
+  defaultAddressId: String
+  defaultAddress: Address
   address(limit: Int! = 4): [Address!]!
   blocked: Boolean!
   createdAt: String!
@@ -96,13 +97,50 @@ type Category {
   navigateUrl: String!
 }
 
+type DeliveryContactDetails {
+  name: String!
+  phone: String!
+  email: String!
+}
+
+type PaymentDetails {
+  paymentMethod: PaymentMethod!
+  deliveryPrice: Float!
+  subTotal: Int!
+  tax: Float!
+
+  """Total price of the order including delivery charge"""
+  totalPrice: Float!
+}
+
+"""The status of the order"""
+enum PaymentMethod {
+  CASH
+  CARD
+  UPI
+}
+
 type Order {
   userId: String!
   orderId: String!
   items: [CartItem!]!
+  deliveryStatus: DeliveryStatus!
+  shippingAddress: Address!
+  contactDetails: DeliveryContactDetails!
+  paymentDetails: PaymentDetails!
   createdAt: String!
   updatedAt: String!
-  status: String!
+}
+
+"""The status of the order"""
+enum DeliveryStatus {
+  PENDING
+  DELIVERED
+  CANCELLED
+  REFUNDED
+  PROCESSING
+  SHIPPED
+  COMPLETED
 }
 
 type Query {
@@ -119,9 +157,7 @@ type Query {
     minRating: Float
     maxRating: Float
     showOutOfStock: Boolean = false
-
-    """Supported values: name, price, rating"""
-    sortBy: String = "name"
+    sortBy: ProductsSortBy = NAME
     sortAsc: Boolean = true
   ): PaginatedProduct!
   product(productId: String!): Product!
@@ -147,18 +183,24 @@ type Query {
   category(id: String!): Category!
 }
 
+"""Sort products by"""
+enum ProductsSortBy {
+  NAME
+  PRICE
+  RATING
+}
+
 type Mutation {
   putRating(productId: String!, putReviewInput: PutReviewInput!): Review!
   removeRating(productId: String!): Review!
   addItemToCart(cartInput: CartInput!): Cart!
   clearCart: Cart!
   updateUser(updateUserInput: UpdateUserInput!): User!
-  setDefaultAddress(addressId: String!): User!
   putAddress(putAddressInput: PutAddressInput!): Address!
   deleteAddress(addressId: String!): Address!
-  createOrder(createOrderInput: CreateOrderInput!): Order!
-  updateOrder(updateOrderInput: UpdateOrderInput!): Order!
-  removeOrder(id: Int!): Order!
+  setDefaultAddress(addressId: String!): Address!
+  checkout(paymentMethod: PaymentMethod!): Order!
+  cancelOrder(id: Int!): Order!
 }
 
 input PutReviewInput {
@@ -167,7 +209,6 @@ input PutReviewInput {
 }
 
 input CartInput {
-  limit: Int! = 5
   quantity: Int!
   productId: String!
 }
@@ -188,15 +229,4 @@ input PutAddressInput {
   zip: String!
   country: String!
   additionalInfo: String
-}
-
-input CreateOrderInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input UpdateOrderInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
 }

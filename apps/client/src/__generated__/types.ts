@@ -18,7 +18,7 @@ export type Address = {
   __typename?: 'Address';
   additionalInfo?: Maybe<Scalars['String']['output']>;
   addressId: Scalars['String']['output'];
-  apt?: Maybe<Scalars['Int']['output']>;
+  apt?: Maybe<Scalars['String']['output']>;
   city: Scalars['String']['output'];
   country: Scalars['String']['output'];
   createdAt: Scalars['String']['output'];
@@ -33,13 +33,11 @@ export type Cart = {
   count: Scalars['Int']['output'];
   createdAt: Scalars['String']['output'];
   items: Array<CartItem>;
-  orderId: Scalars['String']['output'];
   updatedAt: Scalars['String']['output'];
   userId: Scalars['String']['output'];
 };
 
 export type CartInput = {
-  limit?: Scalars['Int']['input'];
   productId: Scalars['String']['input'];
   quantity: Scalars['Int']['input'];
 };
@@ -62,23 +60,35 @@ export type Category = {
   navigateUrl: Scalars['String']['output'];
 };
 
-export type CreateOrderInput = {
-  /** Example field (placeholder) */
-  exampleField: Scalars['Int']['input'];
+export type DeliveryContactDetails = {
+  __typename?: 'DeliveryContactDetails';
+  email: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  phone: Scalars['String']['output'];
 };
+
+/** The status of the order */
+export enum DeliveryStatus {
+  Cancelled = 'CANCELLED',
+  Completed = 'COMPLETED',
+  Delivered = 'DELIVERED',
+  Pending = 'PENDING',
+  Processing = 'PROCESSING',
+  Refunded = 'REFUNDED',
+  Shipped = 'SHIPPED'
+}
 
 export type Mutation = {
   __typename?: 'Mutation';
   addItemToCart: Cart;
+  cancelOrder: Order;
+  checkout: Order;
   clearCart: Cart;
-  createOrder: Order;
   deleteAddress: Address;
   putAddress: Address;
   putRating: Review;
-  removeOrder: Order;
   removeRating: Review;
-  setDefaultAddress: User;
-  updateOrder: Order;
+  setDefaultAddress: Address;
   updateUser: User;
 };
 
@@ -88,8 +98,13 @@ export type MutationAddItemToCartArgs = {
 };
 
 
-export type MutationCreateOrderArgs = {
-  createOrderInput: CreateOrderInput;
+export type MutationCancelOrderArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationCheckoutArgs = {
+  paymentMethod: PaymentMethod;
 };
 
 
@@ -109,11 +124,6 @@ export type MutationPutRatingArgs = {
 };
 
 
-export type MutationRemoveOrderArgs = {
-  id: Scalars['Int']['input'];
-};
-
-
 export type MutationRemoveRatingArgs = {
   productId: Scalars['String']['input'];
 };
@@ -124,19 +134,21 @@ export type MutationSetDefaultAddressArgs = {
 };
 
 
-export type MutationUpdateOrderArgs = {
-  updateOrderInput: UpdateOrderInput;
-};
-
-
 export type MutationUpdateUserArgs = {
   updateUserInput: UpdateUserInput;
 };
 
 export type Order = {
   __typename?: 'Order';
-  /** Example field (placeholder) */
-  exampleField: Scalars['Int']['output'];
+  contactDetails: DeliveryContactDetails;
+  createdAt: Scalars['String']['output'];
+  deliveryStatus: DeliveryStatus;
+  items: Array<CartItem>;
+  orderId: Scalars['String']['output'];
+  paymentDetails: PaymentDetails;
+  shippingAddress: Address;
+  updatedAt: Scalars['String']['output'];
+  userId: Scalars['String']['output'];
 };
 
 export type PaginatedProduct = {
@@ -151,6 +163,23 @@ export type Pagination = {
   next?: Maybe<Scalars['String']['output']>;
   prev?: Maybe<Scalars['String']['output']>;
 };
+
+export type PaymentDetails = {
+  __typename?: 'PaymentDetails';
+  deliveryPrice: Scalars['Float']['output'];
+  paymentMethod: PaymentMethod;
+  subTotal: Scalars['Int']['output'];
+  tax: Scalars['Float']['output'];
+  /** Total price of the order including delivery charge */
+  totalPrice: Scalars['Float']['output'];
+};
+
+/** The status of the order */
+export enum PaymentMethod {
+  Card = 'CARD',
+  Cash = 'CASH',
+  Upi = 'UPI'
+}
 
 export type Product = {
   __typename?: 'Product';
@@ -170,6 +199,13 @@ export type Product = {
   unit: Scalars['String']['output'];
   updatedAt: Scalars['String']['output'];
 };
+
+/** Sort products by */
+export enum ProductsSortBy {
+  Name = 'NAME',
+  Price = 'PRICE',
+  Rating = 'RATING'
+}
 
 export type PutAddressInput = {
   additionalInfo?: InputMaybe<Scalars['String']['input']>;
@@ -246,7 +282,7 @@ export type QueryProductsArgs = {
   name?: InputMaybe<Scalars['String']['input']>;
   showOutOfStock?: InputMaybe<Scalars['Boolean']['input']>;
   sortAsc?: InputMaybe<Scalars['Boolean']['input']>;
-  sortBy?: InputMaybe<Scalars['String']['input']>;
+  sortBy?: InputMaybe<ProductsSortBy>;
   tags?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
@@ -281,12 +317,6 @@ export type Review = {
   userId: Scalars['String']['output'];
 };
 
-export type UpdateOrderInput = {
-  /** Example field (placeholder) */
-  exampleField?: InputMaybe<Scalars['Int']['input']>;
-  id: Scalars['Int']['input'];
-};
-
 export type UpdateUserInput = {
   email: Scalars['String']['input'];
   imageUrl?: InputMaybe<Scalars['String']['input']>;
@@ -299,6 +329,8 @@ export type User = {
   address: Array<Address>;
   blocked: Scalars['Boolean']['output'];
   createdAt: Scalars['String']['output'];
+  defaultAddress?: Maybe<Address>;
+  defaultAddressId?: Maybe<Scalars['String']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   imageUrl?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;

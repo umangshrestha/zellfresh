@@ -10,6 +10,7 @@ import {
   ValidateIf,
 } from 'class-validator';
 import { SUPPORTED_PRODUCTS } from 'src/common/supported-products';
+import { ProductsSortBy } from './products-sort-by.enum';
 
 const SORT_BY = ['name', 'price', 'rating'];
 
@@ -81,11 +82,10 @@ export class FilterProductsArgs {
 
   @IsString()
   @IsEnum(SORT_BY)
-  @Field(() => String, {
+  @Field(() => ProductsSortBy, {
     nullable: true,
-    description: `Supported values: ${SORT_BY.join(', ')}`,
   })
-  sortBy: string = 'name';
+  sortBy: ProductsSortBy = ProductsSortBy.NAME;
 
   @IsBoolean()
   @Field(() => Boolean, { nullable: true })

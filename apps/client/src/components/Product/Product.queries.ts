@@ -8,7 +8,7 @@ export const PRODUCTS_QUERY = gql`
     $maxRating: Float
     $minRating: Float
     $tags: [String!]
-    $sortBy: String
+    $sortBy: ProductsSortBy
     $sortAsc: Boolean
     $name: String
     $showOutOfStock: Boolean

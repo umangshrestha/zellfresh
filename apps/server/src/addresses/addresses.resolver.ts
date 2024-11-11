@@ -22,9 +22,9 @@ export class AddressesResolver {
   @Mutation(() => Address)
   putAddress(
     @AuthUser({ required: true }) payload: Auth,
-    @Args('putAddressInput') address: PutAddressInput,
+    @Args('putAddressInput') putAddressInput: PutAddressInput,
   ) {
-    return this.addressesService.putAddress(payload.sub, address);
+    return this.addressesService.putAddress(payload.sub, putAddressInput);
   }
 
   @UseGuards(AccessOrGuestTokenGuard)
@@ -43,5 +43,14 @@ export class AddressesResolver {
     @Args('addressId') addressId: string,
   ) {
     return this.addressesService.delete(payload.sub, addressId);
+  }
+
+  @UseGuards(AccessOrGuestTokenGuard)
+  @Mutation(() => Address)
+  setDefaultAddress(
+    @AuthUser({ required: true }) payload: Auth,
+    @Args('addressId') addressId: string,
+  ) {
+    return this.addressesService.updateDefaultAddress(payload.sub, addressId);
   }
 }

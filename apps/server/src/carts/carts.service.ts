@@ -1,6 +1,7 @@
 import {
   AttributeValue,
   ConditionalCheckFailedException,
+  TransactWriteItem,
 } from '@aws-sdk/client-dynamodb';
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
 import { Injectable, Logger } from '@nestjs/common';
@@ -8,8 +9,7 @@ import { DynamodbService } from 'src/common/dynamodb/dynamodb.service';
 import { get_date_time_string } from 'src/common/get-date-time';
 import { CartInput } from './dto/cart-input.input';
 import { Cart } from './entities/cart.entity';
-const TableName = 'ORDERS_TABLE';
-const orderId = { S: 'CART' };
+const TableName = 'CARTS_TABLE';
 
 @Injectable()
 export class CartsService {
@@ -74,7 +74,6 @@ export class CartsService {
       TableName,
       Item: {
         userId: { S: userId },
-        orderId,
         items: { L: items },
         count: { N: items.length.toString() },
         updatedAt: { N: Date.now().toString() },
@@ -116,18 +115,17 @@ export class CartsService {
           break;
         }
       }
+
       if (!found) {
         items.push({
           M: marshall({ ...cartItem, updatedAt: cartItem.updatedAt }),
         });
       }
     }
-
     await this.dynamodbService.client.putItem({
       TableName,
       Item: {
         userId: { S: userId },
-        orderId,
         items: { L: items },
         count: { N: items.length.toString() },
       },
@@ -139,7 +137,7 @@ export class CartsService {
     try {
       const data = await this.dynamodbService.client.getItem({
         TableName,
-        Key: { userId: { S: userId }, orderId },
+        Key: { userId: { S: userId } },
       });
       return data.Item;
     } catch (error) {
@@ -159,7 +157,23 @@ export class CartsService {
   deleteCart(userId: string) {
     return this.dynamodbService.client.deleteItem({
       TableName,
-      Key: { orderId, userId: { S: userId } },
+      Key: { userId: { S: userId } },
     });
+  }
+
+  clearCartCommand(userId: string): TransactWriteItem {
+    const cart = new Cart();
+    cart.userId = userId;
+    cart.items = [];
+    cart.count = 0;
+    cart.createdAt = get_date_time_string();
+    cart.updatedAt = get_date_time_string();
+
+    return {
+      Put: {
+        TableName,
+        Item: marshall({ ...cart, orderId: 'CART' }),
+      },
+    };
   }
 }

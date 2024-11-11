@@ -1,4 +1,4 @@
-import { Logger, UseGuards } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AccessOrGuestTokenGuard } from 'src/auth/access-or-guest-token.gaurd';
 import { AuthUser } from 'src/auth/auth.decorator';
@@ -10,8 +10,6 @@ import { Cart } from './entities/cart.entity';
 @Resolver(() => Cart)
 @UseGuards(AccessOrGuestTokenGuard)
 export class CartsResolver {
-  private readonly loggerService = new Logger(CartsResolver.name);
-
   constructor(private readonly cartsService: CartsService) {}
 
   @Query(() => Cart, { name: 'cart' })

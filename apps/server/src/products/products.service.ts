@@ -1,12 +1,15 @@
+import { TransactWriteItem } from '@aws-sdk/client-dynamodb';
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
 import {
   BadRequestException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { DynamodbService } from 'src/common/dynamodb/dynamodb.service';
 import { PrismaService } from 'src/common/prisma/prisma.service';
 import { ReviewsService } from 'src/reviews/reviews.service';
+import { CartItem } from '../carts/entities/cart-item.entity';
 import { FilterProductsArgs } from './dto/filter-product.args';
 import { PutProductInput } from './dto/put-product.input';
 import { PaginatedProduct } from './entities/paginated-product.entry';
@@ -17,6 +20,7 @@ const TableName = 'PRODUCTS_TABLE';
 
 @Injectable()
 export class ProductsService {
+  private readonly loggerService = new Logger(ProductsService.name);
   constructor(
     private readonly reviewsService: ReviewsService,
     private readonly prismService: PrismaService,
@@ -132,6 +136,14 @@ export class ProductsService {
   }
 
   async findOne(productId: string) {
+    try {
+      const cache = await this.productsCacheService.findOne(productId);
+      if (cache) {
+        return cache;
+      }
+    } catch (error) {
+      this.loggerService.error(`Error deleting product: ${error}`);
+    }
     const data = await this.dynamodbService.client.getItem({
       TableName,
       Key: marshall({ productId }),
@@ -142,31 +154,33 @@ export class ProductsService {
     return unmarshall(data.Item) as Product;
   }
 
-  async update(productId: string, count: number) {
-    const cache = await this.productsCacheService.findOne(productId);
-    if (!cache) {
-      throw new NotFoundException('Product not found');
-    } else if (cache.limitPerTransaction < count) {
-      throw new BadRequestException('Product limit exceeded');
-    }
+  createUpdateStockTransactionCommand(
+    items: CartItem[],
+  ): Promise<TransactWriteItem[]> {
+    const transactItems = items.map(async ({ productId, quantity }) => {
+      const cache = await this.productsCacheService.findOne(productId);
+      if (!cache) {
+        throw new NotFoundException('Product not found');
+      } else if (cache.limitPerTransaction < quantity) {
+        throw new BadRequestException('Product limit exceeded');
+      }
 
-    const product = await this.findOne(productId);
-    if (product.availableQuantity < count) {
-      throw new BadRequestException('Product not available');
-    }
-
-    return this.dynamodbService.client.updateItem({
-      TableName,
-      Key: marshall({ productId }),
-      UpdateExpression:
-        'SET availableQuantity = availableQuantity - :count, updatedAt = :updatedAt',
-      ExpressionAttributeValues: {
-        ':count': { N: count.toString() },
-        ':updatedAt': { S: new Date().toISOString() },
-      },
+      return {
+        Update: {
+          Key: marshall({ productId }),
+          TableName: TableName,
+          ConditionExpression: 'availableQuantity >= :count',
+          UpdateExpression:
+            'SET availableQuantity = availableQuantity - :count, updatedAt = :updatedAt',
+          ExpressionAttributeValues: {
+            ':count': { N: quantity.toString() },
+            ':updatedAt': { S: new Date().toISOString() },
+          },
+        },
+      };
     });
+    return Promise.all(transactItems);
   }
-
   async remove(productId: string) {
     // Delete from DynamoDB
     try {
@@ -178,6 +192,7 @@ export class ProductsService {
       await this.productsCacheService.remove(productId);
       return productId;
     } catch (error) {
+      this.loggerService.error(`Error deleting product: ${error}`);
       return false;
     }
   }

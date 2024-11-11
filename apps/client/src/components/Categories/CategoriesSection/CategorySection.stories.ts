@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { CategoriesSection } from './CategoriesSection';
 import { SUPPORTED_CATEGORIES } from '../../../config/categories';
-
+import { CategoriesSection } from './CategoriesSection';
 
 const meta = {
   title: 'Category/Section',

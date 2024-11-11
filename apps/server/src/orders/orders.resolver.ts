@@ -1,35 +1,44 @@
+import { UseGuards } from '@nestjs/common';
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { CreateOrderInput } from './dto/create-order.input';
-import { UpdateOrderInput } from './dto/update-order.input';
+import { AccessOrGuestTokenGuard } from '../auth/access-or-guest-token.gaurd';
+import { AuthUser } from '../auth/auth.decorator';
+import { Auth } from '../auth/entities/auth.entity';
 import { Order } from './entities/order.entity';
+import { PaymentMethod } from './entities/payment-method.enum';
 import { OrdersService } from './orders.service';
 
 @Resolver(() => Order)
+@UseGuards(AccessOrGuestTokenGuard)
 export class OrdersResolver {
   constructor(private readonly ordersService: OrdersService) {}
 
   @Mutation(() => Order)
-  createOrder(@Args('createOrderInput') createOrderInput: CreateOrderInput) {
-    return this.ordersService.create(createOrderInput);
+  checkout(
+    @AuthUser() { sub }: Auth,
+    @Args('paymentMethod', { type: () => PaymentMethod })
+    paymentMethod: PaymentMethod,
+  ) {
+    return this.ordersService.checkout(sub, paymentMethod);
   }
 
   @Query(() => [Order], { name: 'orders' })
-  findAll() {
-    return this.ordersService.findAll();
+  findAll(@AuthUser() { sub }: Auth) {
+    return this.ordersService.findAll(sub);
   }
 
   @Query(() => Order, { name: 'order' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.ordersService.findOne(id);
+  findOne(
+    @AuthUser() { sub }: Auth,
+    @Args('id', { type: () => Int }) orderId: string,
+  ) {
+    return this.ordersService.findOne(sub, orderId);
   }
 
   @Mutation(() => Order)
-  updateOrder(@Args('updateOrderInput') updateOrderInput: UpdateOrderInput) {
-    return this.ordersService.update(updateOrderInput.id, updateOrderInput);
-  }
-
-  @Mutation(() => Order)
-  removeOrder(@Args('id', { type: () => Int }) id: number) {
-    return this.ordersService.remove(id);
+  cancelOrder(
+    @AuthUser() { sub }: Auth,
+    @Args('id', { type: () => Int }) orderId: string,
+  ) {
+    return this.ordersService.cancel(sub, orderId);
   }
 }

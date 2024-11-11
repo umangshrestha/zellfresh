@@ -1,4 +1,4 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { IsOptional, IsString } from 'class-validator';
 
 @ObjectType()
@@ -7,8 +7,8 @@ export class Address {
   addressId: string;
   userId: string;
 
-  @Field(() => Int, { nullable: true })
-  apt?: number;
+  @Field(() => String, { nullable: true })
+  apt?: string;
 
   @Field(() => String)
   street: string;

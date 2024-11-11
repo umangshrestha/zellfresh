@@ -21,6 +21,12 @@ export class User {
   @Field(() => String, { nullable: true })
   phone?: string;
 
+  @Field(() => String, { nullable: true })
+  defaultAddressId?: string;
+
+  @Field(() => Address, { nullable: true })
+  defaultAddress: Address;
+
   @Field(() => [Address])
   address: Address[];
 

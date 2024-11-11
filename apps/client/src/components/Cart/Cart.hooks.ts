@@ -16,7 +16,7 @@ export const useCart = ({
   verbose = false,
 }): CartMutation & {
   enableCheckout: boolean;
-  totalPrice: number;
+  totalPrice: string;
 } => {
   const query = verbose ? CARTS_QUERY_VERBOSE : CARTS_QUERY_SIMPLE;
   const { setNotification } = useNotification();
@@ -71,8 +71,9 @@ export const useCart = ({
       quantity: item.quantity,
     })) as CartItemType[]) || [];
 
-  const totalPrice =
-    cartItem.reduce((acc, item) => acc + item.price * item.quantity, 0) || 0;
+  const totalPrice = (
+    cartItem.reduce((acc, item) => acc + item.price * item.quantity, 0) || 0
+  ).toFixed(2);
 
   const enableCheckout = cartItem.some((item) => item.availableQuantity > 0);
   return {

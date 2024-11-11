@@ -7,6 +7,10 @@ resource "aws_dynamodb_table" "products_table" {
     name = "productId"
     type = "S"
   }
+
+  tags = {
+    Project = local.project_name
+  }
 }
 
 resource "aws_dynamodb_table" "users_table" {
@@ -17,6 +21,10 @@ resource "aws_dynamodb_table" "users_table" {
   attribute {
     name = "userId"
     type = "S"
+  }
+
+  tags = {
+    Project = local.project_name
   }
 }
 
@@ -34,6 +42,26 @@ resource "aws_dynamodb_table" "address_table" {
     name = "addressId"
     type = "S"
   }
+
+  tags = {
+    Project = local.project_name
+  }
+}
+
+
+resource "aws_dynamodb_table" "carts_table" {
+  name         = "CARTS_TABLE"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "userId"
+
+  attribute {
+    name = "userId"
+    type = "S"
+  }
+
+  tags = {
+    Project = local.project_name
+  }
 }
 
 resource "aws_dynamodb_table" "orders_table" {
@@ -46,9 +74,14 @@ resource "aws_dynamodb_table" "orders_table" {
     name = "userId"
     type = "S"
   }
+
   attribute {
     name = "orderId"
     type = "S"
+  }
+
+  tags = {
+    Project = local.project_name
   }
 }
 
@@ -66,6 +99,10 @@ resource "aws_dynamodb_table" "reviews_table" {
   attribute {
     name = "userId"
     type = "S"
+  }
+
+  tags = {
+    Project = local.project_name
   }
 }
 

@@ -19,11 +19,19 @@ export const CHECKOUT_QUERY = gql`
       email
       name
       phone
-      address(limit: 1) {
+      defaultAddress {
         apt
         street
         zip
       }
+    }
+  }
+`;
+
+export const CHECKOUT_MUTATION = gql`
+  mutation($paymentMethod: PaymentMethod!) {
+    checkout(paymentMethod: $paymentMethod) {
+      orderId
     }
   }
 `;

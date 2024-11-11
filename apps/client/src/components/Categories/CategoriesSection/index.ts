@@ -1,1 +1,1 @@
-export {CategoriesSection as default} from './CategoriesSection';
+export { CategoriesSection as default } from './CategoriesSection';

@@ -17,7 +17,7 @@ export const ProductFilterSchema = z
     minRating: z.coerce.number().int().min(0).max(5).optional(),
     name: z.string().trim().optional(),
     tags: z.array(z.string()).optional(),
-    sortBy: z.enum(['name', 'price', 'rating']).optional(),
+    sortBy: z.enum(['NAME', 'PRICE', 'RATING']).optional(),
     sortAsc: booleanFromString.optional(),
     showOutOfStock: booleanFromString.optional(),
   })
