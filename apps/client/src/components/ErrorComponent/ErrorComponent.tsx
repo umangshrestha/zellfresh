@@ -22,7 +22,7 @@ export const ErrorComponent = ({
       height="100vh"
       textAlign="center"
     >
-      <img src={image} alt={alt} width="150" loading="lazy" />
+      <img src={image} alt={alt} width="250" loading="lazy" />
       <Typography variant="h5" component="h1" gutterBottom>
         {title}
       </Typography>

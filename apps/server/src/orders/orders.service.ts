@@ -1,6 +1,10 @@
-import { TransactWriteItemsCommand } from '@aws-sdk/client-dynamodb';
+import {
+  TransactionCanceledException,
+  TransactWriteItemsCommand,
+} from '@aws-sdk/client-dynamodb';
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { DynamodbService } from 'src/common/dynamodb/dynamodb.service';
 import { v4 as uuid } from 'uuid';
 import { AddressesService } from '../addresses/addresses.service';
@@ -8,19 +12,22 @@ import { CartsService } from '../carts/carts.service';
 import { ProductsService } from '../products/products.service';
 import { UsersService } from '../users/users.service';
 import { DeliveryStatus } from './entities/delivery-status.enum';
-import { Order } from './entities/order.entity';
+import { Order, PaymentDetails } from './entities/order.entity';
 import { PaymentMethod } from './entities/payment-method.enum';
 const TableName = 'ORDERS_TABLE';
 
 @Injectable()
 export class OrdersService {
   private readonly loggerService = new Logger(OrdersService.name);
+
   constructor(
+    private readonly configService: ConfigService,
     private readonly dynamodbService: DynamodbService,
     private readonly cartsService: CartsService,
     private readonly addressesService: AddressesService,
     private readonly usersService: UsersService,
     private readonly productsService: ProductsService,
+    private readonly productsCacheService: ProductsService,
   ) {}
 
   async checkout(userId: string, paymentMethod: PaymentMethod) {
@@ -47,18 +54,32 @@ export class OrdersService {
       phone: user.phone,
       email: user.email,
     };
-    // based on payment add additional details to
-    // find the sub, total, tax, total, etc
-    // get the payment confirmation
-    // update the delivery status
+    order.paymentDetails = new PaymentDetails();
+    order.paymentDetails.subTotal = 0;
+    order.deliveryStatus = DeliveryStatus.PENDING;
+    order.paymentDetails.tax =
+      order.paymentDetails.subTotal * this.configService.get('TAX_RATE');
+    order.paymentDetails.deliveryPrice =
+      this.configService.get('DELIVERY_PRICE');
+    for (const item of order.items) {
+      const product = await this.productsCacheService.findOne(item.productId);
+      order.paymentDetails.subTotal += product.price * item.quantity;
+    }
+    order.paymentDetails.totalPrice =
+      order.paymentDetails.subTotal +
+      order.paymentDetails.tax +
+      order.paymentDetails.deliveryPrice;
+    order.paymentDetails.paymentMethod = paymentMethod;
+
     const transactItems =
       await this.productsService.createUpdateStockTransactionCommand(
         cart.items,
       );
+
     transactItems.push({
       Put: {
         TableName,
-        Item: marshall(order),
+        Item: marshall(order, { convertClassInstanceToMap: true }),
       },
     });
     transactItems.push(this.cartsService.clearCartCommand(userId));
@@ -66,13 +87,24 @@ export class OrdersService {
       TransactItems: transactItems,
     });
 
-
     try {
       await this.dynamodbService.client.send(command);
     } catch (error) {
       this.loggerService.error(
         `Error creating order: ${error} for data: ${JSON.stringify(order)}`,
       );
+      if (error instanceof TransactionCanceledException) {
+        if (error.CancellationReasons) {
+          for (const reason of error.CancellationReasons) {
+            console.error(reason);
+            if (reason.Code === 'ConditionalCheckFailed') {
+              throw new BadRequestException('Insufficient stock');
+            }
+          }
+        }
+      }
+      console.error('transact items', transactItems);
+      console.error('error', error);
       throw new BadRequestException('Error creating order');
     }
     return order;

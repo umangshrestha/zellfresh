@@ -5,6 +5,7 @@ import {
   IsNotEmpty,
   IsNumber,
   IsOptional,
+  IsPositive,
   IsString,
   validateSync,
 } from 'class-validator';
@@ -87,6 +88,16 @@ export class EnvironmentVariables {
   @IsString()
   @IsOptional()
   CONTENTFUL_ENVIRONMENT: string = 'master';
+
+  @IsNumber()
+  @IsOptional()
+  @IsPositive()
+  TAX_RATE: number = 0.05; //https://cleartax.in/s/chapter-2-meat-edible-meat-offal-gst-rate-hsn-code
+
+  @IsNumber()
+  @IsOptional()
+  @IsPositive()
+  DELIVERY_PRICE: number = 15;
 }
 
 export function validate(config: Record<string, unknown>) {

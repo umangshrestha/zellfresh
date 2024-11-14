@@ -20,9 +20,9 @@ import Typography from '@mui/material/Typography';
 import { Suspense, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { APP_NAME } from '../../config';
-// import { SUPPORTED_PRODUCTS } from '../../config/products.ts';
 import Account from '../Account';
 import CartIcon from '../Cart/CartIcon';
+import { useCategories } from '../Categories/Categories.hooks.ts';
 import ErrorBoundary from '../ErrorBoundary';
 import Footer from '../Footer';
 import Notification from '../Notification';
@@ -33,11 +33,12 @@ export const Layout = () => {
   const navigate = useNavigate();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [productsOpen, setProductsOpen] = useState(true);
+  const { data } = useCategories();
 
   return (
     <Box className="flex flex-col min-h-3">
       <AppBar
-        position="sticky"
+        position="fixed"
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
         <Toolbar disableGutters className="pl-4 pr-4">
@@ -88,33 +89,33 @@ export const Layout = () => {
           </ListItemButton>
           <Collapse in={productsOpen} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              {/*{SUPPORTED_PRODUCTS.map((product) => (*/}
-              {/*  <ListItemButton*/}
-              {/*    sx={{*/}
-              {/*      pl: 4,*/}
-              {/*    }}*/}
-              {/*    key={product.name}*/}
-              {/*    onClick={() => {*/}
-              {/*      setDrawerOpen(false);*/}
-              {/*      navigate(product.url);*/}
-              {/*    }}*/}
-              {/*  >*/}
-              {/*    <ListItemIcon*/}
-              {/*      sx={{*/}
-              {/*        minWidth: 'auto',*/}
-              {/*        mr: 2,*/}
-              {/*      }}*/}
-              {/*    >*/}
-              {/*      {product.icon}*/}
-              {/*    </ListItemIcon>*/}
-              {/*    <ListItemText primary={product.name} />*/}
-              {/*  </ListItemButton>*/}
-              {/*))}*/}
+              {data.map((product) => (
+                <ListItemButton
+                  sx={{
+                    pl: 4,
+                  }}
+                  key={product.name}
+                  onClick={() => {
+                    setDrawerOpen(false);
+                    navigate(product.navigateUrl);
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 'auto',
+                      mr: 2,
+                    }}
+                  >
+                    {product.icon}
+                  </ListItemIcon>
+                  <ListItemText primary={product.name} />
+                </ListItemButton>
+              ))}
             </List>
           </Collapse>
         </List>
       </Drawer>
-      <Paper className="min-h-screen p-4">
+      <Paper className="min-h-screen p-4 mt-12">
         <Breadcrumbs />
         <ErrorBoundary>
           <Suspense fallback={<CircularProgress />}>

@@ -29,7 +29,7 @@ export const CHECKOUT_QUERY = gql`
 `;
 
 export const CHECKOUT_MUTATION = gql`
-  mutation($paymentMethod: PaymentMethod!) {
+  mutation ($paymentMethod: PaymentMethod!) {
     checkout(paymentMethod: $paymentMethod) {
       orderId
     }

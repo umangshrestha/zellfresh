@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -16,21 +16,49 @@ import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { CHECKOUT_QUERY } from './CheckoutPage.queries.tsx';
+import { CHECKOUT_MUTATION, CHECKOUT_QUERY } from './CheckoutPage.queries.tsx';
 
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
+import { PaymentMethod } from '../../__generated__/types.ts';
+import { useCartIcon } from '../../components/Cart/CartIcon';
 import { CartItemType } from '../../components/Cart/CartItem';
 import CartItemReadOnly, {
   CartItemReadOnlyProps,
 } from '../../components/Cart/CartItemReadOnly';
+import { useNotification } from '../../components/Notification';
 
 export const CheckoutPage = () => {
   const navigate = useNavigate();
-  const [paymentMethod, setPaymentMethod] = useState('cash');
-  const { data, loading } = useQuery(CHECKOUT_QUERY);
+  const { setNotification } = useNotification();
+  const { setCartCount } = useCartIcon();
+  const [paymentMethod, setPaymentMethod] = useState(PaymentMethod.Cash);
+  const { data, loading } = useQuery(CHECKOUT_QUERY, {
+    onError: (error) => {
+      setNotification({
+        message: error.message,
+        severity: 'error',
+      });
+    },
+  });
+  const [checkoutMutation] = useMutation(CHECKOUT_MUTATION, {
+    onCompleted: (data) => {
+      setNotification({
+        message: `Order placed successfully with order ID: ${data.checkout.orderId}`,
+        severity: 'success',
+      });
+      setCartCount(0);
+      navigate('/');
+    },
+    onError: (error) => {
+      setNotification({
+        message: error.message,
+        severity: 'error',
+      });
+    },
+  });
 
   useEffect(() => {
     if (!loading && data.cart.length == 0) {
@@ -44,7 +72,11 @@ export const CheckoutPage = () => {
   };
 
   const onPlaceOrder = () => {
-    console.log('Placing order');
+    checkoutMutation({
+      variables: {
+        paymentMethod,
+      },
+    }).then();
   };
 
   if (loading) return <CircularProgress />;
@@ -68,6 +100,7 @@ export const CheckoutPage = () => {
   return (
     <Box className="flex flex-col gap-4 max-w-xl mx-auto pt-3">
       <Typography variant="h4">Checkout Page</Typography>
+      <br />
       <section>
         <div className="flex justify-between gap-4">
           <Typography variant="h6">Cart Items</Typography>
@@ -171,18 +204,24 @@ export const CheckoutPage = () => {
             aria-label="payment-method"
             name="payment-method"
             value={paymentMethod}
-            onChange={(event) => setPaymentMethod(event.target.value)}
+            onChange={(event) =>
+              setPaymentMethod(event.target.value as PaymentMethod)
+            }
           >
-            <FormControlLabel value="cash" control={<Radio />} label="Cash" />
             <FormControlLabel
-              value="card"
+              value={PaymentMethod.Cash}
+              control={<Radio />}
+              label="Cash"
+            />
+            <FormControlLabel
+              value={PaymentMethod.Card}
               control={<Radio />}
               label="Card (Razorpay)"
               disabled
             />
           </RadioGroup>
 
-          {paymentMethod === 'card' && (
+          {paymentMethod === PaymentMethod.Card && (
             <Button
               variant="contained"
               color="primary"

@@ -109,11 +109,15 @@ type PaymentDetails {
   subTotal: Int!
   tax: Float!
 
-  """Total price of the order including delivery charge"""
+  """
+  Total price of the order including delivery charge
+  """
   totalPrice: Float!
 }
 
-"""The status of the order"""
+"""
+The status of the order
+"""
 enum PaymentMethod {
   CASH
   CARD
@@ -132,7 +136,9 @@ type Order {
   updatedAt: String!
 }
 
-"""The status of the order"""
+"""
+The status of the order
+"""
 enum DeliveryStatus {
   PENDING
   DELIVERED
@@ -149,7 +155,9 @@ type Query {
     cursor: String
     name: String
 
-    """Supported categories: chicken, beef, pork, mutton, fish, eggs"""
+    """
+    Supported categories: chicken, beef, pork, mutton, fish, eggs
+    """
     category: String
     tags: [String!]
     minPrice: Float
@@ -168,7 +176,9 @@ type Query {
     minRating: Float
     maxRating: Float
 
-    """Sort by rating"""
+    """
+    Sort by rating
+    """
     sortAsc: Boolean = true
   ): [Review!]!
   review(productId: String!): Review!
@@ -183,7 +193,9 @@ type Query {
   category(id: String!): Category!
 }
 
-"""Sort products by"""
+"""
+Sort products by
+"""
 enum ProductsSortBy {
   NAME
   PRICE

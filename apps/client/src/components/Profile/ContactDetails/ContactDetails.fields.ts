@@ -9,7 +9,7 @@ export const CONTACT_DETAILS_FIELDS_MAPPING = [
     label: 'Email',
     name: 'email',
     required: true,
-    disabled: true,
+    disabled: false,
     helperText:
       'This email is used for sending notifications and not for login',
   },

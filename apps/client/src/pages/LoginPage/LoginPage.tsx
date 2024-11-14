@@ -1,6 +1,7 @@
 import Fingerprint from '@mui/icons-material/Fingerprint';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
+import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import { GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
@@ -42,7 +43,14 @@ export const LoginPage = () => {
         <Typography variant="subtitle1" gutterBottom color="textSecondary">
           Please sign in to continue
         </Typography>
-        <Box mt={4}>
+        <Box
+          mt="20px"
+          minHeight="160px"
+          textAlign="center"
+          display="flex"
+          flexDirection="column"
+          gap="10px"
+        >
           <GoogleLogin
             useOneTap
             onSuccess={(response) => {
@@ -60,8 +68,16 @@ export const LoginPage = () => {
             theme="filled_blue"
             text="signin_with"
             shape="pill"
+            size="large"
           />
+
+          <Link href="/" underline="always" ml="2">
+            continue as guest
+          </Link>
         </Box>
+        <Typography variant="subtitle1" gutterBottom color="textSecondary">
+          By signing in, you agree to our Terms and Privacy Policy
+        </Typography>
       </Box>
       <Notification />
       <Footer />

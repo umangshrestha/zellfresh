@@ -27,14 +27,17 @@ export class UsersResolver {
 
   @Query(() => User, { nullable: true })
   @UseGuards(AccessOrGuestTokenGuard)
-  me(@AuthUser({ required: true }) payload: Auth) {
-    if (payload.role === Role.GUEST) {
+  async me(@AuthUser({ required: true }) payload: Auth) {
+    const user = await this.usersService.findOne(payload.sub);
+    if (user) {
+      return user;
+    } else if (payload.role === Role.GUEST) {
       const user = new User();
       user.userId = payload.sub;
       user.role = Role.USER;
       return user;
     }
-    return this.usersService.findOne(payload.sub);
+    return null;
   }
 
   @UseGuards(AccessOrGuestTokenGuard)

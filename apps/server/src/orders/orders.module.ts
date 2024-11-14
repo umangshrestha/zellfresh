@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { DynamodbModule } from 'src/common/dynamodb/dynamodb.module';
 import { AddressesModule } from '../addresses/addresses.module';
 import { CartsModule } from '../carts/carts.module';
@@ -16,6 +17,7 @@ import { OrdersService } from './orders.service';
     UsersModule,
     AddressesModule,
     ProductsModule,
+    ConfigModule,
   ],
   exports: [OrdersService],
 })

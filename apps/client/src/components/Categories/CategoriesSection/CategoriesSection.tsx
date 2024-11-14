@@ -10,7 +10,6 @@ export const CategoriesSection = ({
     sx={{
       display: 'flex',
       justifyContent: 'center',
-
       flexWrap: 'wrap',
       minWidth: 300,
       width: '100%',

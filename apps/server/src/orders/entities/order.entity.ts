@@ -5,7 +5,7 @@ import { DeliveryStatus } from './delivery-status.enum';
 import { PaymentMethod } from './payment-method.enum';
 
 @ObjectType()
-class DeliveryContactDetails {
+export class DeliveryContactDetails {
   @Field(() => String)
   name: string;
 
@@ -17,7 +17,7 @@ class DeliveryContactDetails {
 }
 
 @ObjectType()
-class PaymentDetails {
+export class PaymentDetails {
   @Field(() => PaymentMethod)
   paymentMethod: PaymentMethod;
 

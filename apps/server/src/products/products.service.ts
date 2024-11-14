@@ -26,11 +26,17 @@ export class ProductsService {
     private readonly prismService: PrismaService,
     private readonly productsCacheService: ProductsCacheService,
     private readonly dynamodbService: DynamodbService,
-  ) {}
+  ) {
+    this.syncProducts([], true).then(() => {
+      this.loggerService.log('Products synced');
+    });
+  }
 
-  async put(item: PutProductInput) {
+  async put(item: PutProductInput, ignoreCache = false) {
     const rating = await this.reviewsService.getRating(item.productId);
-    await this.productsCacheService.put(item, rating);
+    if (!ignoreCache) {
+      await this.productsCacheService.put(item, rating);
+    }
     return this.dynamodbService.client.putItem({
       TableName,
       Item: marshall({ ...item, rating: { ...rating } }),
@@ -197,7 +203,7 @@ export class ProductsService {
     }
   }
 
-  async syncProducts(ignoreIds: string[]) {
+  async syncProducts(ignoreIds: string[], ignoreCache = false) {
     const entries = await this.prismService.product.findMany({
       where: {
         NOT: {
@@ -215,6 +221,9 @@ export class ProductsService {
       product.description = entry.description;
       product.price = entry.price;
       product.availableQuantity = entry.availableQuantity;
+      product.unit = entry.unit;
+      product.limitPerTransaction = entry.limitPerTransaction;
+      product.badgeText = entry.badgeText;
       product.category = entry.category;
       product.tags = entry.tags.split(',');
       product.imageUrl = entry.imageUrl;

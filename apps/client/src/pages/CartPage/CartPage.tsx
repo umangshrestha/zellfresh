@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../components/Cart';
 import { CartEmptyPage } from '../../components/Cart/CartEmptyPage';
@@ -17,6 +18,7 @@ export const CartPage = () => {
 
   return (
     <Box className="flex flex-col gap-4 max-w-xl mx-auto pt-3">
+      <Typography variant="h4">Cart Page</Typography>
       <CartList {...functions} loading={loading} data={data} />
       <Box className="flex  justify-end gap-4 pb-10">
         Sub total: <b>Rs. {totalPrice}</b>
