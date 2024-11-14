@@ -4,7 +4,6 @@ import { Review } from '../../reviews/entities/review.entity';
 
 export interface ProductKey {
   productId: string;
-  category: string;
 }
 
 @ObjectType()

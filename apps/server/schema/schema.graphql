@@ -37,7 +37,6 @@ type Product {
 type Pagination {
   limit: Int!
   next: String
-  prev: String
 }
 
 type PaginatedProduct {
@@ -47,7 +46,6 @@ type PaginatedProduct {
 
 type CartItem {
   productId: String!
-  category: String!
   product: Product
   quantity: Int!
   createdAt: String!
@@ -106,7 +104,7 @@ type DeliveryContactDetails {
 type PaymentDetails {
   paymentMethod: PaymentMethod!
   deliveryPrice: Float!
-  subTotal: Int!
+  subTotal: Float!
   tax: Float!
 
   """
@@ -149,6 +147,11 @@ enum DeliveryStatus {
   COMPLETED
 }
 
+type PaginatedOrder {
+  items: [Order!]!
+  pagination: Pagination!
+}
+
 type Query {
   products(
     limit: Int! = 10
@@ -187,8 +190,8 @@ type Query {
   me: User
   addresses(limit: Int! = 4): [Address!]!
   address(addressId: String!): Address!
-  orders: [Order!]!
-  order(id: Int!): Order!
+  orders(limit: Int! = 10, cursor: String): PaginatedOrder!
+  order(orderId: String!): Order!
   categories: [Category!]!
   category(id: String!): Category!
 }
@@ -212,7 +215,7 @@ type Mutation {
   deleteAddress(addressId: String!): Address!
   setDefaultAddress(addressId: String!): Address!
   checkout(paymentMethod: PaymentMethod!): Order!
-  cancelOrder(id: Int!): Order!
+  cancelOrder(orderId: String!): Order!
 }
 
 input PutReviewInput {

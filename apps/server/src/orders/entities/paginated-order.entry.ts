@@ -1,16 +1,7 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 
+import { Pagination } from '../../products/entities/paginated-product.entry';
 import { Order } from './order.entity';
-
-@ObjectType()
-export class Pagination {
-  @Field(() => Int)
-  limit: number;
-  @Field(() => String, { nullable: true })
-  next: string | null;
-  @Field(() => String, { nullable: true })
-  prev: string | null;
-}
 
 @ObjectType()
 export class PaginatedOrder {

@@ -1,12 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { CartEmptyPage } from './CartEmptyPage';
-import type { CartEmptyPageProps } from './CartEmptyPage.types';
 
 const meta = {
   title: 'Cart/EmptyPage',
   component: CartEmptyPage,
   tags: ['autodocs'],
-} as Meta<CartEmptyPageProps>;
+} as Meta<typeof CartEmptyPage>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

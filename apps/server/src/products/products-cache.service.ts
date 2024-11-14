@@ -78,7 +78,6 @@ export class ProductsCacheService {
       }),
       pagination: {
         limit,
-        prev: cursor,
         next: data.length === limit ? data[data.length - 1].productId : null,
       },
     };

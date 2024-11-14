@@ -8,8 +8,6 @@ export class Pagination {
   limit: number;
   @Field(() => String, { nullable: true })
   next: string | null;
-  @Field(() => String, { nullable: true })
-  prev: string | null;
 }
 
 @ObjectType()

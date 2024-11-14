@@ -12,16 +12,13 @@ import ListItem from '@mui/material/ListItem';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import Table from '@mui/material/Table';
-import Typography from '@mui/material/Typography';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-
-import { CHECKOUT_MUTATION, CHECKOUT_QUERY } from './CheckoutPage.queries.tsx';
-
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { PaymentMethod } from '../../__generated__/types.ts';
 import { useCartIcon } from '../../components/Cart/CartIcon';
 import { CartItemType } from '../../components/Cart/CartItem';
@@ -29,6 +26,7 @@ import CartItemReadOnly, {
   CartItemReadOnlyProps,
 } from '../../components/Cart/CartItemReadOnly';
 import { useNotification } from '../../components/Notification';
+import { CHECKOUT_MUTATION, CHECKOUT_QUERY } from './CheckoutPage.queries.tsx';
 
 export const CheckoutPage = () => {
   const navigate = useNavigate();
@@ -45,12 +43,13 @@ export const CheckoutPage = () => {
   });
   const [checkoutMutation] = useMutation(CHECKOUT_MUTATION, {
     onCompleted: (data) => {
+      const orderId = data.checkout.orderId;
       setNotification({
         message: `Order placed successfully with order ID: ${data.checkout.orderId}`,
         severity: 'success',
       });
       setCartCount(0);
-      navigate('/');
+      navigate(`/orders/placed/${orderId}`);
     },
     onError: (error) => {
       setNotification({

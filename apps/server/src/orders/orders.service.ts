@@ -9,10 +9,14 @@ import { DynamodbService } from 'src/common/dynamodb/dynamodb.service';
 import { v4 as uuid } from 'uuid';
 import { AddressesService } from '../addresses/addresses.service';
 import { CartsService } from '../carts/carts.service';
+import { get_date_time_string } from '../common/get-date-time';
+import { Pagination } from '../products/entities/paginated-product.entry';
 import { ProductsService } from '../products/products.service';
 import { UsersService } from '../users/users.service';
 import { DeliveryStatus } from './entities/delivery-status.enum';
+import { FilterOrderArgs } from './entities/filter-orders.args';
 import { Order, PaymentDetails } from './entities/order.entity';
+import { PaginatedOrder } from './entities/paginated-order.entry';
 import { PaymentMethod } from './entities/payment-method.enum';
 const TableName = 'ORDERS_TABLE';
 
@@ -54,6 +58,8 @@ export class OrdersService {
       phone: user.phone,
       email: user.email,
     };
+    order.createdAt = get_date_time_string();
+    order.updatedAt = get_date_time_string();
     order.paymentDetails = new PaymentDetails();
     order.paymentDetails.subTotal = 0;
     order.deliveryStatus = DeliveryStatus.PENDING;
@@ -110,7 +116,10 @@ export class OrdersService {
     return order;
   }
 
-  async findAll(userId: string) {
+  async findAll(
+    userId: string,
+    { limit, cursor }: FilterOrderArgs,
+  ): Promise<PaginatedOrder> {
     const orders = await this.dynamodbService.client.query({
       TableName,
       KeyConditionExpression: '#userId = :userId',
@@ -120,11 +129,20 @@ export class OrdersService {
       ExpressionAttributeValues: marshall({
         ':userId': userId,
       }),
+      Limit: limit,
+      ExclusiveStartKey: cursor ? unmarshall(JSON.parse(cursor)) : undefined,
     });
-    if (!orders.Items) {
-      return [];
+    const paginatedOrder = new PaginatedOrder();
+    paginatedOrder.pagination = new Pagination();
+    paginatedOrder.pagination.limit = 10;
+    paginatedOrder.pagination.next = null;
+    paginatedOrder.items = orders.Items
+      ? orders.Items.map((order) => unmarshall(order) as Order)
+      : [];
+    if (orders.LastEvaluatedKey) {
+      paginatedOrder.pagination.next = JSON.stringify(orders.LastEvaluatedKey);
     }
-    return orders.Items.map((order) => unmarshall(order) as Order);
+    return paginatedOrder;
   }
 
   async findOne(userId: string, orderId: string) {

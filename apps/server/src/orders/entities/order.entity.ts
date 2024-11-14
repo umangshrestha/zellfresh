@@ -1,4 +1,4 @@
-import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
+import { Field, Float, ObjectType } from '@nestjs/graphql';
 import { Address } from '../../addresses/entities/address.entity';
 import { CartItem } from '../../carts/entities/cart-item.entity';
 import { DeliveryStatus } from './delivery-status.enum';
@@ -24,7 +24,7 @@ export class PaymentDetails {
   @Field(() => Float)
   deliveryPrice: number;
 
-  @Field(() => Int)
+  @Field(() => Float)
   subTotal: number;
 
   @Field(() => Float)

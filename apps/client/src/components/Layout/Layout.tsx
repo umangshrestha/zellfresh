@@ -1,8 +1,9 @@
+import DinnerDiningIcon from '@mui/icons-material/DinnerDining';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import InventoryIcon from '@mui/icons-material/Inventory';
 import MenuCloseIcon from '@mui/icons-material/Menu';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -49,7 +50,12 @@ export const Layout = () => {
           >
             {drawerOpen ? <MenuOpenIcon /> : <MenuCloseIcon />}
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography
+            id="title"
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1 }}
+          >
             <Link href="/" color="inherit" underline="none">
               {APP_NAME}
             </Link>
@@ -77,7 +83,7 @@ export const Layout = () => {
                 mr: 2,
               }}
             >
-              <InventoryIcon />
+              <DinnerDiningIcon />
             </ListItemIcon>
             <ListItemText
               primary="Product"
@@ -113,6 +119,22 @@ export const Layout = () => {
               ))}
             </List>
           </Collapse>
+          <ListItemButton
+            onClick={() => {
+              setDrawerOpen(false);
+              navigate('/orders');
+            }}
+          >
+            <ListItemIcon
+              sx={{
+                minWidth: 'auto',
+                mr: 2,
+              }}
+            >
+              <ReceiptLongIcon />
+            </ListItemIcon>
+            <ListItemText primary="Orders" />
+          </ListItemButton>
         </List>
       </Drawer>
       <Paper className="min-h-screen p-4 mt-12">

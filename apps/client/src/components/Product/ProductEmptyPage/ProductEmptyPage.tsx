@@ -1,7 +1,8 @@
-import ErrorComponent from '../../ErrorComponent';
-import { ProductEmptyPageProps } from './ProductEmptyPage.types';
+import ErrorComponent, { ErrorComponentProps } from '../../ErrorComponent';
 
-export const ProductEmptyPage = ({ onClick }: ProductEmptyPageProps) => (
+export const ProductEmptyPage = ({
+  onClick,
+}: Pick<ErrorComponentProps, 'onClick'>) => (
   <ErrorComponent
     title="No products available"
     description={[

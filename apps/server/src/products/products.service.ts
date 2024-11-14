@@ -135,7 +135,6 @@ export class ProductsService {
       ),
       pagination: {
         limit,
-        prev: cursor,
         next: data.LastEvaluatedKey ? data.LastEvaluatedKey.productId.S : null,
       },
     };

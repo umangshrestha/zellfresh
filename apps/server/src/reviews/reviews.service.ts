@@ -118,7 +118,6 @@ export class ReviewsService {
       ),
       pagination: {
         limit,
-        prev: cursor,
         next: data.LastEvaluatedKey ? data.LastEvaluatedKey.productId.S : null,
       },
     };
