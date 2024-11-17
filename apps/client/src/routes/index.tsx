@@ -8,6 +8,8 @@ import LoginPage from '../pages/LoginPage';
 import NotFoundPage from '../pages/NotFoundPage';
 import ProductPage from '../pages/ProductPage';
 import ProfilePage from '../pages/ProfilePage';
+import OrderPage from '../pages/OrderPage';
+
 
 export const router = createBrowserRouter([
   {
@@ -46,6 +48,10 @@ export const router = createBrowserRouter([
         path: '*',
         element: <NotFoundPage />,
       },
+      {
+        path: '/order',
+        element: <OrderPage />,
+      }
     ],
   },
   {
