@@ -112,6 +112,9 @@ export const Layout = () => {
               {/*))}*/}
             </List>
           </Collapse>
+          <ListItemButton onClick={()=>navigate('/order')}>
+            <ListItemText primary="Orders"/>
+          </ListItemButton>
         </List>
       </Drawer>
       <Paper className="min-h-screen p-4">
