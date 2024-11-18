@@ -10,7 +10,6 @@ import {Subscription} from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
 import { PubSubService } from '../common/pubsub/pub-sub.service';
 
-export const pubSub = new PubSub();
 
 @Resolver(() => Cart)
 export class CartsResolver {
@@ -59,7 +58,7 @@ export class CartsResolver {
   })
   async cartCount(@Context() context: any) {
     const count = await  this.cartsService.getCount(context.req.connectionParams.sub);
-    setTimeout(() => pubSub.publish('cartUpdated', { cartCount: count, sub: context.req.connectionParams.sub }), 0);
-    return pubSub.asyncIterableIterator('cartUpdated');
+    setTimeout(() =>  this.pubSubService.updateCount({ cartCount: count, sub: context.req.connectionParams.sub }), 0);
+    return this.pubSubService.asyncCartIterator();
   }
 }

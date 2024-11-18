@@ -9,4 +9,8 @@ export class PubSubService {
   updateCount(val: {sub: string, cartCount: number}) {
     return this.pubSub.publish('cartUpdated', val);
   }
+
+  asyncCartIterator() {
+    return this.pubSub.asyncIterableIterator('cartUpdated');
+  }
 }
