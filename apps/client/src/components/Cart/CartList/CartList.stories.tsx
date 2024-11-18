@@ -23,6 +23,7 @@ const products: CartItemType[] = [
     category: 'chicken',
     description: 'Delicious chicken breast',
     unit: 'kg',
+    quantity: 1,
   },
   {
     productId: '2',
@@ -31,6 +32,7 @@ const products: CartItemType[] = [
     imageUrl:
       'https://132625588.cdn6.editmysite.com/uploads/1/3/2/6/132625588/s782101613657948031_p29_i2_w1920.jpeg?width=2400&optimize=medium',
     availableQuantity: 0,
+    quantity: 1,
     category: 'pork',
     limitPerTransaction: 10,
     description: 'Tasty pork butt roast',

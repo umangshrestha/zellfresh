@@ -7,11 +7,12 @@ import { ProductsModule } from '../products/products.module';
 import { UsersModule } from '../users/users.module';
 import { OrdersResolver } from './orders.resolver';
 import { OrdersService } from './orders.service';
+import { PubSubModule } from '../common/pubsub/pub-sub.module';
 
 @Module({
   providers: [OrdersResolver, OrdersService],
   imports: [
-    OrdersModule,
+    PubSubModule,
     DynamodbModule,
     CartsModule,
     UsersModule,

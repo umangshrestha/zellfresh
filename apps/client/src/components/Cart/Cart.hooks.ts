@@ -9,7 +9,6 @@ import {
   CARTS_QUERY_VERBOSE,
 } from './Cart.queries';
 import { CartMutation } from './Cart.types';
-import { useCartIcon } from './CartIcon';
 import { CartItemType } from './CartItem';
 
 export const useCart = ({
@@ -20,7 +19,6 @@ export const useCart = ({
 } => {
   const query = verbose ? CARTS_QUERY_VERBOSE : CARTS_QUERY_SIMPLE;
   const { setNotification } = useNotification();
-  const { setCartCount } = useCartIcon();
 
   const userDetails = useStorageStore((state) => state.userDetails);
   const onError = (error: Error) => {
@@ -32,16 +30,12 @@ export const useCart = ({
   const { data, loading } = useQuery(query, {
     fetchPolicy: userDetails ? 'cache-and-network' : 'no-cache',
     onError,
-    onCompleted: (data) => {
-      setCartCount(data.cart.count);
-    },
   });
 
   const [executeMutation] = useMutation(ADD_ITEM_TO_CART_MUTATION, {
     refetchQueries: [query],
     onError,
-    onCompleted: (data) => {
-      setCartCount(data.addItemToCart.count);
+    onCompleted: () => {
       setNotification({
         message: 'Cart updated',
         severity: 'success',

@@ -21,6 +21,7 @@
     "@types/node": "^22.5.5",
     "client": "^0.0.1",
     "graphql": "^16.9.0",
+    "graphql-ws": "^5.16.0",
     "libphonenumber-js": "^1.11.12",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

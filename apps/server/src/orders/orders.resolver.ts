@@ -8,19 +8,25 @@ import { Order } from './entities/order.entity';
 import { PaginatedOrder } from './entities/paginated-order.entry';
 import { PaymentMethod } from './entities/payment-method.enum';
 import { OrdersService } from './orders.service';
+import { PubSubService } from '../common/pubsub/pub-sub.service';
 
 @Resolver(() => Order)
 @UseGuards(AccessOrGuestTokenGuard)
 export class OrdersResolver {
-  constructor(private readonly ordersService: OrdersService) {}
+  constructor(
+    private readonly ordersService: OrdersService,
+    private readonly pubSubService: PubSubService,
+  ) {}
 
   @Mutation(() => Order)
-  checkout(
+  async checkout(
     @AuthUser() { sub }: Auth,
     @Args('paymentMethod', { type: () => PaymentMethod })
     paymentMethod: PaymentMethod,
   ) {
-    return this.ordersService.checkout(sub, paymentMethod);
+    const order = await this.ordersService.checkout(sub, paymentMethod);
+    await this.pubSubService.updateCount({cartCount: 0, sub});
+    return order;
   }
 
   @Query(() => PaginatedOrder, { name: 'orders' })

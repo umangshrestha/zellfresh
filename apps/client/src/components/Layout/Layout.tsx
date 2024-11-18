@@ -62,7 +62,7 @@ export const Layout = () => {
           </Typography>
           <ThemeToggle />
           <ErrorBoundary>
-            <CartIcon onClick={() => navigate('/cart')} />
+            <CartIcon />
           </ErrorBoundary>
           <Suspense fallback={<CircularProgress />}>
             <Account />

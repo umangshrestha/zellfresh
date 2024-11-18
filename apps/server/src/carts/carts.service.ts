@@ -45,6 +45,18 @@ export class CartsService {
     }
   }
 
+  async getCount(userId: string) {
+    const cart = await this.dynamodbService.client.getItem({
+      TableName,
+      Key: { userId: { S: userId } },
+      ProjectionExpression: '#c',
+      ExpressionAttributeNames: {
+        '#c': 'count',
+      },
+    });
+    return cart.Item ? parseInt(cart.Item.count.N) : 0;
+  }
+
   async moveCartItemsFromGuestToUser(guestId: string, userId: string) {
     const guestCart = await this.findOne(guestId);
     if (!guestCart) {

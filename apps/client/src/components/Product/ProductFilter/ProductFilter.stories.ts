@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { ProductFilter } from './ProductFilter.tsx';
+import { ProductFilter } from './ProductFilter';
 
 const meta = {
   title: 'ProductFilter',
