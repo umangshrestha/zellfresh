@@ -49,7 +49,7 @@ export const router = createBrowserRouter([
         element: <NotFoundPage />,
       },
       {
-        path: '/order',
+        path: '/orders',
         element: <OrderPage />,
       }
     ],
