@@ -20,7 +20,6 @@ import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PaymentMethod } from '../../__generated__/types.ts';
-import { useCartIcon } from '../../components/Cart/CartIcon';
 import { CartItemType } from '../../components/Cart/CartItem';
 import CartItemReadOnly, {
   CartItemReadOnlyProps,
@@ -31,7 +30,6 @@ import { CHECKOUT_MUTATION, CHECKOUT_QUERY } from './CheckoutPage.queries.tsx';
 export const CheckoutPage = () => {
   const navigate = useNavigate();
   const { setNotification } = useNotification();
-  const { setCartCount } = useCartIcon();
   const [paymentMethod, setPaymentMethod] = useState(PaymentMethod.Cash);
   const { data, loading } = useQuery(CHECKOUT_QUERY, {
     onError: (error) => {
@@ -48,7 +46,6 @@ export const CheckoutPage = () => {
         message: `Order placed successfully with order ID: ${data.checkout.orderId}`,
         severity: 'success',
       });
-      setCartCount(0);
       navigate(`/orders/placed/${orderId}`);
     },
     onError: (error) => {

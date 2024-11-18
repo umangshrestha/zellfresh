@@ -1,10 +1,4 @@
-import type { Dispatch, SetStateAction } from 'react';
-
 export interface CartIconProps {
+  cartCount: number;
   onClick: () => void;
 }
-
-export type CartIconContextType = {
-  cartCount: number;
-  setCartCount: Dispatch<SetStateAction<number>>;
-};
