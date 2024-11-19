@@ -2,9 +2,9 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import CartItem, { CartItemType } from '../CartItem';
 import CartItemSkeleton from '../CartItemSkeleton';
-import { CartListProps } from './CartList.types';
+import { CartMutation } from '../Cart.types.ts';
 
-export const CartList = ({ data, loading, ...functions }: CartListProps) => {
+export const CartList = ({ data, loading, ...functions }: CartMutation) => {
   if (loading)
     return (
       <List>
@@ -19,9 +19,9 @@ export const CartList = ({ data, loading, ...functions }: CartListProps) => {
     );
   return (
     <List>
-      {data.map((product: CartItemType) => (
-        <ListItem key={product.productId}>
-          <CartItem {...product} {...functions} />
+      {data.map((data: CartItemType) => (
+        <ListItem key={data.product?.productId}>
+          <CartItem {...data} {...functions} />
         </ListItem>
       ))}
     </List>

@@ -10,18 +10,30 @@ import ProductAddItem from '../../Product/ProductAddItem';
 import { CartItemProps } from './CartItem.types';
 
 export const CartItem = ({
-  name,
-  unit,
-  price,
-  imageUrl,
   quantity,
-  availableQuantity,
-  limitPerTransaction,
-  description,
   onAddItemToCart,
   getProductCount,
-  productId,
+  product,
 }: CartItemProps) => {
+  const {
+    name,
+    unit,
+    price,
+    imageUrl,
+    availableQuantity,
+    limitPerTransaction,
+    description,
+    productId,
+  } = product || {
+    productId: '',
+    price: 0,
+    imageUrl: '',
+    availableQuantity: 0,
+    limitPerTransaction: 0,
+    name: '',
+    description: '',
+    unit: '',
+  };
   const totalPrice = price * quantity;
   const isProductAvailable = availableQuantity > 0;
   const badgeText = !isProductAvailable ? 'Out of Stock' : null;

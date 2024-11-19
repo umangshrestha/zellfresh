@@ -1,8 +1,9 @@
-import { Field, Float, ObjectType } from '@nestjs/graphql';
+import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
 import { Address } from '../../addresses/entities/address.entity';
 import { CartItem } from '../../carts/entities/cart-item.entity';
 import { DeliveryStatus } from './delivery-status.enum';
 import { PaymentMethod } from './payment-method.enum';
+import { CheckoutDetails } from './checkout-details.entity';
 
 @ObjectType()
 export class DeliveryContactDetails {
@@ -16,25 +17,13 @@ export class DeliveryContactDetails {
   email: string;
 }
 
+
 @ObjectType()
-export class PaymentDetails {
-  @Field(() => PaymentMethod)
-  paymentMethod: PaymentMethod;
-
-  @Field(() => Float)
-  deliveryPrice: number;
-
-  @Field(() => Float)
-  subTotal: number;
-
-  @Field(() => Float)
-  tax: number;
-
-  @Field(() => Float, {
-    description: 'Total price of the order including delivery charge',
-  })
-  totalPrice: number;
+export class OrderItem extends CartItem {
+   @Field(() => Float, {description: 'Price at the time of order creation'})
+   price: number;
 }
+
 
 @ObjectType()
 export class Order {
@@ -44,8 +33,11 @@ export class Order {
   @Field(() => String)
   orderId: string;
 
-  @Field(() => [CartItem])
-  items: CartItem[];
+  @Field(() => [OrderItem])
+  items: OrderItem[];
+
+  @Field(() => Int)
+  count: number;
 
   @Field(() => DeliveryStatus)
   deliveryStatus: DeliveryStatus;
@@ -53,11 +45,15 @@ export class Order {
   @Field(() => Address)
   shippingAddress: Address;
 
+  @Field(() => PaymentMethod)
+  paymentMethod: PaymentMethod;
+
   @Field(() => DeliveryContactDetails)
   contactDetails: DeliveryContactDetails;
 
-  @Field(() => PaymentDetails)
-  paymentDetails: PaymentDetails;
+
+  @Field(() => CheckoutDetails)
+  checkoutDetails: CheckoutDetails;
 
   @Field(() => String)
   createdAt: string;

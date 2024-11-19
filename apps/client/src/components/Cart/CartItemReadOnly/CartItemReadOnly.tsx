@@ -6,14 +6,19 @@ import Badge from '../../Badge';
 import { CartItemReadOnlyProps } from './CartItemReadOnly.types';
 
 export const CartItemReadOnly = ({
-  name,
-  unit,
-  price,
-  imageUrl,
-  availableQuantity,
-  description,
+  quantity,
+  product,
 }: CartItemReadOnlyProps) => {
-  const totalPrice = price * availableQuantity;
+  const { name, unit, price, imageUrl, availableQuantity, description } =
+    product || {
+      price: 0,
+      imageUrl: '',
+      availableQuantity: 0,
+      name: '',
+      description: '',
+      unit: '',
+    };
+  const totalPrice = price * quantity;
   const isProductAvailable = availableQuantity > 0;
   const badgeText = !isProductAvailable ? 'Out of Stock' : null;
   return (

@@ -11,6 +11,7 @@ import { AuthService } from './auth.service';
 import { GoogleService } from './google/google.service';
 import { GuestTokenModule } from './guest-token/guest-token.module';
 import { RefreshTokenModule } from './refresh-token/refresh-token.module';
+import { OrdersModule } from '../orders/orders.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { RefreshTokenModule } from './refresh-token/refresh-token.module';
     CartsModule,
     UsersModule,
     ConfigModule,
+    OrdersModule,
     PassportModule.register({
       session: true,
       defaultStrategy: 'jwt',

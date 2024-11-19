@@ -20,10 +20,7 @@ import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PaymentMethod } from '../../__generated__/types.ts';
-import { CartItemType } from '../../components/Cart/CartItem';
-import CartItemReadOnly, {
-  CartItemReadOnlyProps,
-} from '../../components/Cart/CartItemReadOnly';
+import CartItemReadOnly from '../../components/Cart/CartItemReadOnly';
 import { useNotification } from '../../components/Notification';
 import { CHECKOUT_MUTATION, CHECKOUT_QUERY } from './CheckoutPage.queries.tsx';
 
@@ -57,7 +54,7 @@ export const CheckoutPage = () => {
   });
 
   useEffect(() => {
-    if (!loading && data.cart.length == 0) {
+    if (!loading && data.cart.items.length == 0) {
       navigate('/');
     }
   }, [data, loading, navigate]);
@@ -76,18 +73,10 @@ export const CheckoutPage = () => {
   };
 
   if (loading) return <CircularProgress />;
-  const cart = data.cart.items.map(
-    (x: { product: CartItemReadOnlyProps }) => x.product,
-  );
 
-  const totalPrice =
-    cart.reduce(
-      (acc: number, product: CartItemType) =>
-        acc + product.price * product.availableQuantity,
-      0,
-    ) || 0;
 
   const hasError =
+    !data.cart?.checkoutDetails?.enableCheckout ||
     !data.me.name ||
     !data.me.email ||
     !data.me.phone ||
@@ -110,9 +99,9 @@ export const CheckoutPage = () => {
           </Button>
         </div>
         <List>
-          {cart.map((product: CartItemReadOnlyProps) => (
-            <ListItem key={product.name}>
-              <CartItemReadOnly {...product} />
+          {data.cart?.items.map((props) => (
+            <ListItem key={props.product.name}>
+              <CartItemReadOnly {...props} />
             </ListItem>
           ))}
         </List>
@@ -230,14 +219,14 @@ export const CheckoutPage = () => {
       </section>
       <section>
         <Box className="flex  justify-end gap-4 pb-10">
-          Total: <b>{totalPrice}</b>
+          Total: <b>{data.cart.checkoutDetails.subTotal || '0'}</b>
         </Box>
       </section>
       <Button
         variant="contained"
         color="error"
         className="w-full"
-        disabled={cart.length === 0 || hasError}
+        disabled={data.cart.items.length === 0 || hasError}
         onClick={onPlaceOrder}
       >
         Place Order

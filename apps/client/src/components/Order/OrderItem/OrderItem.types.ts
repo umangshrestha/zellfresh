@@ -1,17 +1,3 @@
-import { CartItem, Product } from '../../../__generated__/types';
+import { ListOrdersQuery } from '../../../__generated__/graphql.ts';
 
-
-export type OrderItemType = Pick<
-Product,
-  | 'productId'
-  | 'name'
-  | 'price'
-  | 'imageUrl'
-  | 'description'
-  | 'unit'
-  | 'category'
-
-    > &
-    Pick<CartItem, 'quantity'>;
-
-export type OderItemProps = OrderItemType ;
+export type OderItemProps = ListOrdersQuery['orders']['items']['items'];

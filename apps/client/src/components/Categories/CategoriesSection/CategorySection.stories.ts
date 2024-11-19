@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { SUPPORTED_CATEGORIES } from '../../../config/categories';
+import { CATEGORIES_MOCK_DATA } from '../Categories.mock';
 import { CategoriesSection } from './CategoriesSection';
 
 const meta = {
@@ -14,7 +14,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    categories: SUPPORTED_CATEGORIES,
+    categories: CATEGORIES_MOCK_DATA,
     onClick: (url: string) => {
       console.log(url);
     },

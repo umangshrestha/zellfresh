@@ -1,5 +1,5 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Context, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Context, Int, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { AccessOrGuestTokenGuard } from 'src/auth/access-or-guest-token.gaurd';
 import { AuthUser } from 'src/auth/auth.decorator';
 import { Auth } from 'src/auth/entities/auth.entity';
@@ -7,14 +7,16 @@ import { CartsService } from './carts.service';
 import { CartInput } from './dto/cart-input.input';
 import { Cart } from './entities/cart.entity';
 import {Subscription} from '@nestjs/graphql';
-import { PubSub } from 'graphql-subscriptions';
 import { PubSubService } from '../common/pubsub/pub-sub.service';
+import { CheckoutService } from '../orders/checkout.service';
+import { CheckoutDetails } from '../orders/entities/checkout-details.entity';
 
 
 @Resolver(() => Cart)
 export class CartsResolver {
   constructor(
     private readonly cartsService: CartsService,
+    private readonly checkoutService: CheckoutService,
     private readonly  pubSubService: PubSubService) {}
 
   @Query(() => Cart, { name: 'cart' })
@@ -60,5 +62,10 @@ export class CartsResolver {
     const count = await  this.cartsService.getCount(context.req.connectionParams.sub);
     setTimeout(() =>  this.pubSubService.updateCount({ cartCount: count, sub: context.req.connectionParams.sub }), 0);
     return this.pubSubService.asyncCartIterator();
+  }
+
+  @ResolveField(() => CheckoutDetails)
+  checkoutDetails(@Parent() cart: Cart) {
+   return this.checkoutService.getCheckoutDetails(cart.items);
   }
 }

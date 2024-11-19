@@ -1,11 +1,11 @@
 import { useQuery } from '@apollo/client';
 import { useCart } from '../Cart';
 import { useNotification } from '../Notification';
-import { PRODUCTS_QUERY } from './Product.queries';
+import { LIST_PRODUCTS_QUERY } from './Product.queries';
 
 export const useProduct = (variables: object) => {
   const { setNotification } = useNotification();
-  const { data, loading } = useQuery(PRODUCTS_QUERY, {
+  const { data, loading } = useQuery(LIST_PRODUCTS_QUERY, {
     variables,
     onError: (error) => {
       setNotification({
@@ -19,6 +19,7 @@ export const useProduct = (variables: object) => {
   return {
     loading,
     data: data?.products?.items || [],
+    next: data?.products?.pagination?.next,
     onAddItemToCart,
     getProductCount,
   };

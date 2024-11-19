@@ -6,6 +6,7 @@ import { Auth } from './entities/auth.entity';
 import { Role } from './entities/role.enum';
 import { GoogleService } from './google/google.service';
 import { GuestTokenService } from './guest-token/guest-token.service';
+import { OrdersService } from '../orders/orders.service';
 
 @Injectable()
 export class AuthService {
@@ -14,6 +15,7 @@ export class AuthService {
     private readonly googleStrategy: GoogleService,
     private readonly cartsService: CartsService,
     private readonly usersService: UsersService,
+    private readonly ordersService: OrdersService,
   ) {}
 
   async guestLogin(payload: Auth) {
@@ -47,6 +49,7 @@ export class AuthService {
     await this.usersService.create(newUser);
     if (guest && guest.sub && guest.sub.startsWith('guest-')) {
       await this.cartsService.moveCartItemsFromGuestToUser(guest.sub, sub);
+      await this.ordersService.moveOrdersFromGuestToUser(guest.sub, sub);
     } else {
       await this.cartsService.createEmptyCart(sub, false);
     }

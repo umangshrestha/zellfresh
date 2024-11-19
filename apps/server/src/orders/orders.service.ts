@@ -1,119 +1,33 @@
 import {
-  TransactionCanceledException,
   TransactWriteItemsCommand,
 } from '@aws-sdk/client-dynamodb';
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { DynamodbService } from 'src/common/dynamodb/dynamodb.service';
-import { v4 as uuid } from 'uuid';
-import { AddressesService } from '../addresses/addresses.service';
-import { CartsService } from '../carts/carts.service';
-import { get_date_time_string } from '../common/get-date-time';
 import { Pagination } from '../products/entities/paginated-product.entry';
-import { ProductsService } from '../products/products.service';
-import { UsersService } from '../users/users.service';
 import { DeliveryStatus } from './entities/delivery-status.enum';
 import { FilterOrderArgs } from './entities/filter-orders.args';
-import { Order, PaymentDetails } from './entities/order.entity';
+import { Order } from './entities/order.entity';
 import { PaginatedOrder } from './entities/paginated-order.entry';
 import { PaymentMethod } from './entities/payment-method.enum';
+
+
 const TableName = 'ORDERS_TABLE';
 
 @Injectable()
 export class OrdersService {
-  private readonly loggerService = new Logger(OrdersService.name);
 
   constructor(
-    private readonly configService: ConfigService,
     private readonly dynamodbService: DynamodbService,
-    private readonly cartsService: CartsService,
-    private readonly addressesService: AddressesService,
-    private readonly usersService: UsersService,
-    private readonly productsService: ProductsService,
-    private readonly productsCacheService: ProductsService,
   ) {}
 
-  async checkout(userId: string, paymentMethod: PaymentMethod) {
-    const user = await this.usersService.findOne(userId);
-    const cart = await this.cartsService.getCart(userId);
-    if (!cart) {
-      throw new BadRequestException('Cart not found');
-    }
-    if (cart.count === 0) {
-      throw new BadRequestException('Cart is empty');
-    }
-    const address = await this.addressesService.findOne(
-      userId,
-      user.defaultAddressId,
-    );
-    const order = new Order();
-    order.userId = userId;
-    order.items = cart.items;
-    order.shippingAddress = address;
-    order.deliveryStatus = DeliveryStatus.PENDING;
-    order.orderId = uuid();
-    order.contactDetails = {
-      name: user.name,
-      phone: user.phone,
-      email: user.email,
-    };
-    order.createdAt = get_date_time_string();
-    order.updatedAt = get_date_time_string();
-    order.paymentDetails = new PaymentDetails();
-    order.paymentDetails.subTotal = 0;
-    order.deliveryStatus = DeliveryStatus.PENDING;
-    order.paymentDetails.tax =
-      order.paymentDetails.subTotal * this.configService.get('TAX_RATE');
-    order.paymentDetails.deliveryPrice =
-      this.configService.get('DELIVERY_PRICE');
-    for (const item of order.items) {
-      const product = await this.productsCacheService.findOne(item.productId);
-      order.paymentDetails.subTotal += product.price * item.quantity;
-    }
-    order.paymentDetails.totalPrice =
-      order.paymentDetails.subTotal +
-      order.paymentDetails.tax +
-      order.paymentDetails.deliveryPrice;
-    order.paymentDetails.paymentMethod = paymentMethod;
-
-    const transactItems =
-      await this.productsService.createUpdateStockTransactionCommand(
-        cart.items,
-      );
-
-    transactItems.push({
+   putCommand(order: Order) {
+    return {
       Put: {
         TableName,
-        Item: marshall(order, { convertClassInstanceToMap: true }),
+          Item: marshall(order, { convertClassInstanceToMap: true }),
       },
-    });
-    transactItems.push(this.cartsService.clearCartCommand(userId));
-    const command = new TransactWriteItemsCommand({
-      TransactItems: transactItems,
-    });
-
-    try {
-      await this.dynamodbService.client.send(command);
-    } catch (error) {
-      this.loggerService.error(
-        `Error creating order: ${error} for data: ${JSON.stringify(order)}`,
-      );
-      if (error instanceof TransactionCanceledException) {
-        if (error.CancellationReasons) {
-          for (const reason of error.CancellationReasons) {
-            console.error(reason);
-            if (reason.Code === 'ConditionalCheckFailed') {
-              throw new BadRequestException('Insufficient stock');
-            }
-          }
-        }
-      }
-      console.error('transact items', transactItems);
-      console.error('error', error);
-      throw new BadRequestException('Error creating order');
     }
-    return order;
   }
 
   async findAll(
@@ -169,7 +83,7 @@ export class OrdersService {
     }
     data.deliveryStatus = DeliveryStatus.CANCELLED;
 
-    switch (data.paymentDetails.paymentMethod) {
+    switch (data.paymentMethod) {
       case PaymentMethod.CARD:
         // Refund the payment
         break;
@@ -187,5 +101,42 @@ export class OrdersService {
       Item: marshall(data),
     });
     return data;
+  }
+
+  async moveOrdersFromGuestToUser(guestId: string, userId: string) {
+    const orders = await this.dynamodbService.client.query({
+      TableName,
+      KeyConditionExpression: '#userId = :userId',
+      ExpressionAttributeNames: {
+        '#userId': 'userId',
+      },
+      ExpressionAttributeValues: marshall({
+        ':userId': guestId,
+      }),
+    });
+    const transactItems = orders.Items.flatMap((order) => {
+      const orderData = unmarshall(order) as Order;
+      orderData.userId = userId;
+      return [{
+        Put: {
+          TableName,
+          Item: marshall(orderData),
+        },
+      }, {
+        Delete: {
+          TableName,
+          Key: marshall({ userId: guestId, orderId: orderData.orderId }),
+        },
+      }];
+    }
+    );
+    const command = new TransactWriteItemsCommand({
+      TransactItems: transactItems,
+    });
+    try {
+     await this.dynamodbService.client.send(command);
+    } catch (error) {
+      console.error(error);
+    }
   }
 }

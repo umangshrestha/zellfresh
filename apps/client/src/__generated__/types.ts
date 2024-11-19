@@ -1,35 +1,24 @@
 export type Maybe<T> = T | null;
-export type InputMaybe<T> = Maybe;
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K];
-};
-export type MakeOptional<T, K extends keyof T> = Omit & {
-  [SubKey in K]?: Maybe;
-};
-export type MakeMaybe<T, K extends keyof T> = Omit & { [SubKey in K]: Maybe };
-export type MakeEmpty<
-  T extends { [key: string]: unknown },
-  K extends keyof T,
-> = { [_ in K]?: never };
-export type Incremental<T> =
-  | T
-  | {
-      [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never;
-    };
+export type InputMaybe<T> = Maybe<T>;
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
+export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string };
-  String: { input: string; output: string };
-  Boolean: { input: boolean; output: boolean };
-  Int: { input: number; output: number };
-  Float: { input: number; output: number };
+  ID: { input: string; output: string; }
+  String: { input: string; output: string; }
+  Boolean: { input: boolean; output: boolean; }
+  Int: { input: number; output: number; }
+  Float: { input: number; output: number; }
 };
 
 export type Address = {
   __typename?: 'Address';
-  additionalInfo?: Maybe;
+  additionalInfo?: Maybe<Scalars['String']['output']>;
   addressId: Scalars['String']['output'];
-  apt?: Maybe;
+  apt?: Maybe<Scalars['String']['output']>;
   city: Scalars['String']['output'];
   country: Scalars['String']['output'];
   createdAt: Scalars['String']['output'];
@@ -41,9 +30,11 @@ export type Address = {
 
 export type Cart = {
   __typename?: 'Cart';
+  cartSummary: CheckoutDetails;
+  checkoutDetails: CheckoutDetails;
   count: Scalars['Int']['output'];
   createdAt: Scalars['String']['output'];
-  items: Array;
+  items: Array<CartItem>;
   updatedAt: Scalars['String']['output'];
   userId: Scalars['String']['output'];
 };
@@ -56,7 +47,7 @@ export type CartInput = {
 export type CartItem = {
   __typename?: 'CartItem';
   createdAt: Scalars['String']['output'];
-  product?: Maybe;
+  product?: Maybe<Product>;
   productId: Scalars['String']['output'];
   quantity: Scalars['Int']['output'];
   updatedAt: Scalars['String']['output'];
@@ -68,6 +59,17 @@ export type Category = {
   imageUrl: Scalars['String']['output'];
   name: Scalars['String']['output'];
   navigateUrl: Scalars['String']['output'];
+};
+
+export type CheckoutDetails = {
+  __typename?: 'CheckoutDetails';
+  deliveryPrice: Scalars['Float']['output'];
+  discount: Scalars['Float']['output'];
+  subTotal: Scalars['Float']['output'];
+  tax: Scalars['Float']['output'];
+  taxPercentage: Scalars['Float']['output'];
+  /** Total price of the order including delivery charge */
+  totalPrice: Scalars['Float']['output'];
 };
 
 export type DeliveryContactDetails = {
@@ -85,7 +87,7 @@ export enum DeliveryStatus {
   Pending = 'PENDING',
   Processing = 'PROCESSING',
   Refunded = 'REFUNDED',
-  Shipped = 'SHIPPED',
+  Shipped = 'SHIPPED'
 }
 
 export type Mutation = {
@@ -102,38 +104,47 @@ export type Mutation = {
   updateUser: User;
 };
 
+
 export type MutationAddItemToCartArgs = {
   cartInput: CartInput;
 };
+
 
 export type MutationCancelOrderArgs = {
   orderId: Scalars['String']['input'];
 };
 
+
 export type MutationCheckoutArgs = {
   paymentMethod: PaymentMethod;
 };
+
 
 export type MutationDeleteAddressArgs = {
   addressId: Scalars['String']['input'];
 };
 
+
 export type MutationPutAddressArgs = {
   putAddressInput: PutAddressInput;
 };
+
 
 export type MutationPutRatingArgs = {
   productId: Scalars['String']['input'];
   putReviewInput: PutReviewInput;
 };
 
+
 export type MutationRemoveRatingArgs = {
   productId: Scalars['String']['input'];
 };
 
+
 export type MutationSetDefaultAddressArgs = {
   addressId: Scalars['String']['input'];
 };
+
 
 export type MutationUpdateUserArgs = {
   updateUserInput: UpdateUserInput;
@@ -141,50 +152,53 @@ export type MutationUpdateUserArgs = {
 
 export type Order = {
   __typename?: 'Order';
+  checkoutDetails: CheckoutDetails;
   contactDetails: DeliveryContactDetails;
+  count: Scalars['Int']['output'];
   createdAt: Scalars['String']['output'];
   deliveryStatus: DeliveryStatus;
-  items: Array;
+  items: Array<OrderItem>;
   orderId: Scalars['String']['output'];
-  paymentDetails: PaymentDetails;
+  paymentMethod: PaymentMethod;
   shippingAddress: Address;
   updatedAt: Scalars['String']['output'];
   userId: Scalars['String']['output'];
 };
 
+export type OrderItem = {
+  __typename?: 'OrderItem';
+  createdAt: Scalars['String']['output'];
+  /** Price at the time of order creation */
+  price: Scalars['Float']['output'];
+  product?: Maybe<Product>;
+  productId: Scalars['String']['output'];
+  quantity: Scalars['Int']['output'];
+  updatedAt: Scalars['String']['output'];
+};
+
 export type PaginatedOrder = {
   __typename?: 'PaginatedOrder';
-  items: Array;
+  items: Array<Order>;
   pagination: Pagination;
 };
 
 export type PaginatedProduct = {
   __typename?: 'PaginatedProduct';
-  items: Array;
+  items: Array<Product>;
   pagination: Pagination;
 };
 
 export type Pagination = {
   __typename?: 'Pagination';
   limit: Scalars['Int']['output'];
-  next?: Maybe;
-};
-
-export type PaymentDetails = {
-  __typename?: 'PaymentDetails';
-  deliveryPrice: Scalars['Float']['output'];
-  paymentMethod: PaymentMethod;
-  subTotal: Scalars['Float']['output'];
-  tax: Scalars['Float']['output'];
-  /** Total price of the order including delivery charge */
-  totalPrice: Scalars['Float']['output'];
+  next?: Maybe<Scalars['String']['output']>;
 };
 
 /** The status of the order */
 export enum PaymentMethod {
   Card = 'CARD',
   Cash = 'CASH',
-  Upi = 'UPI',
+  Upi = 'UPI'
 }
 
 export type Product = {
@@ -193,15 +207,15 @@ export type Product = {
   badgeText: Scalars['String']['output'];
   category: Scalars['String']['output'];
   createdAt: Scalars['String']['output'];
-  description?: Maybe;
+  description?: Maybe<Scalars['String']['output']>;
   imageUrl: Scalars['String']['output'];
   limitPerTransaction: Scalars['Int']['output'];
   name: Scalars['String']['output'];
   price: Scalars['Float']['output'];
   productId: Scalars['String']['output'];
-  rating?: Maybe;
-  reviews: Array;
-  tags: Array;
+  rating?: Maybe<Rating>;
+  reviews: Array<Review>;
+  tags: Array<Scalars['String']['output']>;
   unit: Scalars['String']['output'];
   updatedAt: Scalars['String']['output'];
 };
@@ -210,13 +224,13 @@ export type Product = {
 export enum ProductsSortBy {
   Name = 'NAME',
   Price = 'PRICE',
-  Rating = 'RATING',
+  Rating = 'RATING'
 }
 
 export type PutAddressInput = {
-  additionalInfo?: InputMaybe;
-  addressId?: InputMaybe;
-  apt?: InputMaybe;
+  additionalInfo?: InputMaybe<Scalars['String']['input']>;
+  addressId?: InputMaybe<Scalars['String']['input']>;
+  apt?: InputMaybe<Scalars['String']['input']>;
   city: Scalars['String']['input'];
   country: Scalars['String']['input'];
   state: Scalars['String']['input'];
@@ -232,75 +246,85 @@ export type PutReviewInput = {
 export type Query = {
   __typename?: 'Query';
   address: Address;
-  addresses: Array;
+  addresses: Array<Address>;
   cart: Cart;
   cartItem: CartItem;
-  categories: Array;
-  category: Category;
-  me?: Maybe;
+  categories: Array<Category>;
+  category?: Maybe<Category>;
+  me?: Maybe<User>;
   order: Order;
   orders: PaginatedOrder;
-  product: Product;
+  product?: Maybe<Product>;
   products: PaginatedProduct;
   review: Review;
-  reviews: Array;
+  reviews: Array<Review>;
 };
+
 
 export type QueryAddressArgs = {
   addressId: Scalars['String']['input'];
 };
 
+
 export type QueryAddressesArgs = {
   limit?: Scalars['Int']['input'];
 };
+
 
 export type QueryCartItemArgs = {
   productId: Scalars['String']['input'];
 };
 
+
 export type QueryCategoryArgs = {
-  id: Scalars['String']['input'];
+  name: Scalars['String']['input'];
 };
+
 
 export type QueryOrderArgs = {
   orderId: Scalars['String']['input'];
 };
 
+
 export type QueryOrdersArgs = {
-  cursor?: InputMaybe;
+  cursor?: InputMaybe<Scalars['String']['input']>;
   limit?: Scalars['Int']['input'];
 };
+
 
 export type QueryProductArgs = {
   productId: Scalars['String']['input'];
 };
 
+
 export type QueryProductsArgs = {
-  category?: InputMaybe;
-  cursor?: InputMaybe;
+  category?: InputMaybe<Scalars['String']['input']>;
+  cursor?: InputMaybe<Scalars['String']['input']>;
   limit?: Scalars['Int']['input'];
-  maxPrice?: InputMaybe;
-  maxRating?: InputMaybe;
-  minPrice?: InputMaybe;
-  minRating?: InputMaybe;
-  name?: InputMaybe;
-  showOutOfStock?: InputMaybe;
-  sortAsc?: InputMaybe;
-  sortBy?: InputMaybe;
-  tags?: InputMaybe;
+  maxPrice?: InputMaybe<Scalars['Float']['input']>;
+  maxRating?: InputMaybe<Scalars['Float']['input']>;
+  minPrice?: InputMaybe<Scalars['Float']['input']>;
+  minRating?: InputMaybe<Scalars['Float']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  showOutOfStock?: InputMaybe<Scalars['Boolean']['input']>;
+  sortAsc?: InputMaybe<Scalars['Boolean']['input']>;
+  sortBy?: InputMaybe<ProductsSortBy>;
+  tags?: InputMaybe<Array<Scalars['String']['input']>>;
 };
+
 
 export type QueryReviewArgs = {
   productId: Scalars['String']['input'];
 };
 
+
 export type QueryReviewsArgs = {
-  cursor?: InputMaybe;
+  cursor?: InputMaybe<Scalars['String']['input']>;
   limit?: Scalars['Int']['input'];
-  maxRating?: InputMaybe;
-  minRating?: InputMaybe;
+  maxRating?: InputMaybe<Scalars['Float']['input']>;
+  minRating?: InputMaybe<Scalars['Float']['input']>;
   productId: Scalars['String']['input'];
-  sortAsc?: InputMaybe;
+  sortAsc?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type Rating = {
@@ -321,31 +345,32 @@ export type Review = {
 
 export type Subscription = {
   __typename?: 'Subscription';
-  cartCount: Scalars['Int']['output'];
+  cartCount?: Maybe<Scalars['Int']['output']>;
 };
 
 export type UpdateUserInput = {
   email: Scalars['String']['input'];
-  imageUrl?: InputMaybe;
+  imageUrl?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
   phone: Scalars['String']['input'];
 };
 
 export type User = {
   __typename?: 'User';
-  address: Array;
+  address: Array<Address>;
   blocked: Scalars['Boolean']['output'];
   createdAt: Scalars['String']['output'];
-  defaultAddress?: Maybe;
-  defaultAddressId?: Maybe;
-  email?: Maybe;
-  imageUrl?: Maybe;
-  name?: Maybe;
-  phone?: Maybe;
+  defaultAddress?: Maybe<Address>;
+  defaultAddressId?: Maybe<Scalars['String']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
+  imageUrl?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  phone?: Maybe<Scalars['String']['output']>;
   role: Scalars['String']['output'];
   updatedAt: Scalars['String']['output'];
   userId: Scalars['String']['output'];
 };
+
 
 export type UserAddressArgs = {
   limit?: Scalars['Int']['input'];

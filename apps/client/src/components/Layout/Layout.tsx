@@ -1,13 +1,9 @@
-import DinnerDiningIcon from '@mui/icons-material/DinnerDining';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
 import MenuCloseIcon from '@mui/icons-material/Menu';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
-import Collapse from '@mui/material/Collapse';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
@@ -23,18 +19,21 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { APP_NAME } from '../../config';
 import Account from '../Account';
 import CartIcon from '../Cart/CartIcon';
-import { useCategories } from '../Categories/Categories.hooks.ts';
 import ErrorBoundary from '../ErrorBoundary';
 import Footer from '../Footer';
 import Notification from '../Notification';
 import ThemeToggle from '../ThemeToggle';
 import { Breadcrumbs } from './Breadcrumbs';
+import * as Categories from '../Categories';
 
 export const Layout = () => {
   const navigate = useNavigate();
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [productsOpen, setProductsOpen] = useState(true);
-  const { data } = useCategories();
+
+  const onClick = (url: string) => {
+    navigate(url);
+    setDrawerOpen(false);
+  }
 
   return (
     <Box className="flex flex-col min-h-3">
@@ -76,54 +75,11 @@ export const Layout = () => {
       >
         <Toolbar />
         <List>
-          <ListItemButton onClick={() => setProductsOpen((prev) => !prev)}>
-            <ListItemIcon
-              sx={{
-                minWidth: 'auto',
-                mr: 2,
-              }}
-            >
-              <DinnerDiningIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary="Product"
-              sx={{
-                opacity: drawerOpen ? 1 : 0,
-              }}
-            />
-            {productsOpen ? <ExpandLess /> : <ExpandMore />}
-          </ListItemButton>
-          <Collapse in={productsOpen} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              {data.map((product) => (
-                <ListItemButton
-                  sx={{
-                    pl: 4,
-                  }}
-                  key={product.name}
-                  onClick={() => {
-                    setDrawerOpen(false);
-                    navigate(product.navigateUrl);
-                  }}
-                >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 'auto',
-                      mr: 2,
-                    }}
-                  >
-                    {product.icon}
-                  </ListItemIcon>
-                  <ListItemText primary={product.name} />
-                </ListItemButton>
-              ))}
-            </List>
-          </Collapse>
+          <Categories.CollapsableButton
+            showText={drawerOpen}
+           onClick={onClick} />
           <ListItemButton
-            onClick={() => {
-              setDrawerOpen(false);
-              navigate('/orders');
-            }}
+            onClick={ () => onClick('/orders') }
           >
             <ListItemIcon
               sx={{

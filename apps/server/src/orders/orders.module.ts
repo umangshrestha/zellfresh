@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { DynamodbModule } from 'src/common/dynamodb/dynamodb.module';
 import { AddressesModule } from '../addresses/addresses.module';
@@ -8,18 +8,20 @@ import { UsersModule } from '../users/users.module';
 import { OrdersResolver } from './orders.resolver';
 import { OrdersService } from './orders.service';
 import { PubSubModule } from '../common/pubsub/pub-sub.module';
+import { CheckoutService } from './checkout.service';
+import { OrderItemResolver } from './order-item.resolver';
 
 @Module({
-  providers: [OrdersResolver, OrdersService],
+  providers: [OrdersResolver, OrdersService, CheckoutService, OrderItemResolver],
   imports: [
     PubSubModule,
     DynamodbModule,
-    CartsModule,
+    forwardRef(() => CartsModule),
     UsersModule,
     AddressesModule,
     ProductsModule,
     ConfigModule,
   ],
-  exports: [OrdersService],
+  exports: [OrdersService, CheckoutService],
 })
 export class OrdersModule {}

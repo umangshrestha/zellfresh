@@ -1,5 +1,4 @@
 import { useMutation, useQuery } from '@apollo/client';
-import { CartItem } from '../../__generated__/types.ts';
 import { useStorageStore } from '../../lib/store';
 import { useNotification } from '../Notification';
 import { ProductKey } from '../Product';
@@ -8,15 +7,11 @@ import {
   CARTS_QUERY_SIMPLE,
   CARTS_QUERY_VERBOSE,
 } from './Cart.queries';
-import { CartMutation } from './Cart.types';
-import { CartItemType } from './CartItem';
+import { CartMutation } from './Cart.types.ts';
 
 export const useCart = ({
   verbose = false,
-}): CartMutation & {
-  enableCheckout: boolean;
-  totalPrice: string;
-} => {
+}) => {
   const query = verbose ? CARTS_QUERY_VERBOSE : CARTS_QUERY_SIMPLE;
   const { setNotification } = useNotification();
 
@@ -45,7 +40,7 @@ export const useCart = ({
 
   const getProductCount = ({ productId }: ProductKey) => {
     const items = data?.cart?.items?.filter(
-      (item: CartItem) => item.product?.productId === productId,
+      (item) => item.product?.productId === productId,
     );
     return items?.length ? items[0].quantity : 0;
   };
@@ -59,21 +54,12 @@ export const useCart = ({
     }).then();
   };
 
-  const cartItem =
-    (data?.cart?.items?.map((item: CartItem) => ({
-      ...item.product,
-      quantity: item.quantity,
-    })) as CartItemType[]) || [];
-
-  const totalPrice = (
-    cartItem.reduce((acc, item) => acc + item.price * item.quantity, 0) || 0
-  ).toFixed(2);
-
-  const enableCheckout = cartItem.some((item) => item.availableQuantity > 0);
   return {
-    data: cartItem,
-    enableCheckout,
-    totalPrice,
+    data: (data?.cart?.items || []) as CartMutation['data'],
+    checkoutDetails:  data?.cart?.checkoutDetails|| {
+      subTotal: 0,
+      enableCheckout: false,
+    },
     loading,
     onAddItemToCart,
     getProductCount,

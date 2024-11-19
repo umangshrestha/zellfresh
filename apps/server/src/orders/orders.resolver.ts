@@ -1,14 +1,16 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { AccessOrGuestTokenGuard } from '../auth/access-or-guest-token.gaurd';
 import { AuthUser } from '../auth/auth.decorator';
 import { Auth } from '../auth/entities/auth.entity';
 import { FilterOrderArgs } from './entities/filter-orders.args';
-import { Order } from './entities/order.entity';
+import { Order, OrderItem } from './entities/order.entity';
 import { PaginatedOrder } from './entities/paginated-order.entry';
 import { PaymentMethod } from './entities/payment-method.enum';
 import { OrdersService } from './orders.service';
 import { PubSubService } from '../common/pubsub/pub-sub.service';
+import { CheckoutService } from './checkout.service';
+
 
 @Resolver(() => Order)
 @UseGuards(AccessOrGuestTokenGuard)
@@ -16,6 +18,7 @@ export class OrdersResolver {
   constructor(
     private readonly ordersService: OrdersService,
     private readonly pubSubService: PubSubService,
+    private readonly checkoutService: CheckoutService,
   ) {}
 
   @Mutation(() => Order)
@@ -24,7 +27,7 @@ export class OrdersResolver {
     @Args('paymentMethod', { type: () => PaymentMethod })
     paymentMethod: PaymentMethod,
   ) {
-    const order = await this.ordersService.checkout(sub, paymentMethod);
+    const order = await this.checkoutService.checkout(sub, paymentMethod);
     await this.pubSubService.updateCount({cartCount: 0, sub});
     return order;
   }

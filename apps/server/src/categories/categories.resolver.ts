@@ -11,8 +11,8 @@ export class CategoriesResolver {
     return this.categoriesService.findAll();
   }
 
-  @Query(() => Category, { name: 'category' })
-  findOne(@Args('id', { type: () => String }) name: string) {
+  @Query(() => Category, { name: 'category', nullable: true })
+  findOne(@Args('name', { type: () => String }) name: string) {
     return this.categoriesService.findOne(name);
   }
 }

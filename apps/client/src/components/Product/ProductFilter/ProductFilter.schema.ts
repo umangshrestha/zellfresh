@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { SUPPORTED_CATEGORIES } from '../../../config/categories';
+import { CATEGORIES_MOCK_DATA } from '../../Categories/Categories.mock.ts';
 
-const productList = SUPPORTED_CATEGORIES.map((x) => x.name);
+const productList = CATEGORIES_MOCK_DATA.map((x) => x.name);
 const MAX_PRICE = 1000;
 
 const booleanFromString = z

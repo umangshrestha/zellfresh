@@ -1,5 +1,5 @@
 import { ProductKey } from '../Product';
-import { CartItemType } from './CartItem';
+import { ListCartsQueryVerboseQuery } from '../../__generated__/graphql.ts';
 
 export type CartMutationFunctions = {
   onAddItemToCart: (uniqueProductInput: ProductKey, count: number) => void;
@@ -8,5 +8,5 @@ export type CartMutationFunctions = {
 
 export type CartMutation = {
   loading: boolean;
-  data: CartItemType[];
+  data: ListCartsQueryVerboseQuery['cart']['items'];
 } & CartMutationFunctions;

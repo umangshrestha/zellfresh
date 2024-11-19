@@ -1,18 +1,6 @@
-import {Order} from '../../../__generated__/types'
-import {OrderItemType} from '../OrderItem';
+import { ListOrdersQuery } from '../../../__generated__/graphql.ts';
 
-// export type OrderListType = Pick<
-// Order,
-// // | 'contactDetails'
-//  | 'createdAt'
-//  | 'deliveryStatus'
-//  | 'orderId'
-// // | 'paymentDetails'
-//  //| 'shippingAddress'
-//  | 'updatedAt'
-// > &{items: OrderItemType[]};
-
-export type OrderListType = Order;
-
-export type OrderListProps = {data: OrderListType,
-     loading: boolean};
+export type OrderListProps = {
+  data: ListOrdersQuery['orders']['items'][0];
+  loading: boolean;
+};

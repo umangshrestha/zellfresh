@@ -8,7 +8,7 @@ import CartList from '../../components/Cart/CartList';
 
 export const CartPage = () => {
   const navigate = useNavigate();
-  const { loading, data, enableCheckout, totalPrice, ...functions } = useCart({
+  const { loading, data, checkoutDetails : {subTotal, enableCheckout}, ...functions } = useCart({
     verbose: true,
   });
 
@@ -21,7 +21,7 @@ export const CartPage = () => {
       <Typography variant="h4">Cart Page</Typography>
       <CartList {...functions} loading={loading} data={data} />
       <Box className="flex  justify-end gap-4 pb-10">
-        Sub total: <b>Rs. {totalPrice}</b>
+        Sub total: <b>Rs. {subTotal}</b>
       </Box>
       <Button
         variant="contained"

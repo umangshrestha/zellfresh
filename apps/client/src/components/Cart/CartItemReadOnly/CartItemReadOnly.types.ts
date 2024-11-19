@@ -1,14 +1,5 @@
-import { Product } from '../../../__generated__/types';
+import {  CheckoutPageQuery } from '../../../__generated__/graphql';
 
-export type CartItemReadOnlyType = Pick<
-  Product,
-  | 'name'
-  | 'price'
-  | 'imageUrl'
-  | 'availableQuantity'
-  | 'description'
-  | 'unit'
-  | 'category'
->;
+export type CartItemReadOnlyType = CheckoutPageQuery['cart']['items'][0];
 
 export type CartItemReadOnlyProps = CartItemReadOnlyType;

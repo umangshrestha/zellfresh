@@ -52,12 +52,25 @@ type CartItem {
   updatedAt: String!
 }
 
+type CheckoutDetails {
+  deliveryPrice: Float!
+  subTotal: Float!
+  tax: Float!
+  discount: Float!
+  taxPercentage: Float!
+
+  """Total price of the order including delivery charge"""
+  totalPrice: Float!
+  enableCheckout: Boolean!
+}
+
 type Cart {
   userId: String!
   items: [CartItem!]!
   count: Int!
   createdAt: String!
   updatedAt: String!
+  checkoutDetails: CheckoutDetails!
 }
 
 type Address {
@@ -88,44 +101,33 @@ type User {
   updatedAt: String!
 }
 
-type Category {
-  name: String!
-  icon: String!
-  imageUrl: String!
-  navigateUrl: String!
-}
-
 type DeliveryContactDetails {
   name: String!
   phone: String!
   email: String!
 }
 
-type PaymentDetails {
-  paymentMethod: PaymentMethod!
-  deliveryPrice: Float!
-  subTotal: Float!
-  tax: Float!
+type OrderItem {
+  productId: String!
+  product: Product
+  quantity: Int!
+  createdAt: String!
+  updatedAt: String!
 
-  """Total price of the order including delivery charge"""
-  totalPrice: Float!
-}
-
-"""The status of the order"""
-enum PaymentMethod {
-  CASH
-  CARD
-  UPI
+  """Price at the time of order creation"""
+  price: Float!
 }
 
 type Order {
   userId: String!
   orderId: String!
-  items: [CartItem!]!
+  items: [OrderItem!]!
+  count: Int!
   deliveryStatus: DeliveryStatus!
   shippingAddress: Address!
+  paymentMethod: PaymentMethod!
   contactDetails: DeliveryContactDetails!
-  paymentDetails: PaymentDetails!
+  checkoutDetails: CheckoutDetails!
   createdAt: String!
   updatedAt: String!
 }
@@ -141,9 +143,23 @@ enum DeliveryStatus {
   COMPLETED
 }
 
+"""The status of the order"""
+enum PaymentMethod {
+  CASH
+  CARD
+  UPI
+}
+
 type PaginatedOrder {
   items: [Order!]!
   pagination: Pagination!
+}
+
+type Category {
+  name: String!
+  icon: String!
+  imageUrl: String!
+  navigateUrl: String!
 }
 
 type Query {
@@ -163,7 +179,7 @@ type Query {
     sortBy: ProductsSortBy = NAME
     sortAsc: Boolean = true
   ): PaginatedProduct!
-  product(productId: String!): Product!
+  product(productId: String!): Product
   reviews(
     productId: String!
     limit: Int! = 5
@@ -177,13 +193,13 @@ type Query {
   review(productId: String!): Review!
   cart: Cart!
   cartItem(productId: String!): CartItem!
+  orders(limit: Int! = 10, cursor: String): PaginatedOrder!
+  order(orderId: String!): Order!
   me: User
   addresses(limit: Int! = 4): [Address!]!
   address(addressId: String!): Address!
-  orders(limit: Int! = 10, cursor: String): PaginatedOrder!
-  order(orderId: String!): Order!
   categories: [Category!]!
-  category(id: String!): Category!
+  category(name: String!): Category
 }
 
 """Sort products by"""
@@ -198,12 +214,12 @@ type Mutation {
   removeRating(productId: String!): Review!
   addItemToCart(cartInput: CartInput!): Cart!
   clearCart: Cart!
+  checkout(paymentMethod: PaymentMethod!): Order!
+  cancelOrder(orderId: String!): Order!
   updateUser(updateUserInput: UpdateUserInput!): User!
   putAddress(putAddressInput: PutAddressInput!): Address!
   deleteAddress(addressId: String!): Address!
   setDefaultAddress(addressId: String!): Address!
-  checkout(paymentMethod: PaymentMethod!): Order!
-  cancelOrder(orderId: String!): Order!
 }
 
 input PutReviewInput {

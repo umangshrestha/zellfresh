@@ -1,7 +1,7 @@
-import { gql } from '@apollo/client';
+import { gql } from '../../__generated__';
 
-export const PRODUCTS_QUERY = gql`
-  query (
+export const LIST_PRODUCTS_QUERY = gql(`
+  query ListProducts(
     $category: String
     $maxPrice: Float
     $minPrice: Float
@@ -25,6 +25,9 @@ export const PRODUCTS_QUERY = gql`
       name: $name
       showOutOfStock: $showOutOfStock
     ) {
+      pagination {
+          next
+      }
       items {
         productId
         name
@@ -43,4 +46,4 @@ export const PRODUCTS_QUERY = gql`
       }
     }
   }
-`;
+`);

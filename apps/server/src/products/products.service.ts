@@ -43,20 +43,25 @@ export class ProductsService {
     });
   }
 
-  async findAll({
-    limit = 20,
-    cursor,
-    category,
-    minRating,
-    maxRating,
-    minPrice,
-    maxPrice,
-    name,
-    tags,
-    sortBy,
-    sortAsc,
-    showOutOfStock,
-  }: FilterProductsArgs): Promise<PaginatedProduct> {
+  async findAll(args: FilterProductsArgs): Promise<PaginatedProduct> {
+    const cache = await this.productsCacheService.findAll(args);
+    if (cache) {
+      return cache;
+    }
+    const {
+      limit = 20,
+      cursor,
+      category,
+      minRating,
+      maxRating,
+      minPrice,
+      maxPrice,
+      name,
+      tags,
+      sortBy,
+      sortAsc,
+      showOutOfStock,
+    } = args;
     const filterExpressions: string[] = [];
     const expressionAttributeValues: Record<string, any> = {};
     if (category) {
@@ -141,13 +146,9 @@ export class ProductsService {
   }
 
   async findOne(productId: string) {
-    try {
-      const cache = await this.productsCacheService.findOne(productId);
-      if (cache) {
-        return cache;
-      }
-    } catch (error) {
-      this.loggerService.error(`Error deleting product: ${error}`);
+    const cache = await this.productsCacheService.findOne(productId);
+    if (cache) {
+      return cache;
     }
     const data = await this.dynamodbService.client.getItem({
       TableName,
@@ -226,7 +227,23 @@ export class ProductsService {
       product.category = entry.category;
       product.tags = entry.tags.split(',');
       product.imageUrl = entry.imageUrl;
-      await this.put(product);
+      await this.put(product, ignoreCache);
     }
+  }
+
+  async getPrice(productId: string) {
+    const cache = await this.productsCacheService.getPrice(productId);
+    if (cache) {
+      return cache;
+    }
+    const data = await this.dynamodbService.client.getItem({
+      TableName,
+      Key: marshall({ productId }),
+      ProjectionExpression: 'price, availableQuantity',
+    });
+    if (!data.Item || +data.Item.availableQuantity.N <= 0) {
+      return 0;
+    }
+    return +data.Item.price.N || 0;
   }
 }

@@ -17,4 +17,5 @@ export class CartItem implements ProductKey {
 
   @Field(() => String)
   updatedAt: string;
+
 }

@@ -1,6 +1,5 @@
-import type { Category } from '../../../__generated__/types';
+import { WithCategoriesProps } from '../Categories.types.ts';
 
-export interface CategoriesSectionProps {
-  categories: Omit<Category, '__typename'>[];
-  onClick: (url: string) => void;
+export interface CategoriesSectionProps extends WithCategoriesProps {
+  onClick: (navigateUrl: string) => void;
 }

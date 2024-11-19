@@ -1,6 +1,6 @@
-import { CategoriesSectionProps } from '../components/Categories/CategoriesSection/CategoriesSection.types.ts';
+import { ListCategoriesQuery } from '../../__generated__/graphql.ts';
 
-export const SUPPORTED_CATEGORIES: CategoriesSectionProps['categories'] = [
+export const CATEGORIES_MOCK_DATA: ListCategoriesQuery['categories'] = [
   {
     name: 'chicken',
     icon: '🐔',
