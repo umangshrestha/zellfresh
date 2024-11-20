@@ -1,13 +1,12 @@
+import type { ErrorComponentProps } from '../../ErrorComponent';
 import ErrorComponent from '../../ErrorComponent';
 
-export const OrderPlaced = (
-  {
-    orderId,
-    onClick,
-  }: Pick & {
-    orderId: string;
-  },
-) => (
+export const OrderPlaced = ({
+  orderId,
+  onClick,
+}: Pick<ErrorComponentProps, 'onClick'> & {
+  orderId: string;
+}) => (
   <ErrorComponent
     title="Thank you for placing order"
     description={[

@@ -5,4 +5,5 @@ const OrdersPage = lazy(() =>
     default: module.OrdersPage,
   })),
 );
+
 export default OrdersPage;

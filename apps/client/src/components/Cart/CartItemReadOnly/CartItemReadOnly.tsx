@@ -3,12 +3,12 @@ import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
 import Badge from '../../Badge';
-import { CartItemReadonlyProps } from '../CartItem/CartItem.types.ts';
+import type { CartItemReadOnlyType as CartItemReadOnlyProps } from '../CartItemReadOnly';
 
 export const CartItemReadOnly = ({
   quantity,
   product,
-}: CartItemReadonlyProps) => {
+}: CartItemReadOnlyProps) => {
   const { name, unit, price, imageUrl, availableQuantity, description } =
     product || {
       price: 0,

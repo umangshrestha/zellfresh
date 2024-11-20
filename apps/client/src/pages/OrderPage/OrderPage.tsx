@@ -3,55 +3,19 @@ import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
-import { gql } from '../../__generated__';
 import { OrderList } from '../../components/Order/OrderList';
-
-
-const ORDER_QUERY = gql(`
-  query ListOrders {
-  orders {
-    items {
-      createdAt
-      deliveryStatus
-      orderId
-      updatedAt
-      shippingAddress {
-        apt
-        street
-        city
-        state
-        country
-        zip
-        additionalInfo
-      }
-      items {
-        quantity
-        price
-        product {
-          productId
-          name
-          imageUrl
-          description
-          unit
-          category
-        }
-      }
-    }
-  }
-}`);
-
-
+import { ORDER_QUERY } from '../../components/Order/Order.queries.ts';
+import { useNavigate } from 'react-router-dom';
+import OrderEmptyPage from '../../components/Order/OrderEmptyPage';
 
 export const OrderPage = () => {
+  const navigate = useNavigate();
   const { data, loading } = useQuery(ORDER_QUERY);
-
-  console.log(data, loading);
   if (!loading && !data) {
-    return <div>Empty</div>;
+    return <OrderEmptyPage onClick={() => navigate('/')} />;
   }
-
   return (
-    <Box>
+    <Box className="flex flex-col gap-4 max-w-xl mx-auto pt-3">
       <Typography variant="h4">Orders</Typography>
       <List>
         {data?.orders?.items?.map((order) => (

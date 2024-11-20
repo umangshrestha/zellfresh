@@ -1,1 +1,1 @@
-export { OrderEmptyPage } from './OrderEmptyPage.tsx';
+export { OrderEmptyPage as default } from './OrderEmptyPage.tsx';

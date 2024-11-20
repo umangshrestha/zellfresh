@@ -55,7 +55,10 @@ export const CheckoutPage = () => {
 
   if (loading) return <CircularProgress />;
 
-  if (error || !data) return navigate('/');
+  if (error || !data) {
+    navigate('/');
+    return null;
+  }
 
   const hasError =
     !data.cart?.checkoutDetails?.enableCheckout ||

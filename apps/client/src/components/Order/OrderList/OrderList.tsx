@@ -8,15 +8,15 @@ import Fade from '@mui/material/Fade';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
-import * as React from 'react';
 import { DeliveryStatus } from '../../../__generated__/types';
 import Badge from '../../Badge';
 import { OrderItem } from '../OrderItem';
 import OrderItemSkeleton from '../OrderItemSkelton';
 import { OrderListProps } from './OrderList.types';
+import { useState } from 'react';
 
 export const OrderList = ({ data, loading }: OrderListProps) => {
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   const handleExpansion = () => {
     setExpanded((prevExpanded) => !prevExpanded);
@@ -35,7 +35,6 @@ export const OrderList = ({ data, loading }: OrderListProps) => {
       </List>
     );
 
-  const orders = data.items || []
   const { apt, street, city, state, country, zip, additionalInfo } =
     data.shippingAddress;
   const formattedAddress = [
@@ -85,9 +84,9 @@ export const OrderList = ({ data, loading }: OrderListProps) => {
           <Badge badgeText={data.deliveryStatus} />
 
           <List>
-            {orders.map((data) => (
-              <ListItem key={data.product?.productId}>
-                <OrderItem {...data} />
+            {data.items.map((order) => (
+              <ListItem key={order.product?.productId}>
+                <OrderItem {...order} />
               </ListItem>
             ))}
           </List>

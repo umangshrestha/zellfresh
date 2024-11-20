@@ -6,7 +6,7 @@ import AddressItem from '../../components/Profile/AddressItem';
 import ContactDetails from '../../components/Profile/ContactDetails';
 
 export const ProfilePage = () => {
-  const { data, onAddressSave, onUserDetailsSave, loading } = useProfile();
+  const { data, address, onAddressSave, onUserDetailsSave, loading } = useProfile();
   if (loading) return <CircularProgress />;
   return (
     <Box className="flex flex-col gap-4 max-w-xl mx-auto pt-3">
@@ -14,7 +14,7 @@ export const ProfilePage = () => {
       <Typography variant="h6">Personal Information</Typography>
       <ContactDetails {...data} onUserDetailsSave={onUserDetailsSave} />
       <Typography variant="h6">Address</Typography>
-      <AddressItem {...data.address[0]} onAddressSave={onAddressSave} />
+      <AddressItem {...address} onAddressSave={onAddressSave} />
     </Box>
   );
 };

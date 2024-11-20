@@ -1,6 +1,6 @@
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import CartItem, { CartItemType } from '../CartItem';
+import CartItem from '../CartItem';
 import CartItemSkeleton from '../CartItemSkeleton';
 import { CartMutation } from '../Cart.types.ts';
 
@@ -19,7 +19,7 @@ export const CartList = ({ data, loading, ...functions }: CartMutation) => {
     );
   return (
     <List>
-      {data.map((data: CartItemType) => (
+      {data.map((data) => (
         <ListItem key={data.product?.productId}>
           <CartItem {...data} {...functions} />
         </ListItem>

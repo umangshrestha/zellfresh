@@ -1,3 +1,5 @@
-import type { CheckoutPageQuery } from '../../../__generated__/graphql.ts';
+import type { ListCartsVerboseQuery } from '../../../__generated__/graphql.ts';
+import { CartMutationFunctions } from '../Cart.types.ts';
 
-export type CartItemReadonlyProps = CheckoutPageQuery['cart']['items'][0]
+export type CartItemProps = ListCartsVerboseQuery['cart']['items'][0] &
+  CartMutationFunctions;
