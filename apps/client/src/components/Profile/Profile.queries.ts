@@ -1,7 +1,7 @@
-import { gql } from '@apollo/client';
+import { gql } from '../../__generated__';
 
-export const PUT_ADDRESS_MUTATION = gql`
-  mutation (
+export const PUT_ADDRESS_MUTATION = gql(`
+  mutation PutAddress(
     $addressId: String
     $apt: String
     $city: String!
@@ -26,10 +26,10 @@ export const PUT_ADDRESS_MUTATION = gql`
       addressId
     }
   }
-`;
+`);
 
-export const PUT_USER_MUTATION = gql`
-  mutation (
+export const PUT_USER_MUTATION = gql(`
+  mutation PutUser(
     $name: String!
     $email: String!
     $phone: String!
@@ -46,10 +46,10 @@ export const PUT_USER_MUTATION = gql`
       userId
     }
   }
-`;
+`);
 
-export const PROFILE_QUERY = gql`
-  query {
+export const PROFILE_QUERY = gql(`
+  query Profile{
     me {
       email
       name
@@ -63,4 +63,4 @@ export const PROFILE_QUERY = gql`
       }
     }
   }
-`;
+`);

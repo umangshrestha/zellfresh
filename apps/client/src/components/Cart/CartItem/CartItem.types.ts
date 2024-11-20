@@ -1,5 +1,3 @@
-import { CartMutation, CartMutationFunctions } from '../Cart.types';
+import type { CheckoutPageQuery } from '../../../__generated__/graphql.ts';
 
-export type CartItemType = CartMutation['data'][0]
-
-export type CartItemProps = CartItemType & CartMutationFunctions;
+export type CartItemReadonlyProps = CheckoutPageQuery['cart']['items'][0]

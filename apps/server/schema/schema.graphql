@@ -251,5 +251,5 @@ input PutAddressInput {
 }
 
 type Subscription {
-  cartCount: Int
+  cartCount: Int!
 }

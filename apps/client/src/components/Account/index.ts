@@ -1,7 +1,2 @@
-import { lazy } from 'react';
-
-const Account = lazy(() =>
-  import('./Account').then((module) => ({ default: module.Account })),
-);
-
-export default Account;
+export { Account as default } from './Account';
+export { useAccount } from './Account.hooks.ts';

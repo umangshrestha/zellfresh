@@ -1,4 +1,4 @@
-import { MutationHookOptions, useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { useNotification } from '../Notification';
 import { AddressItemType } from './AddressItem';
 import { ContactDetailsType } from './ContactDetails';
@@ -10,20 +10,13 @@ import {
 
 export const useProfile = () => {
   const { setNotification } = useNotification();
-  const onError = (error: Error) => {
-    setNotification({
-      message: error.message,
-      severity: 'error',
-    });
-  };
-
-  const mutationOptions: MutationHookOptions = {
+  const { data, loading } = useQuery(PROFILE_QUERY);
+  const [onAddressSave] = useMutation(PUT_ADDRESS_MUTATION, {
     refetchQueries: [PROFILE_QUERY],
-    onError,
-  };
-  const { data, loading } = useQuery(PROFILE_QUERY, { onError });
-  const [onAddressSave] = useMutation(PUT_ADDRESS_MUTATION, mutationOptions);
-  const [onUserDetailsSave] = useMutation(PUT_USER_MUTATION, mutationOptions);
+  });
+  const [onUserDetailsSave] = useMutation(PUT_USER_MUTATION, {
+    refetchQueries: [PROFILE_QUERY],
+  });
   return {
     loading,
     data: data?.me,

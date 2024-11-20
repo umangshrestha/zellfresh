@@ -7,24 +7,17 @@ import { GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../../components/Footer';
 import Notification, { useNotification } from '../../components/Notification';
-import { login } from '../../lib/axios';
-import { useStorageStore } from '../../lib/store';
+import { useAccount } from '../../components/Account';
 
 export const LoginPage = () => {
   const { setNotification } = useNotification();
   const navigate = useNavigate();
-  const setUserDetails = useStorageStore((state) => state.setUserDetails);
-
+  const {login} = useAccount();
   const onError = () => {
     setNotification({
       message: 'Failed to sign in',
       severity: 'error',
     });
-  };
-
-  const onSuccess = () => {
-    setUserDetails(null);
-    navigate('/');
   };
 
   return (
@@ -59,9 +52,9 @@ export const LoginPage = () => {
                   headers: {
                     Authorization: `Bearer ${response.credential}`,
                   },
-                })
-                  .then(onSuccess)
-                  .catch(onError);
+                },
+                () => navigate('/'),
+                )
             }}
             onError={onError}
             type="standard"
@@ -70,7 +63,6 @@ export const LoginPage = () => {
             shape="pill"
             size="large"
           />
-
           <Link href="/" underline="always" ml="2">
             continue as guest
           </Link>

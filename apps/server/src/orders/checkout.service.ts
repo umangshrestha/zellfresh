@@ -58,6 +58,13 @@ export class CheckoutService {
       checkoutDetails.deliveryPrice
       - checkoutDetails.discount;
 
+    // to round off the total price to 2 decimal places
+    checkoutDetails.totalPrice = Math.round(checkoutDetails.totalPrice * 100) / 100;
+    checkoutDetails.subTotal = Math.round(checkoutDetails.subTotal * 100) / 100;
+    checkoutDetails.tax = Math.round(checkoutDetails.tax * 100) / 100;
+    checkoutDetails.discount = Math.round(checkoutDetails.discount * 100) / 100;
+    checkoutDetails.deliveryPrice = Math.round(checkoutDetails.deliveryPrice * 100) / 100;
+
     return checkoutDetails
   }
 

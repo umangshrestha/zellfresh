@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from '../../__generated__';
 
 export const CHECKOUT_QUERY = gql(`
 query CheckoutPage{
@@ -34,9 +34,9 @@ query CheckoutPage{
 `);
 
 export const CHECKOUT_MUTATION = gql(`
-  mutation ($paymentMethod: PaymentMethod!) {
-    checkout(paymentMethod: $paymentMethod) {
-      orderId
-    }
+mutation Checkout($paymentMethod: PaymentMethod!) {
+  checkout(paymentMethod: $paymentMethod) {
+    orderId
   }
+}
 `);

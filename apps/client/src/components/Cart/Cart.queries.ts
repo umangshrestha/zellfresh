@@ -5,11 +5,10 @@ mutation AddItemToCart($productId: String!, $quantity: Int!) {
   addItemToCart(cartInput: { productId: $productId, quantity: $quantity }) {
     count
   }
-}
-`);
+}`);
 
 export const CARTS_QUERY_VERBOSE = gql(`
-query ListCartsQueryVerbose {
+query ListCartsVerbose {
   cart {
     items {
       quantity
@@ -30,29 +29,10 @@ query ListCartsQueryVerbose {
       enableCheckout
     }
   }
-}
-`);
+}`);
 
-export const CARTS_QUERY_SIMPLE = gql(`
-query ListCartsQuerySimple{
-  cart {
-    items {
-      quantity
-      product {
-        productId
-        category
-      }
-    }
-    checkoutDetails {
-      subTotal
-      enableCheckout
-    }
-  }
-}
-`);
 
 export const CART_COUNT_SUBSCRIPTION = gql(`
 subscription CartCount{
   cartCount
-}
-`);
+}`);

@@ -34,6 +34,8 @@ export class AuthController {
   ) {
     const data = await this.authService.guestLogin(payload);
     this.guestTokenService.sendCookie(response, data);
+    this.accessTokenService.clearCookie(response);
+    this.refreshTokenService.clearCookie(response);
     return data;
   }
 
@@ -50,6 +52,7 @@ export class AuthController {
     );
     this.accessTokenService.sendCookie(res, payload);
     this.refreshTokenService.sendCookie(res, payload);
+    this.guestTokenService.clearCookie(res);
     return payload;
   }
 

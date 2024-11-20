@@ -10,6 +10,7 @@ import {Subscription} from '@nestjs/graphql';
 import { PubSubService } from '../common/pubsub/pub-sub.service';
 import { CheckoutService } from '../orders/checkout.service';
 import { CheckoutDetails } from '../orders/entities/checkout-details.entity';
+import * as console from 'node:console';
 
 
 @Resolver(() => Cart)
@@ -50,16 +51,15 @@ export class CartsResolver {
   }
 
   @Subscription(() => Int, {
-    nullable: true,
     filter: (payload, variables, context) => {
       return payload.sub === context.req.connectionParams.sub;
     },
     resolve: (payload) => {
-      return payload.cartCount || 0;
+      return payload?.cartCount || 0;
     }
   })
   async cartCount(@Context() context: any) {
-    const count = await  this.cartsService.getCount(context.req.connectionParams.sub);
+    const count = await this.cartsService.getCount(context.req.connectionParams.sub);
     setTimeout(() =>  this.pubSubService.updateCount({ cartCount: count, sub: context.req.connectionParams.sub }), 0);
     return this.pubSubService.asyncCartIterator();
   }

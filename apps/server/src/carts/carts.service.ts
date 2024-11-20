@@ -9,6 +9,7 @@ import { DynamodbService } from 'src/common/dynamodb/dynamodb.service';
 import { get_date_time_string } from 'src/common/get-date-time';
 import { CartInput } from './dto/cart-input.input';
 import { Cart } from './entities/cart.entity';
+import * as console from 'node:console';
 const TableName = 'CARTS_TABLE';
 
 @Injectable()

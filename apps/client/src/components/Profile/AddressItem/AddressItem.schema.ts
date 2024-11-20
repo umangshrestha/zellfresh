@@ -23,4 +23,7 @@ export const AddressItemSchema = z.object({
       message: 'Invalid additional info',
     })
     .default(''),
+  country: z.string({
+    message: 'Invalid country',
+  }),
 });

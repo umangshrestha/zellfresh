@@ -130,6 +130,9 @@ export class OrdersService {
       }];
     }
     );
+    if (transactItems.length === 0) {
+      return;
+    }
     const command = new TransactWriteItemsCommand({
       TransactItems: transactItems,
     });

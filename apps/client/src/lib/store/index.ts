@@ -16,10 +16,6 @@ export const useStorageStore = create(
       toggleTheme: () => {
         set({ theme: get().theme === 'dark' ? 'light' : 'dark' });
       },
-      userDetails: get()?.userDetails || null,
-      setUserDetails: (userDetails: StorageState['userDetails']) => {
-        set({ userDetails });
-      },
     }),
     {
       name: 'app-storage',

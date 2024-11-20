@@ -17,7 +17,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PaymentMethod } from '../../__generated__/types.ts';
 import CartItemReadOnly from '../../components/Cart/CartItemReadOnly';
@@ -28,14 +28,7 @@ export const CheckoutPage = () => {
   const navigate = useNavigate();
   const { setNotification } = useNotification();
   const [paymentMethod, setPaymentMethod] = useState(PaymentMethod.Cash);
-  const { data, loading } = useQuery(CHECKOUT_QUERY, {
-    onError: (error) => {
-      setNotification({
-        message: error.message,
-        severity: 'error',
-      });
-    },
-  });
+  const { data, loading, error } = useQuery(CHECKOUT_QUERY);
   const [checkoutMutation] = useMutation(CHECKOUT_MUTATION, {
     onCompleted: (data) => {
       const orderId = data.checkout.orderId;
@@ -45,19 +38,7 @@ export const CheckoutPage = () => {
       });
       navigate(`/orders/placed/${orderId}`);
     },
-    onError: (error) => {
-      setNotification({
-        message: error.message,
-        severity: 'error',
-      });
-    },
   });
-
-  useEffect(() => {
-    if (!loading && data.cart.items.length == 0) {
-      navigate('/');
-    }
-  }, [data, loading, navigate]);
 
   const handleRazorpayPayment = () => {
     // Integrate Razorpay API here
@@ -74,13 +55,14 @@ export const CheckoutPage = () => {
 
   if (loading) return <CircularProgress />;
 
+  if (error || !data) return navigate('/');
 
   const hasError =
     !data.cart?.checkoutDetails?.enableCheckout ||
-    !data.me.name ||
-    !data.me.email ||
-    !data.me.phone ||
-    !data.me.defaultAddress;
+    !data.me?.name ||
+    !data.me?.email ||
+    !data.me?.phone ||
+    !data.me?.defaultAddress;
 
   return (
     <Box className="flex flex-col gap-4 max-w-xl mx-auto pt-3">
@@ -100,7 +82,7 @@ export const CheckoutPage = () => {
         </div>
         <List>
           {data.cart?.items.map((props) => (
-            <ListItem key={props.product.name}>
+            <ListItem key={props.product?.name}>
               <CartItemReadOnly {...props} />
             </ListItem>
           ))}
@@ -124,7 +106,7 @@ export const CheckoutPage = () => {
               <TableRow>
                 <TableCell>Name</TableCell>
                 <TableCell>
-                  {data.me.name ? (
+                  {data.me?.name ? (
                     data.me.name
                   ) : (
                     <Typography color="error">No name found</Typography>
@@ -134,7 +116,7 @@ export const CheckoutPage = () => {
               <TableRow>
                 <TableCell>Email</TableCell>
                 <TableCell>
-                  {data.me.email ? (
+                  {data.me?.email ? (
                     data.me.email
                   ) : (
                     <Typography color="error">No email found</Typography>
@@ -144,7 +126,7 @@ export const CheckoutPage = () => {
               <TableRow>
                 <TableCell>Phone</TableCell>
                 <TableCell>
-                  {data.me.phone ? (
+                  {data.me?.phone ? (
                     data.me.phone
                   ) : (
                     <Typography color="error">No phone number found</Typography>
@@ -154,7 +136,7 @@ export const CheckoutPage = () => {
               <TableRow>
                 <TableCell>Address</TableCell>
                 <TableCell>
-                  {data.me.defaultAddress ? (
+                  {data.me?.defaultAddress ? (
                     <Table>
                       <TableBody>
                         <TableRow>
