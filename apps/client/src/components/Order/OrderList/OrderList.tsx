@@ -8,12 +8,12 @@ import Fade from '@mui/material/Fade';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
+import { useState } from 'react';
 import { DeliveryStatus } from '../../../__generated__/types';
 import Badge from '../../Badge';
 import { OrderItem } from '../OrderItem';
 import OrderItemSkeleton from '../OrderItemSkelton';
 import { OrderListProps } from './OrderList.types';
-import { useState } from 'react';
 
 export const OrderList = ({ data, loading }: OrderListProps) => {
   const [expanded, setExpanded] = useState(false);

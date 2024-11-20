@@ -6,7 +6,8 @@ import AddressItem from '../../components/Profile/AddressItem';
 import ContactDetails from '../../components/Profile/ContactDetails';
 
 export const ProfilePage = () => {
-  const { data, address, onAddressSave, onUserDetailsSave, loading } = useProfile();
+  const { data, address, onAddressSave, onUserDetailsSave, loading } =
+    useProfile();
   if (loading) return <CircularProgress />;
   return (
     <Box className="flex flex-col gap-4 max-w-xl mx-auto pt-3">

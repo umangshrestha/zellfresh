@@ -8,7 +8,12 @@ import CartList from '../../components/Cart/CartList';
 
 export const CartPage = () => {
   const navigate = useNavigate();
-  const { loading, data, checkoutDetails : {subTotal, enableCheckout}, ...functions } = useCart();
+  const {
+    loading,
+    data,
+    checkoutDetails: { subTotal, enableCheckout },
+    ...functions
+  } = useCart();
 
   if (!loading && !data?.length) {
     return <CartEmptyPage onClick={() => navigate('/')} />;

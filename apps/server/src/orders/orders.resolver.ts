@@ -1,16 +1,15 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AccessOrGuestTokenGuard } from '../auth/access-or-guest-token.gaurd';
 import { AuthUser } from '../auth/auth.decorator';
 import { Auth } from '../auth/entities/auth.entity';
+import { PubSubService } from '../common/pubsub/pub-sub.service';
+import { CheckoutService } from './checkout.service';
 import { FilterOrderArgs } from './entities/filter-orders.args';
-import { Order, OrderItem } from './entities/order.entity';
+import { Order } from './entities/order.entity';
 import { PaginatedOrder } from './entities/paginated-order.entry';
 import { PaymentMethod } from './entities/payment-method.enum';
 import { OrdersService } from './orders.service';
-import { PubSubService } from '../common/pubsub/pub-sub.service';
-import { CheckoutService } from './checkout.service';
-
 
 @Resolver(() => Order)
 @UseGuards(AccessOrGuestTokenGuard)
@@ -28,7 +27,7 @@ export class OrdersResolver {
     paymentMethod: PaymentMethod,
   ) {
     const order = await this.checkoutService.checkout(sub, paymentMethod);
-    await this.pubSubService.updateCount({cartCount: 0, sub});
+    await this.pubSubService.updateCount({ cartCount: 0, sub });
     return order;
   }
 

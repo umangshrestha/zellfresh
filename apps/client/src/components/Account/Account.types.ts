@@ -21,4 +21,3 @@ export interface AccountContextType {
     onError?: (error: unknown) => void,
   ) => Promise<void>;
 }
-

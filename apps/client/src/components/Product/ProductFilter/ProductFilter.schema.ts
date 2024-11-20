@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { CATEGORIES_MOCK_DATA } from '../../Categories/Categories.mock.ts';
 import { ProductsSortBy } from '../../../__generated__/types.ts';
+import { CATEGORIES_MOCK_DATA } from '../../Categories/Categories.mock.ts';
 
 const productList = CATEGORIES_MOCK_DATA.map((x) => x.name);
 const MAX_PRICE = 1000;
@@ -9,7 +9,10 @@ const booleanFromString = z
   .union([z.boolean(), z.string()])
   .transform((val) => val === true || val === 'true');
 
-const ProductsSortByValues = Object.values(ProductsSortBy) as [string, ...string[]];
+const ProductsSortByValues = Object.values(ProductsSortBy) as [
+  string,
+  ...string[],
+];
 
 export const ProductFilterSchema = z
   .object({

@@ -1,6 +1,4 @@
-import {
-  TransactWriteItemsCommand,
-} from '@aws-sdk/client-dynamodb';
+import { TransactWriteItemsCommand } from '@aws-sdk/client-dynamodb';
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { DynamodbService } from 'src/common/dynamodb/dynamodb.service';
@@ -11,23 +9,19 @@ import { Order } from './entities/order.entity';
 import { PaginatedOrder } from './entities/paginated-order.entry';
 import { PaymentMethod } from './entities/payment-method.enum';
 
-
 const TableName = 'ORDERS_TABLE';
 
 @Injectable()
 export class OrdersService {
+  constructor(private readonly dynamodbService: DynamodbService) {}
 
-  constructor(
-    private readonly dynamodbService: DynamodbService,
-  ) {}
-
-   putCommand(order: Order) {
+  putCommand(order: Order) {
     return {
       Put: {
         TableName,
-          Item: marshall(order, { convertClassInstanceToMap: true }),
+        Item: marshall(order, { convertClassInstanceToMap: true }),
       },
-    }
+    };
   }
 
   async findAll(
@@ -117,19 +111,21 @@ export class OrdersService {
     const transactItems = orders.Items.flatMap((order) => {
       const orderData = unmarshall(order) as Order;
       orderData.userId = userId;
-      return [{
-        Put: {
-          TableName,
-          Item: marshall(orderData),
+      return [
+        {
+          Put: {
+            TableName,
+            Item: marshall(orderData),
+          },
         },
-      }, {
-        Delete: {
-          TableName,
-          Key: marshall({ userId: guestId, orderId: orderData.orderId }),
+        {
+          Delete: {
+            TableName,
+            Key: marshall({ userId: guestId, orderId: orderData.orderId }),
+          },
         },
-      }];
-    }
-    );
+      ];
+    });
     if (transactItems.length === 0) {
       return;
     }
@@ -137,7 +133,7 @@ export class OrdersService {
       TransactItems: transactItems,
     });
     try {
-     await this.dynamodbService.client.send(command);
+      await this.dynamodbService.client.send(command);
     } catch (error) {
       console.error(error);
     }

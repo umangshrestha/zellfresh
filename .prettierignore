@@ -1,5 +1,7 @@
 build/
 node_modules/
-infrastucture
+infrastructure
 dist/
 .turbo/
+__generated__/
+contentful

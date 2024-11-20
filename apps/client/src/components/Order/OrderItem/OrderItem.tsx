@@ -4,11 +4,7 @@ import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
 import { OderItemProps } from './OrderItem.types';
 
-export const OrderItem = ({
-  price,
-  quantity,
-  product,
-}: OderItemProps) => {
+export const OrderItem = ({ price, quantity, product }: OderItemProps) => {
   const { name, unit, imageUrl, description } = product || {
     imageUrl: '',
     name: '',

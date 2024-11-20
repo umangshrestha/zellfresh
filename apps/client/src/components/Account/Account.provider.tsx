@@ -17,8 +17,7 @@ export const AccountProvider = ({ children }: LayoutProps) => {
     (error: unknown) => {
       if (isCancel(error)) {
         return;
-      }
-      else if (isAxiosError(error)) {
+      } else if (isAxiosError(error)) {
         setNotification({
           message: error.message,
           severity: 'error',

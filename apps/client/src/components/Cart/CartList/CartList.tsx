@@ -1,8 +1,8 @@
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
+import { CartMutation } from '../Cart.types.ts';
 import CartItem from '../CartItem';
 import CartItemSkeleton from '../CartItemSkeleton';
-import { CartMutation } from '../Cart.types.ts';
 
 export const CartList = ({ data, loading, ...functions }: CartMutation) => {
   if (loading)

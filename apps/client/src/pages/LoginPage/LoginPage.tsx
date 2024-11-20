@@ -5,14 +5,14 @@ import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import { GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
+import { useAccount } from '../../components/Account';
 import Footer from '../../components/Footer';
 import Notification, { useNotification } from '../../components/Notification';
-import { useAccount } from '../../components/Account';
 
 export const LoginPage = () => {
   const { setNotification } = useNotification();
   const navigate = useNavigate();
-  const {login} = useAccount();
+  const { login } = useAccount();
   const onError = () => {
     setNotification({
       message: 'Failed to sign in',
@@ -48,13 +48,15 @@ export const LoginPage = () => {
             useOneTap
             onSuccess={(response) => {
               if (response.credential)
-                login('google', {
-                  headers: {
-                    Authorization: `Bearer ${response.credential}`,
+                login(
+                  'google',
+                  {
+                    headers: {
+                      Authorization: `Bearer ${response.credential}`,
+                    },
                   },
-                },
-                () => navigate('/'),
-                )
+                  () => navigate('/'),
+                );
             }}
             onError={onError}
             type="standard"

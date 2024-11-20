@@ -19,9 +19,9 @@ export class ProductsCacheService {
     });
   }
 
-   async getPrice(productId: string) {
+  async getPrice(productId: string) {
     const data = await this.prismaService.product.findUnique({
-      where: { productId, availableQuantity : { gt: 0 } },
+      where: { productId, availableQuantity: { gt: 0 } },
       select: { price: true },
     });
     return data?.price || 0;

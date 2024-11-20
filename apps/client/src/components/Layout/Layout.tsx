@@ -19,12 +19,12 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { APP_NAME } from '../../config';
 import Account from '../Account';
 import CartIcon from '../Cart/CartIcon';
+import * as Categories from '../Categories';
 import ErrorBoundary from '../ErrorBoundary';
 import Footer from '../Footer';
 import Notification from '../Notification';
 import ThemeToggle from '../ThemeToggle';
 import { Breadcrumbs } from './Breadcrumbs';
-import * as Categories from '../Categories';
 
 export const Layout = () => {
   const navigate = useNavigate();
@@ -33,7 +33,7 @@ export const Layout = () => {
   const onClick = (url: string) => {
     navigate(url);
     setDrawerOpen(false);
-  }
+  };
 
   return (
     <Box className="flex flex-col min-h-3">
@@ -77,10 +77,9 @@ export const Layout = () => {
         <List>
           <Categories.CollapsableButton
             showText={drawerOpen}
-           onClick={onClick} />
-          <ListItemButton
-            onClick={ () => onClick('/orders') }
-          >
+            onClick={onClick}
+          />
+          <ListItemButton onClick={() => onClick('/orders')}>
             <ListItemIcon
               sx={{
                 minWidth: 'auto',

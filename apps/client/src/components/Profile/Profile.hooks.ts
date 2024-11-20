@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client';
+import { DEFAULT_ADDRESS } from '../../config/address.ts';
 import { useNotification } from '../Notification';
 import { AddressItemType } from './AddressItem';
 import { ContactDetailsType } from './ContactDetails';
@@ -7,7 +8,6 @@ import {
   PUT_ADDRESS_MUTATION,
   PUT_USER_MUTATION,
 } from './Profile.queries.ts';
-import { DEFAULT_ADDRESS } from '../../config/address.ts';
 
 export const useProfile = () => {
   const { setNotification } = useNotification();
@@ -26,12 +26,12 @@ export const useProfile = () => {
       phone: data?.me?.phone || '',
     },
     address: {
-        addressId: data?.me?.address[0]?.addressId || '',
-        street: data?.me?.address[0]?.street || '',
-        zip: data?.me?.address[0]?.zip || '',
-        apt: data?.me?.address[0]?.apt || '',
-        additionalInfo: data?.me?.address[0]?.additionalInfo || '',
-        ...DEFAULT_ADDRESS
+      addressId: data?.me?.address[0]?.addressId || '',
+      street: data?.me?.address[0]?.street || '',
+      zip: data?.me?.address[0]?.zip || '',
+      apt: data?.me?.address[0]?.apt || '',
+      additionalInfo: data?.me?.address[0]?.additionalInfo || '',
+      ...DEFAULT_ADDRESS,
     },
     onUserDetailsSave: (variables: ContactDetailsType) => {
       onUserDetailsSave({

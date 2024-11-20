@@ -9,15 +9,13 @@ import { DynamodbService } from 'src/common/dynamodb/dynamodb.service';
 import { get_date_time_string } from 'src/common/get-date-time';
 import { CartInput } from './dto/cart-input.input';
 import { Cart } from './entities/cart.entity';
-import * as console from 'node:console';
 const TableName = 'CARTS_TABLE';
 
 @Injectable()
 export class CartsService {
   private readonly loggerService = new Logger(CartsService.name);
 
-  constructor(
-    private readonly dynamodbService: DynamodbService) {}
+  constructor(private readonly dynamodbService: DynamodbService) {}
 
   async createEmptyCart(userId: string, overwrite = false) {
     const cart = new Cart();
@@ -190,8 +188,4 @@ export class CartsService {
       },
     };
   }
-
-
-
-
 }

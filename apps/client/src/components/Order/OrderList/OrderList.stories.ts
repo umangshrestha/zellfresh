@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { OrderItemType } from '../OrderItem/OrderItem.types';
-import { OrderList } from './OrderList';
-import { OrderListType } from './OrderList.types';
+import { ListOrdersQuery } from '../../../__generated__/graphql';
 import { DeliveryStatus } from '../../../__generated__/types';
+import { OrderList } from './OrderList';
 
 const meta = {
   title: 'Order/List',
@@ -13,42 +12,51 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const products: OrderItemType[] = [
-  {
-    productId: '1',
-    name: 'Chicken Breast',
-    price: 12.99,
-    imageUrl:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiXM1f7aFP4rKF-wJZ2juCb-7JcQCspEYUVwLK4JrpBdVtRB-ELAqpUCmkg6znfoG4fh8&usqp=CAU',
-    category: 'chicken',
-    description: 'Delicious chicken breast',
-    unit: 'kg',
+const order: ListOrdersQuery['orders']['items'][0] = {
+  createdAt: '2024-11-20T02:05:04.566Z',
+  deliveryStatus: DeliveryStatus.Delivered,
+  orderId: 'f2681f43-ed1d-4f61-91fe-48e14c5a03c3',
+  updatedAt: '2024-11-20T02:05:04.566Z',
+  shippingAddress: {
+    apt: '',
+    street: '511 Pelissier St',
+    city: 'Bengaluru',
+    state: 'Karnataka',
+    country: 'India',
+    zip: 'N9A 4L2',
+    additionalInfo: '',
+    __typename: 'Address',
   },
-  {
-    productId: '2',
-    name: 'BONELESS PORK BUTT ROAST',
-    price: 100,
-    imageUrl:
-      'https://132625588.cdn6.editmysite.com/uploads/1/3/2/6/132625588/s782101613657948031_p29_i2_w1920.jpeg?width=2400&optimize=medium',
-    category: 'pork',
-    description: 'Tasty pork butt roast',
-    unit: 'kg',
-  },
-];
-
-const order:OrderListType={
- createdAt:"10/23/2004",
- orderId:"111222",
- updatedAt:"10/23/2004",
- deliveryStatus: DeliveryStatus.Cancelled,
- item: products
-}
+  items: [
+    {
+      quantity: 7,
+      price: 20.99,
+      product: {
+        productId: '1731039366723',
+        name: 'Lamb Shoulder',
+        imageUrl:
+          'https://ux2cms.imgix.net/images/Smoked-Lamb-Shoulder-2.jpg?auto=compress,format&w=750',
+        description: 'Tender lamb shoulder, great for slow cooking.',
+        unit: '1 piece',
+        category: 'mutton',
+        __typename: 'Product',
+      },
+      __typename: 'OrderItem',
+    },
+  ],
+  __typename: 'Order',
+};
 
 export const Default: Story = {
   args: {
-    ...order
-
+    data: order,
+    loading: false,
   },
 };
 
-
+export const Loading: Story = {
+  args: {
+    data: order,
+    loading: true,
+  },
+};

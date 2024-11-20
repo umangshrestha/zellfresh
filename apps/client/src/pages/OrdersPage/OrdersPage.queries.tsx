@@ -75,7 +75,7 @@ export const ORDER_ITEM_QUERY = gql`
         phone
       }
       paymentMethod
-        checkoutDetails {
+      checkoutDetails {
         deliveryPrice
         subTotal
         tax

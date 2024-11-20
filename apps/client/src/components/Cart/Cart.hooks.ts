@@ -1,10 +1,7 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { useNotification } from '../Notification';
 import { ProductKey } from '../Product';
-import {
-  ADD_ITEM_TO_CART_MUTATION,
-  CARTS_QUERY_VERBOSE,
-} from './Cart.queries';
+import { ADD_ITEM_TO_CART_MUTATION, CARTS_QUERY_VERBOSE } from './Cart.queries';
 
 export const useCart = () => {
   const { setNotification } = useNotification();
@@ -38,7 +35,7 @@ export const useCart = () => {
 
   return {
     data: targetData?.cart?.items || [],
-    checkoutDetails:  data?.cart?.checkoutDetails|| {
+    checkoutDetails: data?.cart?.checkoutDetails || {
       subTotal: 0,
       enableCheckout: false,
     },

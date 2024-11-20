@@ -17,6 +17,6 @@ export const Default: Story = {
     quantity: 1,
     imageUrl:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiXM1f7aFP4rKF-wJZ2juCb-7JcQCspEYUVwLK4JrpBdVtRB-ELAqpUCmkg6znfoG4fh8&usqp=CAU',
-    name: 'Chicken Breast'
-    },
+    name: 'Chicken Breast',
+  },
 };

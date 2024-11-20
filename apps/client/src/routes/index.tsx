@@ -6,11 +6,10 @@ import ErrorPage from '../pages/ErrorPage';
 import HomePage from '../pages/HomePage';
 import LoginPage from '../pages/LoginPage';
 import NotFoundPage from '../pages/NotFoundPage';
-import ProductPage from '../pages/ProductPage';
-import ProfilePage from '../pages/ProfilePage';
 import OrderPage from '../pages/OrderPage';
 import OrderPlacedPage from '../pages/OrdersPage/OrderPlacedPage';
-
+import ProductPage from '../pages/ProductPage';
+import ProfilePage from '../pages/ProfilePage';
 
 export const router = createBrowserRouter([
   {
@@ -52,10 +51,11 @@ export const router = createBrowserRouter([
       {
         path: '/orders',
         element: <OrderPage />,
-      }, {
+      },
+      {
         path: '/orders/placed/:orderId',
         element: <OrderPlacedPage />,
-      }
+      },
     ],
   },
   {

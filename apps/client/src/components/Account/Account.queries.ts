@@ -4,18 +4,18 @@ export const axiosClient = axios.create();
 
 const logout = (config: AxiosRequestConfig | undefined = undefined) => {
   return axios.get('/api/auth/logout', config);
-}
+};
 
 const refresh = (config?: AxiosRequestConfig) => {
   return axios.get('/api/auth/refresh', config);
-}
+};
 
 const login = (
   provider: 'guest' | 'google' = 'guest',
   config?: AxiosRequestConfig,
 ) => {
   return axios.get(`/api/auth/${provider}/login`, config);
-}
+};
 
 axiosClient.interceptors.response.use(
   (response) => {
@@ -45,7 +45,6 @@ axiosClient.interceptors.response.use(
       } catch (guestLoginError) {
         console.error('Guest login failed:', guestLoginError);
       }
-
     }
     return Promise.reject(error);
   },
@@ -53,11 +52,6 @@ axiosClient.interceptors.response.use(
 
 const me = (config?: AxiosRequestConfig) => {
   return axiosClient.get('/api/auth/me', config);
-}
-
-
-export {
-  login,
-  logout,
-  me,
 };
+
+export { login, logout, me };

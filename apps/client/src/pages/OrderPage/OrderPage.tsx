@@ -3,10 +3,10 @@ import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
-import { OrderList } from '../../components/Order/OrderList';
-import { ORDER_QUERY } from '../../components/Order/Order.queries.ts';
 import { useNavigate } from 'react-router-dom';
+import { ORDER_QUERY } from '../../components/Order/Order.queries.ts';
 import OrderEmptyPage from '../../components/Order/OrderEmptyPage';
+import { OrderList } from '../../components/Order/OrderList';
 
 export const OrderPage = () => {
   const navigate = useNavigate();

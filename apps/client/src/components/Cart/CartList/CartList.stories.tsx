@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { CartList } from './CartList';
 import { CartMutation } from '../Cart.types';
+import { CartList } from './CartList';
 
 const meta = {
   title: 'Cart/List',

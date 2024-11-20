@@ -3,8 +3,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import { useNotification } from '../../components/Notification';
-import { ORDERS_QUERY } from './OrdersPage.queries.tsx';
 import OrderEmptyPage from '../../components/Order/OrderEmptyPage';
+import { ORDERS_QUERY } from './OrdersPage.queries.tsx';
 
 export const OrdersPage = () => {
   const { setNotification } = useNotification();

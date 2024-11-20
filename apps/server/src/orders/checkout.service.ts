@@ -8,16 +8,15 @@ import { DynamodbService } from 'src/common/dynamodb/dynamodb.service';
 import { v4 as uuid } from 'uuid';
 import { AddressesService } from '../addresses/addresses.service';
 import { CartsService } from '../carts/carts.service';
+import { CartItem } from '../carts/entities/cart-item.entity';
 import { get_date_time_string } from '../common/get-date-time';
 import { ProductsService } from '../products/products.service';
 import { UsersService } from '../users/users.service';
+import { CheckoutDetails } from './entities/checkout-details.entity';
 import { DeliveryStatus } from './entities/delivery-status.enum';
 import { Order, OrderItem } from './entities/order.entity';
 import { PaymentMethod } from './entities/payment-method.enum';
 import { OrdersService } from './orders.service';
-import { CartItem } from '../carts/entities/cart-item.entity';
-import { CheckoutDetails } from './entities/checkout-details.entity';
-
 
 @Injectable()
 export class CheckoutService {
@@ -33,8 +32,8 @@ export class CheckoutService {
     private readonly ordersService: OrdersService,
   ) {}
 
-  async getCheckoutDetails(items: CartItem[]| OrderItem []) {
-    const checkoutDetails = new CheckoutDetails()
+  async getCheckoutDetails(items: CartItem[] | OrderItem[]) {
+    const checkoutDetails = new CheckoutDetails();
     checkoutDetails.taxPercentage = this.configService.get('TAX_RATE');
     checkoutDetails.deliveryPrice = this.configService.get('DELIVERY_PRICE');
     checkoutDetails.discount = 0;
@@ -46,26 +45,30 @@ export class CheckoutService {
       } else {
         const price = await this.productsService.getPrice(item.productId);
         checkoutDetails.subTotal += price * item.quantity;
-        checkoutDetails.enableCheckout  &&= (price > 0);
+        checkoutDetails.enableCheckout &&= price > 0;
       }
     }
 
-    checkoutDetails.tax = (checkoutDetails.subTotal - checkoutDetails.discount) * checkoutDetails.taxPercentage;
+    checkoutDetails.tax =
+      (checkoutDetails.subTotal - checkoutDetails.discount) *
+      checkoutDetails.taxPercentage;
 
     checkoutDetails.totalPrice =
       checkoutDetails.subTotal +
       checkoutDetails.tax +
-      checkoutDetails.deliveryPrice
-      - checkoutDetails.discount;
+      checkoutDetails.deliveryPrice -
+      checkoutDetails.discount;
 
     // to round off the total price to 2 decimal places
-    checkoutDetails.totalPrice = Math.round(checkoutDetails.totalPrice * 100) / 100;
+    checkoutDetails.totalPrice =
+      Math.round(checkoutDetails.totalPrice * 100) / 100;
     checkoutDetails.subTotal = Math.round(checkoutDetails.subTotal * 100) / 100;
     checkoutDetails.tax = Math.round(checkoutDetails.tax * 100) / 100;
     checkoutDetails.discount = Math.round(checkoutDetails.discount * 100) / 100;
-    checkoutDetails.deliveryPrice = Math.round(checkoutDetails.deliveryPrice * 100) / 100;
+    checkoutDetails.deliveryPrice =
+      Math.round(checkoutDetails.deliveryPrice * 100) / 100;
 
-    return checkoutDetails
+    return checkoutDetails;
   }
 
   async checkout(userId: string, paymentMethod: PaymentMethod) {
@@ -112,9 +115,7 @@ export class CheckoutService {
         cart.items,
       );
 
-    transactItems.push(
-      this.ordersService.putCommand(order),
-    );
+    transactItems.push(this.ordersService.putCommand(order));
     transactItems.push(this.cartsService.clearCartCommand(userId));
     const command = new TransactWriteItemsCommand({
       TransactItems: transactItems,
