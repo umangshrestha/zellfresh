@@ -7,5 +7,6 @@ query ListCategories {
     icon
     imageUrl
     navigateUrl
+    isAvailable
   }
 }`);

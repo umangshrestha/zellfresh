@@ -32,7 +32,8 @@ export const ProductItem = ({
   };
 
   const isProductAvailable = availableQuantity > 0;
-  badgeText = isProductAvailable ? badgeText : 'Out of Stock';
+  if (availableQuantity <= 0) badgeText = 'Out of Stock';
+  else if (availableQuantity < 10) badgeText = 'Limited Stock';
 
   useEffect(() => {
     if (isAddedToCartClicked) return;
@@ -41,7 +42,7 @@ export const ProductItem = ({
 
   return (
     <Veil enable={!isProductAvailable}>
-      <Card className="h-full w-64 max-w-xs flex flex-col ">
+      <Card className="h-full w-64 max-w-xs flex flex-col">
         <Badge badgeText={badgeText} />
         <CardMedia
           component="img"

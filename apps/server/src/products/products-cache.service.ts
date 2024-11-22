@@ -11,6 +11,12 @@ import { Product } from './entities/product.entity';
 export class ProductsCacheService {
   constructor(private readonly prismaService: PrismaService) {}
 
+  async checkIfCategoryExists(category: string): Promise<boolean> {
+    return !(await this.prismaService.product.findFirst({
+      where: { category, availableQuantity: { gt: 0 } },
+    }));
+  }
+
   put(item: PutProductInput, { rating, count: totalRating }: Rating) {
     return this.prismaService.product.upsert({
       where: { productId: item.productId },

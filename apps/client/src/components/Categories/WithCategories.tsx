@@ -8,11 +8,15 @@ export function withCategoriesQuery<P extends WithCategoriesProps>(
   WrappedComponent: ComponentType<P>,
 ) {
   return (props: Omit<P, keyof WithCategoriesProps>) => {
-    const { data } = useQuery(LIST_CATEGORIES_QUERY);
+    const { data, previousData } = useQuery(LIST_CATEGORIES_QUERY, {
+      fetchPolicy: 'cache-first',
+    });
     return (
       <WrappedComponent
         {...(props as P)}
-        categories={data?.categories || CATEGORIES_MOCK_DATA}
+        categories={
+          data?.categories || previousData?.categories || CATEGORIES_MOCK_DATA
+        }
       />
     );
   };

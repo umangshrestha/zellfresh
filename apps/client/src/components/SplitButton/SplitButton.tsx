@@ -35,6 +35,7 @@ export function SplitButton<T>({ options, onClick }: SplitButtonProps<T>) {
   return (
     <React.Fragment>
       <ButtonGroup
+        fullWidth
         variant="contained"
         ref={anchorRef}
         aria-label="Button group with a nested menu"
@@ -42,6 +43,9 @@ export function SplitButton<T>({ options, onClick }: SplitButtonProps<T>) {
         <Button>{options[selectedIndex].label}</Button>
         <Button
           size="small"
+          sx={{
+            width: 'auto',
+          }}
           aria-controls={open ? 'split-button-menu' : undefined}
           aria-expanded={open ? 'true' : undefined}
           aria-label="select merge strategy"

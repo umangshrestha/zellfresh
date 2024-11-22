@@ -43,8 +43,10 @@ export const Account = () => {
         <MenuItem className="flex flex-col items-center" disabled>
           {accountDetails?.name}
         </MenuItem>
-        <MenuItem className="flex flex-col items-center" disabled>
-          (id: {accountDetails?.sub})
+        <MenuItem key="profile" onClick={() => navigate('/profile')}>
+          <Button className="w-full" aria-label="user profile button">
+            Profile
+          </Button>
         </MenuItem>
         {isGuest ? (
           <MenuItem
@@ -64,23 +66,16 @@ export const Account = () => {
             </Button>
           </MenuItem>
         ) : (
-          [
-            <MenuItem key="profile" onClick={() => navigate('/profile')}>
-              <Button className="w-full" aria-label="user profile button">
-                Profile
-              </Button>
-            </MenuItem>,
-            <MenuItem onClick={onLogout} key="logout">
-              <Button
-                className="w-full"
-                aria-label="login button"
-                variant="contained"
-                color="secondary"
-              >
-                Logout
-              </Button>
-            </MenuItem>,
-          ]
+          <MenuItem onClick={onLogout} key="logout">
+            <Button
+              className="w-full"
+              aria-label="login button"
+              variant="contained"
+              color="secondary"
+            >
+              Logout
+            </Button>
+          </MenuItem>
         )}
       </Menu>
     </Box>

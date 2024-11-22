@@ -69,7 +69,7 @@ export const CheckoutPage = () => {
 
   return (
     <Box className="flex flex-col gap-4 max-w-xl mx-auto pt-3">
-      <Typography variant="h4">Checkout Page</Typography>
+      <Typography variant="h5">Checkout Page</Typography>
       <br />
       <section>
         <div className="flex justify-between gap-4">
@@ -203,8 +203,29 @@ export const CheckoutPage = () => {
         </FormControl>
       </section>
       <section>
-        <Box className="flex  justify-end gap-4 pb-10">
-          Total: <b>{data.cart.checkoutDetails.subTotal || '0'}</b>
+        <Box className="flex justify-end gap-2 pb-4">
+          <table className="table-fixed text-sm w-1/2">
+            <tbody>
+              <tr>
+                <td>Sub Total</td>
+                <td>Rs. {data.cart.checkoutDetails.subTotal || '0'}</td>
+              </tr>
+              <tr>
+                <td>Tax</td>
+                <td>Rs. {data.cart.checkoutDetails.tax || '0'}</td>
+              </tr>
+              <tr>
+                <td>Delivery</td>
+                <td>Rs. {data.cart.checkoutDetails.deliveryPrice || '0'}</td>
+              </tr>
+              <tr className="border-t-2">
+                <td>Total</td>
+                <td>
+                  <b>Rs. {data.cart.checkoutDetails.totalPrice || '0'}</b>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </Box>
       </section>
       <Button

@@ -13,4 +13,7 @@ export class Category {
 
   @Field(() => String)
   navigateUrl: string;
+
+  @Field(() => Boolean)
+  isAvailable: boolean;
 }

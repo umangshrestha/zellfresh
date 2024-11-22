@@ -44,6 +44,34 @@ type PaginatedProduct {
   pagination: Pagination!
 }
 
+type Address {
+  addressId: String!
+  apt: String
+  street: String!
+  city: String!
+  state: String!
+  zip: String!
+  country: String!
+  additionalInfo: String
+  createdAt: String!
+  updatedAt: String!
+}
+
+type User {
+  userId: String!
+  name: String
+  email: String
+  role: String!
+  imageUrl: String
+  phone: String
+  defaultAddressId: String
+  defaultAddress: Address
+  address(limit: Int! = 4): [Address!]!
+  blocked: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
 type CheckoutDetails {
   deliveryPrice: Float!
   subTotal: Float!
@@ -73,34 +101,6 @@ type Cart {
   createdAt: String!
   updatedAt: String!
   checkoutDetails: CheckoutDetails!
-}
-
-type Address {
-  addressId: String!
-  apt: String
-  street: String!
-  city: String!
-  state: String!
-  zip: String!
-  country: String!
-  additionalInfo: String
-  createdAt: String!
-  updatedAt: String!
-}
-
-type User {
-  userId: String!
-  name: String
-  email: String
-  role: String!
-  imageUrl: String
-  phone: String
-  defaultAddressId: String
-  defaultAddress: Address
-  address(limit: Int! = 4): [Address!]!
-  blocked: Boolean!
-  createdAt: String!
-  updatedAt: String!
 }
 
 type DeliveryContactDetails {
@@ -168,6 +168,7 @@ type Category {
   icon: String!
   imageUrl: String!
   navigateUrl: String!
+  isAvailable: Boolean!
 }
 
 type Query {

@@ -2,9 +2,9 @@ import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
-import { OderItemProps } from './OrderItem.types';
+import { OrderItemProps } from './OrderItem.types';
 
-export const OrderItem = ({ price, quantity, product }: OderItemProps) => {
+export const OrderItem = ({ price, quantity, product }: OrderItemProps) => {
   const { name, unit, imageUrl, description } = product || {
     imageUrl: '',
     name: '',

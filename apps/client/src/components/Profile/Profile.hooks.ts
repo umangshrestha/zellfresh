@@ -26,7 +26,7 @@ export const useProfile = () => {
       phone: data?.me?.phone || '',
     },
     address: {
-      addressId: data?.me?.address[0]?.addressId || '',
+      addressId: data?.me?.address[0]?.addressId,
       street: data?.me?.address[0]?.street || '',
       zip: data?.me?.address[0]?.zip || '',
       apt: data?.me?.address[0]?.apt || '',

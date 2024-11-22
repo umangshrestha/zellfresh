@@ -1,61 +1,57 @@
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
+import { Link as RouterLink } from 'react-router-dom';
 import { ADDRESS, APP_NAME, CURRENT_YEAR } from '../../config';
 import { SOCIAL_MEDIA_HANDLES } from '../../config/social';
 import AvailabilityBanner from '../Banner.tsx';
 
 export const Footer = () => (
-  <Box component="footer">
-    <Box
-      sx={{
-        py: 3,
-        px: 2,
-        bottom: 0,
-        width: '100%',
-        textAlign: 'center',
-        borderTop: '1px solid #e7e7e7',
-      }}
-    >
-      <Box
-        component="div"
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Link href="/" color="inherit" underline="none">
-          {APP_NAME}
-        </Link>
+  <footer>
+    <div className="flex row gap-4 justify-around p-4 flex-wrap">
+      <section className="flex flex-col text-center">
+        <span className="font-bold text-lg">{APP_NAME}</span>
         <address>
           {ADDRESS.street},<br />
           {ADDRESS.landmark},<br />
           {ADDRESS.city}, {ADDRESS.state},<br />
           {ADDRESS.country} - {ADDRESS.zip}
         </address>
-      </Box>
-      <Box sx={{ mt: 2 }}>
-        <p>Follow us on social media:</p>
-      </Box>
+      </section>
+
+      <section className="flex flex-col text-center">
+        <span className="font-bold text-lg">Information</span>
+        <Link component={RouterLink} to="/terms">
+          Terms of Service
+        </Link>
+        <Link component={RouterLink} to="/privacy">
+          Privacy Policy
+        </Link>
+        <Link component={RouterLink} to="/refund">
+          Refund Policy
+        </Link>
+      </section>
+    </div>
+
+    <section className="flex flex-col items-center justify-center p-4">
+      <p>Follow us on social media:</p>
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
         {SOCIAL_MEDIA_HANDLES.map(({ key, href, icon: Icon }) => (
           <Link
+            component={RouterLink}
             key={key}
-            href={href}
+            to={href}
             target="_blank"
             rel="noopener"
-            sx={{ mx: 1 }}
           >
             <Icon />
           </Link>
         ))}
       </Box>
-      <Box sx={{ mt: 2 }}>
-        <p>
-          © {CURRENT_YEAR} {APP_NAME}. All rights reserved.
-        </p>
-      </Box>
-    </Box>
+      <p className="w-full text-center">
+        © {CURRENT_YEAR} {APP_NAME}. All rights reserved.
+      </p>
+    </section>
+
     <AvailabilityBanner />
-  </Box>
+  </footer>
 );

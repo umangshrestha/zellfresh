@@ -17,6 +17,10 @@ query CheckoutPage{
     }
     checkoutDetails {
       subTotal
+      totalPrice
+      tax
+      taxPercentage
+      deliveryPrice
       enableCheckout
     }
   }

@@ -21,7 +21,7 @@ export const CartPage = () => {
 
   return (
     <Box className="flex flex-col gap-4 max-w-xl mx-auto pt-3">
-      <Typography variant="h4">Cart Page</Typography>
+      <Typography variant="h5">Cart Page</Typography>
       <CartList {...functions} loading={loading} data={data} />
       <Box className="flex  justify-end gap-4 pb-10">
         Sub total: <b>Rs. {subTotal}</b>

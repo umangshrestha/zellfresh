@@ -10,3 +10,7 @@ export type ProductFilterContextType = {
   updateProductFilter: (val: ProductFilterType | object) => void;
   resetProductFilter: () => void;
 };
+
+export type ProductFilterProps = {
+  onClick: (val: string) => void;
+};

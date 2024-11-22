@@ -1,5 +1,6 @@
 import { useQuery } from '@apollo/client';
 import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
@@ -11,12 +12,14 @@ import { OrderList } from '../../components/Order/OrderList';
 export const OrderPage = () => {
   const navigate = useNavigate();
   const { data, loading } = useQuery(ORDER_QUERY);
-  if (!loading && !data) {
+  if (loading) return <CircularProgress />;
+
+  if (!data?.orders?.items?.length)
     return <OrderEmptyPage onClick={() => navigate('/')} />;
-  }
+
   return (
     <Box className="flex flex-col gap-4 max-w-xl mx-auto pt-3">
-      <Typography variant="h4">Orders</Typography>
+      <Typography variant="h5">Orders</Typography>
       <List>
         {data?.orders?.items?.map((order) => (
           <ListItem key={order.orderId}>

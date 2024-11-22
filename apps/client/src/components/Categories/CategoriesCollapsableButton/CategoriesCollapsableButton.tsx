@@ -1,4 +1,6 @@
 import DinnerDiningIcon from '@mui/icons-material/DinnerDining';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import Collapse from '@mui/material/Collapse';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -8,7 +10,6 @@ import React, { useState } from 'react';
 import { CategoriesCollapsableButtonProps } from './CategoriesCollapsableButton.types.ts';
 
 export const CategoriesCollapsableButton = ({
-  showText,
   onClick,
   categories,
 }: CategoriesCollapsableButtonProps) => {
@@ -17,33 +18,28 @@ export const CategoriesCollapsableButton = ({
   return (
     <React.Fragment>
       <ListItemButton
-        sx={{
-          pl: 2,
-        }}
+        className="w-full"
         onClick={() => setProductsOpen((prev) => !prev)}
       >
-        <ListItemIcon
-          sx={{
-            minWidth: 'auto',
-            mr: 2,
-          }}
-        >
+        <ListItemIcon>
           <DinnerDiningIcon />
         </ListItemIcon>
-        <ListItemText
-          primary="Product"
-          sx={{
-            opacity: showText ? 1 : 0,
-          }}
-        />
+        <ListItemText primary="Product" />
+        {productsOpen ? <KeyboardArrowDownIcon /> : <KeyboardArrowRightIcon />}
       </ListItemButton>
-      <Collapse in={productsOpen} timeout="auto" unmountOnExit>
+      <Collapse
+        className="w-full"
+        in={productsOpen}
+        timeout="auto"
+        unmountOnExit
+      >
         <List component="div" disablePadding>
-          {categories.map(({ name, icon, navigateUrl }) => (
+          {categories.map(({ name, icon, navigateUrl, isAvailable }) => (
             <ListItemButton
               sx={{
                 pl: 4,
               }}
+              disabled={isAvailable}
               key={name}
               onClick={() => {
                 onClick(navigateUrl);

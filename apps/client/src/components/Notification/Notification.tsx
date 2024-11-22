@@ -1,11 +1,12 @@
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
+import React from 'react';
 import { useNotification } from './Notification.hooks';
 
 export const Notification = () => {
   const { notification, setNotification } = useNotification();
   if (!notification) {
-    return null;
+    return <React.Fragment />;
   }
 
   return (

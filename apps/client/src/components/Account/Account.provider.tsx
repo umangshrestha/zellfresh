@@ -57,6 +57,10 @@ export const AccountProvider = ({ children }: LayoutProps) => {
     try {
       await axios.get('/api/auth/logout', config);
       await login('guest', config);
+      setNotification({
+        message: 'You have been logged out',
+        severity: 'info',
+      });
       if (onSuccess) return onSuccess();
     } catch (error: unknown) {
       onErrorRaiseNotification(error);

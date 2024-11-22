@@ -32,6 +32,10 @@ export class ProductsService {
     });
   }
 
+  checkIfCategoryExists(category: string): Promise<boolean> {
+    return this.productsCacheService.checkIfCategoryExists(category);
+  }
+
   async put(item: PutProductInput, ignoreCache = false) {
     const rating = await this.reviewsService.getRating(item.productId);
     if (!ignoreCache) {

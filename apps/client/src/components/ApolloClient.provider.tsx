@@ -14,6 +14,7 @@ import { LayoutProps } from './Layout';
 
 import { onError } from '@apollo/client/link/error';
 import { RetryLink } from '@apollo/client/link/retry';
+import { useEffect, useState } from 'react';
 import { useAccount } from './Account';
 import { useNotification } from './Notification';
 
@@ -54,6 +55,17 @@ const isSubscriptionOperation = ({ query }: Operation) => {
 const ApolloClientProvider = ({ children }: LayoutProps) => {
   const { setNotification } = useNotification();
   const { accountDetails } = useAccount();
+  const [cache, setCache] = useState(new InMemoryCache());
+  const [sub, setSub] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (accountDetails?.sub !== sub) {
+      console.log('Setting up Apollo Client with new account details');
+      setSub(accountDetails?.sub || null);
+      setCache(new InMemoryCache());
+    }
+  }, [accountDetails, sub]);
+
   const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors) {
       graphQLErrors.forEach(({ message, locations, path }) => {
@@ -89,7 +101,7 @@ const ApolloClientProvider = ({ children }: LayoutProps) => {
 
   const client = new ApolloClient({
     link: ApolloLink.from([errorLink, retryLink, linkWithSubscription]),
-    cache: new InMemoryCache(),
+    cache,
   });
 
   return <ApolloProvider client={client}>{children}</ApolloProvider>;
