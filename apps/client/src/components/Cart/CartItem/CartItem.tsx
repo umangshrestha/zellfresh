@@ -27,6 +27,7 @@ export const CartItem = ({
   } = product || {
     productId: '',
     price: 0,
+    badgeText: '',
     imageUrl: '',
     availableQuantity: 0,
     limitPerTransaction: 0,
@@ -34,9 +35,11 @@ export const CartItem = ({
     description: '',
     unit: '',
   };
+  let badgeText = product?.badgeText || '';
   const totalPrice = price * quantity;
-  const isProductAvailable = availableQuantity > 0;
-  const badgeText = !isProductAvailable ? 'Out of Stock' : null;
+  if (availableQuantity <= 0) badgeText = 'Out of Stock';
+  else if (availableQuantity < 10) badgeText = 'Limited Stock';
+
   return (
     <Card className="flex flex-col justify-between max-w-xl w-full">
       <Badge badgeText={badgeText} />

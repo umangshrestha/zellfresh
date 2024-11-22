@@ -1,11 +1,14 @@
 import { TransactWriteItem } from '@aws-sdk/client-dynamodb';
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import {
   BadRequestException,
+  Inject,
   Injectable,
   Logger,
   NotFoundException,
 } from '@nestjs/common';
+import { Cache } from 'cache-manager';
 import { DynamodbService } from 'src/common/dynamodb/dynamodb.service';
 import { PrismaService } from 'src/common/prisma/prisma.service';
 import { ReviewsService } from 'src/reviews/reviews.service';
@@ -22,6 +25,7 @@ const TableName = 'PRODUCTS_TABLE';
 export class ProductsService {
   private readonly loggerService = new Logger(ProductsService.name);
   constructor(
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private readonly reviewsService: ReviewsService,
     private readonly prismService: PrismaService,
     private readonly productsCacheService: ProductsCacheService,
@@ -32,24 +36,40 @@ export class ProductsService {
     });
   }
 
+  getKeyName(productId: string) {
+    return `available-${productId}`;
+  }
+
   checkIfCategoryExists(category: string): Promise<boolean> {
     return this.productsCacheService.checkIfCategoryExists(category);
   }
 
   async put(item: PutProductInput, ignoreCache = false) {
-    const rating = await this.reviewsService.getRating(item.productId);
     if (!ignoreCache) {
-      await this.productsCacheService.put(item, rating);
+      await this.productsCacheService.put(item);
     }
     return this.dynamodbService.client.putItem({
       TableName,
-      Item: marshall({ ...item, rating: { ...rating } }),
+      Item: marshall({ ...item }),
     });
   }
 
   async findAll(args: FilterProductsArgs): Promise<PaginatedProduct> {
     const cache = await this.productsCacheService.findAll(args);
     if (cache) {
+      cache.items = (
+        await Promise.all(
+          cache.items.map(async (item) => {
+            item.availableQuantity = await this.getAvailableQuantity(
+              item.productId,
+            );
+            if (args.showOutOfStock && item.availableQuantity <= 0) {
+              return;
+            }
+            return item;
+          }),
+        )
+      ).filter((item) => item);
       return cache;
     }
     const {
@@ -152,6 +172,7 @@ export class ProductsService {
   async findOne(productId: string) {
     const cache = await this.productsCacheService.findOne(productId);
     if (cache) {
+      cache.availableQuantity = await this.getAvailableQuantity(productId);
       return cache;
     }
     const data = await this.dynamodbService.client.getItem({
@@ -249,5 +270,31 @@ export class ProductsService {
       return 0;
     }
     return +data.Item.price.N || 0;
+  }
+
+  async getAvailableQuantity(productId: string) {
+    const cache = await this.cacheManager.get<number>(
+      this.getKeyName(productId),
+    );
+    if (cache) {
+      return cache;
+    }
+    const data = await this.dynamodbService.client.getItem({
+      TableName,
+      Key: marshall({ productId }),
+      ProjectionExpression: 'availableQuantity',
+    });
+    if (!data.Item) {
+      return 0;
+    }
+    const result = +data.Item.availableQuantity.N || 0;
+    await this.cacheManager.set(this.getKeyName(productId), result);
+    return result;
+  }
+
+  async invalidateCache(productIds: string[]) {
+    await Promise.all(
+      productIds.map((id) => this.cacheManager.del(this.getKeyName(id))),
+    );
   }
 }

@@ -4,12 +4,11 @@ import {
   IsEnum,
   IsNotEmpty,
   IsNumber,
-  IsOptional,
   IsPositive,
   IsString,
   validateSync,
 } from 'class-validator';
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuid } from 'uuid';
 
 const daysToMilliseconds = (days: number) => days * 24 * 60 * 60 * 1000;
 
@@ -67,7 +66,7 @@ export class EnvironmentVariables {
 
   @IsString()
   @IsNotEmpty()
-  GUEST_TOKEN_SECRET: string = uuidv4();
+  GUEST_TOKEN_SECRET: string = uuid();
 
   @IsString()
   @IsNotEmpty()
@@ -86,18 +85,19 @@ export class EnvironmentVariables {
   CONTENTFUL_DELIVERY_ACCESS_TOKEN: string;
 
   @IsString()
-  @IsOptional()
   CONTENTFUL_ENVIRONMENT: string = 'master';
 
   @IsNumber()
-  @IsOptional()
   @IsPositive()
   TAX_RATE: number = 0.05; //https://cleartax.in/s/chapter-2-meat-edible-meat-offal-gst-rate-hsn-code
 
   @IsNumber()
-  @IsOptional()
   @IsPositive()
   DELIVERY_PRICE: number = 15;
+
+  @IsNumber()
+  @IsPositive()
+  CACHE_TTL: number = 60 * 60 * 24; // 24 hours
 }
 
 export function validate(config: Record<string, unknown>) {

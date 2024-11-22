@@ -10,23 +10,36 @@ export const ProductAddItem = ({
   onAddItemToCart,
   getProductCount,
   ...key
-}: ProductAddItemProps) => (
-  <FormControl variant="standard" fullWidth>
-    <InputLabel id="product-quantity-label">Quantity</InputLabel>
-    <Select
-      value={getProductCount(key).toString()}
-      onChange={(e) => onAddItemToCart(key, +e.target.value)}
-      variant="standard"
-      labelId="product-quantity-label"
-    >
-      {Array.from(
-        { length: Math.min(limitPerTransaction + 1, availableQuantity) },
-        (_, i) => (
-          <MenuItem key={i} value={i.toString()}>
-            {i}
+}: ProductAddItemProps) => {
+  const currentQuantity = getProductCount(key);
+  const isError = currentQuantity > availableQuantity;
+  return (
+    <FormControl variant="standard" fullWidth>
+      <InputLabel id="product-quantity-label">Quantity</InputLabel>
+      <Select
+        value={currentQuantity.toString()}
+        onChange={(e) => onAddItemToCart(key, +e.target.value)}
+        variant="standard"
+        error={isError}
+        labelId="product-quantity-label"
+      >
+        {Array.from(
+          { length: Math.min(limitPerTransaction + 1, availableQuantity + 1) },
+          (_, i) => (
+            <MenuItem key={i} value={i.toString()}>
+              {i}
+            </MenuItem>
+          ),
+        )}
+        {isError && (
+          <MenuItem value={currentQuantity.toString()} disabled>
+            {currentQuantity}
           </MenuItem>
-        ),
+        )}
+      </Select>
+      {isError && (
+        <div className="text-red-500 text-sm">Please update the quantity.</div>
       )}
-    </Select>
-  </FormControl>
-);
+    </FormControl>
+  );
+};

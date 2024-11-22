@@ -1,6 +1,9 @@
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
-import { Injectable, Logger } from '@nestjs/common';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Inject, Injectable, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { Cache } from 'cache-manager';
 import { DynamodbService } from '../common/dynamodb/dynamodb.service';
 import { get_date_time_string } from '../common/get-date-time';
 import { FilterReviewArgs } from './dto/filter-review.args';
@@ -8,13 +11,21 @@ import { PutReviewInput } from './dto/put-review.input';
 import { PaginatedReview } from './entities/paginated-review.entity';
 import { Rating } from './entities/rating.entity';
 import { Review } from './entities/review.entity';
-const TableName = 'REVIEWS_TABLE';
 
+const TableName = 'REVIEWS_TABLE';
 @Injectable()
 export class ReviewsService {
   private readonly loggerService = new Logger(ReviewsService.name);
 
-  constructor(private readonly dynamodbService: DynamodbService) {}
+  constructor(
+    private readonly configService: ConfigService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    private readonly dynamodbService: DynamodbService,
+  ) {}
+
+  getKeyName(productId: string) {
+    return `rating-${productId}`;
+  }
 
   async put(userId: string, productId: string, putReviewInput: PutReviewInput) {
     const review = new Review();
@@ -29,6 +40,7 @@ export class ReviewsService {
         TableName,
         Item: marshall({ ...review }),
       });
+      await this.cacheManager.del(this.getKeyName(productId));
       return review;
     } catch (error) {
       if (error instanceof ConditionalCheckFailedException) {
@@ -42,8 +54,16 @@ export class ReviewsService {
   }
 
   async getRating(productId: string): Promise<Rating> {
-    const rating = new Rating();
+    const cachedRating = await this.cacheManager.get<Rating>(
+      this.getKeyName(productId),
+    );
+    if (cachedRating) {
+      return cachedRating;
+    }
 
+    this.loggerService.warn(`Cache miss for productId: ${productId}`);
+
+    const rating = new Rating();
     try {
       const data = await this.dynamodbService.client.query({
         TableName,
@@ -69,6 +89,12 @@ export class ReviewsService {
         `Error getting rating: ${error} for productId: ${productId}`,
       );
     }
+
+    await this.cacheManager.set(
+      this.getKeyName(productId),
+      rating,
+      await this.configService.getOrThrow('CACHE_TTL'),
+    );
     return rating;
   }
 
@@ -131,8 +157,9 @@ export class ReviewsService {
     return data.Item ? unmarshall(data.Item) : null;
   }
 
-  remove(productId: string, userId: string) {
-    return this.dynamodbService.client.deleteItem({
+  async remove(productId: string, userId: string) {
+    await this.cacheManager.del(this.getKeyName(productId));
+    return await this.dynamodbService.client.deleteItem({
       TableName,
       Key: marshall({ productId, userId }),
     });

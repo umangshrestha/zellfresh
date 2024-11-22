@@ -44,8 +44,11 @@ export class CheckoutService {
         checkoutDetails.subTotal += item.price * item.quantity;
       } else {
         const price = await this.productsService.getPrice(item.productId);
+        const availableQuantity =
+          await this.productsService.getAvailableQuantity(item.productId);
         checkoutDetails.subTotal += price * item.quantity;
-        checkoutDetails.enableCheckout &&= price > 0;
+        checkoutDetails.enableCheckout &&=
+          price > 0 && availableQuantity >= item.quantity;
       }
     }
 
@@ -87,9 +90,12 @@ export class CheckoutService {
     const order = new Order();
     order.userId = userId;
 
+    const productIds = [];
+
     order.items = await Promise.all(
       cart.items.map(async (item) => {
         const product = await this.productsService.findOne(item.productId);
+        productIds.push(product.productId);
         return {
           ...item,
           price: product.price,
@@ -123,6 +129,7 @@ export class CheckoutService {
 
     try {
       await this.dynamodbService.client.send(command);
+      await this.productsService.invalidateCache(productIds);
     } catch (error) {
       this.loggerService.error(
         `Error creating order: ${error} for data: ${JSON.stringify(order)}`,

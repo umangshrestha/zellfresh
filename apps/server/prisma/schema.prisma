@@ -19,9 +19,7 @@ model Product {
   category            String
   badgeText           String
   tags                String
-  // averageRating and totalRating are added from reviews table
-  rating              Float
-  totalRating         Int
+
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 }

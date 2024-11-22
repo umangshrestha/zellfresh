@@ -12,6 +12,7 @@ query CheckoutPage{
         availableQuantity
         description
         unit
+        badgeText
         category
       }
     }

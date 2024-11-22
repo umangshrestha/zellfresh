@@ -1,4 +1,5 @@
 import { ApolloDriverConfig } from '@nestjs/apollo';
+import { CacheModule } from '@nestjs/cache-manager';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -18,10 +19,10 @@ import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
-    // ServeStaticModule.forRoot({
-    //   rootPath: join(__dirname, '..', '..', 'client', 'dist'),
-    // }),
     ConfigModule.forRoot({ validate }),
+    CacheModule.register({
+      isGlobal: true,
+    }),
     ProductsModule,
     CartsModule,
     AuthModule,

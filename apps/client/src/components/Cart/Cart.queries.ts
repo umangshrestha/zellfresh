@@ -19,6 +19,7 @@ query ListCartsVerbose {
         unit
         price
         imageUrl
+        badgeText
         availableQuantity
         limitPerTransaction
         description

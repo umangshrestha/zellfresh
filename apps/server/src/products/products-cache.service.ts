@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { convert_date_to_string } from '../common/get-date-time';
 import { PrismaService } from '../common/prisma/prisma.service';
-import { Rating } from '../reviews/entities/rating.entity';
+import { ReviewsService } from '../reviews/reviews.service';
 import { FilterProductsArgs } from './dto/filter-product.args';
 import { PutProductInput } from './dto/put-product.input';
 import { PaginatedProduct } from './entities/paginated-product.entry';
@@ -9,7 +9,10 @@ import { Product } from './entities/product.entity';
 
 @Injectable()
 export class ProductsCacheService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly reviewsService: ReviewsService,
+  ) {}
 
   async checkIfCategoryExists(category: string): Promise<boolean> {
     return !(await this.prismaService.product.findFirst({
@@ -17,11 +20,11 @@ export class ProductsCacheService {
     }));
   }
 
-  put(item: PutProductInput, { rating, count: totalRating }: Rating) {
+  put(item: PutProductInput) {
     return this.prismaService.product.upsert({
       where: { productId: item.productId },
-      create: { ...item, tags: item.tags.join(','), rating, totalRating },
-      update: { ...item, tags: item.tags.join(','), rating, totalRating },
+      create: { ...item, tags: item.tags.join(',') },
+      update: { ...item, tags: item.tags.join(',') },
     });
   }
 
@@ -54,10 +57,6 @@ export class ProductsCacheService {
           gte: minPrice,
           lte: maxPrice,
         },
-        rating: {
-          gte: minRating,
-          lte: maxRating,
-        },
         name: name ? { contains: name } : undefined,
         availableQuantity: showOutOfStock ? undefined : { gt: 0 },
       },
@@ -68,18 +67,23 @@ export class ProductsCacheService {
       skip: cursor ? 1 : 0,
       cursor: cursor ? { productId: cursor } : undefined,
     });
-    return {
-      items: data.flatMap((product) => {
+
+    const items = await Promise.all(
+      data.flatMap(async (product) => {
+        const rating = await this.reviewsService.getRating(product.productId);
+        if (
+          (minRating && rating.rating < minRating) ||
+          (maxRating && rating.rating > maxRating)
+        ) {
+          return null;
+        }
         const newProduct: Product = {
           ...product,
           tags: product.tags.split(','),
           createdAt: convert_date_to_string(product.createdAt),
           updatedAt: convert_date_to_string(product.updatedAt),
-          rating: {
-            rating: product.rating,
-            count: product.totalRating,
-          },
           reviews: [],
+          rating,
         };
         if (tags && tags.length > 0) {
           for (const tag of tags) {
@@ -90,6 +94,10 @@ export class ProductsCacheService {
         }
         return newProduct;
       }),
+    );
+
+    return {
+      items,
       pagination: {
         limit,
         next: data.length === limit ? data[data.length - 1].productId : null,
