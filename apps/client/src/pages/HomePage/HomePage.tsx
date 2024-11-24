@@ -10,7 +10,7 @@ export const HomePage = () => {
     <React.Fragment>
       <Box display="flex" flexDirection="column" alignItems="center">
         <img
-          src="/welcome.png"
+          src="/images/welcome.png"
           alt="chicken waving welcome"
           width="150"
           loading="lazy"

@@ -14,7 +14,6 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Paper from '@mui/material/Paper';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import { Suspense, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { APP_NAME } from '../../config';
@@ -51,16 +50,10 @@ export const Layout = () => {
           >
             {drawerOpen ? <MenuOpenIcon /> : <MenuCloseIcon />}
           </IconButton>
-          <Typography
-            id="title"
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1 }}
-          >
-            <Button onClick={() => onClick('/')} color="inherit">
-              {APP_NAME}
-            </Button>
-          </Typography>
+          <Button onClick={() => onClick('/')} color="inherit">
+            <span className="font-bold">{APP_NAME}</span>
+          </Button>
+          <Box sx={{ flexGrow: 1 }} />
           <ThemeToggle />
           <ErrorBoundary>
             <CartIcon />

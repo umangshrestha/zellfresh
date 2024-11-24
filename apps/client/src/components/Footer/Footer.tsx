@@ -20,10 +20,10 @@ export const Footer = () => (
 
       <section className="flex flex-col text-center">
         <span className="font-bold text-lg">Information</span>
-        <Link component={RouterLink} to="/terms">
+        <Link component={RouterLink} to="/terms-and-conditions">
           Terms of Service
         </Link>
-        <Link component={RouterLink} to="/privacy">
+        <Link component={RouterLink} to="/privacy-policy">
           Privacy Policy
         </Link>
         <Link component={RouterLink} to="/refund">

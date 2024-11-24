@@ -5,10 +5,10 @@ const meta = {
   title: 'Order/Item',
   component: OrderItem,
   tags: ['autodocs'],
-} as Meta<typeof OrderItem>;
+} as Meta;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj;
 
 export const Default: Story = {
   args: {

@@ -31,8 +31,3 @@ query ListCartsVerbose {
     }
   }
 }`);
-
-export const CART_COUNT_SUBSCRIPTION = gql(`
-subscription CartCount{
-  cartCount
-}`);

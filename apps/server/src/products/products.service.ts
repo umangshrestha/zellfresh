@@ -24,6 +24,7 @@ const TableName = 'PRODUCTS_TABLE';
 @Injectable()
 export class ProductsService {
   private readonly loggerService = new Logger(ProductsService.name);
+
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private readonly reviewsService: ReviewsService,
@@ -69,7 +70,7 @@ export class ProductsService {
             return item;
           }),
         )
-      ).filter((item) => item);
+      ).filter((item) => item !== null);
       return cache;
     }
     const {
@@ -91,14 +92,6 @@ export class ProductsService {
     if (category) {
       filterExpressions.push('category = :category');
       expressionAttributeValues[':category'] = { S: category };
-    }
-    if (minRating) {
-      filterExpressions.push('rating >= :minRating');
-      expressionAttributeValues[':minRating'] = { N: minRating.toString() };
-    }
-    if (maxRating) {
-      filterExpressions.push('rating <= :maxRating');
-      expressionAttributeValues[':maxRating'] = { N: maxRating.toString() };
     }
     if (minPrice) {
       filterExpressions.push('price >= :minPrice');
@@ -143,9 +136,24 @@ export class ProductsService {
           };
 
     const data = await this.dynamodbService.client.scan(scanParams);
+    const items = await Promise.all(
+      data.Items.map(async (item) => {
+        const product = unmarshall(item) as Product;
+        const rating = await this.reviewsService.getRating(product.productId);
+        if (
+          (minRating && rating.rating < minRating) ||
+          (maxRating && rating.rating > maxRating)
+        ) {
+          return null;
+        }
+        product.rating = rating;
+        return product;
+      }),
+    );
     return {
-      items: data.Items.map((item) => unmarshall(item) as Product).sort(
-        (a, b) => {
+      items: items
+        .filter((item) => item !== null)
+        .sort((a, b) => {
           switch (sortBy) {
             case 'price':
               return sortAsc ? a.price - b.price : b.price - a.price;
@@ -160,8 +168,7 @@ export class ProductsService {
             default:
               return 0;
           }
-        },
-      ),
+        }),
       pagination: {
         limit,
         next: data.LastEvaluatedKey ? data.LastEvaluatedKey.productId.S : null,
@@ -212,6 +219,7 @@ export class ProductsService {
     });
     return Promise.all(transactItems);
   }
+
   async remove(productId: string) {
     // Delete from DynamoDB
     try {

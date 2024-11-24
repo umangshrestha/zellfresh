@@ -30,7 +30,7 @@ export const OrderItemSkeleton = () => {
         <IconButton disabled>
           <ClearIcon />
         </IconButton>
-        <Select value={1} disabled>
+        <Select value={1} disabled variant="outlined">
           <MenuItem value={1}>
             <Skeleton variant="text" width={20} />
           </MenuItem>

@@ -13,10 +13,12 @@ import ProductFilter, {
 } from '../../components/Product/ProductFilter';
 import { ProductItemType } from '../../components/Product/ProductItem';
 import ProductList from '../../components/Product/ProductList';
+
+
 export const ProductPage = memo(() => {
   const navigate = useNavigate();
   const isMapping = useMediaQuery('(max-width: 500px)');
-  const { productFilter, resetProductFilter } = useProductFilter();
+  const { productFilter } = useProductFilter();
   const { data, loading, previousData, fetchMore } = useQuery(
     LIST_PRODUCTS_QUERY,
     {
@@ -58,17 +60,7 @@ export const ProductPage = memo(() => {
     <Box className={isMapping ? 'flex flex-col' : 'flex'}>
       <ProductFilter onClick={navigate} />
       {isEmpty ? (
-        <React.Fragment>
-          <Typography variant="h5" className="pt-4 pl-4">
-            Products ({productFilter?.category || 'All'})
-          </Typography>
-          <ProductEmptyPage
-            onClick={() => {
-              navigate('/products');
-              resetProductFilter();
-            }}
-          />
-        </React.Fragment>
+          <ProductEmptyPage  category={productFilter?.category} />
       ) : (
         <div>
           <Typography variant="h5" className="pt-4 pl-4">

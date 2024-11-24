@@ -1,21 +1,20 @@
-import type { ErrorComponentProps } from '../../ErrorComponent';
 import ErrorComponent from '../../ErrorComponent';
+import { OrderPlacedProps } from './OrderPlaced.types.ts';
 
-export const OrderPlaced = ({
-  orderId,
-  onClick,
-}: Pick<ErrorComponentProps, 'onClick'> & {
-  orderId: string;
-}) => (
+export const OrderPlaced = ({ orderId }: OrderPlacedProps) => (
   <ErrorComponent
     title="Thank you for placing order"
     description={[
       'Your order number has been placed',
       'You can track your order in the order history page',
     ]}
-    buttonText={`Order ID: ${orderId}`}
-    image="/thank-you-for-order.png"
-    alt="thank you for placing order"
-    onClick={onClick}
+    image={{
+      url: '/images/thank-you-for-order.png',
+      alt: 'thank you for placing order',
+    }}
+    cta={{
+      text: `Order ID: ${orderId}`,
+      to: `/order/${orderId}`,
+    }}
   />
 );

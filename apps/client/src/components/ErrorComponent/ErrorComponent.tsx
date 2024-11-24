@@ -3,15 +3,14 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { ErrorComponentProps } from './ErrorComponent.types.ts';
 
 export const ErrorComponent = ({
   title,
   description,
-  buttonText,
   image,
-  alt,
-  onClick,
+  cta,
 }: ErrorComponentProps) => (
   <Container component="main" maxWidth="sm">
     <Box
@@ -22,7 +21,9 @@ export const ErrorComponent = ({
       height="100vh"
       textAlign="center"
     >
-      <img src={image} alt={alt} width="250" loading="lazy" />
+      {image && (
+        <img src={image.url} alt={image.alt} width="250" loading="lazy" />
+      )}
       <Typography variant="h5" component="h1" gutterBottom>
         {title}
       </Typography>
@@ -34,11 +35,17 @@ export const ErrorComponent = ({
           </React.Fragment>
         ))}
       </Typography>
-      <Box mt={2}>
-        <Button onClick={onClick} className="btn btn-primary">
-          {buttonText}
-        </Button>
-      </Box>
+
+      {cta && (
+        <Box mt={2}>
+          <Button
+            component={RouterLink}
+            to={cta?.to}
+          >
+            {cta?.text}
+          </Button>
+        </Box>
+      )}
     </Box>
   </Container>
 );

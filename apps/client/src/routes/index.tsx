@@ -7,9 +7,9 @@ import HomePage from '../pages/HomePage';
 import LoginPage from '../pages/LoginPage';
 import NotFoundPage from '../pages/NotFoundPage';
 import OrderPage from '../pages/OrderPage';
-import OrderPlacedPage from '../pages/OrdersPage/OrderPlacedPage';
 import ProductPage from '../pages/ProductPage';
 import ProfilePage from '../pages/ProfilePage';
+import { PrivacyPolicy, TermsAndConditions } from '../components/Markdown';
 
 export const router = createBrowserRouter([
   {
@@ -41,21 +41,19 @@ export const router = createBrowserRouter([
         element: <ProductPage />,
       },
       {
-        path: '/products/:category',
-        element: <ProductPage />,
-      },
-      {
         path: '*',
         element: <NotFoundPage />,
       },
       {
         path: '/orders',
         element: <OrderPage />,
-      },
-      {
-        path: '/orders/placed/:orderId',
-        element: <OrderPlacedPage />,
-      },
+      },{
+        path: '/terms-and-conditions',
+        element: <TermsAndConditions />
+      }, {
+        path: '/privacy-policy',
+        element: <PrivacyPolicy />
+      }
     ],
   },
   {

@@ -1,8 +1,14 @@
+import { To } from 'react-router-dom';
+
 export interface ErrorComponentProps {
   title: string;
   description: string[];
-  buttonText: string;
-  image: string;
-  alt: string;
-  onClick: () => void;
+  image?: {
+    url: string
+    alt: string
+  },
+  cta?: {
+    text: string;
+    to: To;
+  }
 }

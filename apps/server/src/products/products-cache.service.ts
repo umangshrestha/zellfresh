@@ -50,7 +50,7 @@ export class ProductsCacheService {
     sortAsc,
     showOutOfStock,
   }: FilterProductsArgs): Promise<PaginatedProduct> {
-    const data = await this.prismaService.product.findMany({
+    const query = {
       where: {
         category: category ? { equals: category } : undefined,
         price: {
@@ -66,10 +66,15 @@ export class ProductsCacheService {
       take: limit,
       skip: cursor ? 1 : 0,
       cursor: cursor ? { productId: cursor } : undefined,
-    });
+    };
+    if (sortBy === 'rating') {
+      delete query.orderBy;
+    }
 
-    const items = await Promise.all(
-      data.flatMap(async (product) => {
+    const data = await this.prismaService.product.findMany(query);
+
+    let items = await Promise.all(
+      data.map(async (product) => {
         const rating = await this.reviewsService.getRating(product.productId);
         if (
           (minRating && rating.rating < minRating) ||
@@ -95,7 +100,18 @@ export class ProductsCacheService {
         return newProduct;
       }),
     );
-
+    items = items.filter((item) => item !== null);
+    if (sortBy === 'rating') {
+      items.sort((a, b) => {
+        if (a.rating.rating < b.rating.rating) {
+          return sortAsc ? -1 : 1;
+        }
+        if (a.rating.rating > b.rating.rating) {
+          return sortAsc ? 1 : -1;
+        }
+        return 0;
+      });
+    }
     return {
       items,
       pagination: {

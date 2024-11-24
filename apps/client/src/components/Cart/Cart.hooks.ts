@@ -5,7 +5,7 @@ import { ADD_ITEM_TO_CART_MUTATION, CARTS_QUERY_VERBOSE } from './Cart.queries';
 
 export const useCart = () => {
   const { setNotification } = useNotification();
-  const { data, loading, previousData } = useQuery(CARTS_QUERY_VERBOSE);
+  const { data, loading, error, previousData } = useQuery(CARTS_QUERY_VERBOSE);
   const [executeMutation] = useMutation(ADD_ITEM_TO_CART_MUTATION, {
     refetchQueries: [CARTS_QUERY_VERBOSE],
     onCompleted: () => {
@@ -34,11 +34,8 @@ export const useCart = () => {
   };
 
   return {
-    data: targetData?.cart?.items || [],
-    checkoutDetails: data?.cart?.checkoutDetails || {
-      subTotal: 0,
-      enableCheckout: false,
-    },
+    data: targetData,
+    error: error,
     loading: loading && !previousData,
     onAddItemToCart,
     getProductCount,

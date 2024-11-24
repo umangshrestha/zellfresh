@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { AddressItemSchema } from './AddressItem.schema.ts';
 
 export type AddressItemType = z.infer<typeof AddressItemSchema> & {
-  addressId: string;
+  addressId?: string;
 };
 
 export type AddressMutationFunction = {

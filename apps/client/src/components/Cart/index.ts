@@ -1,2 +1,2 @@
 export { useCart } from './Cart.hooks';
-export type { CartMutation, CartMutationFunctions } from './Cart.types';
+export type { CartMutationFunctions } from './Cart.types';

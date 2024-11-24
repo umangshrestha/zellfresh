@@ -1,6 +1,6 @@
 import CategoriesCollapsableButton from './CategoriesCollapsableButton';
 import CategoriesSection from './CategoriesSection';
-import { withCategoriesQuery } from './WithCategories';
+import { withCategoriesQuery } from './Categories.hoc';
 
 const EnhancedCategoriesCollapsableButton = withCategoriesQuery(
   CategoriesCollapsableButton,

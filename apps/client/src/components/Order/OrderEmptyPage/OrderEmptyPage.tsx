@@ -9,7 +9,7 @@ export const OrderEmptyPage = ({
       'You can add items to your cart by clicking the button below',
     ]}
     buttonText="Add items"
-    image="/empty-orders.png"
+    image="/images/empty-orders.png"
     alt="Empty order"
     onClick={onClick}
   />
