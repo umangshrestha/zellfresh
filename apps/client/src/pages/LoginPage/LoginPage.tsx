@@ -56,7 +56,7 @@ export const LoginPage = () => {
                     },
                   },
                   () => navigate('/'),
-                );
+                ).then();
             }}
             onError={onError}
             type="standard"

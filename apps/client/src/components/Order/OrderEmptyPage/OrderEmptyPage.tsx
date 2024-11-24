@@ -1,16 +1,18 @@
-import ErrorComponent, { ErrorComponentProps } from '../../ErrorComponent';
+import ErrorComponent from '../../ErrorComponent';
 
-export const OrderEmptyPage = ({
-  onClick,
-}: Pick<ErrorComponentProps, 'onClick'>) => (
+export const OrderEmptyPage = () => (
   <ErrorComponent
     title="You don't have any orders yet"
     description={[
       'You can add items to your cart by clicking the button below',
     ]}
-    buttonText="Add items"
-    image="/images/empty-orders.png"
-    alt="Empty order"
-    onClick={onClick}
+    image={{
+      url: "/images/empty-orders.png",
+      alt: "Empty order"
+    }}
+    cta={{
+      to: '/',
+      text: 'Go to Home',
+    }}
   />
 );

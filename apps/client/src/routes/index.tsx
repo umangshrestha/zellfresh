@@ -1,7 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { PrivacyPolicy, TermsAndConditions } from '../components/Markdown';
-import CartPage from '../pages/CartPage';
 import CheckoutPage from '../pages/CheckoutPage';
 import ErrorPage from '../pages/ErrorPage';
 import HomePage from '../pages/HomePage';
@@ -10,6 +9,8 @@ import NotFoundPage from '../pages/NotFoundPage';
 import OrderPage from '../pages/OrderPage';
 import ProductPage from '../pages/ProductPage';
 import ProfilePage from '../pages/ProfilePage';
+import {CartPage} from './LazyPage';
+
 
 export const router = createBrowserRouter([
   {
