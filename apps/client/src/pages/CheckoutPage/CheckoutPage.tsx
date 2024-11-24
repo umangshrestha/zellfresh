@@ -22,13 +22,13 @@ import { useNavigate } from 'react-router-dom';
 import { PaymentMethod } from '../../__generated__/types.ts';
 import CartItemReadOnly from '../../components/Cart/CartItemReadOnly';
 import { useNotification } from '../../components/Notification';
-import { CHECKOUT_MUTATION, CHECKOUT_QUERY } from './CheckoutPage.queries.tsx';
 import OrderPlaced from '../../components/Order/OrderPlaced';
+import { CHECKOUT_MUTATION, CHECKOUT_QUERY } from './CheckoutPage.queries.tsx';
 
 export const CheckoutPage = () => {
   const navigate = useNavigate();
   const { setNotification } = useNotification();
-  const [orderId, setOrderId] = useState<string| undefined>(undefined);
+  const [orderId, setOrderId] = useState<string | undefined>(undefined);
   const [paymentMethod, setPaymentMethod] = useState(PaymentMethod.Cash);
   const { data, loading, error } = useQuery(CHECKOUT_QUERY);
   const [checkoutMutation] = useMutation(CHECKOUT_MUTATION, {
@@ -53,7 +53,7 @@ export const CheckoutPage = () => {
       variables: {
         paymentMethod,
       },
-    }).then()
+    }).then();
   };
 
   if (orderId) {
@@ -66,8 +66,6 @@ export const CheckoutPage = () => {
     navigate('/');
     return null;
   }
-
-
 
   const hasError =
     !data.cart?.checkoutDetails?.enableCheckout ||

@@ -26,8 +26,8 @@ export const Default: Story = {
     cta: {
       text: 'Refresh',
       to: '/',
-      reloadDocument: false
-    }
+      reloadDocument: false,
+    },
   },
 };
 
@@ -41,8 +41,8 @@ export const WithoutImage: Story = {
     cta: {
       text: 'Refresh',
       to: '/',
-      reloadDocument: false
-    }
+      reloadDocument: false,
+    },
   },
 };
 

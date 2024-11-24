@@ -1,12 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { CartIcon } from './CartIcon';
 
-
 const meta = {
   title: 'Cart/Icon',
   component: (props) => (
     <div className="bg-black">
-      <CartIcon {...props}/>
+      <CartIcon {...props} />
     </div>
   ),
   tags: ['autodocs'],

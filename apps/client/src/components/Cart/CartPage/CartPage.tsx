@@ -6,9 +6,9 @@ import Typography from '@mui/material/Typography';
 import { Link as RouterLink } from 'react-router-dom';
 import ServerErrorComponent from '../../ServerErrorComponent';
 import CartItem from '../CartItem';
-import { CartPageProps } from './CartPage.types.ts';
 import CartEmptyPage from './CartEmptyPage';
 import CartLoadingPage from './CartLoadingPage';
+import { CartPageProps } from './CartPage.types.ts';
 
 export const CartPage = ({
   data,
@@ -16,8 +16,7 @@ export const CartPage = ({
   error,
   ...functions
 }: CartPageProps) => {
-  if (loading)
-    return (<CartLoadingPage />);
+  if (loading) return <CartLoadingPage />;
 
   if (error) return <ServerErrorComponent error={error} />;
 

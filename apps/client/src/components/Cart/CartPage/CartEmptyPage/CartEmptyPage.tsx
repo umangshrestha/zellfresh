@@ -8,13 +8,13 @@ export const CartEmptyPage = () => (
       'Start adding items to your cart by clicking the button below',
     ]}
     image={{
-      url: "/images/empty-cart.png",
-      alt:"Empty cart"
+      url: '/images/empty-cart.png',
+      alt: 'Empty cart',
     }}
     cta={{
       text: 'Start shopping',
       to: '/',
-      reloadDocument: false
+      reloadDocument: false,
     }}
   />
 );

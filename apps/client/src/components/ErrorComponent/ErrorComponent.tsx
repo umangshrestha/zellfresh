@@ -38,10 +38,7 @@ export const ErrorComponent = ({
 
       {cta && (
         <Box mt={2}>
-          <Button
-            component={RouterLink}
-            to={cta?.to}
-          >
+          <Button component={RouterLink} to={cta?.to}>
             {cta?.text}
           </Button>
         </Box>

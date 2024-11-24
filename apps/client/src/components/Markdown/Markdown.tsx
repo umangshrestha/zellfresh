@@ -5,11 +5,7 @@ import './Markdown.css';
 import { MarkdownProps } from './Markdown.types.ts';
 import MarkdownLoadingComponent from './MarkdownSkeleton';
 
-export const Markdown = ({
-  data,
-  loading,
-  error,
-}: MarkdownProps) => {
+export const Markdown = ({ data, loading, error }: MarkdownProps) => {
   if (loading) return <MarkdownLoadingComponent />;
 
   if (error) return <ServerErrorComponent error={error} />;

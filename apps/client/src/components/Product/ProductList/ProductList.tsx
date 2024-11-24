@@ -2,13 +2,11 @@ import ProductItem from '../ProductItem';
 import ProductSkeleton from '../ProductSkeleton';
 import { ProductListProps } from './ProductList.types';
 
-
 export const ProductList = ({
   data,
   loading,
   ...mutationFunctions
 }: ProductListProps) => {
-
   return (
     <div className="flex flex-wrap justify-center gap-4 p-4 flex-start">
       {loading

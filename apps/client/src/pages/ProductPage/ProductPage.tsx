@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import React, { memo, useState } from 'react';
+import { memo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../components/Cart';
 import { LIST_PRODUCTS_QUERY } from '../../components/Product/Product.queries.ts';
@@ -13,7 +13,6 @@ import ProductFilter, {
 } from '../../components/Product/ProductFilter';
 import { ProductItemType } from '../../components/Product/ProductItem';
 import ProductList from '../../components/Product/ProductList';
-
 
 export const ProductPage = memo(() => {
   const navigate = useNavigate();
@@ -60,7 +59,7 @@ export const ProductPage = memo(() => {
     <Box className={isMapping ? 'flex flex-col' : 'flex'}>
       <ProductFilter onClick={navigate} />
       {isEmpty ? (
-          <ProductEmptyPage  category={productFilter?.category} />
+        <ProductEmptyPage category={productFilter?.category} />
       ) : (
         <div>
           <Typography variant="h5" className="pt-4 pl-4">

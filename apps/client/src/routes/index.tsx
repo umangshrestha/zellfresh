@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import Layout from '../components/Layout';
+import { PrivacyPolicy, TermsAndConditions } from '../components/Markdown';
 import CartPage from '../pages/CartPage';
 import CheckoutPage from '../pages/CheckoutPage';
 import ErrorPage from '../pages/ErrorPage';
@@ -9,7 +10,6 @@ import NotFoundPage from '../pages/NotFoundPage';
 import OrderPage from '../pages/OrderPage';
 import ProductPage from '../pages/ProductPage';
 import ProfilePage from '../pages/ProfilePage';
-import { PrivacyPolicy, TermsAndConditions } from '../components/Markdown';
 
 export const router = createBrowserRouter([
   {
@@ -47,13 +47,15 @@ export const router = createBrowserRouter([
       {
         path: '/orders',
         element: <OrderPage />,
-      },{
+      },
+      {
         path: '/terms-and-conditions',
-        element: <TermsAndConditions />
-      }, {
+        element: <TermsAndConditions />,
+      },
+      {
         path: '/privacy-policy',
-        element: <PrivacyPolicy />
-      }
+        element: <PrivacyPolicy />,
+      },
     ],
   },
   {
