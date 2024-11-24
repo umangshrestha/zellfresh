@@ -7,8 +7,8 @@ export const OrderEmptyPage = () => (
       'You can add items to your cart by clicking the button below',
     ]}
     image={{
-      url: "/images/empty-orders.png",
-      alt: "Empty order"
+      url: '/images/empty-orders.png',
+      alt: 'Empty order',
     }}
     cta={{
       to: '/',

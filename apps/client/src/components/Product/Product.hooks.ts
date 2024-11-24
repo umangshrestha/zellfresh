@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { ProductItemType } from './ProductItem';
-import { LIST_PRODUCTS_QUERY } from './Product.queries.ts';
 import { useQuery } from '@apollo/client';
+import { useState } from 'react';
+import { LIST_PRODUCTS_QUERY } from './Product.queries.ts';
 import { useProductFilter } from './ProductFilter';
+import { ProductItemType } from './ProductItem';
 
 export const useProduct = () => {
   const [products, setProducts] = useState<ProductItemType[]>([]);
@@ -38,11 +38,10 @@ export const useProduct = () => {
     }
   };
 
-
   return {
-    data:  loading ? previousData : data,
+    data: loading ? previousData : data,
     loading: loading && !previousData,
     loadMore,
     category: productFilter?.category,
-  }
-}
+  };
+};

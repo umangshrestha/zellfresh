@@ -5,15 +5,15 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../components/Cart';
+import { useProduct } from '../../components/Product/Product.hooks.ts';
 import { ProductEmptyPage } from '../../components/Product/ProductEmptyPage';
 import ProductFilter from '../../components/Product/ProductFilter';
 import ProductList from '../../components/Product/ProductList';
-import { useProduct } from '../../components/Product/Product.hooks.ts';
 
 export const ProductPage = memo(() => {
   const navigate = useNavigate();
   const isMapping = useMediaQuery('(max-width: 500px)');
- const {data, loading, loadMore, category} = useProduct()
+  const { data, loading, loadMore, category } = useProduct();
   const { onAddItemToCart, getProductCount } = useCart();
 
   const isEmpty = !loading && !data?.products?.items?.length;

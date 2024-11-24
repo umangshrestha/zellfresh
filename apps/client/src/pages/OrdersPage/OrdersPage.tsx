@@ -18,7 +18,7 @@ export const OrdersPage = () => {
   });
 
   if (!loading && !data) {
-    return <OrderEmptyPage  />;
+    return <OrderEmptyPage />;
   }
   return (
     <Box className="flex flex-col gap-4 max-w-xl mx-auto pt-3">

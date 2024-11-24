@@ -9,8 +9,7 @@ import NotFoundPage from '../pages/NotFoundPage';
 import OrderPage from '../pages/OrderPage';
 import ProductPage from '../pages/ProductPage';
 import ProfilePage from '../pages/ProfilePage';
-import {CartPage} from './LazyPage';
-
+import { CartPage } from './LazyPage';
 
 export const router = createBrowserRouter([
   {
