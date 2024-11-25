@@ -1,11 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ErrorPage } from './ErrorPage';
+
+import { OrderItemSkeleton } from './OrderItemSkeleton';
 
 const meta = {
-  title: 'ErrorPage',
-  component: ErrorPage,
+  title: 'Order/Skeleton',
+  component: OrderItemSkeleton,
   tags: ['autodocs'],
-} as Meta<typeof ErrorPage>;
+} as Meta<typeof OrderItemSkeleton>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

@@ -21,7 +21,6 @@ export const ORDER_QUERY = gql(`
         quantity
         price
         product {
-          productId
           name
           imageUrl
           description

@@ -1,13 +1,13 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { useNotification } from '../Notification';
 import { ProductKey } from '../Product';
-import { ADD_ITEM_TO_CART_MUTATION, CARTS_QUERY_VERBOSE } from './Cart.queries';
+import { ADD_ITEM_TO_CART_MUTATION, CARTS_QUERY } from './Cart.queries';
 
 export const useCart = () => {
   const { setNotification } = useNotification();
-  const { data, loading, error, previousData } = useQuery(CARTS_QUERY_VERBOSE);
+  const { data, loading, error, previousData } = useQuery(CARTS_QUERY);
   const [executeMutation] = useMutation(ADD_ITEM_TO_CART_MUTATION, {
-    refetchQueries: [CARTS_QUERY_VERBOSE],
+    refetchQueries: [CARTS_QUERY],
     onCompleted: () => {
       setNotification({
         message: 'Cart updated',

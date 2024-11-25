@@ -1,14 +1,19 @@
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
-import { useProfile } from '../../components/Profile';
-import AddressItem from '../../components/Profile/AddressItem';
-import ContactDetails from '../../components/Profile/ContactDetails';
+import ServerErrorComponent from '../../ServerErrorComponent';
+import AddressItem from '../AddressItem';
+import ContactDetails from '../ContactDetails';
+import { useProfile } from '../index.ts';
 
 export const ProfilePage = () => {
-  const { data, address, onAddressSave, onUserDetailsSave, loading } =
+  const { data, address, error, onAddressSave, onUserDetailsSave, loading } =
     useProfile();
+
   if (loading) return <CircularProgress />;
+
+  if (error) return <ServerErrorComponent error={error} />;
+
   return (
     <Box className="flex flex-col gap-4 max-w-xl mx-auto pt-3">
       <Typography variant="h4">Profile Page</Typography>

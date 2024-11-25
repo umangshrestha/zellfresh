@@ -20,8 +20,8 @@ import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PaymentMethod } from '../../__generated__/types.ts';
-import CartItemReadOnly from '../../components/Cart/CartItemReadOnly';
 import { useNotification } from '../../components/Notification';
+import { OrderItem } from '../../components/Order/OrderItem';
 import OrderPlaced from '../../components/Order/OrderPlaced';
 import { CHECKOUT_MUTATION, CHECKOUT_QUERY } from './CheckoutPage.queries.tsx';
 
@@ -62,7 +62,7 @@ export const CheckoutPage = () => {
 
   if (loading) return <CircularProgress />;
 
-  if (error || !data) {
+  if (error || !data || data.cart.items.length == 0) {
     navigate('/');
     return null;
   }
@@ -91,11 +91,24 @@ export const CheckoutPage = () => {
           </Button>
         </div>
         <List>
-          {data.cart?.items.map((props) => (
-            <ListItem key={props.product?.name}>
-              <CartItemReadOnly {...props} />
-            </ListItem>
-          ))}
+          {data.cart.items.map(({ __typename, ...props }) => {
+            let badgeText = props.product?.badgeText || '';
+            if (!props.product?.availableQuantity) {
+              badgeText = 'Unavailable';
+            } else if (props.product.availableQuantity <= 0)
+              badgeText = 'Out of Stock';
+            else if (props.product.availableQuantity < 10)
+              badgeText = 'Limited Stock';
+            return (
+              <ListItem key={`${__typename}_{props.product?.name}`}>
+                <OrderItem
+                  {...props}
+                  price={props.product?.price || 0}
+                  badgeText={badgeText}
+                />
+              </ListItem>
+            );
+          })}
         </List>
       </section>
       <section>

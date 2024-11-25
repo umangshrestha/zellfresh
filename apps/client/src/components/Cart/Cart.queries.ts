@@ -7,8 +7,8 @@ mutation AddItemToCart($productId: String!, $quantity: Int!) {
   }
 }`);
 
-export const CARTS_QUERY_VERBOSE = gql(`
-query ListCartsVerbose {
+export const CARTS_QUERY = gql(`
+query ListCarts {
   cart {
     items {
       quantity

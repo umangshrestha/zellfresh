@@ -84,8 +84,8 @@ export const OrderList = ({ data, loading }: OrderListProps) => {
           <Badge badgeText={data.deliveryStatus} />
 
           <List>
-            {data.items.map((order) => (
-              <ListItem key={order.product?.productId}>
+            {data.items.map((order, index) => (
+              <ListItem key={index}>
                 <OrderItem {...order} />
               </ListItem>
             ))}

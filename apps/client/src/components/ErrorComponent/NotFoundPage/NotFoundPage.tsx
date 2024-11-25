@@ -1,4 +1,4 @@
-import ErrorComponent from '../../components/ErrorComponent';
+import ErrorComponent from '../index.tsx';
 
 export const NotFoundPage = () => {
   return (

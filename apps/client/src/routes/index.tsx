@@ -1,15 +1,15 @@
 import { createBrowserRouter } from 'react-router-dom';
+import CartPage from '../components/Cart/CartPage';
 import Layout from '../components/Layout';
 import { PrivacyPolicy, TermsAndConditions } from '../components/Markdown';
 import CheckoutPage from '../pages/CheckoutPage';
-import ErrorPage from '../pages/ErrorPage';
+import ErrorPage from '../components/ErrorBoundary/FrontendErrorPage';
 import HomePage from '../pages/HomePage';
 import LoginPage from '../pages/LoginPage';
-import NotFoundPage from '../pages/NotFoundPage';
+import NotFoundPage from '../components/ErrorComponent/NotFoundPage';
 import OrderPage from '../pages/OrderPage';
-import ProductPage from '../pages/ProductPage';
-import ProfilePage from '../pages/ProfilePage';
-import { CartPage } from './LazyPage';
+import ProductPage from '../components/Product/ProductPage';
+import ProfilePage from '../components/Profile/ProfilePage';
 
 export const router = createBrowserRouter([
   {

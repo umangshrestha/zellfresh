@@ -1,5 +1,9 @@
+import { lazy } from 'react';
 import { useCart } from '../Cart.hooks.ts';
-import { CartPage as CartPageComponent } from './CartPage';
+
+const CartPageComponent = lazy(() =>
+  import('./CartPage').then((module) => ({ default: module.CartPage })),
+);
 
 const CartPage = () => {
   const props = useCart();

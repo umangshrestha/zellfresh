@@ -2,9 +2,15 @@ import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
+import Badge from '../../Badge';
 import { OrderItemProps } from './OrderItem.types';
 
-export const OrderItem = ({ price, quantity, product }: OrderItemProps) => {
+export const OrderItem = ({
+  price,
+  quantity,
+  product,
+  badgeText,
+}: OrderItemProps) => {
   const { name, unit, imageUrl, description } = product || {
     imageUrl: '',
     name: '',
@@ -13,7 +19,8 @@ export const OrderItem = ({ price, quantity, product }: OrderItemProps) => {
   };
   const totalPrice = price * quantity;
   return (
-    <Card>
+    <Card className="flex flex-col justify-between max-w-xl w-full">
+      <Badge badgeText={badgeText || null} />
       <CardHeader
         avatar={
           <Avatar

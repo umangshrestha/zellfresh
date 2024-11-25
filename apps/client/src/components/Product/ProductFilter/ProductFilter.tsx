@@ -8,11 +8,12 @@ import ListItemText from '@mui/material/ListItemText';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as Categories from '../../Categories';
 import SplitButton from '../../SplitButton';
 import { ProductOrderOptions } from './ProductFilter.config';
 import { useProductFilter } from './ProductFilter.hooks';
-import { ProductFilterProps, ProductPageOrderBy } from './ProductFilter.types';
+import { ProductPageOrderBy } from './ProductFilter.types';
 
 const LowestPrice = 0;
 const HighestPrice = 1000;
@@ -21,9 +22,11 @@ function priceText(value: number) {
   return `${value}°C`;
 }
 
-export const ProductFilter = ({ onClick }: ProductFilterProps) => {
+export const ProductFilter = () => {
   const { productFilter, updateProductFilter } = useProductFilter();
   const [showFilter, setShowFilter] = useState(false);
+  const navigate = useNavigate();
+
   if (showFilter)
     return (
       <FilterListOffIcon
@@ -43,7 +46,7 @@ export const ProductFilter = ({ onClick }: ProductFilterProps) => {
       </div>
       <List>
         <ListItem className="flex flex-col p-0 m-0">
-          <Categories.CollapsableButton onClick={onClick} />
+          <Categories.CollapsableButton onClick={navigate} />
         </ListItem>
         <ListItem>
           <SplitButton

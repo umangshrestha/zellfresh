@@ -11,7 +11,7 @@ import {
 
 export const useProfile = () => {
   const { setNotification } = useNotification();
-  const { data, loading } = useQuery(PROFILE_QUERY);
+  const { data, loading, error } = useQuery(PROFILE_QUERY);
   const [onAddressSave] = useMutation(PUT_ADDRESS_MUTATION, {
     refetchQueries: [PROFILE_QUERY],
   });
@@ -20,6 +20,7 @@ export const useProfile = () => {
   });
   return {
     loading,
+    error,
     data: {
       name: data?.me?.name || '',
       email: data?.me?.email || '',

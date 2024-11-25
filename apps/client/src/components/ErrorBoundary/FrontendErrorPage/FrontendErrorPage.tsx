@@ -1,6 +1,6 @@
-import ErrorComponent from '../../components/ErrorComponent';
+import ErrorComponent from '../../ErrorComponent';
 
-export const ErrorPage = () => (
+export const FrontendErrorPage = () => (
   <ErrorComponent
     title="Something went wrong"
     description={[

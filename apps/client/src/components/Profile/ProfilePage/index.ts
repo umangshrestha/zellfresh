@@ -1,7 +1,7 @@
 import { lazy } from 'react';
 
 const ProfilePage = lazy(() =>
-  import('./ProfilePage').then((module) => ({ default: module.ProfilePage })),
+  import('./ProfilePage.tsx').then((module) => ({ default: module.ProfilePage })),
 );
 
 export default ProfilePage;

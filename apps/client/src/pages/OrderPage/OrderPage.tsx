@@ -4,18 +4,18 @@ import CircularProgress from '@mui/material/CircularProgress';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
-import { useNavigate } from 'react-router-dom';
 import { ORDER_QUERY } from '../../components/Order/Order.queries.ts';
 import OrderEmptyPage from '../../components/Order/OrderEmptyPage';
 import { OrderList } from '../../components/Order/OrderList';
+import ServerErrorComponent from '../../components/ServerErrorComponent';
 
 export const OrderPage = () => {
-  const navigate = useNavigate();
-  const { data, loading } = useQuery(ORDER_QUERY);
+  const { data, loading, error } = useQuery(ORDER_QUERY);
   if (loading) return <CircularProgress />;
+  if (error) return <ServerErrorComponent error={error} />;
 
   if (!data?.orders?.items?.length)
-    return <OrderEmptyPage onClick={() => navigate('/')} />;
+    return <OrderEmptyPage />;
 
   return (
     <Box className="flex flex-col gap-4 max-w-xl mx-auto pt-3">
