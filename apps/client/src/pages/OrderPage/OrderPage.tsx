@@ -14,8 +14,7 @@ export const OrderPage = () => {
   if (loading) return <CircularProgress />;
   if (error) return <ServerErrorComponent error={error} />;
 
-  if (!data?.orders?.items?.length)
-    return <OrderEmptyPage />;
+  if (!data?.orders?.items?.length) return <OrderEmptyPage />;
 
   return (
     <Box className="flex flex-col gap-4 max-w-xl mx-auto pt-3">

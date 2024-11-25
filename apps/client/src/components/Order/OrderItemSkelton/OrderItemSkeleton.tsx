@@ -15,36 +15,16 @@ export const OrderItemSkeleton = () => {
           />
         }
         title={
-          <Skeleton
-            variant="text"
-            width="60%"
-            height={24}
-            animation="wave"
-          />
+          <Skeleton variant="text" width="60%" height={24} animation="wave" />
         }
         subheader={
           <>
-            <Skeleton
-              variant="text"
-              width="80%"
-              height={20}
-              animation="wave"
-            />
-            <Skeleton
-              variant="text"
-              width="50%"
-              height={20}
-              animation="wave"
-            />
+            <Skeleton variant="text" width="80%" height={20} animation="wave" />
+            <Skeleton variant="text" width="50%" height={20} animation="wave" />
           </>
         }
         action={
-          <Skeleton
-            variant="text"
-            width={50}
-            height={24}
-            animation="wave"
-          />
+          <Skeleton variant="text" width={50} height={24} animation="wave" />
         }
       />
     </Card>

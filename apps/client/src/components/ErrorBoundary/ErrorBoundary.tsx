@@ -1,7 +1,7 @@
 import React, { Component, Suspense } from 'react';
-import ErrorPage from './FrontendErrorPage';
 import { LayoutProps as ErrorBoundaryProps } from '../Layout';
 import { ErrorBoundaryState } from './ErrorBoundary.types';
+import ErrorPage from './FrontendErrorPage';
 
 export class ErrorBoundary extends Component<
   ErrorBoundaryProps,
