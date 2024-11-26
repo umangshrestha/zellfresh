@@ -1,7 +1,7 @@
-import Button from '@mui/material/Button';
 import FormGroup from '@mui/material/FormGroup';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
+import LoadingButton from '../../LoadingButton';
 import { CONTACT_DETAILS_FIELDS_MAPPING } from './ContactDetails.fields.ts';
 import { ContactDetailsSchema } from './ContactDetails.schema.ts';
 import {
@@ -13,6 +13,7 @@ export const ContactDetails = ({
   email,
   phone,
   name,
+  onUserSaveLoading,
   onUserDetailsSave,
 }: ContactDetailsProps) => {
   const [userDetails, setUserDetails] = useState<ContactDetailsType>({
@@ -42,7 +43,7 @@ export const ContactDetails = ({
             name={name}
             variant="outlined"
             required={field.required}
-            disabled={field.disabled}
+            disabled={field.disabled || onUserSaveLoading}
             helperText={field.helperText || error}
             error={!!error}
             value={value || ''}
@@ -55,14 +56,15 @@ export const ContactDetails = ({
           />
         );
       })}
-      <Button
+      <LoadingButton
+        loading={onUserSaveLoading}
         variant="contained"
         color="primary"
         onClick={() => onUserDetailsSave(userDetails)}
         disabled={!success}
       >
         Update
-      </Button>
+      </LoadingButton>
     </FormGroup>
   );
 };

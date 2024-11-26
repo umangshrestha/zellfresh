@@ -8,6 +8,7 @@ query CheckoutPage{
       product {
         name
         price
+        productId
         imageUrl
         availableQuantity
         description

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { ComponentType, useEffect, useState } from 'react';
+import { APP_NAME, COMPANY_NAME, EMAIL, PHONE_NUMBER } from '../../config';
 import { MarkdownProps } from './Markdown.types.ts';
 
 export const withMarkdownFile = (
@@ -18,7 +19,13 @@ export const withMarkdownFile = (
       axios
         .get(path, { signal: abortController.signal })
         .then((response) => {
-          setData(response.data);
+          setData(
+            response.data
+              .replaceAll('[Your Website Name]', APP_NAME)
+              .replaceAll('[Your Company Name]', COMPANY_NAME)
+              .replaceAll('[Your Phone Number]', PHONE_NUMBER)
+              .replaceAll('[Your Email Address]', EMAIL),
+          );
         })
         .catch((error) => {
           if (axios.isCancel(error)) return;

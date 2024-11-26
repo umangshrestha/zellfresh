@@ -29,3 +29,9 @@ export const NotDefault: Story = {
 export const Empty: Story = {
   args: {},
 };
+
+export const Saving: Story = {
+  args: {
+    onAddressSaveLoading: true,
+  },
+};

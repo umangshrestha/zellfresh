@@ -45,7 +45,9 @@ export class OrdersService {
     paginatedOrder.pagination.limit = 10;
     paginatedOrder.pagination.next = null;
     paginatedOrder.items = orders.Items
-      ? orders.Items.map((order) => unmarshall(order) as Order)
+      ? orders.Items.map((order) => unmarshall(order) as Order).sort((a, b) =>
+          b.createdAt.localeCompare(a.createdAt),
+        )
       : [];
     if (orders.LastEvaluatedKey) {
       paginatedOrder.pagination.next = JSON.stringify(orders.LastEvaluatedKey);
@@ -64,8 +66,7 @@ export class OrdersService {
     return unmarshall(order.Item) as Order;
   }
 
-  async cancel(userId: string, orderId: string) {
-    const data = await this.findOne(userId, orderId);
+  async canCancel(data: Order | null) {
     if (!data) {
       throw new BadRequestException('Order not found');
     }
@@ -75,6 +76,20 @@ export class OrdersService {
     if (data.deliveryStatus === DeliveryStatus.CANCELLED) {
       throw new BadRequestException('Order already cancelled');
     }
+    const currentUpdatedAt = new Date(data.updatedAt);
+    if (
+      data.updatedAt !== data.createdAt &&
+      currentUpdatedAt.getTime() + 60000 < Date.now()
+    ) {
+      throw new BadRequestException(
+        'Cannot cancel order after 1 minute of creation',
+      );
+    }
+  }
+
+  async cancel(userId: string, orderId: string) {
+    const data = await this.findOne(userId, orderId);
+    await this.canCancel(data);
     data.deliveryStatus = DeliveryStatus.CANCELLED;
 
     switch (data.paymentMethod) {

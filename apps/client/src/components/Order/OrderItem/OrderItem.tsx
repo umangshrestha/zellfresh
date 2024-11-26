@@ -35,7 +35,7 @@ export const OrderItem = ({
           <Typography variant="subtitle2" color="textSecondary">
             {description}
             <br />
-            Rs. {price} / {unit}
+            Rs. {price} / {unit} ({quantity})
           </Typography>
         }
         action={

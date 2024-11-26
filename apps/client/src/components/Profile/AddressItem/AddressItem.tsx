@@ -1,8 +1,8 @@
-import Button from '@mui/material/Button';
 import FormGroup from '@mui/material/FormGroup';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 import { DEFAULT_ADDRESS } from '../../../config/address.ts';
+import LoadingButton from '../../LoadingButton';
 import { ADDRESS_FIELDS_MAPPING } from './AddressItem.fields.ts';
 import { AddressItemSchema } from './AddressItem.schema.ts';
 import { AddressItemProps, AddressItemType } from './AddressItem.types.ts';
@@ -12,6 +12,7 @@ export const AddressItem = ({
   apt,
   street,
   zip,
+  onAddressSaveLoading,
   additionalInfo,
   onAddressSave,
 }: AddressItemProps) => {
@@ -46,7 +47,7 @@ export const AddressItem = ({
             name={name}
             variant="outlined"
             required={field.required}
-            disabled={field.disabled}
+            disabled={field.disabled || onAddressSaveLoading}
             helperText={error}
             error={!!error}
             value={value}
@@ -59,14 +60,15 @@ export const AddressItem = ({
           />
         );
       })}
-      <Button
+      <LoadingButton
+        loading={onAddressSaveLoading}
         variant="contained"
         color="primary"
         onClick={() => onAddressSave(address)}
         disabled={!success}
       >
         Save
-      </Button>
+      </LoadingButton>
     </FormGroup>
   );
 };

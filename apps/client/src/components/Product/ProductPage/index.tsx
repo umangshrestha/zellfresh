@@ -18,11 +18,7 @@ const ProductPage = () => {
   return (
     <div className={isMapping ? 'flex flex-col' : 'flex'}>
       <ProductFilter />
-      <div>
-        <div className="flex flex-wrap justify-center gap-4 p-4 flex-start">
-          <ProductPageComponent {...cartProps} {...productProps} />
-        </div>
-      </div>
+      <ProductPageComponent {...cartProps} {...productProps} />
     </div>
   );
 };

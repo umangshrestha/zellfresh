@@ -6,4 +6,5 @@ export type ProductPageProps = {
   data?: ListProductsQuery;
   loading: boolean;
   error?: ApolloError;
+  loadMore: () => void;
 } & CartMutationFunctions;

@@ -1,6 +1,6 @@
 {
-  "name": "al-laham-fresh-meat",
-  "description": "This is a monorepo for the Al Laham Fresh Meat project.",
+  "name": "zell-fresh",
+  "description": "This is a monorepo for the Zell Fresh Meat project.",
   "registry": "https://registry.yarnpkg.com",
   "private": true,
   "workspaces": [

@@ -12,6 +12,7 @@ export const LIST_PRODUCTS_QUERY = gql(`
     $sortAsc: Boolean
     $name: String
     $showOutOfStock: Boolean
+    $cursor: String
   ) {
     products(
       category: $category
@@ -24,6 +25,7 @@ export const LIST_PRODUCTS_QUERY = gql(`
       sortAsc: $sortAsc
       name: $name
       showOutOfStock: $showOutOfStock
+      cursor: $cursor
     ) {
       pagination {
           next

@@ -130,6 +130,7 @@ type Order {
   checkoutDetails: CheckoutDetails!
   createdAt: String!
   updatedAt: String!
+  canCancel: Boolean!
 }
 
 """The status of the order"""

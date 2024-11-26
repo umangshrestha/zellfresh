@@ -22,7 +22,7 @@ Images of products are for illustrative purposes only. Actual products may vary 
 
 ## 4. Pricing and Payment
 
-All prices are listed in [Your Currency] and include applicable taxes unless otherwise specified.
+All prices are listed in INR and include applicable taxes unless otherwise specified.
 We accept Cash. Payments must be completed before products are shipped or delivered.
 We reserve the right to change prices at any time without prior notice.
 
@@ -40,7 +40,7 @@ Perishable products must be refrigerated immediately upon delivery.
 ## 7. Returns and Refunds
 
 Due to the perishable nature of our products, returns are not accepted unless the product is defective or incorrect.
-If you receive a defective or incorrect product, please contact us within 24 hours of delivery at [email/contact form].
+If you receive a defective or incorrect product, please contact us within 24 hours of delivery at [Your Email Address].
 Refunds or replacements will be provided at our discretion after reviewing the claim.
 
 ## 8. Health and Safety

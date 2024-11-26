@@ -1,5 +1,12 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { AccessOrGuestTokenGuard } from '../auth/access-or-guest-token.gaurd';
 import { AuthUser } from '../auth/auth.decorator';
 import { Auth } from '../auth/entities/auth.entity';
@@ -50,5 +57,15 @@ export class OrdersResolver {
     @Args('orderId', { type: () => String }) orderId: string,
   ) {
     return this.ordersService.cancel(sub, orderId);
+  }
+
+  @ResolveField(() => Boolean)
+  async canCancel(@Parent() data: Order) {
+    try {
+      await this.ordersService.canCancel(data);
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 }

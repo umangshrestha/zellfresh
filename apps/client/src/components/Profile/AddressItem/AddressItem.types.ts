@@ -7,6 +7,7 @@ export type AddressItemType = z.infer<typeof AddressItemSchema> & {
 
 export type AddressMutationFunction = {
   onAddressSave: (obj: AddressItemType) => void;
+  onAddressSaveLoading: boolean;
 };
 
 export type AddressItemProps = AddressItemType & AddressMutationFunction;

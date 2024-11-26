@@ -1,6 +1,6 @@
 import { ListOrdersQuery } from '../../../__generated__/graphql.ts';
 
-export type OrderListProps = {
+export type OrderDetailsProps = {
   data: ListOrdersQuery['orders']['items'][0];
-  loading: boolean;
+  onCancelOrder: (orderId: string) => void;
 };

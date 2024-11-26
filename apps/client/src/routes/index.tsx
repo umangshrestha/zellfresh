@@ -4,12 +4,12 @@ import ErrorPage from '../components/ErrorBoundary/FrontendErrorPage';
 import NotFoundPage from '../components/ErrorComponent/NotFoundPage';
 import Layout from '../components/Layout';
 import { PrivacyPolicy, TermsAndConditions } from '../components/Markdown';
+import OrdersPage from '../components/Order/OrdersPage';
 import ProductPage from '../components/Product/ProductPage';
 import ProfilePage from '../components/Profile/ProfilePage';
 import CheckoutPage from '../pages/CheckoutPage';
 import HomePage from '../pages/HomePage';
 import LoginPage from '../pages/LoginPage';
-import OrderPage from '../pages/OrderPage';
 
 export const router = createBrowserRouter([
   {
@@ -46,7 +46,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/orders',
-        element: <OrderPage />,
+        element: <OrdersPage />,
       },
       {
         path: '/terms-and-conditions',

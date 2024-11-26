@@ -26,9 +26,6 @@ export const Footer = () => (
         <Link component={RouterLink} to="/privacy-policy">
           Privacy Policy
         </Link>
-        <Link component={RouterLink} to="/refund">
-          Refund Policy
-        </Link>
       </section>
     </div>
 

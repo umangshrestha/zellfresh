@@ -12,14 +12,22 @@ import {
 export const useProfile = () => {
   const { setNotification } = useNotification();
   const { data, loading, error } = useQuery(PROFILE_QUERY);
-  const [onAddressSave] = useMutation(PUT_ADDRESS_MUTATION, {
-    refetchQueries: [PROFILE_QUERY],
-  });
-  const [onUserDetailsSave] = useMutation(PUT_USER_MUTATION, {
-    refetchQueries: [PROFILE_QUERY],
-  });
+  const [onAddressSave, { loading: onAddressSaveLoading }] = useMutation(
+    PUT_ADDRESS_MUTATION,
+    {
+      refetchQueries: [PROFILE_QUERY],
+    },
+  );
+  const [onUserDetailsSave, { loading: onUserSaveLoading }] = useMutation(
+    PUT_USER_MUTATION,
+    {
+      refetchQueries: [PROFILE_QUERY],
+    },
+  );
   return {
     loading,
+    onAddressSaveLoading,
+    onUserSaveLoading,
     error,
     data: {
       name: data?.me?.name || '',

@@ -43,7 +43,7 @@ export const Layout = () => {
       >
         <Toolbar disableGutters className="pl-4 pr-4">
           <IconButton
-            sx={{ mr: 4 }}
+            sx={{ mr: 1 }}
             onClick={() => setDrawerOpen((prev) => !prev)}
             color="inherit"
             aria-label={drawerOpen ? 'Close menu' : 'Open menu'}

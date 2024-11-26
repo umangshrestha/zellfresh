@@ -57,4 +57,7 @@ export class Order {
 
   @Field(() => String)
   updatedAt: string;
+
+  @Field(() => Boolean)
+  canCancel: boolean;
 }

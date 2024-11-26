@@ -14,7 +14,7 @@ export const OrderPlaced = ({ orderId }: OrderPlacedProps) => (
     }}
     cta={{
       text: `Order ID: ${orderId}`,
-      to: `/order/${orderId}`,
+      to: `/orders`,
     }}
   />
 );

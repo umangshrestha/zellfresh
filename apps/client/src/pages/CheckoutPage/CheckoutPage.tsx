@@ -20,8 +20,9 @@ import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PaymentMethod } from '../../__generated__/types.ts';
+import LoadingButton from '../../components/LoadingButton';
 import { useNotification } from '../../components/Notification';
-import { OrderItem } from '../../components/Order/OrderItem';
+import OrderItem from '../../components/Order/OrderItem';
 import OrderPlaced from '../../components/Order/OrderPlaced';
 import { CHECKOUT_MUTATION, CHECKOUT_QUERY } from './CheckoutPage.queries.tsx';
 
@@ -31,17 +32,20 @@ export const CheckoutPage = () => {
   const [orderId, setOrderId] = useState<string | undefined>(undefined);
   const [paymentMethod, setPaymentMethod] = useState(PaymentMethod.Cash);
   const { data, loading, error } = useQuery(CHECKOUT_QUERY);
-  const [checkoutMutation] = useMutation(CHECKOUT_MUTATION, {
-    onCompleted: (data) => {
-      const orderId = data.checkout.orderId;
-      setNotification({
-        message: `Order placed successfully with order ID: ${data.checkout.orderId}`,
-        severity: 'success',
-      });
-      setOrderId(orderId);
-      window.scrollTo(0, 0);
+  const [checkoutMutation, { loading: mutationLoading }] = useMutation(
+    CHECKOUT_MUTATION,
+    {
+      onCompleted: (data) => {
+        const orderId = data.checkout.orderId;
+        setNotification({
+          message: `Order placed successfully with order ID: ${data.checkout.orderId}`,
+          severity: 'success',
+        });
+        setOrderId(orderId);
+        window.scrollTo(0, 0);
+      },
     },
-  });
+  );
 
   const handleRazorpayPayment = () => {
     // Integrate Razorpay API here
@@ -102,6 +106,7 @@ export const CheckoutPage = () => {
             return (
               <ListItem key={`${__typename}_{props.product?.name}`}>
                 <OrderItem
+                  productId=""
                   {...props}
                   price={props.product?.price || 0}
                   badgeText={badgeText}
@@ -248,7 +253,8 @@ export const CheckoutPage = () => {
           </table>
         </Box>
       </section>
-      <Button
+      <LoadingButton
+        loading={mutationLoading}
         variant="contained"
         color="error"
         className="w-full"
@@ -256,7 +262,7 @@ export const CheckoutPage = () => {
         onClick={onPlaceOrder}
       >
         Place Order
-      </Button>
+      </LoadingButton>
     </Box>
   );
 };

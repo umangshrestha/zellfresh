@@ -1,3 +1,4 @@
+import Button from '@mui/material/Button';
 import ServerErrorComponent from '../../ServerErrorComponent';
 import ProductItem from '../ProductItem';
 import { ProductEmptyPage } from './ProductEmptyPage';
@@ -8,6 +9,7 @@ export const ProductPage = ({
   data,
   loading,
   error,
+  loadMore,
   ...mutationFunctions
 }: ProductPageProps) => {
   if (loading) return <ProductLoadingPage />;
@@ -16,7 +18,25 @@ export const ProductPage = ({
 
   if (!data || data.products.items.length === 0) return <ProductEmptyPage />;
 
-  return data.products.items.map((product) => (
-    <ProductItem key={product.productId} {...product} {...mutationFunctions} />
-  ));
+  return (
+    <div className="flex flex-col align-between">
+      <div className="flex flex-wrap justify-center gap-4 p-4 flex-start">
+        {data.products.items.map((product) => (
+          <ProductItem
+            key={product.productId}
+            {...product}
+            {...mutationFunctions}
+          />
+        ))}
+      </div>
+      <Button
+        disabled={!data?.products?.pagination.next}
+        onClick={loadMore}
+        color="primary"
+        size="small"
+      >
+        show more
+      </Button>
+    </div>
+  );
 };
