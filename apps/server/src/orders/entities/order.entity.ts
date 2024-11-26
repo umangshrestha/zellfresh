@@ -4,6 +4,7 @@ import { CartItem } from '../../carts/entities/cart-item.entity';
 import { CheckoutDetails } from './checkout-details.entity';
 import { DeliveryStatus } from './delivery-status.enum';
 import { PaymentMethod } from './payment-method.enum';
+import { OrderReview } from '../../reviews/entities/order-review.entity';
 
 @ObjectType()
 export class DeliveryContactDetails {
@@ -60,4 +61,7 @@ export class Order {
 
   @Field(() => Boolean)
   canCancel: boolean;
+
+  @Field(() => OrderReview, { nullable: true })
+  review?: OrderReview;
 }

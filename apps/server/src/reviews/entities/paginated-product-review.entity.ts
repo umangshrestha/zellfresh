@@ -1,11 +1,11 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Pagination } from 'src/products/entities/paginated-product.entry';
-import { Review } from './review.entity';
+import { ProductReview } from './product-review.entity';
 
 @ObjectType()
-export class PaginatedReview {
-  @Field(() => [Review])
-  items: Review[];
+export class PaginatedProductReview {
+  @Field(() => [ProductReview])
+  items: ProductReview[];
   @Field(() => Pagination)
   pagination: Pagination;
 }

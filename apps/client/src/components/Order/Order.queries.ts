@@ -28,6 +28,10 @@ query ListOrders($cursor: String) {
        country
        additionalInfo
      }
+     review {
+      rating
+      comment
+     }
      paymentMethod
      contactDetails {
        name
@@ -58,4 +62,13 @@ mutation CancelOrder($orderId: String!) {
    orderId
    deliveryStatus
  }
+}`);
+
+
+
+export const SUBMIT_ORDER_FEEDBACK_MUTATION = gql(`
+mutation SubmitFeedbackForOrder($orderId: String!, $rating: Float!, $comment: String!) {
+  submitOrderFeedback(orderId: $orderId, feedback: { rating: $rating, comment: $comment}) {
+    rating
+  }
 }`);

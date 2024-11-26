@@ -36,13 +36,11 @@ query CheckoutPage{
       zip
     }
   }
-}
-`);
+}`);
 
 export const CHECKOUT_MUTATION = gql(`
 mutation Checkout($paymentMethod: PaymentMethod!) {
   checkout(paymentMethod: $paymentMethod) {
     orderId
   }
-}
-`);
+}`);

@@ -1,6 +1,6 @@
 import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
 import { Rating } from '../../reviews/entities/rating.entity';
-import { Review } from '../../reviews/entities/review.entity';
+import { ProductReview } from '../../reviews/entities/product-review.entity';
 
 export interface ProductKey {
   productId: string;
@@ -35,7 +35,7 @@ export class Product implements ProductKey {
   @Field()
   category: string;
 
-  @Field(() => Rating, { nullable: true })
+  @Field(() => Rating)
   rating?: Rating;
 
   @Field()
@@ -50,6 +50,6 @@ export class Product implements ProductKey {
   @Field()
   updatedAt: string;
 
-  @Field(() => [Review])
-  reviews: Review[];
+  @Field(() => [ProductReview])
+  reviews: ProductReview[];
 }

@@ -17,6 +17,8 @@ import { Order } from './entities/order.entity';
 import { PaginatedOrder } from './entities/paginated-order.entry';
 import { PaymentMethod } from './entities/payment-method.enum';
 import { OrdersService } from './orders.service';
+import { OrderReview } from '../reviews/entities/order-review.entity';
+import { FeedbackInput } from '../reviews/dto/feedback.input';
 
 @Resolver(() => Order)
 @UseGuards(AccessOrGuestTokenGuard)
@@ -58,6 +60,16 @@ export class OrdersResolver {
   ) {
     return this.ordersService.cancel(sub, orderId);
   }
+
+  @Mutation(() => OrderReview)
+  submitOrderFeedback(
+    @AuthUser() { sub }: Auth,
+    @Args('orderId') orderId: string,
+    @Args('feedback') putReviewInput: FeedbackInput,
+  ) {
+    return this.ordersService.putFeedback(sub, orderId, putReviewInput);
+  }
+
 
   @ResolveField(() => Boolean)
   async canCancel(@Parent() data: Order) {

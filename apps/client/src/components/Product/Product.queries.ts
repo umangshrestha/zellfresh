@@ -1,51 +1,66 @@
 import { gql } from '../../__generated__';
 
 export const LIST_PRODUCTS_QUERY = gql(`
-  query ListProducts(
-    $category: String
-    $maxPrice: Float
-    $minPrice: Float
-    $maxRating: Float
-    $minRating: Float
-    $tags: [String!]
-    $sortBy: ProductsSortBy
-    $sortAsc: Boolean
-    $name: String
-    $showOutOfStock: Boolean
-    $cursor: String
+query ListProducts(
+  $category: String
+  $maxPrice: Float
+  $minPrice: Float
+  $maxRating: Float
+  $minRating: Float
+  $tags: [String!]
+  $sortBy: ProductsSortBy
+  $sortAsc: Boolean
+  $name: String
+  $showOutOfStock: Boolean
+  $cursor: String
+) {
+  products(
+    category: $category
+    maxPrice: $maxPrice
+    minPrice: $minPrice
+    maxRating: $maxRating
+    minRating: $minRating
+    tags: $tags
+    sortBy: $sortBy
+    sortAsc: $sortAsc
+    name: $name
+    showOutOfStock: $showOutOfStock
+    cursor: $cursor
   ) {
-    products(
-      category: $category
-      maxPrice: $maxPrice
-      minPrice: $minPrice
-      maxRating: $maxRating
-      minRating: $minRating
-      tags: $tags
-      sortBy: $sortBy
-      sortAsc: $sortAsc
-      name: $name
-      showOutOfStock: $showOutOfStock
-      cursor: $cursor
-    ) {
-      pagination {
-          next
+    pagination {
+        next
+    }
+    items {
+      productId
+      name
+      imageUrl
+      description
+      price
+      unit
+      availableQuantity
+      limitPerTransaction
+      category
+      rating {
+        rating
+        count
       }
-      items {
-        productId
-        name
-        imageUrl
-        description
-        price
-        unit
-        availableQuantity
-        limitPerTransaction
-        category
-        rating {
-          rating
-          count
-        }
-        badgeText
-      }
+      badgeText
     }
   }
-`);
+}`);
+
+export const SUBMIT_PRODUCT_FEEDBACK_MUTATION = gql(`
+mutation SubmitProductFeedback($productId: String!, $rating: Float!, $comment: String!) {
+  submitFeedback(productId: $productId, feedback: { rating: $rating, comment: $comment}) {
+    rating
+  }
+}`);
+
+
+export const GET_PRODUCT_RATING_QUERY = gql(`
+query GetProductRating($productId: String!) {
+  review(productId: $productId) {
+    rating
+    comment
+  }
+}`);

@@ -1,9 +1,11 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { useState } from 'react';
 import { ListOrdersQuery } from '../../__generated__/graphql.ts';
-import { CANCEL_ORDER_MUTATION, LIST_ORDERS_QUERY } from './Order.queries.ts';
+import { CANCEL_ORDER_MUTATION, LIST_ORDERS_QUERY, SUBMIT_ORDER_FEEDBACK_MUTATION } from './Order.queries.ts';
+import { useNotification } from '../Notification';
 
 export const useOrders = () => {
+  const {setNotification} = useNotification();
   const [orders, setOrders] = useState<ListOrdersQuery['orders']['items'][0][]>(
     [],
   );
@@ -12,7 +14,24 @@ export const useOrders = () => {
 
   const [cancelOrderMutation] = useMutation(CANCEL_ORDER_MUTATION, {
     refetchQueries: [{ query: LIST_ORDERS_QUERY }],
+    onCompleted: () => {
+      setNotification({
+        message: 'Order cancelled successfully',
+        severity: 'success',
+      });
+    }
   });
+
+  const [submitOrderFeedback] = useMutation(SUBMIT_ORDER_FEEDBACK_MUTATION, {
+    refetchQueries: [{ query: LIST_ORDERS_QUERY }],
+    onCompleted: () => {
+      setNotification({
+        message: 'Feedback submitted successfully',
+        severity: 'success',
+      });
+    },
+  });
+
 
   const loadMore = () => {
     if (data && data.orders.pagination.next) {
@@ -38,17 +57,23 @@ export const useOrders = () => {
     }
   };
 
-  const onCancelOrder = async (orderId: string) => {
-    try {
-      await cancelOrderMutation({
+  const onCancelOrder = (orderId: string) => {
+    cancelOrderMutation({
         variables: {
           orderId,
         },
-      });
-    } catch (e) {
-      console.error(e);
-    }
+      }).then();
   };
+
+  const onSubmitFeedback = (orderId: string, rating: number, comment: string) => {
+    submitOrderFeedback({
+      variables: {
+        orderId,
+        rating,
+        comment,
+      },
+    }).then();
+  }
 
   return {
     data: loading ? previousData : data,
@@ -56,5 +81,6 @@ export const useOrders = () => {
     error,
     loadMore,
     onCancelOrder,
+    onSubmitFeedback,
   };
 };

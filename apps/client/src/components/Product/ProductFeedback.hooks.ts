@@ -1,0 +1,36 @@
+import { useMutation, useQuery } from '@apollo/client';
+import { GET_PRODUCT_RATING_QUERY, LIST_PRODUCTS_QUERY, SUBMIT_PRODUCT_FEEDBACK_MUTATION } from './Product.queries.ts';
+import { useNotification } from '../Notification';
+
+export const useProductFeedback = (productId: string) => {
+  const {setNotification} = useNotification();
+  const {data, loading} = useQuery(GET_PRODUCT_RATING_QUERY, {
+    variables: {
+      productId,
+    }
+  });
+  const [submitProductFeedback] = useMutation(SUBMIT_PRODUCT_FEEDBACK_MUTATION, {
+    refetchQueries: [{ query: LIST_PRODUCTS_QUERY }],
+    onCompleted: () => {
+      setNotification({
+        message: 'Thank you for your feedback',
+        severity: 'success',
+      });
+    },
+  });
+  return {
+    loading,
+    lastRating: data?.review?.rating,
+    comment: data?.review?.comment || '',
+    submitFeedback: (rating: number, comment: string) => {
+      submitProductFeedback({
+        variables: {
+          productId,
+          rating,
+          comment,
+        },
+      }).then();
+    },
+  }
+
+}

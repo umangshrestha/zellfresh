@@ -7,4 +7,5 @@ export type ProductPageProps = {
   loading: boolean;
   error?: ApolloError;
   loadMore: () => void;
+  onSubmitFeedback: (productId: string, rating: number) => void;
 } & CartMutationFunctions;

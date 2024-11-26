@@ -4,25 +4,26 @@ import { AccessTokenGuard } from '../auth/access-token/access-token.gaurd';
 import { AuthUser } from '../auth/auth.decorator';
 import { Auth } from '../auth/entities/auth.entity';
 import { FilterReviewArgs } from './dto/filter-review.args';
-import { PutReviewInput } from './dto/put-review.input';
-import { Review } from './entities/review.entity';
+import { FeedbackInput } from './dto/feedback.input';
+import { ProductReview } from './entities/product-review.entity';
 import { ReviewsService } from './reviews.service';
 
-@Resolver(() => Review)
+@Resolver(() => ProductReview)
 @UseGuards(AccessTokenGuard)
 export class ReviewsResolver {
-  constructor(private readonly ratingsService: ReviewsService) {}
+  constructor(
+    private readonly ratingsService: ReviewsService) {}
 
-  @Mutation(() => Review)
-  putRating(
+  @Mutation(() => ProductReview)
+  submitFeedback(
     @AuthUser() { sub }: Auth,
     @Args('productId') productId: string,
-    @Args('putReviewInput') putReviewInput: PutReviewInput,
+    @Args('feedback') putReviewInput: FeedbackInput,
   ) {
     return this.ratingsService.put(sub, productId, putReviewInput);
   }
 
-  @Query(() => [Review], { name: 'reviews' })
+  @Query(() => [ProductReview], { name: 'reviews' })
   findAll(
     @Args('productId') productId: string,
     @Args() filter: FilterReviewArgs,
@@ -30,16 +31,8 @@ export class ReviewsResolver {
     return this.ratingsService.findAll(productId, filter);
   }
 
-  @Query(() => Review, { name: 'review' })
+  @Query(() => ProductReview, { name: 'review', nullable: true })
   findOne(@AuthUser() { sub }: Auth, @Args('productId') productId: string) {
     return this.ratingsService.findOne(sub, productId);
-  }
-
-  @Mutation(() => Review)
-  removeRating(
-    @AuthUser() { sub }: Auth,
-    @Args('productId') productId: string,
-  ) {
-    return this.ratingsService.remove(sub, productId);
   }
 }

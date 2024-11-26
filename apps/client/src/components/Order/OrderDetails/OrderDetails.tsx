@@ -8,8 +8,9 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import OrderItem from '../OrderItem';
 import { OrderDetailsProps } from './OrderDetails.types.ts';
+import Rating from '@mui/material/Rating';
 
-export const OrderDetails = ({ data, onCancelOrder }: OrderDetailsProps) => {
+export const OrderDetails = ({ data, onCancelOrder, onSubmitFeedback }: OrderDetailsProps) => {
   return (
     <Box
       sx={{
@@ -99,7 +100,12 @@ export const OrderDetails = ({ data, onCancelOrder }: OrderDetailsProps) => {
           </ListItem>
         ))}
       </List>
-
+      <Typography>Please rate your order</Typography>
+      <Rating
+        value={data?.review?.rating}
+        precision={0.5}
+        onChange={(_, newValue) => onSubmitFeedback(data.orderId, newValue|| 0)}
+      />
       <Box
         sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 2 }}
       >
@@ -107,7 +113,7 @@ export const OrderDetails = ({ data, onCancelOrder }: OrderDetailsProps) => {
           color="error"
           fullWidth
           disabled={!data.canCancel}
-          variant="contained"
+          variant="outlined"
           onClick={() => onCancelOrder(data.orderId)}
           sx={{ marginRight: 1 }}
         >

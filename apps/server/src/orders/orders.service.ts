@@ -8,6 +8,9 @@ import { FilterOrderArgs } from './entities/filter-orders.args';
 import { Order } from './entities/order.entity';
 import { PaginatedOrder } from './entities/paginated-order.entry';
 import { PaymentMethod } from './entities/payment-method.enum';
+import { FeedbackInput } from '../reviews/dto/feedback.input';
+import { OrderReview } from '../reviews/entities/order-review.entity';
+import { get_date_time_string } from '../common/get-date-time';
 
 const TableName = 'ORDERS_TABLE';
 
@@ -22,6 +25,26 @@ export class OrdersService {
         Item: marshall(order, { convertClassInstanceToMap: true }),
       },
     };
+  }
+
+  async putFeedback(userId: string,
+            orderId: string,
+            feedbackInput: FeedbackInput) {
+    const review = new OrderReview();
+    review.rating = feedbackInput.rating;
+    review.comment = feedbackInput.comment;
+    review.createdAt = get_date_time_string();
+    review.updatedAt = get_date_time_string();
+    await this.dynamodbService.client.updateItem({
+      TableName,
+      Key: marshall({ userId, orderId }),
+      UpdateExpression: 'SET #review = :review',
+      ExpressionAttributeNames: {
+        '#review': 'review',
+      },
+      ExpressionAttributeValues: marshall({ ':review': {...review} }),
+    });
+    return review;
   }
 
   async findAll(

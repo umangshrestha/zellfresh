@@ -46,6 +46,7 @@ export const WithBadge: Story = {
     badgeText: 'NEW',
     onAddItemToCart: () => {},
     getProductCount: () => 0,
+    onRatingClick: () => {},
   },
 };
 
@@ -65,5 +66,6 @@ export const Disabled: Story = {
     badgeText: undefined,
     onAddItemToCart: () => {},
     getProductCount: () => 0,
+    onRatingClick: () => {},
   },
 };

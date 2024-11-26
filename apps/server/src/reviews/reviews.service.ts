@@ -7,10 +7,10 @@ import { Cache } from 'cache-manager';
 import { DynamodbService } from '../common/dynamodb/dynamodb.service';
 import { get_date_time_string } from '../common/get-date-time';
 import { FilterReviewArgs } from './dto/filter-review.args';
-import { PutReviewInput } from './dto/put-review.input';
-import { PaginatedReview } from './entities/paginated-review.entity';
+import { FeedbackInput } from './dto/feedback.input';
+import { PaginatedProductReview } from './entities/paginated-product-review.entity';
 import { Rating } from './entities/rating.entity';
-import { Review } from './entities/review.entity';
+import { ProductReview } from './entities/product-review.entity';
 
 const TableName = 'REVIEWS_TABLE';
 @Injectable()
@@ -27,8 +27,8 @@ export class ReviewsService {
     return `rating-${productId}`;
   }
 
-  async put(userId: string, productId: string, putReviewInput: PutReviewInput) {
-    const review = new Review();
+  async put(userId: string, productId: string, putReviewInput: FeedbackInput) {
+    const review = new ProductReview();
     review.userId = userId;
     review.productId = productId;
     review.rating = putReviewInput.rating;
@@ -72,7 +72,7 @@ export class ReviewsService {
           ':productId': { S: productId },
         },
       });
-      const reviews = data.Items.map((item) => unmarshall(item) as Review);
+      const reviews = data.Items.map((item) => unmarshall(item) as ProductReview);
       const total = reviews.length;
       const sum = reviews.reduce((acc, review) => acc + review.rating, 0);
       rating.rating = sum / total;
@@ -101,7 +101,7 @@ export class ReviewsService {
   async findAll(
     productId: string,
     { limit, cursor, minRating, maxRating, sortAsc }: FilterReviewArgs,
-  ): Promise<PaginatedReview> {
+  ): Promise<PaginatedProductReview> {
     const filterExpressions: string[] = [];
     const expressionAttributeValues: Record<string, any> = {};
     if (minRating) {
@@ -137,7 +137,7 @@ export class ReviewsService {
 
     const data = await this.dynamodbService.client.query(scanParams);
     return {
-      items: data.Items.map((item) => unmarshall(item) as Review).sort(
+      items: data.Items.map((item) => unmarshall(item) as ProductReview).sort(
         (a, b) => {
           return sortAsc ? a.rating - b.rating : b.rating - a.rating;
         },

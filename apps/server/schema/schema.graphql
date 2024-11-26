@@ -2,7 +2,7 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Review {
+type ProductReview {
   userId: String!
   productId: String!
   rating: Float!
@@ -26,12 +26,12 @@ type Product {
   limitPerTransaction: Int!
   unit: String!
   category: String!
-  rating: Rating
+  rating: Rating!
   badgeText: String!
   tags: [String!]!
   createdAt: String!
   updatedAt: String!
-  reviews: [Review!]!
+  reviews: [ProductReview!]!
 }
 
 type Pagination {
@@ -101,6 +101,13 @@ type Cart {
   checkoutDetails: CheckoutDetails!
 }
 
+type OrderReview {
+  rating: Float!
+  comment: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
 type DeliveryContactDetails {
   name: String!
   phone: String!
@@ -131,6 +138,7 @@ type Order {
   createdAt: String!
   updatedAt: String!
   canCancel: Boolean!
+  review: OrderReview
 }
 
 """The status of the order"""
@@ -191,8 +199,8 @@ type Query {
 
     """Sort by rating"""
     sortAsc: Boolean = true
-  ): [Review!]!
-  review(productId: String!): Review!
+  ): [ProductReview!]!
+  review(productId: String!): ProductReview
   cart: Cart!
   cartItem(productId: String!): CartItem!
   orders(limit: Int! = 10, cursor: String): PaginatedOrder!
@@ -212,19 +220,19 @@ enum ProductsSortBy {
 }
 
 type Mutation {
-  putRating(productId: String!, putReviewInput: PutReviewInput!): Review!
-  removeRating(productId: String!): Review!
+  submitFeedback(productId: String!, feedback: FeedbackInput!): ProductReview!
   addItemToCart(cartInput: CartInput!): Cart!
   clearCart: Cart!
   checkout(paymentMethod: PaymentMethod!): Order!
   cancelOrder(orderId: String!): Order!
+  submitOrderFeedback(orderId: String!, feedback: FeedbackInput!): OrderReview!
   updateUser(updateUserInput: UpdateUserInput!): User!
   putAddress(putAddressInput: PutAddressInput!): Address!
   deleteAddress(addressId: String!): Address!
   setDefaultAddress(addressId: String!): Address!
 }
 
-input PutReviewInput {
+input FeedbackInput {
   rating: Float!
   comment: String!
 }

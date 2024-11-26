@@ -23,6 +23,7 @@ export const ProductItem = ({
   limitPerTransaction,
   onAddItemToCart,
   getProductCount,
+  onRatingClick,
   ...key
 }: ProductProps) => {
   const [isAddedToCartClicked, setIsAddedToCartClicked] = useState(false);
@@ -74,10 +75,9 @@ export const ProductItem = ({
             {unit}
           </Typography>
           <Rating
-            name="read-only"
             value={rating?.rating}
             precision={0.5}
-            readOnly
+            onChange={(_, newValue) => onRatingClick(key.productId, newValue|| 0)}
           />
           <Typography
             variant="caption"
