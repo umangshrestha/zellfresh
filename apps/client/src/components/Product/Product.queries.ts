@@ -56,7 +56,6 @@ mutation SubmitProductFeedback($productId: String!, $rating: Float!, $comment: S
   }
 }`);
 
-
 export const GET_PRODUCT_RATING_QUERY = gql(`
 query GetProductRating($productId: String!) {
   review(productId: $productId) {

@@ -149,7 +149,6 @@ enum DeliveryStatus {
   REFUNDED
   PROCESSING
   SHIPPED
-  COMPLETED
 }
 
 """The status of the order"""
@@ -226,6 +225,9 @@ type Mutation {
   checkout(paymentMethod: PaymentMethod!): Order!
   cancelOrder(orderId: String!): Order!
   submitOrderFeedback(orderId: String!, feedback: FeedbackInput!): OrderReview!
+
+  """Admin User can change the delivery status of an order"""
+  changeOrderStatus(userId: String!, orderId: String!, status: DeliveryStatus!): Order!
   updateUser(updateUserInput: UpdateUserInput!): User!
   putAddress(putAddressInput: PutAddressInput!): Address!
   deleteAddress(addressId: String!): Address!

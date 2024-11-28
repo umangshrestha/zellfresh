@@ -1,1 +1,1 @@
-export {RatingDialog as default} from './RatingDialog.tsx'
+export { RatingDialog as default } from './RatingDialog.tsx';

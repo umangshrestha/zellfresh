@@ -7,6 +7,6 @@ export type RatingMutation = {
   onRatingClick: (productId: string, rating: number) => void;
 };
 
-export type ProductProps = ProductItemType & CartMutationFunctions & RatingMutation
-
-
+export type ProductProps = ProductItemType &
+  CartMutationFunctions &
+  RatingMutation;

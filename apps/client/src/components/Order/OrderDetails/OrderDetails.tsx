@@ -5,12 +5,33 @@ import Grid from '@mui/material/Grid2';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
+import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
+import { DeliveryStatus } from '../../../__generated__/types.ts';
 import OrderItem from '../OrderItem';
 import { OrderDetailsProps } from './OrderDetails.types.ts';
-import Rating from '@mui/material/Rating';
 
-export const OrderDetails = ({ data, onCancelOrder, onSubmitFeedback }: OrderDetailsProps) => {
+const CustomChip = ({ deliveryStatus }: { deliveryStatus: DeliveryStatus }) => {
+  const props = { label: `Status: ${deliveryStatus}`, textColor: 'white' };
+  switch (deliveryStatus) {
+    case DeliveryStatus.Delivered:
+      return <Chip {...props} color="success" size="medium" />;
+    case DeliveryStatus.Pending:
+      return <Chip {...props} color="info" size="medium" />;
+    case DeliveryStatus.Shipped:
+      return <Chip {...props} color="primary" size="medium" />;
+    case DeliveryStatus.Cancelled:
+      return <Chip {...props} color="warning" size="medium" />;
+    default:
+      return <Chip {...props} color="error" size="medium" />;
+  }
+};
+
+export const OrderDetails = ({
+  data,
+  onCancelOrder,
+  onSubmitFeedback,
+}: OrderDetailsProps) => {
   return (
     <Box
       sx={{
@@ -33,18 +54,7 @@ export const OrderDetails = ({ data, onCancelOrder, onSubmitFeedback }: OrderDet
           }
         />
       </Grid>
-      <Chip
-        label={`Status: ${data.deliveryStatus}`}
-        color={
-          data.deliveryStatus === 'DELIVERED'
-            ? 'success'
-            : data.deliveryStatus === 'PENDING'
-              ? 'warning'
-              : 'error'
-        }
-        size="medium"
-      />
-
+      <CustomChip deliveryStatus={data.deliveryStatus} />
       <Box className="flex gap-4 flex-wrap mx-auto pt-3 flex-row justify-between">
         <Box sx={{ mb: 2 }}>
           <Typography variant="h6" gutterBottom>
@@ -104,7 +114,9 @@ export const OrderDetails = ({ data, onCancelOrder, onSubmitFeedback }: OrderDet
       <Rating
         value={data?.review?.rating}
         precision={0.5}
-        onChange={(_, newValue) => onSubmitFeedback(data.orderId, newValue|| 0)}
+        onChange={(_, newValue) =>
+          onSubmitFeedback(data.orderId, newValue || 0)
+        }
       />
       <Box
         sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 2 }}

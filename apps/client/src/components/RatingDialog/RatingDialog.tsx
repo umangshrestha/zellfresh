@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -9,7 +10,6 @@ import Rating from '@mui/material/Rating';
 import TextField from '@mui/material/TextField';
 import { useEffect, useState } from 'react';
 import { RatingDialogProps } from './RatingDialog.types.ts';
-import CircularProgress from '@mui/material/CircularProgress';
 
 export const RatingDialog = ({
   lastRating,
@@ -21,9 +21,8 @@ export const RatingDialog = ({
   const [rating, setRating] = useState(currentRating || 0);
   const [description, setDescription] = useState(comment || '');
   useEffect(() => {
-    if (comment && comment !== description)
-      setDescription(comment);
-  }, [comment, description]);
+    if (comment) setDescription(comment);
+  }, [comment]);
 
   const onClose = () => {
     submitFeedback(rating, description);
@@ -37,51 +36,55 @@ export const RatingDialog = ({
       aria-describedby="alert-dialog-slide-description"
     >
       <DialogTitle>Submit your rating</DialogTitle>
-      {
-        loading? <CircularProgress />
-          : (
-      [<DialogContent key="content">
-        {(lastRating === undefined) && (
-          <Box>
-            <FormLabel component="legend">Your last rating</FormLabel>
-            <Rating name="read-only" value={lastRating} readOnly
-                    precision={0.5}
-                    disabled
-            />
-          </Box>
-        )}
-        <Box>
-          <FormLabel component="legend">
-            {lastRating ? 'Your new rating' : 'Your rating'}
-          </FormLabel>
-          <Rating
-            name="simple-controlled"
-            value={rating}
-            max={5}
-            precision={0.5}
-            onChange={(_, newValue) => {
-              setRating(newValue || 0);
-            }}
-          />
-        </Box>
-        <Box>
-          <FormLabel component="legend">Description</FormLabel>
-          <TextField
-            multiline
-            rows={4}
-            value={description}
-            onChange={(e) => {
-              if (e.target.value?.length <= 255) setDescription(e.target.value);
-            }}
-          />
-        </Box>
-      </DialogContent>,
-      <DialogActions key="actions">
-        <Button onClick={onClose}>Submit</Button>
-      </DialogActions>
-      ]
-      )
-      }
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        [
+          <DialogContent key="content">
+            {lastRating && (
+              <Box>
+                <FormLabel component="legend">Your last rating</FormLabel>
+                <Rating
+                  name="read-only"
+                  value={lastRating}
+                  readOnly
+                  precision={0.5}
+                  disabled
+                />
+              </Box>
+            )}
+            <Box>
+              <FormLabel component="legend">
+                {lastRating ? 'Your new rating' : 'Your rating'}
+              </FormLabel>
+              <Rating
+                name="simple-controlled"
+                value={rating}
+                max={5}
+                precision={0.5}
+                onChange={(_, newValue) => {
+                  setRating(newValue || 0);
+                }}
+              />
+            </Box>
+            <Box>
+              <FormLabel component="legend">Description</FormLabel>
+              <TextField
+                multiline
+                rows={4}
+                value={description}
+                onChange={(e) => {
+                  if (e.target.value?.length <= 255)
+                    setDescription(e.target.value);
+                }}
+              />
+            </Box>
+          </DialogContent>,
+          <DialogActions key="actions">
+            <Button onClick={onClose}>Submit</Button>
+          </DialogActions>,
+        ]
+      )}
     </Dialog>
   );
 };

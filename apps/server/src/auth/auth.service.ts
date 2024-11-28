@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CartsService } from '../carts/carts.service';
 import { OrdersService } from '../orders/orders.service';
 import { PutUserInput } from '../users/dto/put-user.input';
@@ -34,19 +34,33 @@ export class AuthService {
       email,
       name,
     } = await this.googleStrategy.validate(authorization);
-    const payload: Auth = {
-      sub,
-      email,
-      name,
-      imageUrl,
-      role: Role.USER,
-    };
-    const newUser = new PutUserInput();
-    newUser.userId = sub;
-    newUser.email = email;
-    newUser.name = name;
-    newUser.imageUrl = imageUrl;
-    await this.usersService.create(newUser);
+    const user = await this.usersService.findOne(sub);
+    if (user.blocked) {
+      throw new UnauthorizedException('User is blocked');
+    }
+    const payload: Auth = user
+      ? {
+          sub,
+          email: user.email,
+          name: user.name,
+          imageUrl: user.imageUrl,
+          role: user.role,
+        }
+      : {
+          sub,
+          email,
+          name,
+          imageUrl,
+          role: Role.USER,
+        };
+    if (!user) {
+      const newUser = new PutUserInput();
+      newUser.userId = sub;
+      newUser.email = email;
+      newUser.name = name;
+      newUser.imageUrl = imageUrl;
+      await this.usersService.create(newUser);
+    }
     if (guest && guest.sub && guest.sub.startsWith('guest-')) {
       await this.cartsService.moveCartItemsFromGuestToUser(guest.sub, sub);
       await this.ordersService.moveOrdersFromGuestToUser(guest.sub, sub);

@@ -11,7 +11,6 @@ query CheckoutPage{
         productId
         imageUrl
         availableQuantity
-        description
         unit
         badgeText
         category

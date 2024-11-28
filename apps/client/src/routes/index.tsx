@@ -3,7 +3,9 @@ import CartPage from '../components/Cart/CartPage';
 import ErrorPage from '../components/ErrorBoundary/FrontendErrorPage';
 import NotFoundPage from '../components/ErrorComponent/NotFoundPage';
 import Layout from '../components/Layout';
+import { AdminLayout } from '../components/Layout/AdminLayout.tsx';
 import { PrivacyPolicy, TermsAndConditions } from '../components/Markdown';
+import OrdersAdminPage from '../components/Order/OrdersAdminPage';
 import OrdersPage from '../components/Order/OrdersPage';
 import ProductPage from '../components/Product/ProductPage';
 import ProfilePage from '../components/Profile/ProfilePage';
@@ -55,6 +57,16 @@ export const router = createBrowserRouter([
       {
         path: '/privacy-policy',
         element: <PrivacyPolicy />,
+      },
+      {
+        path: '/admin',
+        element: <AdminLayout />,
+        children: [
+          {
+            path: '/admin/orders',
+            element: <OrdersAdminPage />,
+          },
+        ],
       },
     ],
   },

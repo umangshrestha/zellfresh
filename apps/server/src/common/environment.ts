@@ -20,7 +20,7 @@ export class EnvironmentVariables {
   PORT: number = 3000;
 
   @IsString()
-  AWS_REGION: string = 'us-east-1';
+  AWS_REGION: string = 'ap-south-1';
 
   @IsString()
   AWS_ACCESS_KEY_ID: string = 'test';

@@ -1,4 +1,4 @@
-import { UseGuards } from '@nestjs/common';
+import { UnauthorizedException, UseGuards } from '@nestjs/common';
 import {
   Args,
   Mutation,
@@ -10,15 +10,17 @@ import {
 import { AccessOrGuestTokenGuard } from '../auth/access-or-guest-token.gaurd';
 import { AuthUser } from '../auth/auth.decorator';
 import { Auth } from '../auth/entities/auth.entity';
+import { Role } from '../auth/entities/role.enum';
 import { PubSubService } from '../common/pubsub/pub-sub.service';
+import { FeedbackInput } from '../reviews/dto/feedback.input';
+import { OrderReview } from '../reviews/entities/order-review.entity';
 import { CheckoutService } from './checkout.service';
+import { DeliveryStatus } from './entities/delivery-status.enum';
 import { FilterOrderArgs } from './entities/filter-orders.args';
 import { Order } from './entities/order.entity';
 import { PaginatedOrder } from './entities/paginated-order.entry';
 import { PaymentMethod } from './entities/payment-method.enum';
 import { OrdersService } from './orders.service';
-import { OrderReview } from '../reviews/entities/order-review.entity';
-import { FeedbackInput } from '../reviews/dto/feedback.input';
 
 @Resolver(() => Order)
 @UseGuards(AccessOrGuestTokenGuard)
@@ -41,7 +43,10 @@ export class OrdersResolver {
   }
 
   @Query(() => PaginatedOrder, { name: 'orders' })
-  findAll(@AuthUser() { sub }: Auth, @Args() filter: FilterOrderArgs) {
+  findAll(@AuthUser() { sub, role }: Auth, @Args() filter: FilterOrderArgs) {
+    if (role === Role.ADMIN) {
+      return this.ordersService.findAll(null, filter);
+    }
     return this.ordersService.findAll(sub, filter);
   }
 
@@ -70,7 +75,6 @@ export class OrdersResolver {
     return this.ordersService.putFeedback(sub, orderId, putReviewInput);
   }
 
-
   @ResolveField(() => Boolean)
   async canCancel(@Parent() data: Order) {
     try {
@@ -79,5 +83,20 @@ export class OrdersResolver {
     } catch (error) {
       return false;
     }
+  }
+
+  @Mutation(() => Order, {
+    description: 'Admin User can change the delivery status of an order',
+  })
+  async changeOrderStatus(
+    @AuthUser() { role }: Auth,
+    @Args('userId', { type: () => String }) userId: string,
+    @Args('orderId', { type: () => String }) orderId: string,
+    @Args('status', { type: () => DeliveryStatus }) status: DeliveryStatus,
+  ) {
+    if (role !== Role.ADMIN) {
+      throw new UnauthorizedException('Unauthorized');
+    }
+    return this.ordersService.changeDeliveryStatus(userId, orderId, status);
   }
 }

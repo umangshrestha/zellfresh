@@ -2,15 +2,15 @@ import { TransactWriteItemsCommand } from '@aws-sdk/client-dynamodb';
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { DynamodbService } from 'src/common/dynamodb/dynamodb.service';
+import { get_date_time_string } from '../common/get-date-time';
 import { Pagination } from '../products/entities/paginated-product.entry';
+import { FeedbackInput } from '../reviews/dto/feedback.input';
+import { OrderReview } from '../reviews/entities/order-review.entity';
 import { DeliveryStatus } from './entities/delivery-status.enum';
 import { FilterOrderArgs } from './entities/filter-orders.args';
 import { Order } from './entities/order.entity';
 import { PaginatedOrder } from './entities/paginated-order.entry';
 import { PaymentMethod } from './entities/payment-method.enum';
-import { FeedbackInput } from '../reviews/dto/feedback.input';
-import { OrderReview } from '../reviews/entities/order-review.entity';
-import { get_date_time_string } from '../common/get-date-time';
 
 const TableName = 'ORDERS_TABLE';
 
@@ -27,9 +27,11 @@ export class OrdersService {
     };
   }
 
-  async putFeedback(userId: string,
-            orderId: string,
-            feedbackInput: FeedbackInput) {
+  async putFeedback(
+    userId: string,
+    orderId: string,
+    feedbackInput: FeedbackInput,
+  ) {
     const review = new OrderReview();
     review.rating = feedbackInput.rating;
     review.comment = feedbackInput.comment;
@@ -42,27 +44,37 @@ export class OrdersService {
       ExpressionAttributeNames: {
         '#review': 'review',
       },
-      ExpressionAttributeValues: marshall({ ':review': {...review} }),
+      ExpressionAttributeValues: marshall({ ':review': { ...review } }),
     });
     return review;
   }
 
   async findAll(
-    userId: string,
+    userId: string | null,
     { limit, cursor }: FilterOrderArgs,
   ): Promise<PaginatedOrder> {
-    const orders = await this.dynamodbService.client.query({
-      TableName,
-      KeyConditionExpression: '#userId = :userId',
-      ExpressionAttributeNames: {
-        '#userId': 'userId',
-      },
-      ExpressionAttributeValues: marshall({
-        ':userId': userId,
-      }),
-      Limit: limit,
-      ExclusiveStartKey: cursor ? unmarshall(JSON.parse(cursor)) : undefined,
-    });
+    const orders = userId
+      ? await this.dynamodbService.client.query({
+          TableName,
+          KeyConditionExpression: '#userId = :userId',
+          ExpressionAttributeNames: {
+            '#userId': 'userId',
+          },
+          ExpressionAttributeValues: marshall({
+            ':userId': userId,
+          }),
+          Limit: limit,
+          ExclusiveStartKey: cursor
+            ? unmarshall(JSON.parse(cursor))
+            : undefined,
+        })
+      : await this.dynamodbService.client.scan({
+          TableName,
+          Limit: limit,
+          ExclusiveStartKey: cursor
+            ? unmarshall(JSON.parse(cursor))
+            : undefined,
+        });
     const paginatedOrder = new PaginatedOrder();
     paginatedOrder.pagination = new Pagination();
     paginatedOrder.pagination.limit = 10;
@@ -108,6 +120,20 @@ export class OrdersService {
         'Cannot cancel order after 1 minute of creation',
       );
     }
+  }
+
+  async changeDeliveryStatus(
+    userId: string,
+    orderId: string,
+    status: DeliveryStatus,
+  ) {
+    const data = await this.findOne(userId, orderId);
+    data.deliveryStatus = status;
+    await this.dynamodbService.client.putItem({
+      TableName,
+      Item: marshall(data),
+    });
+    return data;
   }
 
   async cancel(userId: string, orderId: string) {

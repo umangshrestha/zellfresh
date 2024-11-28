@@ -7,7 +7,6 @@ export enum DeliveryStatus {
   REFUNDED = 'REFUNDED',
   PROCESSING = 'PROCESSING',
   SHIPPED = 'SHIPPED',
-  COMPLETED = 'COMPLETED',
 }
 
 registerEnumType(DeliveryStatus, {

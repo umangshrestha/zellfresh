@@ -6,11 +6,11 @@ import { ConfigService } from '@nestjs/config';
 import { Cache } from 'cache-manager';
 import { DynamodbService } from '../common/dynamodb/dynamodb.service';
 import { get_date_time_string } from '../common/get-date-time';
-import { FilterReviewArgs } from './dto/filter-review.args';
 import { FeedbackInput } from './dto/feedback.input';
+import { FilterReviewArgs } from './dto/filter-review.args';
 import { PaginatedProductReview } from './entities/paginated-product-review.entity';
-import { Rating } from './entities/rating.entity';
 import { ProductReview } from './entities/product-review.entity';
+import { Rating } from './entities/rating.entity';
 
 const TableName = 'REVIEWS_TABLE';
 @Injectable()
@@ -72,7 +72,9 @@ export class ReviewsService {
           ':productId': { S: productId },
         },
       });
-      const reviews = data.Items.map((item) => unmarshall(item) as ProductReview);
+      const reviews = data.Items.map(
+        (item) => unmarshall(item) as ProductReview,
+      );
       const total = reviews.length;
       const sum = reviews.reduce((acc, review) => acc + review.rating, 0);
       rating.rating = sum / total;

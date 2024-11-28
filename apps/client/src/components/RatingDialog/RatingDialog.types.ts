@@ -1,5 +1,5 @@
 export interface RatingDialogProps {
-  lastRating?: number,
+  lastRating?: number;
   loading: boolean;
   currentRating: number;
   comment?: string;

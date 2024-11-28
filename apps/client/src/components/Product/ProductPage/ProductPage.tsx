@@ -1,12 +1,12 @@
 import Button from '@mui/material/Button';
+import { useState } from 'react';
+import RatingDialog from '../../RatingDialog';
 import ServerErrorComponent from '../../ServerErrorComponent';
+import { useProductFeedback } from '../ProductFeedback.hooks.ts';
 import ProductItem from '../ProductItem';
 import { ProductEmptyPage } from './ProductEmptyPage';
 import ProductLoadingPage from './ProductLoadingPage';
 import { ProductPageProps } from './ProductPage.types';
-import { useState } from 'react';
-import RatingDialog from '../../RatingDialog';
-import { useProductFeedback } from '../ProductFeedback.hooks.ts';
 
 const ProductRatingDialog = ({
   productId,
@@ -17,14 +17,19 @@ const ProductRatingDialog = ({
   productId: string;
   currentRating: number;
 }) => {
-  const { submitFeedback, ...props} = useProductFeedback(productId);
+  const { submitFeedback, ...props } = useProductFeedback(productId);
   const onFeedbackSubmit = (rating: number, comment: string) => {
     submitFeedback(rating, comment);
     onClose();
-  }
-  return <RatingDialog currentRating={currentRating} {...props} submitFeedback={onFeedbackSubmit} />
-}
-
+  };
+  return (
+    <RatingDialog
+      currentRating={currentRating}
+      {...props}
+      submitFeedback={onFeedbackSubmit}
+    />
+  );
+};
 
 export const ProductPage = ({
   data,
@@ -44,15 +49,13 @@ export const ProductPage = ({
 
   return (
     <div className="flex flex-col align-between">
-      {
-        productFeedbackId && (
-          <ProductRatingDialog
-            productId={productFeedbackId}
-            currentRating={currentRating || 0}
-            onClose={() => setProductFeedbackId(null)}
-          />
-        )
-      }
+      {productFeedbackId && (
+        <ProductRatingDialog
+          productId={productFeedbackId}
+          currentRating={currentRating || 0}
+          onClose={() => setProductFeedbackId(null)}
+        />
+      )}
       <div className="flex flex-wrap justify-center gap-4 p-4 flex-start">
         {data.products.items.map((product) => (
           <ProductItem
@@ -69,6 +72,7 @@ export const ProductPage = ({
       <Button
         disabled={!data?.products?.pagination.next}
         onClick={loadMore}
+        className="w-full text-center"
         color="primary"
         size="small"
       >

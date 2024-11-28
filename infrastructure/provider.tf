@@ -5,8 +5,18 @@ terraform {
       version = "~> 5.0"
     }
   }
+
+  // Comment this block if you want to use local backend
+  backend "s3" {
+    bucket         = "terraform-state-for-zell-fresh"
+    key            = "terraform.tfstate"
+    region         = "ap-south-1"
+    dynamodb_table = "terraform-state-lock"
+  }
 }
 
 provider "aws" {
-  region = "us-east-1"
+  region = "ap-south-1"
 }
+
+

@@ -1,10 +1,10 @@
 import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
 import { Address } from '../../addresses/entities/address.entity';
 import { CartItem } from '../../carts/entities/cart-item.entity';
+import { OrderReview } from '../../reviews/entities/order-review.entity';
 import { CheckoutDetails } from './checkout-details.entity';
 import { DeliveryStatus } from './delivery-status.enum';
 import { PaymentMethod } from './payment-method.enum';
-import { OrderReview } from '../../reviews/entities/order-review.entity';
 
 @ObjectType()
 export class DeliveryContactDetails {

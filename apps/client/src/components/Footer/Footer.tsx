@@ -1,10 +1,10 @@
+import CallIcon from '@mui/icons-material/Call';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import { Link as RouterLink } from 'react-router-dom';
-import { ADDRESS, APP_NAME, CURRENT_YEAR } from '../../config';
+import { ADDRESS, APP_NAME, CURRENT_YEAR, PHONE_NUMBER } from '../../config';
 import { SOCIAL_MEDIA_HANDLES } from '../../config/social';
 import AvailabilityBanner from '../Banner.tsx';
-
 export const Footer = () => (
   <footer>
     <div className="flex row gap-4 justify-around p-4 flex-wrap">
@@ -17,7 +17,6 @@ export const Footer = () => (
           {ADDRESS.country} - {ADDRESS.zip}
         </address>
       </section>
-
       <section className="flex flex-col text-center">
         <span className="font-bold text-lg">Information</span>
         <Link component={RouterLink} to="/terms-and-conditions">
@@ -26,6 +25,24 @@ export const Footer = () => (
         <Link component={RouterLink} to="/privacy-policy">
           Privacy Policy
         </Link>
+      </section>
+      <section className="flex flex-col text-center">
+        <span className="font-bold text-lg">Need help?</span>
+        <a
+          aria-label="Chat on WhatsApp"
+          href={`https://wa.me/91${PHONE_NUMBER}`}
+        >
+          <img
+            alt="Chat on WhatsApp"
+            src="/images/WhatsAppButtonGreenLarge.png"
+            height="50"
+            width="150"
+          />
+        </a>
+        <br />
+        <a href={`tel:+91${PHONE_NUMBER}`}>
+          <CallIcon /> {PHONE_NUMBER}
+        </a>
       </section>
     </div>
 

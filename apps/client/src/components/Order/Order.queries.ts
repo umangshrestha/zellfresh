@@ -13,7 +13,6 @@ query ListOrders($cursor: String) {
        product {
          name
          imageUrl
-         description
          price
          unit
        }
@@ -64,11 +63,16 @@ mutation CancelOrder($orderId: String!) {
  }
 }`);
 
-
-
 export const SUBMIT_ORDER_FEEDBACK_MUTATION = gql(`
 mutation SubmitFeedbackForOrder($orderId: String!, $rating: Float!, $comment: String!) {
   submitOrderFeedback(orderId: $orderId, feedback: { rating: $rating, comment: $comment}) {
     rating
+  }
+}`);
+
+export const CHANGE_ORDER_STATUS_MUTATION = gql(`
+mutation ChangeOrderStatus($userId: String!, $orderId: String!, $status: DeliveryStatus!) {
+  changeOrderStatus(userId: $userId, orderId: $orderId, status: $status) {
+    deliveryStatus
   }
 }`);

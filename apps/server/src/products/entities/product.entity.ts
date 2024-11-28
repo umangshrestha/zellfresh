@@ -1,6 +1,6 @@
 import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
-import { Rating } from '../../reviews/entities/rating.entity';
 import { ProductReview } from '../../reviews/entities/product-review.entity';
+import { Rating } from '../../reviews/entities/rating.entity';
 
 export interface ProductKey {
   productId: string;

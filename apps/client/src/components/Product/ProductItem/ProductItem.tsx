@@ -77,7 +77,9 @@ export const ProductItem = ({
           <Rating
             value={rating?.rating}
             precision={0.5}
-            onChange={(_, newValue) => onRatingClick(key.productId, newValue|| 0)}
+            onChange={(_, newValue) =>
+              onRatingClick(key.productId, newValue || 0)
+            }
           />
           <Typography
             variant="caption"

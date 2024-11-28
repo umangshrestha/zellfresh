@@ -11,10 +11,9 @@ export const OrderItem = ({
   product,
   badgeText,
 }: OrderItemProps) => {
-  const { name, unit, imageUrl, description } = product || {
+  const { name, unit, imageUrl } = product || {
     imageUrl: '',
     name: '',
-    description: '',
     unit: '',
   };
   const totalPrice = price * quantity;
@@ -22,6 +21,7 @@ export const OrderItem = ({
     <Card className="flex flex-col justify-between max-w-xl w-full">
       <Badge badgeText={badgeText || null} />
       <CardHeader
+        sx={{ pt: 0, pb: 0, pl: 0 }}
         avatar={
           <Avatar
             alt={name}
@@ -33,13 +33,18 @@ export const OrderItem = ({
         title={<Typography variant="h6">{name}</Typography>}
         subheader={
           <Typography variant="subtitle2" color="textSecondary">
-            {description}
-            <br />
-            Rs. {price} / {unit} ({quantity})
+            Rs. {price} * {quantity} / {unit}
           </Typography>
         }
         action={
-          <Typography sx={{ mt: 1 }} variant="h6" color="textSecondary">
+          <Typography
+            variant="h6"
+            color="textSecondary"
+            sx={{
+              mt: 2,
+              ml: 2,
+            }}
+          >
             Rs. {totalPrice}
           </Typography>
         }

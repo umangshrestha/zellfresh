@@ -1,3 +1,3 @@
 locals {
-  project_name = "al-laham"
+  project_name = "zell-fresh"
 }

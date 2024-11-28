@@ -24,5 +24,6 @@ services:
       - '8001:8001'
     environment:
       - DYNAMO_ENDPOINT=http://localstack:4566
+      - AWS_REGION=ap-south-1
     depends_on:
       - localstack
