@@ -62,6 +62,11 @@ resource "aws_dynamodb_table" "carts_table" {
   tags = {
     Project = local.project_name
   }
+
+  ttl {
+    attribute_name = "ttl"
+    enabled        = true
+  }
 }
 
 resource "aws_dynamodb_table" "orders_table" {
