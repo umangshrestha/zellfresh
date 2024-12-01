@@ -1,26 +1,26 @@
 import Button from '@mui/material/Button';
 import ServerErrorComponent from '../../ServerErrorComponent';
 import ProductItem from '../ProductItem';
-import { ProductEmptyPage } from './ProductEmptyPage';
-import ProductLoadingPage from './ProductLoadingPage';
-import { ProductPageProps } from './ProductPage.types';
+import { ProductsEmptyPage } from './ProductsEmptyPage';
+import ProductsLoadingPage from './ProductsLoadingPage';
+import { ProductsPageProps } from './ProductsPage.types';
 
-export const ProductPage = ({
+export const ProductsPage = ({
   data,
   loading,
   error,
   loadMore,
   onAddItemToCart
-}: ProductPageProps) => {
-  if (loading) return <ProductLoadingPage />;
+}: ProductsPageProps) => {
+  if (loading) return <ProductsLoadingPage />;
 
   if (error) return <ServerErrorComponent error={error} />;
 
-  if (!data || data.products.items.length === 0) return <ProductEmptyPage />;
+  if (!data || data.products.items.length === 0) return <ProductsEmptyPage />;
 
   return (
-    <div className="flex flex-col align-between">
-      <div className="flex flex-wrap justify-center gap-4 p-4 flex-start">
+    <div className="block w-full">
+      <div className="flex flex-wrap justify-start gap-4 p-4 flex-start">
         {data.products.items.map((product) => (
           <ProductItem
             key={product.productId}
@@ -40,4 +40,4 @@ export const ProductPage = ({
       </Button>
     </div>
   );
-};
+      };

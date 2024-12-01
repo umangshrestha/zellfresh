@@ -42,7 +42,5 @@ export const Default: Story = {
     data,
     loading: false,
     error: null,
-    onAddItemToCart: () => {},
-    getProductCount: () => 0,
   },
 };

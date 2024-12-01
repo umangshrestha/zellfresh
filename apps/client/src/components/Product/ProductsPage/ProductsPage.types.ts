@@ -1,7 +1,7 @@
 import { ApolloError } from '@apollo/client';
 import { ListProductsQuery } from '../../../__generated__/graphql.ts';
 
-export type ProductPageProps = {
+export type ProductsPageProps = {
   data?: ListProductsQuery;
   loading: boolean;
   error?: ApolloError;

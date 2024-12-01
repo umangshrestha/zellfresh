@@ -7,10 +7,10 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import React, { useState } from 'react';
-import { CategoriesCollapsableButtonProps } from './CategoriesCollapsableButton.types.ts';
+import { WithCategoriesProps as CategoriesCollapsableButtonProps } from '../Categories.types.ts';
 
 export const CategoriesCollapsableButton = ({
-  onClick,
+  navigateTo,
   categories,
 }: CategoriesCollapsableButtonProps) => {
   const [productsOpen, setProductsOpen] = useState(true);
@@ -42,7 +42,7 @@ export const CategoriesCollapsableButton = ({
               disabled={isAvailable}
               key={name}
               onClick={() => {
-                onClick(navigateUrl);
+                navigateTo(navigateUrl);
               }}
             >
               <ListItemIcon

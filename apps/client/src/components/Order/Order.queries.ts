@@ -12,6 +12,7 @@ query ListOrders($cursor: String) {
        price
        product {
          name
+         description
          imageUrl
          price
          unit

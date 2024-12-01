@@ -1,7 +1,6 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
 import { Link as RouterLink } from 'react-router-dom';
 import ServerErrorComponent from '../../ServerErrorComponent';
@@ -14,6 +13,7 @@ export const CartPage = ({
   data,
   loading,
   error,
+  onClearCart,
   ...functions
 }: CartPageProps) => {
   if (loading) return <CartLoadingPage />;
@@ -25,11 +25,17 @@ export const CartPage = ({
   return (
     <Box className="flex flex-col gap-4 max-w-xl mx-auto pt-3">
       <Typography variant="h5">Cart Page</Typography>
+        <div className="flex flex-row justify-end gap-4">
+          <Button
+            color="error"
+            onClick={onClearCart}
+          >
+            Clear Cart
+          </Button>
+        </div>
       <List>
         {data.cart.items.map((item) => (
-          <ListItem key={item.product?.productId}>
-            <CartItem {...item} {...functions} />
-          </ListItem>
+            <CartItem key={item.productId} {...item} {...functions} />
         ))}
       </List>
       <Box className="flex  justify-end gap-4 pb-10">

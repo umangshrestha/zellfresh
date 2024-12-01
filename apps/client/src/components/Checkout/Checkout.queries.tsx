@@ -8,12 +8,10 @@ query CheckoutPage{
       product {
         name
         description
+        unit
         price
-        productId
         imageUrl
         availableQuantity
-        unit
-        category
       }
     }
     checkoutDetails {
@@ -33,6 +31,7 @@ query CheckoutPage{
       apt
       street
       zip
+      additionalInfo
     }
   }
 }`);

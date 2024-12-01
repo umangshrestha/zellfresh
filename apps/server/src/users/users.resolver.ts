@@ -13,7 +13,7 @@ import { Address } from '../addresses/entities/address.entity';
 import { AccessOrGuestTokenGuard } from '../auth/access-or-guest-token.gaurd';
 import { AuthUser } from '../auth/auth.decorator';
 import { Auth } from '../auth/entities/auth.entity';
-import { Role } from '../auth/entities/role.enum';
+import { Role } from '../auth/types/role.enum';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';

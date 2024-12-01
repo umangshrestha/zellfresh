@@ -10,7 +10,7 @@ export default function Veil({
 }>) {
   return (
     <div
-      className={clsx('mx-auto rounded overflow-hidden shadow-lg relative', {
+      className={clsx('rounded overflow-hidden shadow-lg relative', {
         'opacity-50 pointer-events-none': enable,
       })}
     >

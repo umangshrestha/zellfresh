@@ -4,9 +4,9 @@ import { OrdersService } from '../orders/orders.service';
 import { PutUserInput } from '../users/dto/put-user.input';
 import { UsersService } from '../users/users.service';
 import { Auth } from './entities/auth.entity';
-import { Role } from './entities/role.enum';
 import { GoogleService } from './google/google.service';
 import { GuestTokenService } from './guest-token/guest-token.service';
+import { Role } from './types/role.enum';
 
 @Injectable()
 export class AuthService {
@@ -23,7 +23,7 @@ export class AuthService {
       return payload;
     }
     const data = this.guestTokenService.generateGuestDetails();
-    await this.cartsService.createEmptyCart(data.sub);
+    await this.cartsService.createEmptyCart(data.sub, { overwrite: false });
     return data;
   }
 
@@ -65,7 +65,7 @@ export class AuthService {
       await this.cartsService.moveCartItemsFromGuestToUser(guest.sub, sub);
       await this.ordersService.moveOrdersFromGuestToUser(guest.sub, sub);
     } else {
-      await this.cartsService.createEmptyCart(sub, false);
+      await this.cartsService.createEmptyCart(sub, { overwrite: false });
     }
     return payload;
   }

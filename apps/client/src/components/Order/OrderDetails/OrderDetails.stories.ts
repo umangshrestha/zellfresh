@@ -24,7 +24,6 @@ const order: ListOrdersQuery['orders']['items'][0] = {
         name: 'Chicken Breast',
         imageUrl:
           'https://img.freepik.com/free-photo/raw-chicken-breasts-wooden-cutting-board_1150-13465.jpg?w=2000&t=st=1729380061~exp=1729380661~hmac=1bc3a1ebeac10780bae09c5027f223444a252464abbc51e08190f045fcad3163',
-        description: 'Fresh, skinless chicken breast fillets',
         price: 12.99,
         unit: '500 gm',
         __typename: 'Product',

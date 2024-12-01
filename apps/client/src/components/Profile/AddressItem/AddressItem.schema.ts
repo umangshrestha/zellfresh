@@ -5,7 +5,7 @@ export const AddressItemSchema = z.object({
     .string({
       message: 'Invalid apartment',
     })
-    .default(''),
+    .nullable(),
   street: z.string({
     message: 'Invalid street',
   }),

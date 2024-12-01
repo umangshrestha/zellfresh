@@ -18,7 +18,7 @@ export function SplitButton<T>({ options, onClick }: SplitButtonProps<T>) {
   const handleMenuItemClick = (index: number) => {
     setSelectedIndex(index);
     setOpen(false);
-    onClick(options[selectedIndex].value as T);
+    onClick(options[index].value as T);
   };
 
   const handleClose = (event: Event) => {

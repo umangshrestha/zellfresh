@@ -1,9 +1,9 @@
 import Box from '@mui/material/Box';
 import ImageButton from '../../ImageButton';
-import { CategoriesSectionProps } from './CategoriesSection.types.ts';
+import { WithCategoriesProps as CategoriesSectionProps } from '../Categories.types.ts';
 
 export const CategoriesSection = ({
-  onClick,
+  navigateTo,
   categories,
 }: CategoriesSectionProps) => (
   <Box
@@ -18,7 +18,7 @@ export const CategoriesSection = ({
     {categories.map((category) => (
       <ImageButton
         {...category}
-        onClick={() => onClick(category.navigateUrl)}
+        onClick={() => navigateTo(category.navigateUrl)}
         key={category.name}
       />
     ))}

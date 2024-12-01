@@ -5,10 +5,8 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
-import { useEffect, useState } from 'react';
 import Badge from '../../Badge';
 import Veil from '../../Veil.tsx';
-import ProductAddItem from '../ProductAddItem';
 import { ProductProps } from './ProductItem.types';
 
 export const ProductItem = ({
@@ -20,30 +18,16 @@ export const ProductItem = ({
   availableQuantity,
   rating,
   badgeText,
-  limitPerTransaction,
   onAddItemToCart,
-  getProductCount,
-  onRatingClick,
-  ...key
+  productId
 }: ProductProps) => {
-  const [isAddedToCartClicked, setIsAddedToCartClicked] = useState(false);
-
-  const handleIsAddedToCartClicked = () => {
-    setIsAddedToCartClicked(true);
-  };
-
   const isProductAvailable = availableQuantity > 0;
   if (availableQuantity <= 0) badgeText = 'Out of Stock';
   else if (availableQuantity < 10) badgeText = 'Limited Stock';
 
-  useEffect(() => {
-    if (isAddedToCartClicked) return;
-    setIsAddedToCartClicked(getProductCount(key) > 0);
-  }, [getProductCount, isAddedToCartClicked, key]);
-
   return (
     <Veil enable={!isProductAvailable}>
-      <Card className="h-full w-64 max-w-xs flex flex-col">
+      <Card className="h-full w-64 max-w-xs flex flex-col border-0 shadow-none">
         <Badge badgeText={badgeText} />
         <CardMedia
           component="img"
@@ -77,9 +61,7 @@ export const ProductItem = ({
           <Rating
             value={rating?.rating}
             precision={0.5}
-            onChange={(_, newValue) =>
-              onRatingClick(key.productId, newValue || 0)
-            }
+            readOnly
           />
           <Typography
             variant="caption"
@@ -87,26 +69,16 @@ export const ProductItem = ({
           >{`(${rating?.count})`}</Typography>
         </CardContent>
         <CardActions disableSpacing sx={{ mt: 'auto' }}>
-          {!isAddedToCartClicked ? (
             <Button
               className="w-full"
               size="large"
               disabled={!isProductAvailable}
               color="error"
               variant="contained"
-              onClick={() => handleIsAddedToCartClicked()}
+              onClick={() => onAddItemToCart(productId)}
             >
               Add to Cart
             </Button>
-          ) : (
-            <ProductAddItem
-              availableQuantity={availableQuantity}
-              limitPerTransaction={limitPerTransaction}
-              {...key}
-              onAddItemToCart={onAddItemToCart}
-              getProductCount={getProductCount}
-            />
-          )}
         </CardActions>
       </Card>
     </Veil>

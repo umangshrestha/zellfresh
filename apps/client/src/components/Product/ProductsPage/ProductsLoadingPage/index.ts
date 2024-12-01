@@ -1,1 +1,1 @@
-export { ProductLoadingPage as default } from './ProductLoadingPage.tsx';
+export { ProductsLoadingPage as default } from './ProductsLoadingPage.tsx';

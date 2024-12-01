@@ -8,7 +8,6 @@ import {
   IsString,
   validateSync,
 } from 'class-validator';
-import { v4 as uuid } from 'uuid';
 
 const daysToMilliseconds = (days: number) => days * 24 * 60 * 60 * 1000;
 
@@ -66,7 +65,7 @@ export class EnvironmentVariables {
 
   @IsString()
   @IsNotEmpty()
-  GUEST_TOKEN_SECRET: string = uuid();
+  GUEST_TOKEN_SECRET: string = 'guest_secret';
 
   @IsString()
   @IsNotEmpty()
@@ -98,6 +97,10 @@ export class EnvironmentVariables {
   @IsNumber()
   @IsPositive()
   CACHE_TTL: number = 60 * 60 * 24; // 24 hours
+
+  @IsNumber()
+  @IsPositive()
+  CART_TTL: number = 60 * 60 * 24 * 7; // 15 days
 }
 
 export function validate(config: Record<string, unknown>) {

@@ -1,20 +1,15 @@
 import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardHeader from '@mui/material/CardHeader';
+import FormControl from '@mui/material/FormControl';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemText from '@mui/material/ListItemText';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
-import Badge from '../../Badge';
-import ProductAddItem from '../../Product/ProductAddItem';
 import { CartItemProps } from './CartItem.types';
 
-export const CartItem = ({
-  quantity,
-  onAddItemToCart,
-  getProductCount,
-  product,
-}: CartItemProps) => {
+
+export const CartItem = ({ quantity,productId, product, onEdit }: CartItemProps) => {
   const {
     name,
     unit,
@@ -23,62 +18,70 @@ export const CartItem = ({
     availableQuantity,
     limitPerTransaction,
     description,
-    productId,
   } = product || {
-    productId: '',
     price: 0,
-    badgeText: '',
     imageUrl: '',
-    availableQuantity: 0,
     limitPerTransaction: 0,
+    availableQuantity: 0,
     name: '',
     description: '',
     unit: '',
   };
-  let badgeText = product?.badgeText || '';
-  const totalPrice = price * quantity;
-  if (availableQuantity <= 0) badgeText = 'Out of Stock';
-  else if (availableQuantity < 10) badgeText = 'Limited Stock';
 
   return (
-    <Card className="flex flex-col justify-between max-w-xl w-full">
-      <Badge badgeText={badgeText} />
-      <CardHeader
-        avatar={
-          <Avatar
-            alt={name}
-            src={imageUrl}
-            variant="square"
-            sx={{ width: 80, height: 80 }}
-          />
-        }
-        title={<Typography variant="h6">{name}</Typography>}
-        subheader={
+    <ListItem className="max-w-xl w-full flex gap-4">
+      <ListItemAvatar>
+        <Avatar
+          alt={name}
+          src={imageUrl}
+          variant="square"
+          sx={{ width: 80, height: 80 }}
+        />
+      </ListItemAvatar>
+      <ListItemText
+        primary={name}
+        secondary={
           <Typography variant="subtitle2" color="textSecondary">
             {description}
             <br />
             Rs. {price} / {unit}
-          </Typography>
-        }
-        action={
-          <Typography sx={{ mt: 1 }} variant="h6" color="textSecondary">
-            Rs. {totalPrice}
+            <br />
+            {quantity > availableQuantity && (
+              <span className="text-red-500">
+                Only {availableQuantity} available. Please reduce the quantity.
+              </span>
+            )}
           </Typography>
         }
       />
-      <CardActions className="flex flex-row">
-        <Box className="flex-1" />
-        <ProductAddItem
-          productId={productId}
-          availableQuantity={availableQuantity}
-          limitPerTransaction={limitPerTransaction}
-          onAddItemToCart={onAddItemToCart}
-          getProductCount={getProductCount}
-        />
-        <Button color="error" onClick={() => onAddItemToCart({ productId }, 0)}>
-          delete
-        </Button>
-      </CardActions>
-    </Card>
+      {onEdit && (
+        <FormControl variant="standard" className="pt-3">
+          <Select
+            value={quantity.toString()}
+            onChange={(e) => onEdit(productId, +e.target.value)}
+            variant="standard"
+            error={quantity > availableQuantity}
+            labelId="cart-quantity-label"
+          >
+            {Array.from(
+              {
+                length: Math.min(
+                  limitPerTransaction + 1,
+                  availableQuantity + 1,
+                ),
+              },
+              (_, i) => (
+                <MenuItem key={i} value={i.toString()}>
+                  {i} {i === 0 ? ' (remove)' : ''}
+                </MenuItem>
+              ),
+            )}
+          </Select>
+        </FormControl>
+      )}
+      <Typography variant="h6" color="error" className="pt-3">
+        Rs. {price * quantity}
+      </Typography>
+    </ListItem>
   );
 };

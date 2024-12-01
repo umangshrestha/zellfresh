@@ -7,9 +7,9 @@ import { AdminLayout } from '../components/Layout/AdminLayout.tsx';
 import { PrivacyPolicy, TermsAndConditions } from '../components/Markdown';
 import OrdersAdminPage from '../components/Order/OrdersAdminPage';
 import OrdersPage from '../components/Order/OrdersPage';
-import ProductPage from '../components/Product/ProductPage';
+import ProductsPage from '../components/Product/ProductsPage';
 import ProfilePage from '../components/Profile/ProfilePage';
-import CheckoutPage from '../pages/CheckoutPage';
+import CheckoutPage from '../components/Checkout/CheckoutPage';
 import HomePage from '../pages/HomePage';
 import LoginPage from '../pages/LoginPage';
 
@@ -40,7 +40,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/products',
-        element: <ProductPage />,
+        element: <ProductsPage />,
       },
       {
         path: '*',

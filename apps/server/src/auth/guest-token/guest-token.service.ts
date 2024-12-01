@@ -4,7 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { CookieOptions, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { Auth } from '../entities/auth.entity';
-import { Role } from '../entities/role.enum';
+import { Role } from '../types/role.enum';
 
 @Injectable()
 export class GuestTokenService {
@@ -12,10 +12,7 @@ export class GuestTokenService {
   cookieOptions: CookieOptions;
   clearCookieOptions: CookieOptions;
 
-  constructor(
-    private jwtService: JwtService,
-    configService: ConfigService,
-  ) {
+  constructor(private jwtService: JwtService, configService: ConfigService) {
     this.cookieName = configService.getOrThrow('GUEST_TOKEN_COOKIE_NAME');
     const httpOnly = configService.getOrThrow('COOKIE_HTTP_ONLY');
     const domain = configService.getOrThrow('COOKIE_DOMAIN');

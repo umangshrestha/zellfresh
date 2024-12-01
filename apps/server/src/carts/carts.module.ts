@@ -1,4 +1,5 @@
 import { forwardRef, Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { DynamodbModule } from 'src/common/dynamodb/dynamodb.module';
 import { ProductsModule } from 'src/products/products.module';
 import { PubSubModule } from '../common/pubsub/pub-sub.module';
@@ -12,6 +13,7 @@ import { CartsService } from './carts.service';
   imports: [
     ProductsModule,
     DynamodbModule,
+    ConfigModule,
     PubSubModule,
     forwardRef(() => OrdersModule),
   ],

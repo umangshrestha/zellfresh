@@ -21,4 +21,7 @@ export class Cart {
 
   @Field(() => CheckoutDetails)
   checkoutDetails: CheckoutDetails;
+
+  @Field(() => CheckoutDetails)
+  ttl: number;
 }

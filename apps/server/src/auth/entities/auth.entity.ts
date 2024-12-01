@@ -1,4 +1,4 @@
-import { RoleType } from './role.enum';
+import { RoleType } from '../types/role.enum';
 
 export class Auth {
   sub: string;

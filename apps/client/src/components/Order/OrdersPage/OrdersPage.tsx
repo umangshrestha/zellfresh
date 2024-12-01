@@ -1,12 +1,10 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
-import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
-import RatingDialog from '../../RatingDialog';
+import RatingDialog from '../../Rating/RatingDialog';
 import ServerErrorComponent from '../../ServerErrorComponent';
 import { OrderDetails } from '../OrderDetails';
 import OrderEmptyPage from '../OrderEmptyPage';
@@ -48,8 +46,8 @@ export const OrdersPage = () => {
       <Typography variant="h5">Orders</Typography>
       <List>
         {data.orders?.items?.map((order) => (
-          <ListItem key={order.orderId}>
             <OrderDetails
+              key={order.orderId}
               data={order}
               {...props}
               onSubmitFeedback={(orderId: string, rating: number) => {
@@ -57,8 +55,6 @@ export const OrdersPage = () => {
                 setCurrentRating(rating);
               }}
             />
-            <Divider />
-          </ListItem>
         ))}
       </List>
       <Button

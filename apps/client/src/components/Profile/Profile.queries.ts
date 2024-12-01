@@ -52,7 +52,7 @@ query Profile{
     email
     name
     phone
-    address(limit: 1) {
+    defaultAddress {
       addressId
       apt
       street

@@ -35,11 +35,7 @@ export const useProfile = () => {
       phone: data?.me?.phone || '',
     },
     address: {
-      addressId: data?.me?.address[0]?.addressId,
-      street: data?.me?.address[0]?.street || '',
-      zip: data?.me?.address[0]?.zip || '',
-      apt: data?.me?.address[0]?.apt || '',
-      additionalInfo: data?.me?.address[0]?.additionalInfo || '',
+      ...data?.me?.defaultAddress,
       ...DEFAULT_ADDRESS,
     },
     onUserDetailsSave: (variables: ContactDetailsType) => {
@@ -52,9 +48,12 @@ export const useProfile = () => {
         });
       });
     },
-    onAddressSave: (variables: AddressItemType) => {
+    onAddressSave: (variables: AddressItemType, addressId?: string) => {
       onAddressSave({
-        variables,
+        variables: {
+          addressId,
+          ...variables
+        },
       }).then(() => {
         setNotification({
           message: 'Address updated successfully',

@@ -1,12 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { AddressItem } from './AddressItem';
-import { AddressItemProps } from './AddressItem.types';
 
 const meta = {
   title: 'Address/Item',
   component: AddressItem,
   tags: ['autodocs'],
-} as Meta<AddressItemProps>;
+} as Meta<typeof AddressItem>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

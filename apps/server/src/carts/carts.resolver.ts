@@ -31,7 +31,7 @@ export class CartsResolver {
   @Query(() => Cart, { name: 'cart' })
   @UseGuards(AccessOrGuestTokenGuard)
   async findCart(@AuthUser() { sub }: Auth) {
-    const createdCart = await this.cartsService.createEmptyCart(sub, false);
+    const createdCart = await this.cartsService.createEmptyCart(sub, { overwrite: false });
     if (createdCart) return createdCart;
     const cart = await this.cartsService.getCart(sub);
     await this.pubSubService.updateCount({ cartCount: cart.count, sub });
@@ -51,8 +51,8 @@ export class CartsResolver {
 
   @Mutation(() => Cart)
   @UseGuards(AccessOrGuestTokenGuard)
-  async clearCart(@AuthUser() { sub }: Auth) {
-    const cart = await this.cartsService.createEmptyCart(sub);
+  async clearCart(@AuthUser() { sub, role }: Auth) {
+    const cart = await this.cartsService.createEmptyCart(sub, { overwrite: true});
     await this.pubSubService.updateCount({ cartCount: cart.count, sub });
     return cart;
   }

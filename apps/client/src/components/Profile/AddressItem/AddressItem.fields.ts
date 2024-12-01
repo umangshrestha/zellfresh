@@ -11,29 +11,37 @@ export const ADDRESS_FIELDS_MAPPING = [
     required: true,
     disabled: false,
   },
+   {
+    nestedFields: [
+      {
+        label: 'City',
+        name: 'city',
+        required: true,
+        disabled: true,
+        width: '32%',
+      },
+      {
+        label: 'State',
+        name: 'state',
+        required: true,
+        disabled: true,
+        width: '31%',
+      },
+      {
+        label: 'Country',
+        name: 'country',
+        required: true,
+        disabled: true,
+        width: '31%',
+      },
+    ],
+  },
   {
     label: 'ZIP',
     name: 'zip',
     required: true,
     disabled: false,
-  },
-  {
-    label: 'City',
-    name: 'city',
-    required: true,
-    disabled: true,
-  },
-  {
-    label: 'State',
-    name: 'state',
-    required: true,
-    disabled: true,
-  },
-  {
-    label: 'Country',
-    name: 'country',
-    required: true,
-    disabled: true,
+    width: '24%',
   },
   {
     label: 'Additional Info',

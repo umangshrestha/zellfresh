@@ -4,24 +4,24 @@ import { useAddItemToCart } from '../../Cart/AddItemToCart/AddItemToCart.hooks.t
 import { useProduct } from '../Product.hooks.ts';
 import AddItemToCart from '../../Cart/AddItemToCart';
 
-const ProductPageComponent = lazy(() =>
-  import('./ProductPage.tsx').then((module) => ({
-    default: module.ProductPage,
+const ProductsPageComponent = lazy(() =>
+  import('./ProductsPage.tsx').then((module) => ({
+    default: module.ProductsPage,
   })),
 );
 const ProductFilter = lazy(() => import('../ProductFilter'));
 
-const ProductPage = () => {
+const ProductsPage = () => {
   const isMapping = useMediaQuery('(max-width: 500px)');
   const productProps = useProduct();
   const { setProductId } = useAddItemToCart();
   return (
     <div className={isMapping ? 'flex flex-col' : 'flex'}>
       <ProductFilter />
-      <ProductPageComponent {...productProps} onAddItemToCart={setProductId} />
+      <ProductsPageComponent {...productProps} onAddItemToCart={setProductId} />
       <AddItemToCart />
     </div>
   );
 };
 
-export default ProductPage;
+export default ProductsPage;

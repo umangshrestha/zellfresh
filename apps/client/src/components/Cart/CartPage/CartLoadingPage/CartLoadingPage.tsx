@@ -1,7 +1,6 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 import CartItemSkeleton from '../../CartItemSkeleton';
@@ -13,9 +12,7 @@ export const CartLoadingPage = () => (
       {Array(2)
         .fill(0)
         .map((_, index) => (
-          <ListItem key={index}>
-            <CartItemSkeleton />
-          </ListItem>
+          <CartItemSkeleton key={index} />
         ))}
     </List>
     <Box className="flex justify-end gap-4 pb-10">

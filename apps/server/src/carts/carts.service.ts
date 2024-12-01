@@ -5,30 +5,55 @@ import {
 } from '@aws-sdk/client-dynamodb';
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
 import { Injectable, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { DynamodbService } from 'src/common/dynamodb/dynamodb.service';
 import { get_date_time_string } from 'src/common/get-date-time';
 import { CartInput } from './dto/cart-input.input';
 import { Cart } from './entities/cart.entity';
+import { CreateCart } from './types/create-cart.interface';
 const TableName = 'CARTS_TABLE';
 
 @Injectable()
 export class CartsService {
   private readonly loggerService = new Logger(CartsService.name);
+  private ttl: number = this.configService.getOrThrow('CART_TTL');
 
-  constructor(private readonly dynamodbService: DynamodbService) {}
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly dynamodbService: DynamodbService,
+  ) {}
 
-  async createEmptyCart(userId: string, overwrite = false) {
-    const cart = new Cart();
-    cart.userId = userId;
-    cart.items = [];
-    cart.count = 0;
-    cart.createdAt = get_date_time_string();
-    cart.updatedAt = get_date_time_string();
+  updateTTL(userId: string) {
+    return this.dynamodbService.client.updateItem({
+      TableName,
+      Key: { userId: { S: userId } },
+      UpdateExpression: 'SET #ttl = :ttl',
+      ExpressionAttributeNames: {
+        '#ttl': 'ttl',
+      },
+      ExpressionAttributeValues: {
+        ':ttl': { N: (this.ttl + Math.floor(Date.now() / 1000)).toString() },
+      },
+    });
+  }
 
+  newEmptyCart = (userId: string) => {
+    return {
+      userId,
+      items: [],
+      count: 0,
+      createdAt: get_date_time_string(),
+      updatedAt: get_date_time_string(),
+      ttl: this.ttl + Math.floor(Date.now() / 1000),
+    };
+  };
+
+  async createEmptyCart(userId: string, { overwrite }: CreateCart) {
+    const cart = this.newEmptyCart(userId);
     try {
       await this.dynamodbService.client.putItem({
         TableName,
-        Item: marshall({ ...cart, orderId: 'CART' }),
+        Item: marshall(cart),
         ConditionExpression: overwrite
           ? undefined
           : 'attribute_not_exists(userId)',
@@ -41,6 +66,7 @@ export class CartsService {
       this.loggerService.error(
         `Error creating cart: ${error} for data: ${JSON.stringify(cart)}`,
       );
+      await this.updateTTL(userId);
       return null;
     }
   }
@@ -60,15 +86,14 @@ export class CartsService {
   async moveCartItemsFromGuestToUser(guestId: string, userId: string) {
     const guestCart = await this.findOne(guestId);
     if (!guestCart) {
-      return this.createEmptyCart(userId, false);
+      return this.createEmptyCart(userId, { overwrite: false });
     }
     if (guestCart.count.N === '0') {
-      await this.deleteCart(guestId);
-      return this.createEmptyCart(userId, false);
+      return this.createEmptyCart(userId, { overwrite: false });
     }
     const userCart = await this.findOne(userId);
     if (!userCart) {
-      return this.createEmptyCart(userId, false);
+      return this.createEmptyCart(userId, { overwrite: false });
     }
 
     let items: AttributeValue[] = (
@@ -174,17 +199,10 @@ export class CartsService {
   }
 
   clearCartCommand(userId: string): TransactWriteItem {
-    const cart = new Cart();
-    cart.userId = userId;
-    cart.items = [];
-    cart.count = 0;
-    cart.createdAt = get_date_time_string();
-    cart.updatedAt = get_date_time_string();
-
     return {
       Put: {
         TableName,
-        Item: marshall({ ...cart, orderId: 'CART' }),
+        Item: marshall(this.newEmptyCart(userId)),
       },
     };
   }

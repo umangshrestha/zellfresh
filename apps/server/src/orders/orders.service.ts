@@ -11,12 +11,15 @@ import { FilterOrderArgs } from './entities/filter-orders.args';
 import { Order } from './entities/order.entity';
 import { PaginatedOrder } from './entities/paginated-order.entry';
 import { PaymentMethod } from './entities/payment-method.enum';
+import { ProductsService } from '../products/products.service';
 
 const TableName = 'ORDERS_TABLE';
 
 @Injectable()
 export class OrdersService {
-  constructor(private readonly dynamodbService: DynamodbService) {}
+  constructor(
+    private readonly dynamodbService: DynamodbService,
+    private readonly productsService: ProductsService) {}
 
   putCommand(order: Order) {
     return {
@@ -154,10 +157,25 @@ export class OrdersService {
       default:
         throw new BadRequestException('Unknown payment method');
     }
-    await this.dynamodbService.client.putItem({
-      TableName,
-      Item: marshall(data),
-    });
+    const transactItems = [
+      {
+        Put: {
+          TableName,
+          ConditionExpression: 'attribute_exists(userId) AND attribute_exists(orderId)',
+          Item: marshall(data),
+        },
+      },
+      ...this.productsService.cancelOrder(data.items),
+    ];
+    try {
+      const command = new TransactWriteItemsCommand({
+        TransactItems: transactItems,
+      });
+      await this.dynamodbService.client.send(command);
+      await this.productsService.invalidateCache(data.items.map((item) => item.productId));
+    } catch (error){
+      console.error(error);
+    }
     return data;
   }
 

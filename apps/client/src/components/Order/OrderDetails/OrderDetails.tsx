@@ -1,31 +1,14 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Chip from '@mui/material/Chip';
 import Grid from '@mui/material/Grid2';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
-import { DeliveryStatus } from '../../../__generated__/types.ts';
 import OrderItem from '../OrderItem';
 import { OrderDetailsProps } from './OrderDetails.types.ts';
+import { DeliveryStatusChip } from '../../DeliveryStatusChip/DeliveryStatusChip.tsx';
 
-const CustomChip = ({ deliveryStatus }: { deliveryStatus: DeliveryStatus }) => {
-  const props = { label: `Status: ${deliveryStatus}`, textColor: 'white' };
-  switch (deliveryStatus) {
-    case DeliveryStatus.Delivered:
-      return <Chip {...props} color="success" size="medium" />;
-    case DeliveryStatus.Pending:
-      return <Chip {...props} color="info" size="medium" />;
-    case DeliveryStatus.Shipped:
-      return <Chip {...props} color="primary" size="medium" />;
-    case DeliveryStatus.Cancelled:
-      return <Chip {...props} color="warning" size="medium" />;
-    default:
-      return <Chip {...props} color="error" size="medium" />;
-  }
-};
 
 export const OrderDetails = ({
   data,
@@ -54,7 +37,7 @@ export const OrderDetails = ({
           }
         />
       </Grid>
-      <CustomChip deliveryStatus={data.deliveryStatus} />
+      <DeliveryStatusChip deliveryStatus={data.deliveryStatus} />
       <Box className="flex gap-4 flex-wrap mx-auto pt-3 flex-row justify-between">
         <Box sx={{ mb: 2 }}>
           <Typography variant="h6" gutterBottom>
@@ -105,9 +88,7 @@ export const OrderDetails = ({
       <Typography variant="h6">Items ({data.items.length})</Typography>
       <List>
         {data.items.map((order, index) => (
-          <ListItem key={index}>
-            <OrderItem {...order} />
-          </ListItem>
+            <OrderItem  key={index}{...order} />
         ))}
       </List>
       <Typography>Please rate your order</Typography>

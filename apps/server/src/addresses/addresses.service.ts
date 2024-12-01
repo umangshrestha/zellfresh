@@ -36,8 +36,9 @@ export class AddressesService {
       TableName,
       Item: marshall({ ...newAddress }),
     });
-    const defaultAddressId =
-      await this.usersService.getDefaultAddressId(userId);
+    const defaultAddressId = await this.usersService.getDefaultAddressId(
+      userId,
+    );
     if (!defaultAddressId) {
       await this.usersService.updateDefaultAddress(
         userId,
@@ -77,8 +78,9 @@ export class AddressesService {
   }
 
   async delete(userId: string, addressId: string) {
-    const defaultAddressId =
-      await this.usersService.getDefaultAddressId(userId);
+    const defaultAddressId = await this.usersService.getDefaultAddressId(
+      userId,
+    );
     if (defaultAddressId === addressId) {
       throw new Error('Cannot delete default address');
     }

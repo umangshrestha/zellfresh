@@ -6,6 +6,7 @@ import { FilterProductsArgs } from './dto/filter-product.args';
 import { PutProductInput } from './dto/put-product.input';
 import { PaginatedProduct } from './entities/paginated-product.entry';
 import { Product } from './entities/product.entity';
+import * as console from 'node:console';
 
 @Injectable()
 export class ProductsCacheService {
@@ -70,7 +71,6 @@ export class ProductsCacheService {
     if (sortBy === 'rating') {
       delete query.orderBy;
     }
-
     const data = await this.prismaService.product.findMany(query);
 
     let items = await Promise.all(

@@ -11,19 +11,18 @@
     "contentful:export": "contentful space export --space-id py1ip7ajrgdr --content-file contentful/models.json --skip-content --skip-webhooks --skip-roles",
     "contentful:import": "contentful space import --space-id py1ip7ajrgdr --content-file contentful/models.json",
     "dev": "turbo run dev",
-    "build": "turbo run build",
+    "build": "ENVIRONMENT=production turbo run build",
     "start": "turbo run start",
     "format": "prettier --write .",
     "lint": "turbo run lint",
     "codegen": "graphql-codegen",
     "storybook": "turbo run storybook"
   },
-  "dependencies": {
-    "axios": "^1.7.7"
-  },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.3",
     "@graphql-codegen/client-preset": "^4.5.0",
+    "@graphql-codegen/typescript": "^4.1.2",
+    "@graphql-codegen/typescript-resolvers": "^4.4.1",
     "@graphql-typed-document-node/core": "^3.2.0",
     "@nestjs/cli": "^10.4.7",
     "contentful-cli": "^3.5.5",

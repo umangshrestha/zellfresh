@@ -17,7 +17,6 @@ export const ProfilePage = () => {
     onUserDetailsSave,
     loading,
   } = useProfile();
-
   if (loading) return <CircularProgress />;
 
   if (error) return <ServerErrorComponent error={error} />;

@@ -6,7 +6,7 @@ import Link from '@mui/material/Link';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useAccount } from './Account.hooks.ts';
 
 export const Account = () => {
@@ -43,22 +43,25 @@ export const Account = () => {
         <MenuItem className="flex flex-col items-center" disabled>
           {accountDetails?.name}
         </MenuItem>
-        <MenuItem key="profile" onClick={() => navigate('/profile')}>
+        <MenuItem
+          key="profile"
+          component={RouterLink}
+          to="/profile"
+          onClick={() => setAnchorEl(null)}
+        >
           <Button className="w-full" aria-label="user profile button">
             Profile
           </Button>
         </MenuItem>
         {isGuest ? (
           <MenuItem
-            onClick={() => {
-              setAnchorEl(null);
-            }}
+            component={Link}
+            href="/auth/login"
+            onClick={() => setAnchorEl(null)}
           >
             <Button
               className="w-full"
               aria-label="login button"
-              component={Link}
-              href="/auth/login"
               variant="contained"
               color="secondary"
             >

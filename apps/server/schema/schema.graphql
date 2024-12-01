@@ -92,15 +92,6 @@ type CartItem {
   updatedAt: String!
 }
 
-type Cart {
-  userId: String!
-  items: [CartItem!]!
-  count: Int!
-  createdAt: String!
-  updatedAt: String!
-  checkoutDetails: CheckoutDetails!
-}
-
 type OrderReview {
   rating: Float!
   comment: String!
@@ -161,6 +152,16 @@ enum PaymentMethod {
 type PaginatedOrder {
   items: [Order!]!
   pagination: Pagination!
+}
+
+type Cart {
+  userId: String!
+  items: [CartItem!]!
+  count: Int!
+  createdAt: String!
+  updatedAt: String!
+  checkoutDetails: CheckoutDetails!
+  ttl: CheckoutDetails!
 }
 
 type Category {

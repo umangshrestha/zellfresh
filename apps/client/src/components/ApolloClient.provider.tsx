@@ -17,6 +17,15 @@ import { RetryLink } from '@apollo/client/link/retry';
 import { useEffect, useState } from 'react';
 import { useAccount } from './Account';
 import { useNotification } from './Notification';
+import { createPersistedQueryLink } from '@apollo/client/link/persisted-queries';
+import { sha256 } from 'crypto-hash';
+import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
+
+
+if (import.meta.env.NODE_ENV === 'development') {
+  loadDevMessages();
+  loadErrorMessages();
+}
 
 // For network errors, retry the request up to 5 times
 const retryLink = new RetryLink({
@@ -31,9 +40,9 @@ const retryLink = new RetryLink({
   },
 });
 
-const httpLink = createHttpLink({
+const httpLink = createPersistedQueryLink({ sha256 }).concat(createHttpLink({
   uri: '/graphql',
-});
+}));
 
 const createSubscriptionLink = (accountDetails: Record<string, string>) => {
   return new GraphQLWsLink(

@@ -38,7 +38,6 @@ query ListProducts(
       price
       unit
       availableQuantity
-      limitPerTransaction
       category
       rating {
         rating
@@ -53,13 +52,5 @@ export const SUBMIT_PRODUCT_FEEDBACK_MUTATION = gql(`
 mutation SubmitProductFeedback($productId: String!, $rating: Float!, $comment: String!) {
   submitFeedback(productId: $productId, feedback: { rating: $rating, comment: $comment}) {
     rating
-  }
-}`);
-
-export const GET_PRODUCT_RATING_QUERY = gql(`
-query GetProductRating($productId: String!) {
-  review(productId: $productId) {
-    rating
-    comment
   }
 }`);

@@ -8,8 +8,6 @@ import ListItemText from '@mui/material/ListItemText';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import * as Categories from '../../Categories';
 import SplitButton from '../../SplitButton';
 import { ProductOrderOptions } from './ProductFilter.config';
 import { useProductFilter } from './ProductFilter.hooks';
@@ -25,7 +23,6 @@ function priceText(value: number) {
 export const ProductFilter = () => {
   const { productFilter, updateProductFilter } = useProductFilter();
   const [showFilter, setShowFilter] = useState(false);
-  const navigate = useNavigate();
 
   if (showFilter)
     return (
@@ -45,9 +42,6 @@ export const ProductFilter = () => {
         <Typography variant="h6"> Product Filter</Typography>
       </div>
       <List>
-        <ListItem className="flex flex-col p-0 m-0">
-          <Categories.CollapsableButton onClick={navigate} />
-        </ListItem>
         <ListItem>
           <SplitButton
             options={ProductOrderOptions}

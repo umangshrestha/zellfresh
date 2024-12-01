@@ -7,17 +7,16 @@ import { SOCIAL_MEDIA_HANDLES } from '../../config/social';
 import AvailabilityBanner from '../Banner.tsx';
 export const Footer = () => (
   <footer>
-    <div className="flex row gap-4 justify-around p-4 flex-wrap">
-      <section className="flex flex-col text-center">
+    <div className="flex row gap-4 justify-between p-4 flex-wrap">
+      <address>
         <span className="font-bold text-lg">{APP_NAME}</span>
-        <address>
-          {ADDRESS.street},<br />
-          {ADDRESS.landmark},<br />
-          {ADDRESS.city}, {ADDRESS.state},<br />
-          {ADDRESS.country} - {ADDRESS.zip}
-        </address>
-      </section>
-      <section className="flex flex-col text-center">
+        <br />
+        {ADDRESS.street},<br />
+        {ADDRESS.landmark},<br />
+        {ADDRESS.city}, {ADDRESS.state},<br />
+        {ADDRESS.country} - {ADDRESS.zip}
+      </address>
+      <section className="flex flex-col">
         <span className="font-bold text-lg">Information</span>
         <Link component={RouterLink} to="/terms-and-conditions">
           Terms of Service
@@ -26,46 +25,34 @@ export const Footer = () => (
           Privacy Policy
         </Link>
       </section>
+
       <section className="flex flex-col text-center">
-        <span className="font-bold text-lg">Need help?</span>
-        <a
-          aria-label="Chat on WhatsApp"
-          href={`https://wa.me/91${PHONE_NUMBER}`}
-        >
-          <img
-            alt="Chat on WhatsApp"
-            src="/images/WhatsAppButtonGreenLarge.png"
-            height="50"
-            width="150"
-          />
-        </a>
-        <br />
+        <span className="font-bold text-lg">Contact us</span>
         <a href={`tel:+91${PHONE_NUMBER}`}>
           <CallIcon /> {PHONE_NUMBER}
         </a>
+        <br />
+
+        <span className="font-bold text-lg">Follow us</span>
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          {SOCIAL_MEDIA_HANDLES.map(({ key, href, icon: Icon }) => (
+            <Link
+              component={RouterLink}
+              key={key}
+              to={href}
+              target="_blank"
+              rel="noopener"
+            >
+              <Icon />
+            </Link>
+          ))}
+        </Box>
       </section>
     </div>
 
-    <section className="flex flex-col items-center justify-center p-4">
-      <p>Follow us on social media:</p>
-      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-        {SOCIAL_MEDIA_HANDLES.map(({ key, href, icon: Icon }) => (
-          <Link
-            component={RouterLink}
-            key={key}
-            to={href}
-            target="_blank"
-            rel="noopener"
-          >
-            <Icon />
-          </Link>
-        ))}
-      </Box>
-      <p className="w-full text-center">
-        © {CURRENT_YEAR} {APP_NAME}. All rights reserved.
-      </p>
-    </section>
-
+    <p className="w-full text-center">
+      © {CURRENT_YEAR} {APP_NAME}. All rights reserved.
+    </p>
     <AvailabilityBanner />
   </footer>
 );

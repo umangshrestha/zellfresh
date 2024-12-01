@@ -220,7 +220,28 @@ export class ProductsService {
     return Promise.all(transactItems);
   }
 
-  async remove(productId: string) {
+  cancelOrder(
+    items: CartItem[],
+  ):TransactWriteItem[] {
+    return items.map(({ productId, quantity }) => {
+      return {
+        Update: {
+          Key: marshall({ productId }),
+          TableName: TableName,
+          UpdateExpression:
+            'SET availableQuantity = availableQuantity + :count, updatedAt = :updatedAt',
+          ExpressionAttributeValues: {
+            ':count': { N: quantity.toString() },
+            ':updatedAt': { S: new Date().toISOString() },
+          },
+        },
+      };
+    });
+  }
+
+
+
+    async remove(productId: string) {
     // Delete from DynamoDB
     try {
       await this.dynamodbService.client.deleteItem({

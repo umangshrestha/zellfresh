@@ -29,7 +29,6 @@ import { Breadcrumbs } from './Breadcrumbs';
 export const Layout = () => {
   const navigate = useNavigate();
   const [drawerOpen, setDrawerOpen] = useState(false);
-
   const onClick = (url: string) => {
     navigate(url);
     setDrawerOpen(false);
@@ -71,7 +70,7 @@ export const Layout = () => {
       >
         <Toolbar />
         <List>
-          <Categories.CollapsableButton onClick={onClick} />
+          <Categories.CollapsableButton/>
           <Divider />
           <ListItemButton onClick={() => onClick('/orders')}>
             <ListItemIcon
