@@ -1,11 +1,9 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import * as Categories from '../../components/Categories';
+import * as Categories from '../Categories';
 
 export const HomePage = () => {
-  const navigate = useNavigate();
   return (
     <React.Fragment>
       <Box display="flex" flexDirection="column" alignItems="center">
@@ -22,7 +20,7 @@ export const HomePage = () => {
           Please select a category to get started
         </Typography>
       </Box>
-      <Categories.Section onClick={navigate} />
+      <Categories.Section/>
     </React.Fragment>
   );
 };

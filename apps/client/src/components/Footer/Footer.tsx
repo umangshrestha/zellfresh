@@ -2,12 +2,31 @@ import CallIcon from '@mui/icons-material/Call';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import { Link as RouterLink } from 'react-router-dom';
-import { ADDRESS, APP_NAME, CURRENT_YEAR, PHONE_NUMBER } from '../../config';
+import {
+  ADDRESS,
+  APP_NAME,
+  CURRENT_YEAR,
+  GOOGLE_MAP_URL,
+  PHONE_NUMBER,
+} from '../../config';
 import { SOCIAL_MEDIA_HANDLES } from '../../config/social';
 import AvailabilityBanner from '../Banner.tsx';
+
 export const Footer = () => (
   <footer>
     <div className="flex row gap-4 justify-between p-4 flex-wrap">
+      <section>
+        <iframe
+          src={GOOGLE_MAP_URL}
+          width="450"
+          height="250"
+          style={{ border: 0 }}
+          allowFullScreen={true}
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          title="Google Maps"
+        ></iframe>
+      </section>
       <address>
         <span className="font-bold text-lg">{APP_NAME}</span>
         <br />

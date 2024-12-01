@@ -8,8 +8,12 @@ import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 import { CartItemProps } from './CartItem.types';
 
-
-export const CartItem = ({ quantity,productId, product, onEdit }: CartItemProps) => {
+export const CartItem = ({
+  quantity,
+  productId,
+  product,
+  onAddItemToCart,
+}: CartItemProps) => {
   const {
     name,
     unit,
@@ -54,11 +58,11 @@ export const CartItem = ({ quantity,productId, product, onEdit }: CartItemProps)
           </Typography>
         }
       />
-      {onEdit && (
+      {onAddItemToCart && (
         <FormControl variant="standard" className="pt-3">
           <Select
             value={quantity.toString()}
-            onChange={(e) => onEdit(productId, +e.target.value)}
+            onChange={(e) => onAddItemToCart(productId, +e.target.value)}
             variant="standard"
             error={quantity > availableQuantity}
             labelId="cart-quantity-label"

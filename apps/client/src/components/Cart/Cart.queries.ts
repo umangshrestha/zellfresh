@@ -29,3 +29,10 @@ mutation ClearCart {
     count
   }
 }`);
+
+export const ADD_ITEM_TO_CART_MUTATION = gql(`
+mutation AddItemToCart($productId: String! = "apple", $quantity: Int!) {
+  addItemToCart(cartInput: { productId: $productId, quantity: $quantity }) {
+    count
+  }
+}`);

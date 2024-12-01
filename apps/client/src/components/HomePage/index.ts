@@ -1,6 +1,6 @@
 import { lazy } from 'react';
 
 const HomePage = lazy(() =>
-  import('./HomePage').then((module) => ({ default: module.HomePage })),
+  import('./HomePage.tsx').then((module) => ({ default: module.HomePage })),
 );
 export default HomePage;

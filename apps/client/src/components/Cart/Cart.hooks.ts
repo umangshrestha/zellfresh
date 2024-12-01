@@ -2,15 +2,15 @@ import { useMutation, useQuery } from '@apollo/client';
 import { useNotification } from '../Notification';
 import {
   ADD_ITEM_TO_CART_MUTATION,
-  CART_ITEM_QUERY,
-} from './AddItemToCart/AddItemToCart.queries.ts';
-import { CARTS_QUERY, CLEAR_CART_MUTATION } from './Cart.queries';
+  CARTS_QUERY,
+  CLEAR_CART_MUTATION,
+} from './Cart.queries';
 
 export const useCart = () => {
   const { setNotification } = useNotification();
   const { data, loading, error, previousData } = useQuery(CARTS_QUERY);
   const [clearCart] = useMutation(CLEAR_CART_MUTATION, {
-    refetchQueries: [CARTS_QUERY, CART_ITEM_QUERY],
+    refetchQueries: [CARTS_QUERY],
     onCompleted: () => {
       setNotification({
         message: 'Cart updated',
@@ -18,8 +18,9 @@ export const useCart = () => {
       });
     },
   });
+
   const [addItemToCart] = useMutation(ADD_ITEM_TO_CART_MUTATION, {
-    refetchQueries: [CARTS_QUERY, CART_ITEM_QUERY],
+    refetchQueries: [CARTS_QUERY],
     onCompleted: () => {
       setNotification({
         message: 'Cart updated',
@@ -30,20 +31,21 @@ export const useCart = () => {
 
   const targetData = loading && previousData ? previousData : data;
 
-  const getProductCount = (productId: string) => {
+  const getCartItem = (productId: string) => {
     const items = targetData?.cart?.items?.filter(
-      (item) => item.product?.productId === productId,
+      (item) => item.productId === productId,
     );
-    return items?.length ? items[0].quantity : 0;
+    return items?.length ? items[0] : null;
   };
 
   return {
     data: targetData,
     error,
     loading: loading && !previousData,
-    getProductCount,
+    getCartItem,
     onClearCart: () => clearCart().then(),
-    onEdit: (productId: string, quantity: number) =>
-      addItemToCart({ variables: { productId, quantity } }).then(),
+    onAddItemToCart: (productId: string, quantity: number) => {
+      addItemToCart({ variables: { productId, quantity } }).then()
+    },
   };
 };

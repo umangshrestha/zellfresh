@@ -43,5 +43,8 @@ export const useProduct = () => {
     loading: loading && !previousData,
     loadMore,
     category: productFilter?.category,
+    getProduct: (productId: string) => {
+      return products.find((product) => product.productId === productId);
+    },
   };
 };

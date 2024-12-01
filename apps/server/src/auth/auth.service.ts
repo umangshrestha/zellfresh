@@ -35,7 +35,7 @@ export class AuthService {
       name,
     } = await this.googleStrategy.validate(authorization);
     const user = await this.usersService.findOne(sub);
-    if (user.blocked) {
+    if (user?.blocked) {
       throw new UnauthorizedException('User is blocked');
     }
     const payload: Auth = user

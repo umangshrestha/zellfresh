@@ -1,11 +1,12 @@
 import { Dispatch, SetStateAction } from 'react';
+import type { CartItemProps } from '../CartItem';
 
 export type AddItemToCartContextType = {
   productId: string | null;
-  setProductId: Dispatch<SetStateAction<string|null>>
+  setProductId: Dispatch<SetStateAction<string | null>>;
 };
 
-export type AddItemToCartProps = {
-  productId: string;
+export interface AddItemToCartProps extends CartItemProps {
   onClose: () => void;
-};
+  onAddItemToCart: (productId: string, quantity: number) => void;
+}

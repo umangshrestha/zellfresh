@@ -1,12 +1,11 @@
 import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
 import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';import { OrderItemProps } from './OrderItem.types';
+import Typography from '@mui/material/Typography';
+import { OrderItemProps } from './OrderItem.types';
 
-export const OrderItem = (
-  { price, quantity, product }: OrderItemProps,
-) => {
+export const OrderItem = ({ price, quantity, product }: OrderItemProps) => {
   const { name, unit, imageUrl, description } = product || {
     imageUrl: '',
     description: '',

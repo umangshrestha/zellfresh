@@ -6,5 +6,5 @@ export type CartPageProps = {
   loading: boolean;
   error?: ApolloError;
   onClearCart: () => void;
-  onEdit: (productId: string, quantity: number) => void;
+  onAddItemToCart: (productId: string, quantity: number) => void;
 };

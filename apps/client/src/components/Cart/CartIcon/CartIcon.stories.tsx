@@ -9,7 +9,7 @@ const meta = {
     </div>
   ),
   tags: ['autodocs'],
-} as Meta;
+} as Meta<typeof CartIcon>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

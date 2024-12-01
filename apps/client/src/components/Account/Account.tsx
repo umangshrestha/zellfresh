@@ -2,7 +2,6 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import Link from '@mui/material/Link';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import React, { useState } from 'react';
@@ -55,8 +54,8 @@ export const Account = () => {
         </MenuItem>
         {isGuest ? (
           <MenuItem
-            component={Link}
-            href="/auth/login"
+            component={RouterLink}
+            to="/auth/login"
             onClick={() => setAnchorEl(null)}
           >
             <Button

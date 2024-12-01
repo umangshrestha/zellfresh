@@ -6,6 +6,7 @@ import AddressItem from '../AddressItem';
 import ContactDetails from '../ContactDetails';
 import { useProfile } from '../index.ts';
 
+
 export const ProfilePage = () => {
   const {
     data,

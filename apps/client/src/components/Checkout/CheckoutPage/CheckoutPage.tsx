@@ -1,7 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
@@ -22,6 +21,7 @@ import OrderPlaced from '../../Order/OrderPlaced';
 import { LIST_PRODUCTS_QUERY } from '../../Product/Product.queries.ts';
 import { CHECKOUT_MUTATION, CHECKOUT_QUERY } from '../Checkout.queries.tsx';
 import { CheckoutListSection } from '../CheckoutListSection/CheckoutListSection.tsx';
+import LoadingSpinner from '../../LoadingSpinner';
 
 export const CheckoutPage = () => {
   const navigate = useNavigate();
@@ -58,7 +58,7 @@ export const CheckoutPage = () => {
     return <OrderPlaced orderId={orderId} />;
   }
 
-  if (loading) return <CircularProgress />;
+  if (loading) return <LoadingSpinner />;
 
   if (error || !data || data.cart.items.length == 0) {
     navigate('/');

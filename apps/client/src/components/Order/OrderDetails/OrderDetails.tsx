@@ -27,7 +27,7 @@ export const OrderDetails = ({
         <ListItemText
           primary={
             <Typography variant="h6">
-              Created At: {new Date(data.createdAt).toLocaleDateString()}
+              {new Date(data.createdAt).toDateString()}
             </Typography>
           }
           secondary={
@@ -93,6 +93,7 @@ export const OrderDetails = ({
       </List>
       <Typography>Please rate your order</Typography>
       <Rating
+        disabled={!!data?.review?.rating}
         value={data?.review?.rating}
         precision={0.5}
         onChange={(_, newValue) =>

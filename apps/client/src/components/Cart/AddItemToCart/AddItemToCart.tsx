@@ -1,4 +1,3 @@
-import { useMutation, useQuery } from '@apollo/client';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -13,47 +12,20 @@ import Select from '@mui/material/Select';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Link as RouterLink } from 'react-router-dom';
-import { useNotification } from '../../Notification';
 import AddItemToCartSkeleton from '../AddItemToCartSkeleton';
-import { CARTS_QUERY } from '../Cart.queries.ts';
-import {
-  ADD_ITEM_TO_CART_MUTATION,
-  CART_ITEM_QUERY,
-} from './AddItemToCart.queries.ts';
 import { AddItemToCartProps } from './AddItemToCart.types.ts';
 
-export const AddItemToCart = ({ productId, onClose }: AddItemToCartProps) => {
-  const { setNotification } = useNotification();
-  const { data, loading, error } = useQuery(CART_ITEM_QUERY, {
-    variables: { productId },
-  });
-  const [addItemToCart] = useMutation(ADD_ITEM_TO_CART_MUTATION, {
-    refetchQueries: [{ query: CARTS_QUERY }, { query: CART_ITEM_QUERY }],
-    onCompleted: () => {
-      setNotification({
-        message: 'Cart updated',
-        severity: 'success',
-      });
-    },
-  });
-
-  const onAddItemToCart = (productId: string, quantity: number) => {
-    addItemToCart({ variables: { productId, quantity } }).then(() => {
-      if (quantity === 0) {
-        onClose();
-      }
-    });
-  };
-  if (loading)
-    return <AddItemToCartSkeleton productId={productId} onClose={onClose} />;
-  if (!data || error) {
-    return <div>{error ? error.message : 'No data'}</div>;
+export const AddItemToCart = ({
+  quantity,
+  productId,
+  product,
+  onAddItemToCart,
+  onClose,
+}: AddItemToCartProps) => {
+  if (!product) {
+    return <AddItemToCartSkeleton open={true} onClose={onClose} />;
   }
 
-  const currentQuantity = data.cartItem.quantity;
-  if (currentQuantity === 0 && productId) {
-    onAddItemToCart(productId, 1);
-  }
   const {
     name = 'NA',
     description = '',
@@ -61,8 +33,8 @@ export const AddItemToCart = ({ productId, onClose }: AddItemToCartProps) => {
     price = 0,
     limitPerTransaction = 0,
     availableQuantity = 0,
-  } = data.product || {};
-  const isError = currentQuantity > availableQuantity;
+  } = product || {};
+  const isError = quantity > availableQuantity;
   return (
     <Drawer anchor="right" open={!!productId} onClose={onClose}>
       <Toolbar />
@@ -93,7 +65,7 @@ export const AddItemToCart = ({ productId, onClose }: AddItemToCartProps) => {
           }
           action={
             <Typography variant="h6" className="text-red-500 pt-6">
-              Rs. {price * currentQuantity}
+              Rs. {price * quantity}
             </Typography>
           }
         />
@@ -106,7 +78,7 @@ export const AddItemToCart = ({ productId, onClose }: AddItemToCartProps) => {
           <FormControl variant="standard" fullWidth>
             <InputLabel id="product-quantity-label">Quantity</InputLabel>
             <Select
-              value={currentQuantity.toString()}
+              value={quantity.toString()}
               onChange={(e) => onAddItemToCart(productId, +e.target.value)}
               variant="standard"
               error={isError}
@@ -126,8 +98,8 @@ export const AddItemToCart = ({ productId, onClose }: AddItemToCartProps) => {
                 ),
               )}
               {isError && (
-                <MenuItem value={currentQuantity.toString()} disabled>
-                  {currentQuantity}
+                <MenuItem value={quantity.toString()} disabled>
+                  {quantity}
                 </MenuItem>
               )}
             </Select>

@@ -15,8 +15,8 @@ const data = {
     items: [
       {
         quantity: 4,
+        productId: '1731039366725',
         product: {
-          productId: '1731039366725',
           category: 'beef',
           name: 'Beef Chunk',
           unit: '500 gm',

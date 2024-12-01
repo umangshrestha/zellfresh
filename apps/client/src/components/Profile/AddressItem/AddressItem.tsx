@@ -5,17 +5,21 @@ import { DEFAULT_ADDRESS } from '../../../config/address.ts';
 import LoadingButton from '../../LoadingButton';
 import { ADDRESS_FIELDS_MAPPING } from './AddressItem.fields.ts';
 import { AddressItemSchema } from './AddressItem.schema.ts';
-import { AddressItemProps, AddressItemType, AddressTypeKey } from './AddressItem.types.ts';
+import {
+  AddressItemProps,
+  AddressItemType,
+  AddressTypeKey,
+} from './AddressItem.types.ts';
 
 export const AddressItem = ({
-                              addressId,
-                              apt,
-                              street,
-                              zip,
-                              onAddressSaveLoading,
-                              additionalInfo,
-                              onAddressSave,
-                            }: AddressItemProps) => {
+  addressId,
+  apt,
+  street,
+  zip,
+  onAddressSaveLoading,
+  additionalInfo,
+  onAddressSave,
+}: AddressItemProps) => {
   const [address, setAddress] = useState<AddressItemType>({
     apt,
     street,
@@ -35,10 +39,10 @@ export const AddressItem = ({
     ) || {};
   return (
     <FormGroup className="flex gap-4">
-      {ADDRESS_FIELDS_MAPPING.map((field) => {
+      {ADDRESS_FIELDS_MAPPING.map((field, i) => {
         if (field.nestedFields) {
           return (
-            <div className="flex flex-row flex-wrap gap-4">
+            <div className="flex flex-row flex-wrap gap-4" key={`nested-${i}`}>
               {field.nestedFields.map((nestedField) => {
                 const name = nestedField.name as AddressTypeKey;
                 const value = address[name] || '';
@@ -61,17 +65,18 @@ export const AddressItem = ({
                         [name]: e.target.value,
                       });
                     }}
-                  />);
-              })
-              }
-            </div>)
+                  />
+                );
+              })}
+            </div>
+          );
         }
         const name = field.name as AddressTypeKey;
         const value = address[name] || '';
         const error = errorsMap[name];
         return (
           <TextField
-            key={name}
+            key={`nonnested-${name}`}
             label={field.label}
             name={name}
             variant="outlined"

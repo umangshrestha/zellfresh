@@ -6,13 +6,13 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Skeleton from '@mui/material/Skeleton';
 import Toolbar from '@mui/material/Toolbar';
-import { AddItemToCartProps } from '../AddItemToCart/AddItemToCart.types';
+import { AddItemTOCartSkeletonProps } from './AddItemToCartSkeleton.types.ts';
 
 export const AddItemToCartSkeleton = ({
-  productId,
+  open,
   onClose,
-}: AddItemToCartProps) => (
-  <Drawer anchor="right" open={!!productId} onClose={onClose}>
+}: AddItemTOCartSkeletonProps) => (
+  <Drawer anchor="right" open={open} onClose={onClose}>
     <Toolbar />
     <Card className="flex flex-col justify-between w-64 m-4" elevation={0}>
       <CardHeader

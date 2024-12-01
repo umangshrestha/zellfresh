@@ -1,3 +1,4 @@
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import MenuCloseIcon from '@mui/icons-material/Menu';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
@@ -70,7 +71,7 @@ export const Layout = () => {
       >
         <Toolbar />
         <List>
-          <Categories.CollapsableButton/>
+          <Categories.CollapsableButton />
           <Divider />
           <ListItemButton onClick={() => onClick('/orders')}>
             <ListItemIcon
@@ -94,6 +95,15 @@ export const Layout = () => {
         </ErrorBoundary>
         <Notification />
       </Paper>
+      <div className="relative flex justify-center items-center flex-grow">
+        <Button
+          className="absolute"
+          onClick={() => window.scrollTo(0, 0)}
+        >
+          <ArrowUpwardIcon />
+          Scroll to top
+        </Button>
+      </div>
       <Footer />
     </Box>
   );

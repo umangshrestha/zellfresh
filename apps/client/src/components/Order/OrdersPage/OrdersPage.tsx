@@ -1,6 +1,5 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
@@ -9,6 +8,7 @@ import ServerErrorComponent from '../../ServerErrorComponent';
 import { OrderDetails } from '../OrderDetails';
 import OrderEmptyPage from '../OrderEmptyPage';
 import { useOrders } from '../Orders.hooks.ts';
+import LoadingSpinner from '../../LoadingSpinner';
 
 export const OrdersPage = () => {
   const { loading, error, loadMore, onSubmitFeedback, data, ...props } =
@@ -16,7 +16,7 @@ export const OrdersPage = () => {
   const [feedbackId, setFeedbackId] = useState<string | null>(null);
   const [currentRating, setCurrentRating] = useState<number>(0);
 
-  if (loading) return <CircularProgress />;
+  if (loading) return <LoadingSpinner />;
   if (error) return <ServerErrorComponent error={error} />;
 
   if (!data?.orders?.items?.length) return <OrderEmptyPage />;
@@ -34,7 +34,7 @@ export const OrdersPage = () => {
           currentRating={currentRating || 0}
           lastRating={
             data.orders.items.find((order) => order.orderId === feedbackId)
-              ?.review?.rating || 0
+              ?.review?.rating
           }
           comment={
             data.orders.items.find((order) => order.orderId === feedbackId)

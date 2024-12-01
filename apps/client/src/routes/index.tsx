@@ -10,8 +10,8 @@ import OrdersPage from '../components/Order/OrdersPage';
 import ProductsPage from '../components/Product/ProductsPage';
 import ProfilePage from '../components/Profile/ProfilePage';
 import CheckoutPage from '../components/Checkout/CheckoutPage';
-import HomePage from '../pages/HomePage';
-import LoginPage from '../pages/LoginPage';
+import HomePage from '../components/HomePage';
+import LoginPage from '../components/LoginPage';
 
 export const router = createBrowserRouter([
   {

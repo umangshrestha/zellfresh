@@ -10,7 +10,7 @@ export const ProductsPage = ({
   loading,
   error,
   loadMore,
-  onAddItemToCart
+  onAddItemToCart,
 }: ProductsPageProps) => {
   if (loading) return <ProductsLoadingPage />;
 
@@ -40,4 +40,4 @@ export const ProductsPage = ({
       </Button>
     </div>
   );
-      };
+};

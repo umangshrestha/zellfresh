@@ -14,7 +14,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 const documents = {
-    "\nmutation AddItemToCart($productId: String!, $quantity: Int!) {\n  addItemToCart(cartInput: { productId: $productId, quantity: $quantity }) {\n    count\n  }\n}": types.AddItemToCartDocument,
+    "\nmutation AddItemToCart($productId: String! = \"apple\", $quantity: Int!) {\n  addItemToCart(cartInput: { productId: $productId, quantity: $quantity }) {\n    count\n  }\n}": types.AddItemToCartDocument,
     "\nquery GetCartItem($productId: String!) {\n  cartItem(productId: $productId) {\n    quantity\n  }\n  product(productId: $productId) {\n    name\n    imageUrl\n    price\n    availableQuantity\n    description\n    limitPerTransaction\n  }\n}": types.GetCartItemDocument,
     "\nquery ListCarts {\n  cart {\n    items {\n      quantity\n      productId\n      product {\n        name\n        description\n        unit\n        price\n        imageUrl\n        availableQuantity\n        limitPerTransaction\n      }\n    }\n    checkoutDetails {\n      subTotal\n      enableCheckout\n    }\n  }\n}": types.ListCartsDocument,
     "\nmutation ClearCart {\n  clearCart {\n    count\n  }\n}": types.ClearCartDocument,
@@ -52,7 +52,7 @@ export function gql(source: string): unknown;
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\nmutation AddItemToCart($productId: String!, $quantity: Int!) {\n  addItemToCart(cartInput: { productId: $productId, quantity: $quantity }) {\n    count\n  }\n}"): (typeof documents)["\nmutation AddItemToCart($productId: String!, $quantity: Int!) {\n  addItemToCart(cartInput: { productId: $productId, quantity: $quantity }) {\n    count\n  }\n}"];
+export function gql(source: "\nmutation AddItemToCart($productId: String! = \"apple\", $quantity: Int!) {\n  addItemToCart(cartInput: { productId: $productId, quantity: $quantity }) {\n    count\n  }\n}"): (typeof documents)["\nmutation AddItemToCart($productId: String! = \"apple\", $quantity: Int!) {\n  addItemToCart(cartInput: { productId: $productId, quantity: $quantity }) {\n    count\n  }\n}"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

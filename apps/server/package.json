@@ -24,7 +24,6 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "axios": "^1.7.7",
     "@apollo/server": "^4.11.0",
     "@aws-sdk/client-dynamodb": "^3.666.0",
     "@aws-sdk/util-dynamodb": "^3.670.0",
@@ -41,7 +40,9 @@
     "@nestjs/schedule": "^4.1.1",
     "@nestjs/serve-static": "^4.0.2",
     "@nestjs/terminus": "^10.2.3",
+    "@nestjs/throttler": "^6.2.1",
     "@prisma/client": "^5.22.0",
+    "axios": "^1.7.7",
     "cache-manager": "^5.7.6",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",

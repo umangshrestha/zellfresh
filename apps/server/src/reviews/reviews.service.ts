@@ -38,6 +38,7 @@ export class ReviewsService {
     try {
       await this.dynamodbService.client.putItem({
         TableName,
+        ConditionExpression: 'attribute_not_exists(productId) AND attribute_not_exists(userId)',
         Item: marshall({ ...review }),
       });
       await this.cacheManager.del(this.getKeyName(productId));

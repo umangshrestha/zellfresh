@@ -18,6 +18,7 @@ import { ValidationProvider } from './common/validator.provider';
 import { OrdersModule } from './orders/orders.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { UsersModule } from './users/users.module';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -28,6 +29,10 @@ import { UsersModule } from './users/users.module';
     CacheModule.register({
       isGlobal: true,
     }),
+    ThrottlerModule.forRoot([{
+      ttl: 60000,
+      limit: 10,
+    }]),
     ProductsModule,
     CartsModule,
     AuthModule,

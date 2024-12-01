@@ -41,7 +41,7 @@ export const RatingDialog = ({
       ) : (
         [
           <DialogContent key="content">
-            {lastRating && (
+            {(lastRating !== undefined) && (
               <Box>
                 <FormLabel component="legend">Your last rating</FormLabel>
                 <Rating
