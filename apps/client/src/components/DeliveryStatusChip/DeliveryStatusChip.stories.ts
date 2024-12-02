@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { DeliveryStatusChip } from './DeliveryStatusChip';
 import { DeliveryStatus } from '../../__generated__/types';
+import { DeliveryStatusChip } from './DeliveryStatusChip';
 
 const meta = {
   title: 'DeliveryStatus/Chip',
@@ -55,4 +55,3 @@ export const Processing: Story = {
     deliveryStatus: DeliveryStatus.Processing,
   },
 };
-

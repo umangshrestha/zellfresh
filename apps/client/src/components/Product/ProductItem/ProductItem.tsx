@@ -19,7 +19,7 @@ export const ProductItem = ({
   rating,
   badgeText,
   onAddItemToCart,
-  productId
+  productId,
 }: ProductProps) => {
   const isProductAvailable = availableQuantity > 0;
   if (availableQuantity <= 0) badgeText = 'Out of Stock';
@@ -58,27 +58,23 @@ export const ProductItem = ({
           <Typography variant="subtitle2" color="textSecondary">
             {unit}
           </Typography>
-          <Rating
-            value={rating?.rating}
-            precision={0.5}
-            readOnly
-          />
+          <Rating value={rating?.rating} precision={0.5} readOnly />
           <Typography
             variant="caption"
             color="textSecondary"
           >{`(${rating?.count})`}</Typography>
         </CardContent>
         <CardActions disableSpacing sx={{ mt: 'auto' }}>
-            <Button
-              className="w-full"
-              size="large"
-              disabled={!isProductAvailable}
-              color="error"
-              variant="contained"
-              onClick={() => onAddItemToCart(productId)}
-            >
-              Add to Cart
-            </Button>
+          <Button
+            className="w-full"
+            size="large"
+            disabled={!isProductAvailable}
+            color="error"
+            variant="contained"
+            onClick={() => onAddItemToCart(productId)}
+          >
+            Add to Cart
+          </Button>
         </CardActions>
       </Card>
     </Veil>

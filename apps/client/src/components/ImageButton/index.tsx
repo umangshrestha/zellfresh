@@ -7,9 +7,12 @@ import {
 } from './ImageButton.tsx';
 import { ImageButtonProps } from './ImageButton.types.ts';
 
-const ImageButton = (
-  { imageUrl, name, width = '33%', onClick }: ImageButtonProps,
-) => (
+const ImageButton = ({
+  imageUrl,
+  name,
+  width = '33%',
+  onClick,
+}: ImageButtonProps) => (
   <ImageCenterButton
     focusRipple
     key={name}

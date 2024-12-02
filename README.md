@@ -51,17 +51,19 @@ docker-compose up -d
 cd infrastructure
 tflocal init
 tflocal apply --auto-approve
+cd -
 ```
 
 ## Creating docker image
+
 ```sh
-docker build -t zell-fresh-nest-js .  --no-cache 
+docker build -t zell-fresh-nest-js .  --no-cache
 ```
 
-
 ## Running docker image locally
+
 ```sh
-docker-compose -f docker-compose-integration-test.yaml up -d
+docker-compose -f docker-compose-integration-test.yaml  up -d --force-recreate
 ```
 
 ## Contributing

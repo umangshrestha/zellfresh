@@ -9,6 +9,7 @@ export type AddressMutationFunction = {
   onAddressSaveLoading: boolean;
 };
 
-export type AddressItemProps = AddressItemType & AddressMutationFunction  & {
-  addressId?: string;
-};
+export type AddressItemProps = AddressItemType &
+  AddressMutationFunction & {
+    addressId?: string;
+  };

@@ -12,9 +12,13 @@ export class DynamodbService {
       region: configService.getOrThrow('AWS_REGION'),
       accessKeyId: configService.getOrThrow('AWS_ACCESS_KEY_ID'),
       secretAccessKey: configService.getOrThrow('AWS_SECRET_ACCESS_KEY'),
-      endpoint: isProduction ? undefined : configService.getOrThrow('DYNAMODB_ENDPOINT'),
+      endpoint: isProduction
+        ? undefined
+        : configService.getOrThrow('DYNAMODB_ENDPOINT'),
     };
-    this.logger.log(`DynamodbService initialized with options: ${JSON.stringify(options)}`);
+    this.logger.log(
+      `DynamodbService initialized with options: ${JSON.stringify(options)}`,
+    );
     this.client = new DynamoDB(options);
   }
 }

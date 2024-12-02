@@ -17,11 +17,11 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { PaymentMethod } from '../../../__generated__/types.ts';
 import { CARTS_QUERY } from '../../Cart/Cart.queries.ts';
 import LoadingButton from '../../LoadingButton';
+import LoadingSpinner from '../../LoadingSpinner';
 import OrderPlaced from '../../Order/OrderPlaced';
 import { LIST_PRODUCTS_QUERY } from '../../Product/Product.queries.ts';
 import { CHECKOUT_MUTATION, CHECKOUT_QUERY } from '../Checkout.queries.tsx';
 import { CheckoutListSection } from '../CheckoutListSection/CheckoutListSection.tsx';
-import LoadingSpinner from '../../LoadingSpinner';
 
 export const CheckoutPage = () => {
   const navigate = useNavigate();

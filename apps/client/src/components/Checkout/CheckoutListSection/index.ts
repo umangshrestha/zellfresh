@@ -1,1 +1,1 @@
-export {CheckoutListSection as default } from './CheckoutListSection';
+export { CheckoutListSection as default } from './CheckoutListSection';

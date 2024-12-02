@@ -20,7 +20,7 @@ export const HomePage = () => {
           Please select a category to get started
         </Typography>
       </Box>
-      <Categories.Section/>
+      <Categories.Section />
     </React.Fragment>
   );
 };

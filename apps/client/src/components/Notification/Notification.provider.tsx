@@ -6,9 +6,9 @@ import {
   NotificationProps,
 } from './Notification.types';
 
-export const NotificationProvider = (
-  { children }: NotificationProviderProps,
-) => {
+export const NotificationProvider = ({
+  children,
+}: NotificationProviderProps) => {
   const [notification, setNotification] = useState<NotificationProps | null>(
     null,
   );

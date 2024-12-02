@@ -45,7 +45,7 @@ export const useCart = () => {
     getCartItem,
     onClearCart: () => clearCart().then(),
     onAddItemToCart: (productId: string, quantity: number) => {
-      addItemToCart({ variables: { productId, quantity } }).then()
+      addItemToCart({ variables: { productId, quantity } }).then();
     },
   };
 };

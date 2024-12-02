@@ -1,1 +1,1 @@
-export {DeliveryStatusChip as default} from './DeliveryStatusChip';
+export { DeliveryStatusChip as default } from './DeliveryStatusChip';

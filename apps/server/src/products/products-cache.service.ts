@@ -6,7 +6,6 @@ import { FilterProductsArgs } from './dto/filter-product.args';
 import { PutProductInput } from './dto/put-product.input';
 import { PaginatedProduct } from './entities/paginated-product.entry';
 import { Product } from './entities/product.entity';
-import * as console from 'node:console';
 
 @Injectable()
 export class ProductsCacheService {

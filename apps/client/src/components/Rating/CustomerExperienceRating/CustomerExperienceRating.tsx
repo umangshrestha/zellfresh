@@ -3,13 +3,13 @@ import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAltOutlined';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
+import Box from '@mui/material/Box';
 import Rating, { IconContainerProps } from '@mui/material/Rating';
 import Snackbar from '@mui/material/Snackbar';
 import { styled } from '@mui/material/styles';
 import * as React from 'react';
 import { useState } from 'react';
 import { CustomerExperienceRatingProps } from './CustomerExperienceRating.types.ts';
-import Box from '@mui/material/Box';
 
 const StyledRating = styled(Rating)(({ theme }) => ({
   '& .MuiRating-iconEmpty .MuiSvgIcon-root': {
@@ -52,7 +52,7 @@ function IconContainer(props: IconContainerProps) {
 
 export const CustomerExperienceRating = ({
   onSubmitFeedback,
-  rating
+  rating,
 }: CustomerExperienceRatingProps) => {
   const [open, setOpen] = useState(rating === undefined);
 
@@ -64,8 +64,7 @@ export const CustomerExperienceRating = ({
       message="Feedback submitted!"
       anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
     >
-      <Box className='flex justify-center flex-wrap flex-col bg-amber-200 p-4 rounded-lg'
-      >
+      <Box className="flex justify-center flex-wrap flex-col bg-amber-200 p-4 rounded-lg">
         Please rate your experience with our service
         <StyledRating
           name="highlight-selected-only"

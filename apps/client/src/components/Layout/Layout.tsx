@@ -96,10 +96,7 @@ export const Layout = () => {
         <Notification />
       </Paper>
       <div className="relative flex justify-center items-center flex-grow">
-        <Button
-          className="absolute"
-          onClick={() => window.scrollTo(0, 0)}
-        >
+        <Button className="absolute" onClick={() => window.scrollTo(0, 0)}>
           <ArrowUpwardIcon />
           Scroll to top
         </Button>

@@ -12,15 +12,14 @@ import { getMainDefinition } from '@apollo/client/utilities';
 import { createClient } from 'graphql-ws';
 import { LayoutProps } from './Layout';
 
+import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
 import { onError } from '@apollo/client/link/error';
+import { createPersistedQueryLink } from '@apollo/client/link/persisted-queries';
 import { RetryLink } from '@apollo/client/link/retry';
+import { sha256 } from 'crypto-hash';
 import { useEffect, useState } from 'react';
 import { useAccount } from './Account';
 import { useNotification } from './Notification';
-import { createPersistedQueryLink } from '@apollo/client/link/persisted-queries';
-import { sha256 } from 'crypto-hash';
-import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
-
 
 if (import.meta.env.NODE_ENV === 'development') {
   loadDevMessages();
@@ -40,9 +39,11 @@ const retryLink = new RetryLink({
   },
 });
 
-const httpLink = createPersistedQueryLink({ sha256 }).concat(createHttpLink({
-  uri: '/graphql',
-}));
+const httpLink = createPersistedQueryLink({ sha256 }).concat(
+  createHttpLink({
+    uri: '/graphql',
+  }),
+);
 
 const createSubscriptionLink = (accountDetails: Record<string, string>) => {
   return new GraphQLWsLink(

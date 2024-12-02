@@ -11,7 +11,7 @@ export const ADDRESS_FIELDS_MAPPING = [
     required: true,
     disabled: false,
   },
-   {
+  {
     nestedFields: [
       {
         label: 'City',

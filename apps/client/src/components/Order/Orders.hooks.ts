@@ -3,13 +3,13 @@ import { useState } from 'react';
 import { ListOrdersQuery } from '../../__generated__/graphql.ts';
 import { DeliveryStatus } from '../../__generated__/types.ts';
 import { useNotification } from '../Notification';
+import { LIST_PRODUCTS_QUERY } from '../Product/Product.queries.ts';
 import {
   CANCEL_ORDER_MUTATION,
   CHANGE_ORDER_STATUS_MUTATION,
   LIST_ORDERS_QUERY,
   SUBMIT_ORDER_FEEDBACK_MUTATION,
 } from './Order.queries.ts';
-import { LIST_PRODUCTS_QUERY } from '../Product/Product.queries.ts';
 
 export const useOrders = () => {
   const { setNotification } = useNotification();
@@ -20,7 +20,10 @@ export const useOrders = () => {
     useQuery(LIST_ORDERS_QUERY);
 
   const [cancelOrderMutation] = useMutation(CANCEL_ORDER_MUTATION, {
-    refetchQueries: [{ query: LIST_ORDERS_QUERY }, {query: LIST_PRODUCTS_QUERY}],
+    refetchQueries: [
+      { query: LIST_ORDERS_QUERY },
+      { query: LIST_PRODUCTS_QUERY },
+    ],
     onCompleted: () => {
       setNotification({
         message: 'Order cancelled successfully',

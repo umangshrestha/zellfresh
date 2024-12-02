@@ -1,9 +1,9 @@
-import Skeleton from '@mui/material/Skeleton';
-import Typography from '@mui/material/Typography';
+import FormControl from '@mui/material/FormControl';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
-import FormControl from '@mui/material/FormControl';
+import Skeleton from '@mui/material/Skeleton';
+import Typography from '@mui/material/Typography';
 
 export const CartItemSkeleton = () => {
   return (

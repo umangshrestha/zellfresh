@@ -4,6 +4,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { DynamodbService } from 'src/common/dynamodb/dynamodb.service';
 import { get_date_time_string } from '../common/get-date-time';
 import { Pagination } from '../products/entities/paginated-product.entry';
+import { ProductsService } from '../products/products.service';
 import { FeedbackInput } from '../reviews/dto/feedback.input';
 import { OrderReview } from '../reviews/entities/order-review.entity';
 import { DeliveryStatus } from './entities/delivery-status.enum';
@@ -11,7 +12,6 @@ import { FilterOrderArgs } from './entities/filter-orders.args';
 import { Order } from './entities/order.entity';
 import { PaginatedOrder } from './entities/paginated-order.entry';
 import { PaymentMethod } from './entities/payment-method.enum';
-import { ProductsService } from '../products/products.service';
 
 const TableName = 'ORDERS_TABLE';
 
@@ -19,7 +19,8 @@ const TableName = 'ORDERS_TABLE';
 export class OrdersService {
   constructor(
     private readonly dynamodbService: DynamodbService,
-    private readonly productsService: ProductsService) {}
+    private readonly productsService: ProductsService,
+  ) {}
 
   putCommand(order: Order) {
     return {
@@ -161,7 +162,8 @@ export class OrdersService {
       {
         Put: {
           TableName,
-          ConditionExpression: 'attribute_exists(userId) AND attribute_exists(orderId)',
+          ConditionExpression:
+            'attribute_exists(userId) AND attribute_exists(orderId)',
           Item: marshall(data),
         },
       },
@@ -172,8 +174,10 @@ export class OrdersService {
         TransactItems: transactItems,
       });
       await this.dynamodbService.client.send(command);
-      await this.productsService.invalidateCache(data.items.map((item) => item.productId));
-    } catch (error){
+      await this.productsService.invalidateCache(
+        data.items.map((item) => item.productId),
+      );
+    } catch (error) {
       console.error(error);
     }
     return data;

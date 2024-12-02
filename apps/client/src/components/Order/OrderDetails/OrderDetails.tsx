@@ -5,10 +5,9 @@ import List from '@mui/material/List';
 import ListItemText from '@mui/material/ListItemText';
 import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
+import { DeliveryStatusChip } from '../../DeliveryStatusChip/DeliveryStatusChip.tsx';
 import OrderItem from '../OrderItem';
 import { OrderDetailsProps } from './OrderDetails.types.ts';
-import { DeliveryStatusChip } from '../../DeliveryStatusChip/DeliveryStatusChip.tsx';
-
 
 export const OrderDetails = ({
   data,
@@ -88,7 +87,7 @@ export const OrderDetails = ({
       <Typography variant="h6">Items ({data.items.length})</Typography>
       <List>
         {data.items.map((order, index) => (
-            <OrderItem  key={index}{...order} />
+          <OrderItem key={index} {...order} />
         ))}
       </List>
       <Typography>Please rate your order</Typography>

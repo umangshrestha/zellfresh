@@ -55,7 +55,7 @@ export const useProfile = () => {
       onAddressSave({
         variables: {
           addressId,
-          ...variables
+          ...variables,
         },
       }).then(() => {
         setNotification({

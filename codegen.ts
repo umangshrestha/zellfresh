@@ -14,8 +14,8 @@ const config: CodegenConfig = {
       },
       plugins: [],
     },
-    "apps/client/src/__generated__/types.ts": {
-      plugins: ["typescript", "typescript-resolvers"],
+    'apps/client/src/__generated__/types.ts': {
+      plugins: ['typescript', 'typescript-resolvers'],
     },
   },
 };

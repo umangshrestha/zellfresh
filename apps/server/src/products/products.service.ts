@@ -220,9 +220,7 @@ export class ProductsService {
     return Promise.all(transactItems);
   }
 
-  cancelOrder(
-    items: CartItem[],
-  ):TransactWriteItem[] {
+  cancelOrder(items: CartItem[]): TransactWriteItem[] {
     return items.map(({ productId, quantity }) => {
       return {
         Update: {
@@ -239,9 +237,7 @@ export class ProductsService {
     });
   }
 
-
-
-    async remove(productId: string) {
+  async remove(productId: string) {
     // Delete from DynamoDB
     try {
       await this.dynamodbService.client.deleteItem({

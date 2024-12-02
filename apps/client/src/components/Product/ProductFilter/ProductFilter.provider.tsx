@@ -7,9 +7,9 @@ import {
   ProductFilterType,
 } from './ProductFilter.types';
 
-export const ProductFilterProvider = (
-  { children }: ProductFilterProviderProps,
-) => {
+export const ProductFilterProvider = ({
+  children,
+}: ProductFilterProviderProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { data: productFilter, error } = ProductFilterSchema.safeParse(
     Object.fromEntries(searchParams),
@@ -28,7 +28,7 @@ export const ProductFilterProvider = (
       }
     });
     setSearchParams(newUrlSearchParams);
-  }
+  };
 
   const contextValue: ProductFilterContextType = {
     productFilter,

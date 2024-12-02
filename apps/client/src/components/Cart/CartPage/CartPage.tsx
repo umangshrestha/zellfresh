@@ -25,17 +25,14 @@ export const CartPage = ({
   return (
     <Box className="flex flex-col gap-4 max-w-xl mx-auto pt-3">
       <Typography variant="h5">Cart Page</Typography>
-        <div className="flex flex-row justify-end gap-4">
-          <Button
-            color="error"
-            onClick={onClearCart}
-          >
-            Clear Cart
-          </Button>
-        </div>
+      <div className="flex flex-row justify-end gap-4">
+        <Button color="error" onClick={onClearCart}>
+          Clear Cart
+        </Button>
+      </div>
       <List>
         {data.cart.items.map((item) => (
-            <CartItem key={item.productId} {...item} {...functions} />
+          <CartItem key={item.productId} {...item} {...functions} />
         ))}
       </List>
       <Box className="flex  justify-end gap-4 pb-10">

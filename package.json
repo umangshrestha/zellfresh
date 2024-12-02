@@ -28,7 +28,7 @@
     "contentful-cli": "^3.5.5",
     "eslint": "^9.13.0",
     "graphql": "^16.9.0",
-    "prettier": "^3.3.3",
+    "prettier": "^3.3.2",
     "prettier-plugin-organize-imports": "^4.1.0",
     "prisma": "^5.22.0",
     "turbo": "^2.3.1",

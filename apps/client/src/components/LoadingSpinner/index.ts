@@ -1,1 +1,1 @@
-export {LoadingSpinner as default} from './LoadingSpinner.tsx';
+export { LoadingSpinner as default } from './LoadingSpinner.tsx';

@@ -1,8 +1,8 @@
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { lazy } from 'react';
+import AddItemToCart from '../../Cart/AddItemToCart';
 import { useAddItemToCart } from '../../Cart/AddItemToCart/AddItemToCart.hooks.ts';
 import { useProduct } from '../Product.hooks.ts';
-import AddItemToCart from '../../Cart/AddItemToCart';
 
 const ProductsPageComponent = lazy(() =>
   import('./ProductsPage.tsx').then((module) => ({

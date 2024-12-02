@@ -12,7 +12,10 @@ export class AccessTokenService {
   cookieOptions: CookieOptions;
   clearCookieOptions: CookieOptions;
 
-  constructor(private jwtService: JwtService, configService: ConfigService) {
+  constructor(
+    private jwtService: JwtService,
+    configService: ConfigService,
+  ) {
     this.cookieName = configService.getOrThrow('ACCESS_TOKEN_COOKIE_NAME');
     const httpOnly = configService.getOrThrow('COOKIE_HTTP_ONLY');
     const domain = configService.getOrThrow('COOKIE_DOMAIN');

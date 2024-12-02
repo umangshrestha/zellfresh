@@ -1,10 +1,10 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { useNotification } from '../Notification';
+import { GET_RATING_QUERY } from '../Rating/Rating.queries.ts';
 import {
   LIST_PRODUCTS_QUERY,
   SUBMIT_PRODUCT_FEEDBACK_MUTATION,
 } from './Product.queries.ts';
-import { GET_RATING_QUERY } from '../Rating/Rating.queries.ts';
 
 export const useProductFeedback = (productId: string) => {
   const { setNotification } = useNotification();

@@ -10,7 +10,7 @@ export const GraphQlConfig = {
   useFactory: (config: ConfigService) => ({
     debug: config.getOrThrow('NODE_ENV') !== 'production',
     playground: config.getOrThrow('NODE_ENV') !== 'production',
-    autoSchemaFile: config.getOrThrow('NODE_ENV') !== 'test'? join(process.cwd(), 'schema/schema.graphql'): undefined,
+    autoSchemaFile: join(process.cwd(), 'schema/schema.graphql'),
     persistedQueries: {
       ttl: null,
     },

@@ -1,10 +1,8 @@
-import { DeliveryStatus } from '../../__generated__/types.ts';
 import Chip from '@mui/material/Chip';
-import {DeliveryStatusProps} from './DeliveryStatusChip.types.ts';
+import { DeliveryStatus } from '../../__generated__/types.ts';
+import { DeliveryStatusProps } from './DeliveryStatusChip.types.ts';
 
-
-
-export const DeliveryStatusChip = ({ deliveryStatus }:DeliveryStatusProps) => {
+export const DeliveryStatusChip = ({ deliveryStatus }: DeliveryStatusProps) => {
   const props = { label: `Status: ${deliveryStatus}`, textcolor: 'white' };
   switch (deliveryStatus) {
     case DeliveryStatus.Delivered:
