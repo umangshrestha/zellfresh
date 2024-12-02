@@ -3,9 +3,9 @@ import {
   IsBoolean,
   IsEnum,
   IsNotEmpty,
-  IsNumber,
+  IsNumber, IsOptional,
   IsPositive,
-  IsString,
+  IsString, IsUrl,
   validateSync,
 } from 'class-validator';
 
@@ -101,6 +101,10 @@ export class EnvironmentVariables {
   @IsNumber()
   @IsPositive()
   CART_TTL: number = 60 * 60 * 24 * 7; // 15 days
+
+  @IsString()
+  @IsOptional()// Only needed in development
+  DYNAMODB_ENDPOINT: string = 'http://localhost:4566'
 }
 
 export function validate(config: Record<string, unknown>) {

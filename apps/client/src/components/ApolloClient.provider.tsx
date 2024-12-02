@@ -47,7 +47,7 @@ const httpLink = createPersistedQueryLink({ sha256 }).concat(createHttpLink({
 const createSubscriptionLink = (accountDetails: Record<string, string>) => {
   return new GraphQLWsLink(
     createClient({
-      url: '/subscriptions',
+      url: 'ws://localhost:3000/graphql',
       connectionParams: accountDetails,
     }),
   );

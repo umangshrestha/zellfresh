@@ -17,6 +17,8 @@
     },
     "lint": {},
     "build": {
+      "persistent": false,
+      "cache": false,
       "dependsOn": ["^build"],
       "outputs": ["dist/**"]
     }

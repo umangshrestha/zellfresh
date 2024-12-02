@@ -14,7 +14,7 @@
 
 ---
 
-## Running Appsync locally using Localstack
+## Running AWS setup locally using Localstack
 
 - Download localstack wrapper for
 
@@ -45,12 +45,23 @@ export LOCALSTACK_API_KEY=<your-key>
 docker-compose up -d
 ```
 
-- Deploy the appsync
+- Deploy the aws infrastucture
 
 ```sh
 cd infrastructure
 tflocal init
 tflocal apply --auto-approve
+```
+
+## Creating docker image
+```sh
+docker build -t zell-fresh-nest-js .  --no-cache 
+```
+
+
+## Running docker image locally
+```sh
+docker-compose -f docker-compose-integration-test.yaml up -d
 ```
 
 ## Contributing

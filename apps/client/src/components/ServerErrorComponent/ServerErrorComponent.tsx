@@ -16,7 +16,6 @@ export const ServerErrorComponent = ({ error }: ServerErrorComponentProps) => {
       cta={{
         text: 'Go to home',
         to: '/',
-        reloadDocument: false,
       }}
     />
   );

@@ -35,7 +35,10 @@ export const useProfile = () => {
       phone: data?.me?.phone || '',
     },
     address: {
-      ...data?.me?.defaultAddress,
+      apt: data?.me?.defaultAddress?.apt || '',
+      street: data?.me?.defaultAddress?.street || '',
+      zip: data?.me?.defaultAddress?.zip || '',
+      additionalInfo: data?.me?.defaultAddress?.additionalInfo || '',
       ...DEFAULT_ADDRESS,
     },
     onUserDetailsSave: (variables: ContactDetailsType) => {

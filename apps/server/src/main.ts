@@ -11,7 +11,7 @@ async function bootstrap() {
   });
   const configService = app.get(ConfigService);
   const PORT = configService.getOrThrow('PORT');
-  console.log(`${process.env.NODE_ENV} Starting server on port ${PORT}`);
+  console.log(`=================> Environment "${process.env.NODE_ENV}", Port "${PORT}"`);
   app.setGlobalPrefix('/api');
   app.use(cookieParser());
   app.use(compression());

@@ -14,7 +14,6 @@ export const CartEmptyPage = () => (
     cta={{
       text: 'Start shopping',
       to: '/',
-      reloadDocument: false,
     }}
   />
 );

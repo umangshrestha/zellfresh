@@ -10,7 +10,7 @@
     "prisma:migrate": "npx prisma migrate dev",
     "prisma:studio": "npx prisma studio",
     "prisma:format": "npx prisma format",
-    "build": "nest build",
+    "build": "npx prisma generate && nest build",
     "format": "npx prisma format && prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "dev": "npx prisma generate && nest start --watch --preserveWatchOutput",

@@ -11,5 +11,5 @@ export interface NotificationProps {
 
 export type NotificationContextType = {
   notification: NotificationProps | null;
-  setNotification: Dispatch;
+  setNotification: Dispatch<NotificationProps | null>;
 };

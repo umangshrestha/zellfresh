@@ -42,12 +42,6 @@ export default defineConfig({
         target: 'http://localhost:3000',
         changeOrigin: true,
       },
-      '/subscriptions': {
-        target: 'ws://localhost:3000/graphql',
-        changeOrigin: true,
-        ws: true,
-        rewrite: (path) => path.replace('/subscriptions', ''),
-      },
     },
   },
 });
