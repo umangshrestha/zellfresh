@@ -9,7 +9,8 @@ resource "aws_dynamodb_table" "products_table" {
   }
 
   tags = {
-    Project = local.project_name
+    Project     = var.project_name
+    Environment = var.environment
   }
 }
 
@@ -24,7 +25,8 @@ resource "aws_dynamodb_table" "users_table" {
   }
 
   tags = {
-    Project = local.project_name
+    Project     = var.project_name
+    Environment = var.environment
   }
 }
 
@@ -44,7 +46,8 @@ resource "aws_dynamodb_table" "address_table" {
   }
 
   tags = {
-    Project = local.project_name
+    Project     = var.project_name
+    Environment = var.environment
   }
 }
 
@@ -60,7 +63,8 @@ resource "aws_dynamodb_table" "carts_table" {
   }
 
   tags = {
-    Project = local.project_name
+    Project     = var.project_name
+    Environment = var.environment
   }
 
   ttl {
@@ -86,7 +90,8 @@ resource "aws_dynamodb_table" "orders_table" {
   }
 
   tags = {
-    Project = local.project_name
+    Project     = var.project_name
+    Environment = var.environment
   }
 }
 
@@ -107,6 +112,23 @@ resource "aws_dynamodb_table" "reviews_table" {
   }
 
   tags = {
-    Project = local.project_name
+    Project     = var.project_name
+    Environment = var.environment
+  }
+}
+
+resource "aws_dynamodb_table" "terraform_locks" {
+  name         = "terraform-locks"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "LockID"
+
+  attribute {
+    name = "LockID"
+    type = "S"
+  }
+
+  tags = {
+    Environment = var.environment
+    ManagedBy   = "Terraform"
   }
 }

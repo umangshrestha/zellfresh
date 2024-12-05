@@ -1,4 +1,5 @@
-FROM node:22-alpine AS server_build
+# Note: --platform=linux/amd64 was added to avoid the error "exec format error" in AWS Fargate.
+FROM --platform=linux/amd64  node:22-alpine AS server_build
 WORKDIR /app
 ENV NODE_ENV=production
 COPY . .
@@ -7,7 +8,7 @@ RUN yarn run lint
 RUN yarn run build
 RUN yarn install --production --frozen-lockfile --ignore-engines
 
-FROM node:22-alpine
+FROM --platform=linux/amd64 node:22-alpine
 WORKDIR /app
 RUN yarn global add @nestjs/cli
 

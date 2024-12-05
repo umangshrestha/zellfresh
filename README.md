@@ -1,7 +1,7 @@
 # Overview
 
 | Technologies Used    | Description                                            |
-| -------------------- | ------------------------------------------------------ |
+|----------------------| ------------------------------------------------------ |
 | Programming Language | TypeScript                                             |
 | Runtime              | Node.js ~v20                                           |
 | Sqlite               | For caching products                                   |
@@ -10,7 +10,13 @@
 | Nestjs               | For fullstack backend                                  |
 | HashiCorp Terraform  | Infrastructure as code tool for managing AWS resources |
 | Localstack           | Mocking AWS resources for local development            |
-| S3                   | For terraform state management                         |
+| Docker               | For containerization                                   |
+ | AWS Secrets Manager  | For managing secrets                                   |
+| AWS ECR              | For storing docker images                              |
+| AWS ECS              | For running docker containers                          |
+| AWS DynamoDB         | For storing user data                                  |
+| AWS S3               | For terraform state management                         |
+| AWS 
 
 ---
 
@@ -35,8 +41,7 @@ alias awslocal='aws --endpoint-url http://127.0.0.1:4566'
 ```sh
 export AWS_ACCESS_KEY_ID=test
 export AWS_SECRET_ACCESS_KEY=test
-export AWS_DEFAULT_REGION=us-east-1
-export LOCALSTACK_API_KEY=<your-key>
+export AWS_DEFAULT_REGION=ap-south-1
 ```
 
 - Start localstack using Docker
@@ -48,10 +53,15 @@ docker-compose up -d
 - Deploy the aws infrastucture
 
 ```sh
-cd infrastructure
+cd infrastructure/dev
 tflocal init
 tflocal apply --auto-approve
 cd -
+```
+
+- Get the secets for .env file
+```shell
+ aws secretsmanager get-secret-value --secret-id MyAppSecrets --region ap-south-1
 ```
 
 ## Creating docker image
@@ -60,10 +70,38 @@ cd -
 docker build -t zell-fresh-nest-js .  --no-cache
 ```
 
-## Running docker image locally
+## Testing the docker image locally
 
 ```sh
 docker-compose -f docker-compose-integration-test.yaml  up -d --force-recreate
+```
+
+# Testing on localstack
+
+```sh
+docker tag zell-fresh-nest-js:latest localhost.localstack.cloud:4510/zell-fresh-nest-js:latest
+awslocal ecr get-login-password | docker login --username AWS --password-stdin localhost.localstack.cloud:4510
+docker push localhost.localstack.cloud:4510/zell-fresh-nest-js:latest
+cd infrastructure/integration-test
+```
+
+# For pushing code to prod
+First set up aws account id:
+```sh
+export AWS_ACCOUNT_ID=<aws_account_id>
+```
+
+Then run the following commands:
+
+```sh
+docker build -t zell-fresh-nest-js . --no-cache
+docker tag zell-fresh-nest-js:latest $AWS_ACCOUNT_ID.dkr.ecr.ap-south-1.amazonaws.com/zell-fresh-nest-js:latest
+aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.ap-south-1.amazonaws.com
+docker push $AWS_ACCOUNT_ID.dkr.ecr.ap-south-1.amazonaws.com/zell-fresh-nest-js:latest
+# change the image in the terraform file
+cd infrastructure/prod
+terraform init
+terraform apply --auto-approve
 ```
 
 ## Contributing
