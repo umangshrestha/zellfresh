@@ -1,0 +1,59 @@
+{
+  "AWSEBDockerrunVersion": "2",
+  "containerDefinitions": [
+    {
+      "name": "zell-fresh",
+      "image": "<AWS_ACCOUNT_ID>.dkr.ecr.ap-south-1.amazonaws.com/zell-fresh-nest-js:latest",
+      "essential": true,
+      "memory": 512,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        }
+      ],
+      "environment": [
+        {
+          "name": "NODE_ENV",
+          "value": "production"
+        },
+        {
+          "name": "GOOGLE_CLIENT_SECRET",
+          "valueFrom": "arn:aws:secretsmanager:ap-south-1:676206928056:secret:MyAppSecrets:GOOGLE_CLIENT_SECRET"
+        },
+        {
+          "name": "GOOGLE_CLIENT_ID",
+          "valueFrom": "arn:aws:secretsmanager:ap-south-1:676206928056:secret:MyAppSecrets:GOOGLE_CLIENT_ID"
+        },
+        {
+          "name": "GOOGLE_CALLBACK_URL",
+          "valueFrom": "arn:aws:secretsmanager:ap-south-1:676206928056:secret:MyAppSecrets:GOOGLE_CALLBACK_URL"
+        },
+        {
+          "name": "CONTENTFUL_DELIVERY_ACCESS_TOKEN",
+          "valueFrom": "arn:aws:secretsmanager:ap-south-1:676206928056:secret:MyAppSecrets:CONTENTFUL_DELIVERY_ACCESS_TOKEN"
+        },
+        {
+          "name": "CONTENTFUL_SPACE_ID",
+          "valueFrom": "arn:aws:secretsmanager:ap-south-1:676206928056:secret:MyAppSecrets:CONTENTFUL_SPACE_ID"
+        },
+        {
+          "name": "JWT_SECRET",
+          "valueFrom": "arn:aws:secretsmanager:ap-south-1:676206928056:secret:MyAppSecrets:JWT_SECRET"
+        },
+        {
+          "name": "GUEST_TOKEN_SECRET",
+          "valueFrom": "arn:aws:secretsmanager:ap-south-1:676206928056:secret:MyAppSecrets:GUEST_TOKEN_SECRET"
+        },
+        {
+          "name": "REFRESH_TOKEN_SECRET",
+          "valueFrom": "arn:aws:secretsmanager:ap-south-1:676206928056:secret:MyAppSecrets:REFRESH_TOKEN_SECRET"
+        },
+        {
+          "name": "VITE_GOOGLE_CLIENT_ID",
+          "valueFrom": "arn:aws:secretsmanager:ap-south-1:676206928056:secret:MyAppSecrets:VITE_GOOGLE_CLIENT_ID"
+        }
+      ]
+    }
+  ]
+}

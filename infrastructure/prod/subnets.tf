@@ -50,19 +50,82 @@ resource "aws_eip" "nat_gateway" {
   }
 }
 
-resource "aws_nat_gateway" "nat_gateway" {
-  count         = length(var.availability_zones)
-  subnet_id     = aws_subnet.public[count.index].id
-  allocation_id = aws_eip.nat_gateway[count.index].id
+
+
+# NAT Gateway is expensive, so I am replacing it with a NAT Instance
+# resource "aws_nat_gateway" "nat_gateway" {
+#   count         = length(var.availability_zones)
+#   subnet_id     = aws_subnet.public[count.index].id
+#   allocation_id = aws_eip.nat_gateway[count.index].id
+#
+#   tags = {
+#     Name        = "nat_gateway | ${var.availability_zones[count.index]}"
+#     Project     = var.project_name
+#     Environment = var.environment
+#   }
+# }
+
+###### NAT Instance ######
+resource "aws_key_pair" "terraform_key" {
+  key_name   = "terraform"
+  public_key = file("~/.ssh/id_rsa.pub")
 
   tags = {
-    Name        = "nat_gateway | ${var.availability_zones[count.index]}"
+    Name        = "terraform_key"
     Project     = var.project_name
     Environment = var.environment
   }
 }
 
+resource "aws_instance" "nat_instance" {
+  count         = length(var.availability_zones)
+  ami           = "ami-0614680123427b75e"
+  instance_type = "t3.micro"
+  subnet_id     = aws_subnet.public[count.index].id
+  key_name      = aws_key_pair.terraform_key.key_name
 
+  tags = {
+    Name        = "nat_instance | ${var.availability_zones[count.index]}"
+    Project     = var.project_name
+    Environment = var.environment
+  }
+
+  user_data = <<-EOF
+              #!/bin/bash
+              yum install -y aws-cli
+              echo "net.ipv4.ip_forward = 1" >> /etc/sysctl.conf
+              sysctl -p
+              iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+              EOF
+}
+
+
+resource "aws_security_group" "nat_sg" {
+  name        = "nat_sg"
+  vpc_id      = aws_vpc.default.id
+
+  ingress {
+    from_port   = 0
+    to_port     = 65535
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 65535
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name        = "nat_sg"
+    Project     = var.project_name
+    Environment = var.environment
+  }
+}
+
+###### NAT Instance ######
 resource "aws_subnet" "private" {
   count             = length(var.availability_zones)
   cidr_block        = cidrsubnet(var.vpc_cidr_block, 8, count.index)
@@ -83,7 +146,9 @@ resource "aws_route_table" "private" {
 
   route {
     cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.nat_gateway[count.index].id
+    # NAT Gateway is expensive, so I am replacing it with a NAT Instance
+    # nat_gateway_id = aws_nat_gateway.nat_gateway[count.index].id
+    network_interface_id = aws_instance.nat_instance[count.index].primary_network_interface_id
   }
 
   tags = {
@@ -91,6 +156,8 @@ resource "aws_route_table" "private" {
     Project     = var.project_name
     Environment = var.environment
   }
+
+  depends_on = [aws_instance.nat_instance]
 }
 
 resource "aws_route_table_association" "private" {
