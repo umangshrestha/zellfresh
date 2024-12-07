@@ -8,7 +8,7 @@ variable "environment" {
   type    = string
   default = "prod"
   validation {
-    condition = contains(["dev", "prod"], var.environment)
+    condition     = contains(["dev", "prod"], var.environment)
     error_message = "env must be either dev or prod"
   }
 }
@@ -17,7 +17,7 @@ variable "environment" {
 variable "domain_name" {
   description = "The domain name for the certificate"
   type        = string
-  default = "zellfresh.com"
+  default     = "zellfresh.com"
 }
 
 ############################################
@@ -75,6 +75,6 @@ variable "vpc_cidr_block" {
 
 variable "availability_zones" {
   description = "List of availability zones to use"
-  default = ["ap-south-1a", "ap-south-1c"]
-  type = list(string)
+  default     = ["ap-south-1a", "ap-south-1c"]
+  type        = list(string)
 }

@@ -11,7 +11,7 @@ resource "aws_ecs_service" "ecs_app_service" {
   task_definition = aws_ecs_task_definition.zell_fresh_task_definition.arn
 
   network_configuration {
-    security_groups = [aws_security_group.ecs_container_instance.id]
+    security_groups  = [aws_security_group.ecs_container_instance.id]
     subnets          = aws_subnet.private.*.id
     assign_public_ip = false
   }
@@ -31,25 +31,25 @@ locals {
       name  = key
       value = value
     }
-  ], [
+    ], [
     {
-      name = "PORT",
+      name  = "PORT",
       value = tostring(var.container_port)
-    }, {
-      name = "NO_COLOR"
+      }, {
+      name  = "NO_COLOR"
       value = "true"
     }
   ])
 }
 
 resource "aws_ecs_task_definition" "zell_fresh_task_definition" {
-  family             = "${var.project_name}_task_definition"
-  cpu                = var.cpu
-  memory             = var.memory
-  network_mode       = "awsvpc"
+  family                   = "${var.project_name}_task_definition"
+  cpu                      = var.cpu
+  memory                   = var.memory
+  network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
-  task_role_arn      = aws_iam_role.ecs_task_iam_role.arn
+  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
+  task_role_arn            = aws_iam_role.ecs_task_iam_role.arn
   container_definitions = jsonencode([
     {
       name      = var.project_name
