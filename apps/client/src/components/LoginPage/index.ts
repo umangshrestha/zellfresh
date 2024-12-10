@@ -1,7 +1,3 @@
-import { lazy } from 'react';
-
-const LoginPage = lazy(() =>
-  import('./LoginPage.tsx').then((module) => ({ default: module.LoginPage })),
-);
+import {LoginPage} from './LoginPage.tsx';
 
 export default LoginPage;
