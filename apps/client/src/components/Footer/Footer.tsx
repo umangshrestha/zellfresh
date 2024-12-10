@@ -37,16 +37,14 @@ export const Footer = () => (
         {ADDRESS.country} - {ADDRESS.zip}
       </address>
       <section>
-      <span className="font-bold text-lg">Shop hours</span>
+        <span className="font-bold text-lg">Shop hours</span>
         <Box className="flex flex-col">
-         {
-          SHOP_HOURS.map((shopHour) => (
+          {SHOP_HOURS.map((shopHour) => (
             <Box key={shopHour.day} className="flex justify-between">
               <span>{shopHour.day}</span>
               <span>{shopHour.time}</span>
             </Box>
-          ))
-         }
+          ))}
         </Box>
       </section>
       <section className="flex flex-col">
@@ -58,9 +56,9 @@ export const Footer = () => (
           Privacy Policy
         </Link>
       </section>
-         <section className="flex flex-col text-center">
+      <section className="flex flex-col text-center">
         <span className="font-bold text-lg">Contact us</span>
-        <Link href={`tel:+91${PHONE_NUMBER}`} underline='none'>
+        <Link href={`tel:+91${PHONE_NUMBER}`} underline="none">
           <CallIcon /> {PHONE_NUMBER}
         </Link>
         <br />

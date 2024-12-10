@@ -2,8 +2,7 @@ import react from '@vitejs/plugin-react-swc';
 import path from 'path';
 import { defineConfig } from 'vite';
 
-
-const target = "http://localhost:3000"
+const target = 'http://localhost:3000';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],

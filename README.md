@@ -1,7 +1,7 @@
 # Overview
 
 | Technologies Used    | Description                                            |
-|----------------------| ------------------------------------------------------ |
+| -------------------- | ------------------------------------------------------ |
 | Programming Language | TypeScript                                             |
 | Runtime              | Node.js ~v20                                           |
 | Sqlite               | For caching products                                   |
@@ -11,12 +11,13 @@
 | HashiCorp Terraform  | Infrastructure as code tool for managing AWS resources |
 | Localstack           | Mocking AWS resources for local development            |
 | Docker               | For containerization                                   |
- | AWS Secrets Manager  | For managing secrets                                   |
+| AWS Secrets Manager  | For managing secrets                                   |
 | AWS ECR              | For storing docker images                              |
 | AWS ECS              | For running docker containers                          |
 | AWS DynamoDB         | For storing user data                                  |
 | AWS S3               | For terraform state management                         |
-| AWS 
+
+| AWS
 
 ---
 
@@ -60,6 +61,7 @@ cd -
 ```
 
 - Get the secets for .env file
+
 ```shell
  aws secretsmanager get-secret-value --secret-id MyAppSecrets --region ap-south-1
 ```
@@ -86,7 +88,9 @@ cd infrastructure/integration-test
 ```
 
 # For pushing code to prod
+
 First set up aws account id:
+
 ```sh
 export AWS_ACCOUNT_ID=<aws_account_id>
 ```

@@ -16,7 +16,7 @@ export const withCategoriesQuery = <P extends WithCategoriesProps>(
       <WrappedComponent
         {...(props as P)}
         categories={
-          // data?.categories || previousData?.categories || 
+          // data?.categories || previousData?.categories ||
           CATEGORIES_MOCK_DATA
         }
         navigateTo={navigate}

@@ -1,14 +1,13 @@
 import { Controller, Get, Headers, UseGuards } from '@nestjs/common';
-import { AccessOrGuestTokenGuard } from './access-or-guest-token.gaurd';
 import { AccessTokenService } from './access-token/access-token.service';
 import { AuthUser } from './auth.decorator';
 import { AuthService } from './auth.service';
 import { Auth } from './entities/auth.entity';
+import { GuestTokenGuard } from './guest-token/guest-token.gaurd';
 import { GuestTokenService } from './guest-token/guest-token.service';
 import { OptionalGuestTokenGuard } from './guest-token/optional-guest-token.gaurd';
 import { RefreshTokenGuard } from './refresh-token/refresh-token.gaurd';
 import { RefreshTokenService } from './refresh-token/refresh-token.service';
-import { GuestTokenGuard } from './guest-token/guest-token.gaurd';
 
 @Controller('auth')
 export class AuthController {

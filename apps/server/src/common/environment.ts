@@ -37,7 +37,6 @@ export class EnvironmentVariables {
   @IsNotEmpty()
   REFRESH_TOKEN_SECRET: string = 'refresh_secret';
 
-
   @IsNumber()
   @IsNotEmpty()
   REFRESH_TOKEN_EXPIRATION_TIME: number = daysToMilliseconds(14);
@@ -45,7 +44,6 @@ export class EnvironmentVariables {
   @IsString()
   @IsNotEmpty()
   GUEST_TOKEN_SECRET: string = 'guest_secret';
-
 
   @IsNumber()
   @IsNotEmpty()
