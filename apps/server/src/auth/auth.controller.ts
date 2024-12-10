@@ -8,6 +8,7 @@ import { GuestTokenService } from './guest-token/guest-token.service';
 import { OptionalGuestTokenGuard } from './guest-token/optional-guest-token.gaurd';
 import { RefreshTokenGuard } from './refresh-token/refresh-token.gaurd';
 import { RefreshTokenService } from './refresh-token/refresh-token.service';
+import { AccessOrGuestTokenGuard } from './access-or-guest-token.gaurd';
 
 @Controller('auth')
 export class AuthController {
@@ -25,7 +26,6 @@ export class AuthController {
     return this.guestTokenService.getToken(data);
   }
 
-  @UseGuards(OptionalGuestTokenGuard)
   @Get('google/login')
   async googleLoginWithFrontend(
     @Headers('Authorization') authorization: string,
@@ -43,7 +43,7 @@ export class AuthController {
   }
 
   @Get('me')
-  @UseGuards(GuestTokenGuard)
+  @UseGuards(AccessOrGuestTokenGuard)
   me(@AuthUser({}) payload: Auth): Auth {
     return payload;
   }

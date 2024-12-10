@@ -34,6 +34,22 @@ export const AccountProvider = ({ children }: LayoutProps) => {
     [setNotification],
   );
 
+  const me = async (
+    config: AxiosRequestConfig = {},
+    onSuccess?: () => void,
+    onError?: (error: unknown) => void,
+  ) => {
+    try {
+      const response = await query.me(config);
+      setAccountDetails(response.data);
+      if (onSuccess) return onSuccess();
+    } catch (error: unknown) {
+      onErrorRaiseNotification(error);
+      setAccountDetails(null);
+      if (onError) return onError(error);
+    }
+  }
+
   const login = async (
     provider: 'guest' | 'google',
     config: AxiosRequestConfig = {},
@@ -43,6 +59,7 @@ export const AccountProvider = ({ children }: LayoutProps) => {
     try {
       const response = await query.login(provider, config);
       setToken(response.data);
+      await me(config);
       if (onSuccess) return onSuccess();
     } catch (error: unknown) {
       console.error('Login failed:', error);
@@ -76,18 +93,7 @@ export const AccountProvider = ({ children }: LayoutProps) => {
     }
     const controller = new AbortController();
     const signal = controller.signal;
-    query
-      .me({ signal })
-      .then((response) => {
-        if (isEqual(response.data, accountDetails)) {
-          return;
-        }
-        setAccountDetails(response.data);
-      })
-      .catch((error) => {
-        setAccountDetails(null);
-        onErrorRaiseNotification(error);
-      });
+    me({ signal }).then();
     return () => {
       controller.abort();
     };
