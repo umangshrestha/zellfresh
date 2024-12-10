@@ -11,7 +11,7 @@ import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { createClient } from 'graphql-ws';
 import { LayoutProps } from './Layout';
-
+import _ from 'lodash'
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
 import { onError } from '@apollo/client/link/error';
 import { createPersistedQueryLink } from '@apollo/client/link/persisted-queries';
@@ -45,11 +45,12 @@ const retryLink = new RetryLink({
 
 const createNewHttpLink = (token: Token) => {
   const headers: Record<string, string> = {};
+
   if (token === null) {
     /* empty */
-  } else if ('accessToken' in token) {
+  } else if (_.has(token,'accessToken')){
     headers['Authorization'] = `Bearer ${token.accessToken}`;
-  } else if ('guestToken' in token) {
+  } else if (_.has(token,'guestToken')){
     headers['Authorization'] = `Bearer ${token.guestToken}`;
   }
   const httpLink = createPersistedQueryLink({ sha256 }).concat(
@@ -114,7 +115,6 @@ const ApolloClientProvider = ({ children }: LayoutProps) => {
       });
     }
   });
-  console.log('accountDetails:', accountDetails, token);
   const linkWithSubscription =
     accountDetails !== null
       ? split(

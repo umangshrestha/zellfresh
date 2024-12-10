@@ -14,6 +14,12 @@ variable "environment" {
 }
 
 
+variable "nat_gateway_enabled" {
+  description = "Enable NAT Gateway for private subnets"
+  type        = bool
+  default     = false
+}
+
 variable "domain_name" {
   description = "The domain name for the certificate"
   type        = string

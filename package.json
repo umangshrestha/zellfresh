@@ -11,7 +11,7 @@
     "contentful:export": "contentful space export --space-id py1ip7ajrgdr --content-file contentful/models.json --skip-content --skip-webhooks --skip-roles",
     "contentful:import": "contentful space import --space-id py1ip7ajrgdr --content-file contentful/models.json",
     "dev": "turbo run dev",
-    "build": "ENVIRONMENT=production turbo run build",
+    "build": "turbo run build",
     "start": "turbo run start",
     "format": "prettier --write .",
     "lint": "turbo run lint",

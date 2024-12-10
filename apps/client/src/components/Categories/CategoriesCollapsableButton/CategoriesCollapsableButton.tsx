@@ -34,12 +34,11 @@ export const CategoriesCollapsableButton = ({
         unmountOnExit
       >
         <List component="div" disablePadding>
-          {categories.map(({ name, icon, navigateUrl, isAvailable }) => (
+          {categories.map(({ name, icon, navigateUrl }) => (
             <ListItemButton
               sx={{
                 pl: 4,
               }}
-              disabled={isAvailable}
               key={name}
               onClick={() => {
                 navigateTo(navigateUrl);

@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { useStorageStore } from '../../lib/store';
+import _ from 'lodash'
 
 export const axiosClient = axios.create();
 
@@ -66,12 +67,12 @@ const me = (config: AxiosRequestConfig = {}) => {
   const token = useStorageStore.getState().token;
   if (token === null) {
     /* empty */
-  } else if ('accessToken' in token) {
+  } else if (_.has(token,'accessToken')){
     config.headers = {
       ...config.headers,
       Authorization: `Bearer ${token.accessToken}`,
     };
-  } else if ('guestToken' in token) {
+  } else if (_.has(token,'guestToken')) {
     config.headers = {
       ...config.headers,
       Authorization: `Bearer ${token.guestToken}`,

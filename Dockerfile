@@ -11,6 +11,7 @@ RUN yarn install --production --frozen-lockfile --ignore-engines
 FROM --platform=linux/amd64 node:22-alpine
 WORKDIR /app
 RUN yarn global add @nestjs/cli
+RUN apk add --no-cache openssl sqlite-libs
 
 COPY --from=server_build /app/apps/server/dist ./dist
 COPY --from=server_build /app/node_modules ./node_modules

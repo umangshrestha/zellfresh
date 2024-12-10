@@ -54,32 +54,32 @@ resource "aws_eip" "nat" {
 #
 # NAT Gateway is expensive, so I am replacing it with a NAT Instance
 #
-# resource "aws_nat_gateway" "nat_gateway" {
-#   count         = length(var.availability_zones)
-#   subnet_id     = aws_subnet.public[count.index].id
-#   allocation_id = aws_eip.nat[count.index].id
-#
-#   tags = {
-#     Name        = "nat_gateway | ${var.availability_zones[count.index]}"
-#     Project     = var.project_name
-#     Environment = var.environment
-#   }
-# }
-# resource "aws_route_table" "private" {
-#   count  = length(var.availability_zones)
-#   vpc_id = aws_vpc.default.id
-#
-#   route {
-#     cidr_block = "0.0.0.0/0"
-#     nat_gateway_id = aws_nat_gateway.nat_gateway[count.index].id
-#   }
-#
-#   tags = {
-#     Name        = "private | ${var.availability_zones[count.index]}"
-#     Project     = var.project_name
-#     Environment = var.environment
-#   }
-# }
+resource "aws_nat_gateway" "nat_gateway" {
+  count         = var.nat_gateway_enabled ? length(var.availability_zones) : 0
+  subnet_id     = aws_subnet.public[count.index].id
+  allocation_id = aws_eip.nat[count.index].id
+
+  tags = {
+    Name        = "nat_gateway | ${var.availability_zones[count.index]}"
+    Project     = var.project_name
+    Environment = var.environment
+  }
+}
+resource "aws_route_table" "private_nat" {
+  count  = var.nat_gateway_enabled ? length(var.availability_zones) : 0
+  vpc_id = aws_vpc.default.id
+
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.nat_gateway[count.index].id
+  }
+
+  tags = {
+    Name        = "private | ${var.availability_zones[count.index]}"
+    Project     = var.project_name
+    Environment = var.environment
+  }
+}
 ###### NAT Gateway ######
 
 
@@ -97,7 +97,7 @@ resource "aws_key_pair" "terraform_key" {
 }
 
 resource "aws_instance" "nat_instance" {
-  count                       = length(var.availability_zones)
+  count                       = !var.nat_gateway_enabled ? length(var.availability_zones) : 0
   ami                         = "ami-0614680123427b75e"
   instance_type               = "t3.micro"
   subnet_id                   = aws_subnet.public[count.index].id
@@ -150,13 +150,13 @@ resource "aws_security_group" "nat_sg" {
 }
 
 resource "aws_eip_association" "nat_instance" {
-  count         = length(var.availability_zones)
+  count         = !var.nat_gateway_enabled ? length(var.availability_zones) : 0
   instance_id   = aws_instance.nat_instance[count.index].id
   allocation_id = aws_eip.nat[count.index].id
 }
 
 resource "aws_route_table" "private" {
-  count  = length(var.availability_zones)
+  count  = !var.nat_gateway_enabled ? length(var.availability_zones) : 0
   vpc_id = aws_vpc.default.id
 
   route {
@@ -191,5 +191,5 @@ resource "aws_subnet" "private" {
 resource "aws_route_table_association" "private" {
   count          = length(var.availability_zones)
   subnet_id      = aws_subnet.private[count.index].id
-  route_table_id = aws_route_table.private[count.index].id
+  route_table_id = var.nat_gateway_enabled ? aws_route_table.private_nat[count.index].id : aws_route_table.private[count.index].id
 }
