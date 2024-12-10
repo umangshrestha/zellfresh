@@ -79,9 +79,7 @@ type CheckoutDetails {
   discount: Float!
   taxPercentage: Float!
 
-  """
-  Total price of the order including delivery charge
-  """
+  """Total price of the order including delivery charge"""
   totalPrice: Float!
   enableCheckout: Boolean!
 }
@@ -114,9 +112,7 @@ type OrderItem {
   createdAt: String!
   updatedAt: String!
 
-  """
-  Price at the time of order creation
-  """
+  """Price at the time of order creation"""
   price: Float!
 }
 
@@ -136,9 +132,7 @@ type Order {
   review: OrderReview
 }
 
-"""
-The status of the order
-"""
+"""The status of the order"""
 enum DeliveryStatus {
   PENDING
   DELIVERED
@@ -148,9 +142,7 @@ enum DeliveryStatus {
   SHIPPED
 }
 
-"""
-The status of the order
-"""
+"""The status of the order"""
 enum PaymentMethod {
   CASH
   CARD
@@ -186,9 +178,7 @@ type Query {
     cursor: String
     name: String
 
-    """
-    Supported categories: chicken, beef, pork, mutton, fish, eggs
-    """
+    """Supported categories: chicken, beef, pork, mutton, fish, eggs"""
     category: String
     tags: [String!]
     minPrice: Float
@@ -207,9 +197,7 @@ type Query {
     minRating: Float
     maxRating: Float
 
-    """
-    Sort by rating
-    """
+    """Sort by rating"""
     sortAsc: Boolean = true
   ): [ProductReview!]!
   review(productId: String!): ProductReview
@@ -224,9 +212,7 @@ type Query {
   category(name: String!): Category
 }
 
-"""
-Sort products by
-"""
+"""Sort products by"""
 enum ProductsSortBy {
   NAME
   PRICE
@@ -241,14 +227,8 @@ type Mutation {
   cancelOrder(orderId: String!): Order!
   submitOrderFeedback(orderId: String!, feedback: FeedbackInput!): OrderReview!
 
-  """
-  Admin User can change the delivery status of an order
-  """
-  changeOrderStatus(
-    userId: String!
-    orderId: String!
-    status: DeliveryStatus!
-  ): Order!
+  """Admin User can change the delivery status of an order"""
+  changeOrderStatus(userId: String!, orderId: String!, status: DeliveryStatus!): Order!
   updateUser(updateUserInput: UpdateUserInput!): User!
   putAddress(putAddressInput: PutAddressInput!): Address!
   deleteAddress(addressId: String!): Address!

@@ -1,35 +1,14 @@
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { CookieOptions, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { Auth } from '../entities/auth.entity';
 import { Role } from '../types/role.enum';
 
 @Injectable()
 export class GuestTokenService {
-  cookieName: string;
-  cookieOptions: CookieOptions;
-  clearCookieOptions: CookieOptions;
+  private readonly logger = new Logger(GuestTokenService.name);
 
-  constructor(
-    private jwtService: JwtService,
-    configService: ConfigService,
-  ) {
-    this.cookieName = configService.getOrThrow('GUEST_TOKEN_COOKIE_NAME');
-    const httpOnly = configService.getOrThrow('COOKIE_HTTP_ONLY');
-    const domain = configService.getOrThrow('COOKIE_DOMAIN');
-    const maxAge = configService.getOrThrow('GUEST_TOKEN_EXPIRATION_TIME');
-    this.clearCookieOptions = {
-      httpOnly,
-      path: '/',
-      domain,
-    };
-    this.cookieOptions = {
-      ...this.clearCookieOptions,
-      maxAge,
-    };
-  }
+  constructor(private jwtService: JwtService) {}
 
   generateGuestDetails(): Auth {
     const sub = uuidv4();
@@ -42,12 +21,19 @@ export class GuestTokenService {
     };
   }
 
-  sendCookie(res: Response, data: Auth) {
-    const token = this.jwtService.sign(data);
-    res.cookie(this.cookieName, token, this.cookieOptions);
+  getToken(data: Auth) {
+    return { guestToken: this.jwtService.sign(data) };
   }
 
-  clearCookie(res: Response) {
-    res.clearCookie(this.cookieName, this.clearCookieOptions);
+  decrypt(token?: string): Auth {
+    if (!token) {
+      return null;
+    }
+    try {
+      return this.jwtService.verify(token);
+    } catch (error) {
+      this.logger.error(error);
+      return null;
+    }
   }
 }

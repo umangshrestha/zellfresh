@@ -1,6 +1,5 @@
 import { plainToInstance } from 'class-transformer';
 import {
-  IsBoolean,
   IsEnum,
   IsNotEmpty,
   IsNumber,
@@ -23,22 +22,12 @@ export class EnvironmentVariables {
   AWS_REGION: string = 'ap-south-1';
 
   @IsString()
-  AWS_ACCESS_KEY_ID: string = 'test';
-
-  @IsString()
-  AWS_SECRET_ACCESS_KEY: string = 'test';
-
-  @IsString()
   @IsNotEmpty()
   GOOGLE_CLIENT_ID: string;
 
   @IsString()
   @IsNotEmpty()
   ACCESS_TOKEN_SECRET: string = 'secret';
-
-  @IsString()
-  @IsNotEmpty()
-  ACCESS_TOKEN_COOKIE_NAME: string = 'access_token';
 
   @IsNumber()
   @IsNotEmpty()
@@ -48,9 +37,6 @@ export class EnvironmentVariables {
   @IsNotEmpty()
   REFRESH_TOKEN_SECRET: string = 'refresh_secret';
 
-  @IsString()
-  @IsNotEmpty()
-  REFRESH_TOKEN_COOKIE_NAME: string = 'refresh_token';
 
   @IsNumber()
   @IsNotEmpty()
@@ -58,19 +44,8 @@ export class EnvironmentVariables {
 
   @IsString()
   @IsNotEmpty()
-  COOKIE_DOMAIN: string = 'localhost';
-
-  @IsBoolean()
-  @IsNotEmpty()
-  COOKIE_HTTP_ONLY: boolean = true;
-
-  @IsString()
-  @IsNotEmpty()
   GUEST_TOKEN_SECRET: string = 'guest_secret';
 
-  @IsString()
-  @IsNotEmpty()
-  GUEST_TOKEN_COOKIE_NAME: string = 'guest_token';
 
   @IsNumber()
   @IsNotEmpty()

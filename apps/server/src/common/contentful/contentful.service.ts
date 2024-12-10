@@ -119,14 +119,19 @@ export class ContentfulService {
             }
             break;
           case 'DeletedEntry':
-            this.loggerService.log(`Deleted entry: ${entry.sys.id}`);
+            this.loggerService.log(`Deleted category: ${entry.sys.id}`);
+            this.loggerService.debug(entry);
             const success = await this.categoriesService.remove(entry.sys.id);
             if (!success) {
+              this.loggerService.error(
+                `Failed to remove product: ${entry.sys.id}`,
+              );
               await this.productsService.remove(entry.sys.id);
             }
             break;
           default:
             this.loggerService.warn(`Unknown entry type: ${entry.sys.type}`);
+            this.loggerService.debug(entry);
         }
       }
       await this.setSyncUrl(data.data.nextSyncUrl);

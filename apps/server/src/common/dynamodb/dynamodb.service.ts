@@ -1,4 +1,4 @@
-import { DynamoDB } from '@aws-sdk/client-dynamodb';
+import { DynamoDB, ListTablesCommand } from '@aws-sdk/client-dynamodb';
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
@@ -6,19 +6,28 @@ import { ConfigService } from '@nestjs/config';
 export class DynamodbService {
   public readonly client: DynamoDB;
   private readonly logger = new Logger(DynamodbService.name);
+
   constructor(readonly configService: ConfigService) {
-    const isProduction = configService.getOrThrow('NODE_ENV') === 'production';
-    const options = {
-      region: configService.getOrThrow('AWS_REGION'),
-      accessKeyId: configService.getOrThrow('AWS_ACCESS_KEY_ID'),
-      secretAccessKey: configService.getOrThrow('AWS_SECRET_ACCESS_KEY'),
-      endpoint: isProduction
-        ? undefined
-        : configService.getOrThrow('DYNAMODB_ENDPOINT'),
-    };
-    this.logger.log(
-      `DynamodbService initialized with options: ${JSON.stringify(options)}`,
-    );
-    this.client = new DynamoDB(options);
+    if (
+      configService.getOrThrow('NODE_ENV') === 'development' ||
+      configService.getOrThrow('NODE_ENV') === 'test'
+    ) {
+      const options = {
+        region: configService.getOrThrow('AWS_REGION'),
+        accessKeyId: 'test',
+        secretAccessKey: 'test',
+        endpoint: configService.getOrThrow('DYNAMODB_ENDPOINT'),
+      };
+      this.client = new DynamoDB(options);
+    } else {
+      const options = {
+        region: configService.getOrThrow('AWS_REGION'),
+      };
+      console.log('options', options);
+      this.logger.log(
+        `DynamodbService initialized with options: ${JSON.stringify(options)}`,
+      );
+      this.client = new DynamoDB(options);
+    }
   }
 }

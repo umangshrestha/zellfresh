@@ -30,7 +30,7 @@ locals {
     for key, value in local.secrets : {
       name  = key
       value = value
-    }
+    } if key != "AWS_ACCESS_KEY_ID" && key != "AWS_SECRET_ACCESS_KEY"
     ], [
     {
       name  = "PORT",

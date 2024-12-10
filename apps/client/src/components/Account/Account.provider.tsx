@@ -1,17 +1,18 @@
-import axios, { AxiosRequestConfig, isAxiosError, isCancel } from 'axios';
+import { AxiosRequestConfig, isAxiosError, isCancel } from 'axios';
 import isEqual from 'lodash/isEqual';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
+import { useStorageStore } from '../../lib/store';
 import { LayoutProps } from '../Layout';
 import { useNotification } from '../Notification';
 import { AccountContext } from './Account.context.ts';
 import * as query from './Account.queries.ts';
-import { AccountContextType, AccountDetails } from './Account.types';
+import { AccountContextType } from './Account.types';
 
 export const AccountProvider = ({ children }: LayoutProps) => {
   const { setNotification } = useNotification();
-  const [accountDetails, setAccountDetails] = useState<AccountDetails | null>(
-    null,
-  );
+
+  const { token, setToken, accountDetails, setAccountDetails } =
+    useStorageStore();
 
   const onErrorRaiseNotification = useCallback(
     (error: unknown) => {
@@ -41,9 +42,10 @@ export const AccountProvider = ({ children }: LayoutProps) => {
   ) => {
     try {
       const response = await query.login(provider, config);
-      setAccountDetails(response.data);
+      setToken(response.data);
       if (onSuccess) return onSuccess();
     } catch (error: unknown) {
+      console.error('Login failed:', error);
       onErrorRaiseNotification(error);
       if (onError) return onError(error);
     }
@@ -55,7 +57,6 @@ export const AccountProvider = ({ children }: LayoutProps) => {
     onError?: (error: unknown) => void,
   ) => {
     try {
-      await axios.get('/api/auth/logout', config);
       await login('guest', config);
       setNotification({
         message: 'You have been logged out',
@@ -83,15 +84,23 @@ export const AccountProvider = ({ children }: LayoutProps) => {
         }
         setAccountDetails(response.data);
       })
-      .catch(onErrorRaiseNotification);
-
+      .catch((error) => {
+        setAccountDetails(null);
+        onErrorRaiseNotification(error);
+      });
     return () => {
       controller.abort();
     };
-  }, [setNotification, accountDetails, onErrorRaiseNotification]);
+  }, [
+    accountDetails,
+    onErrorRaiseNotification,
+    setAccountDetails,
+    setNotification,
+  ]);
 
   const contextValue: AccountContextType = {
     accountDetails,
+    token,
     login,
     logout,
   };

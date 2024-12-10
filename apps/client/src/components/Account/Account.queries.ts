@@ -1,18 +1,24 @@
 import axios, { AxiosRequestConfig } from 'axios';
+import { useStorageStore } from '../../lib/store';
 
 export const axiosClient = axios.create();
 
-const logout = (config: AxiosRequestConfig | undefined = undefined) => {
-  return axios.get('/api/auth/logout', config);
-};
-
-const refresh = (config?: AxiosRequestConfig) => {
-  return axios.get('/api/auth/refresh', config);
+const refresh = (config: AxiosRequestConfig = {}) => {
+  const token = useStorageStore.getState().token;
+  if (token && 'refreshToken' in token) {
+    config.headers = {
+      ...config.headers,
+      Authorization: token.refreshToken,
+    };
+    return axios.get('/api/auth/refresh', config);
+  } else {
+    return Promise.reject();
+  }
 };
 
 const login = (
   provider: 'guest' | 'google' = 'guest',
-  config?: AxiosRequestConfig,
+  config: AxiosRequestConfig = {},
 ) => {
   return axios.get(`/api/auth/${provider}/login`, config);
 };
@@ -33,15 +39,21 @@ axiosClient.interceptors.response.use(
       !originalRequest._retry
     ) {
       originalRequest._retry = true;
+      const setToken = useStorageStore.getState().setToken;
+
       try {
-        await refresh();
+        const tokens = await refresh();
+        setToken(tokens.data);
+        originalRequest.headers.Authorization = `Bearer ${tokens.data.accessToken}`;
         return axiosClient(originalRequest);
       } catch (refreshError) {
         console.error('Refresh token failed:', refreshError);
       }
       try {
-        await logout();
-        await login();
+        const tokens = await login();
+        setToken(tokens.data);
+        originalRequest.headers.Authorization = `Bearer ${tokens.data.guestToken}`;
+        return axiosClient(originalRequest);
       } catch (guestLoginError) {
         console.error('Guest login failed:', guestLoginError);
       }
@@ -50,8 +62,22 @@ axiosClient.interceptors.response.use(
   },
 );
 
-const me = (config?: AxiosRequestConfig) => {
+const me = (config: AxiosRequestConfig = {}) => {
+  const token = useStorageStore.getState().token;
+  if (token === null) {
+    /* empty */
+  } else if ('accessToken' in token) {
+    config.headers = {
+      ...config.headers,
+      Authorization: `Bearer ${token.accessToken}`,
+    };
+  } else if ('guestToken' in token) {
+    config.headers = {
+      ...config.headers,
+      Authorization: `Bearer ${token.guestToken}`,
+    };
+  }
   return axiosClient.get('/api/auth/me', config);
 };
 
-export { login, logout, me };
+export { login, me };

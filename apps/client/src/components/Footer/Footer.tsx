@@ -8,6 +8,7 @@ import {
   CURRENT_YEAR,
   GOOGLE_MAP_URL,
   PHONE_NUMBER,
+  SHOP_HOURS,
 } from '../../config';
 import { SOCIAL_MEDIA_HANDLES } from '../../config/social';
 import AvailabilityBanner from '../Banner.tsx';
@@ -35,6 +36,19 @@ export const Footer = () => (
         {ADDRESS.city}, {ADDRESS.state},<br />
         {ADDRESS.country} - {ADDRESS.zip}
       </address>
+      <section>
+      <span className="font-bold text-lg">Shop hours</span>
+        <Box className="flex flex-col">
+         {
+          SHOP_HOURS.map((shopHour) => (
+            <Box key={shopHour.day} className="flex justify-between">
+              <span>{shopHour.day}</span>
+              <span>{shopHour.time}</span>
+            </Box>
+          ))
+         }
+        </Box>
+      </section>
       <section className="flex flex-col">
         <span className="font-bold text-lg">Information</span>
         <Link component={RouterLink} to="/terms-and-conditions">
@@ -44,12 +58,11 @@ export const Footer = () => (
           Privacy Policy
         </Link>
       </section>
-
-      <section className="flex flex-col text-center">
+         <section className="flex flex-col text-center">
         <span className="font-bold text-lg">Contact us</span>
-        <a href={`tel:+91${PHONE_NUMBER}`}>
+        <Link href={`tel:+91${PHONE_NUMBER}`} underline='none'>
           <CallIcon /> {PHONE_NUMBER}
-        </a>
+        </Link>
         <br />
 
         <span className="font-bold text-lg">Follow us</span>

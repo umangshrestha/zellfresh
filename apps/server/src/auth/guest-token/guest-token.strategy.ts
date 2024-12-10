@@ -11,14 +11,8 @@ export class GuestTokenStrategy extends PassportStrategy(
   'jwt-guest',
 ) {
   constructor(configService: ConfigService) {
-    const cookieName = configService.getOrThrow('GUEST_TOKEN_COOKIE_NAME');
     const secretOrKey = configService.getOrThrow('GUEST_TOKEN_SECRET');
-    const jwtFromRequest = ExtractJwt.fromExtractors([
-      (request: Request) => {
-        return request?.cookies?.[cookieName] || null;
-      },
-    ]);
-
+    const jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
     super({ jwtFromRequest, secretOrKey });
   }
 

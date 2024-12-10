@@ -1,4 +1,5 @@
 import { AxiosRequestConfig } from 'axios';
+import { Token } from './Token.types.ts';
 
 export interface AccountDetails {
   sub: string;
@@ -9,6 +10,7 @@ export interface AccountDetails {
 
 export interface AccountContextType {
   accountDetails: AccountDetails | null;
+  token: Token;
   login: (
     login: 'guest' | 'google',
     config: AxiosRequestConfig,

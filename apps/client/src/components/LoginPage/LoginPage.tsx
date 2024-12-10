@@ -12,7 +12,7 @@ import Notification, { useNotification } from '../Notification';
 export const LoginPage = () => {
   const { setNotification } = useNotification();
   const navigate = useNavigate();
-  const { login } = useAccount();
+  const { login, token } = useAccount();
   const onError = () => {
     setNotification({
       message: 'Failed to sign in',
@@ -53,6 +53,10 @@ export const LoginPage = () => {
                   {
                     headers: {
                       Authorization: `Bearer ${response.credential}`,
+                      'x-guest-token':
+                        token && 'guestToken' in token
+                          ? token.guestToken
+                          : undefined,
                     },
                   },
                   () => navigate('/'),

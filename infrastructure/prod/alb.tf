@@ -35,6 +35,19 @@ resource "aws_alb_target_group" "service_target_group" {
   depends_on = [aws_alb.alb]
 }
 
+resource "aws_acm_certificate" "alb_certificate" {
+  domain_name       = "www.${var.domain_name}"
+  validation_method = "DNS"
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  tags = {
+    Project     = var.project_name
+    Environment = var.environment
+  }
+}
+
 resource "aws_alb_listener" "alb_default_listener" {
   load_balancer_arn = aws_alb.alb.arn
   port              = 80

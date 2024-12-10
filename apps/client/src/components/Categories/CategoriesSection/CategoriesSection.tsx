@@ -17,6 +17,7 @@ export const CategoriesSection = ({
   >
     {categories.map((category) => (
       <ImageButton
+      width='44%'
         {...category}
         onClick={() => navigateTo(category.navigateUrl)}
         key={category.name}

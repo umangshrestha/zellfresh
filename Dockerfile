@@ -21,7 +21,5 @@ COPY --from=server_build /app/apps/server/schema ./apps/schema
 RUN npx prisma db push
 
 RUN chown -R node:node /app
-EXPOSE 3000
-
 # Start the application
 CMD ["node", "dist/main.js"]

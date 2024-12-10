@@ -18,12 +18,16 @@ import { createPersistedQueryLink } from '@apollo/client/link/persisted-queries'
 import { RetryLink } from '@apollo/client/link/retry';
 import { sha256 } from 'crypto-hash';
 import { useEffect, useState } from 'react';
-import { useAccount } from './Account';
+import { Token, useAccount } from './Account';
 import { useNotification } from './Notification';
 
+let wsUri = '';
 if (import.meta.env.NODE_ENV === 'development') {
   loadDevMessages();
   loadErrorMessages();
+  wsUri = 'ws://localhost:3000/graphql';
+} else {
+  wsUri = 'wss://www.zellfresh.com/graphql';
 }
 
 // For network errors, retry the request up to 5 times
@@ -39,16 +43,29 @@ const retryLink = new RetryLink({
   },
 });
 
-const httpLink = createPersistedQueryLink({ sha256 }).concat(
-  createHttpLink({
-    uri: '/graphql',
-  }),
-);
+const createNewHttpLink = (token: Token) => {
+  const headers: Record<string, string> = {};
+  if (token === null) {
+    /* empty */
+  } else if ('accessToken' in token) {
+    headers['Authorization'] = `Bearer ${token.accessToken}`;
+  } else if ('guestToken' in token) {
+    headers['Authorization'] = `Bearer ${token.guestToken}`;
+  }
+  const httpLink = createPersistedQueryLink({ sha256 }).concat(
+    createHttpLink({
+      uri: '/graphql',
+      credentials: 'include',
+      headers,
+    }),
+  );
+  return ApolloLink.from([httpLink]);
+};
 
 const createSubscriptionLink = (accountDetails: Record<string, string>) => {
   return new GraphQLWsLink(
     createClient({
-      url: 'ws://localhost:3000/graphql',
+      url: wsUri,
       connectionParams: accountDetails,
     }),
   );
@@ -64,7 +81,7 @@ const isSubscriptionOperation = ({ query }: Operation) => {
 
 const ApolloClientProvider = ({ children }: LayoutProps) => {
   const { setNotification } = useNotification();
-  const { accountDetails } = useAccount();
+  const { accountDetails, token } = useAccount();
   const [cache, setCache] = useState(new InMemoryCache());
   const [sub, setSub] = useState<string | null>(null);
 
@@ -97,7 +114,7 @@ const ApolloClientProvider = ({ children }: LayoutProps) => {
       });
     }
   });
-
+  console.log('accountDetails:', accountDetails, token);
   const linkWithSubscription =
     accountDetails !== null
       ? split(
@@ -105,9 +122,9 @@ const ApolloClientProvider = ({ children }: LayoutProps) => {
           createSubscriptionLink({
             sub: accountDetails.sub,
           }),
-          httpLink,
+          createNewHttpLink(token),
         )
-      : httpLink;
+      : createNewHttpLink(token);
 
   const client = new ApolloClient({
     link: ApolloLink.from([errorLink, retryLink, linkWithSubscription]),

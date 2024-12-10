@@ -1,5 +1,4 @@
-import { Controller, Get, Headers, Res, UseGuards } from '@nestjs/common';
-import { Response } from 'express';
+import { Controller, Get, Headers, UseGuards } from '@nestjs/common';
 import { AccessOrGuestTokenGuard } from './access-or-guest-token.gaurd';
 import { AccessTokenService } from './access-token/access-token.service';
 import { AuthUser } from './auth.decorator';
@@ -9,6 +8,7 @@ import { GuestTokenService } from './guest-token/guest-token.service';
 import { OptionalGuestTokenGuard } from './guest-token/optional-guest-token.gaurd';
 import { RefreshTokenGuard } from './refresh-token/refresh-token.gaurd';
 import { RefreshTokenService } from './refresh-token/refresh-token.service';
+import { GuestTokenGuard } from './guest-token/guest-token.gaurd';
 
 @Controller('auth')
 export class AuthController {
@@ -19,57 +19,42 @@ export class AuthController {
     private readonly guestTokenService: GuestTokenService,
   ) {}
 
-  @Get('logout')
-  logout(@Res({ passthrough: true }) response: Response) {
-    this.refreshTokenService.clearCookie(response);
-    this.accessTokenService.clearCookie(response);
-    this.guestTokenService.clearCookie(response);
-    return { message: 'success' };
-  }
-
   @Get('guest/login')
-  async guestLogin(
-    @AuthUser({ required: false }) payload: Auth,
-    @Res({ passthrough: true }) response: Response,
-  ) {
+  async guestLogin(@Headers('x-guest-token') guestToken?: string) {
+    const payload = this.guestTokenService.decrypt(guestToken);
     const data = await this.authService.guestLogin(payload);
-    this.guestTokenService.sendCookie(response, data);
-    this.accessTokenService.clearCookie(response);
-    this.refreshTokenService.clearCookie(response);
-    return data;
+    return this.guestTokenService.getToken(data);
   }
 
   @UseGuards(OptionalGuestTokenGuard)
   @Get('google/login')
   async googleLoginWithFrontend(
-    @AuthUser({ required: false }) guest: Auth,
     @Headers('Authorization') authorization: string,
-    @Res({ passthrough: true }) res: Response,
+    @Headers('x-guest-token') guestToken?: string,
   ) {
+    const guest = this.guestTokenService.decrypt(guestToken);
     const payload = await this.authService.googleLoginWithFrontend(
       guest,
       authorization,
     );
-    this.accessTokenService.sendCookie(res, payload);
-    this.refreshTokenService.sendCookie(res, payload);
-    this.guestTokenService.clearCookie(res);
-    return payload;
+    return {
+      ...this.accessTokenService.getToken(payload),
+      ...this.refreshTokenService.getToken(payload),
+    };
   }
 
   @Get('me')
-  @UseGuards(AccessOrGuestTokenGuard)
+  @UseGuards(GuestTokenGuard)
   me(@AuthUser({}) payload: Auth): Auth {
     return payload;
   }
 
   @Get('refresh')
   @UseGuards(RefreshTokenGuard)
-  refresh(
-    @AuthUser() payload: Auth,
-    @Res({ passthrough: true }) response: Response,
-  ) {
-    this.accessTokenService.sendCookie(response, payload);
-    this.refreshTokenService.sendCookie(response, payload);
-    return { message: 'success' };
+  refresh(@AuthUser() payload: Auth) {
+    return {
+      ...this.accessTokenService.getToken(payload),
+      ...this.refreshTokenService.getToken(payload),
+    };
   }
 }

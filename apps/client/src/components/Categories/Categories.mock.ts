@@ -10,22 +10,6 @@ export const CATEGORIES_MOCK_DATA: ListCategoriesQuery['categories'] = [
     navigateUrl: '/products?category=chicken',
   },
   {
-    imageUrl:
-      'https://media.istockphoto.com/id/540233806/photo/grilled-beef-steaks.jpg?b=1&s=612x612&w=0&k=20&c=15VmUXcSgyuml4SBCA-0HoSENGwu11RI0WRI-6r43I4=',
-    name: 'beef',
-    isAvailable: true,
-    icon: '🐄',
-    navigateUrl: '/products?category=beef',
-  },
-  {
-    name: 'pork',
-    icon: '🐖',
-    isAvailable: true,
-    navigateUrl: '/products?category=pork',
-    imageUrl:
-      'https://images.pexels.com/photos/410648/pexels-photo-410648.jpeg?auto=compress&cs=tinysrgb&w=800',
-  },
-  {
     name: 'mutton',
     icon: '🐑',
     isAvailable: true,
