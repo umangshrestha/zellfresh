@@ -4,6 +4,7 @@ import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import { GoogleLogin } from '@react-oauth/google';
+import _ from 'lodash';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useAccount } from '../Account';
 import Footer from '../Footer';
@@ -54,8 +55,8 @@ export const LoginPage = () => {
                     headers: {
                       Authorization: `Bearer ${response.credential}`,
                       'x-guest-token':
-                        token && 'guestToken' in token
-                          ? token.guestToken
+                        token && _.has(token, 'guestToken')
+                          ? (token.guestToken as string)
                           : undefined,
                     },
                   },

@@ -24,6 +24,7 @@ import * as Categories from '../Categories';
 import ErrorBoundary from '../ErrorBoundary';
 import Footer from '../Footer';
 import Notification from '../Notification';
+import { CustomerExperienceRating } from '../Rating/CustomerExperienceRating/CustomerExperienceRating.tsx';
 import ThemeToggle from '../ThemeToggle';
 import { Breadcrumbs } from './Breadcrumbs';
 
@@ -71,6 +72,7 @@ export const Layout = () => {
       >
         <Toolbar />
         <List>
+          <CustomerExperienceRating onSubmitFeedback={() => {}} />
           <Categories.CollapsableButton />
           <Divider />
           <ListItemButton onClick={() => onClick('/orders')}>

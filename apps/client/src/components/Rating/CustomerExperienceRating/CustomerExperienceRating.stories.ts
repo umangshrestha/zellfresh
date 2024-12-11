@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { CustomerExperienceRating } from './CustomerExperienceRating';
 
 const meta = {
-  title: 'RatingDialog',
+  title: 'CustomerExperienceRating',
   component: CustomerExperienceRating,
   tags: ['autodocs'],
 } as Meta<typeof CustomerExperienceRating>;

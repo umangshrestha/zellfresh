@@ -1,5 +1,4 @@
 import { AxiosRequestConfig, isAxiosError, isCancel } from 'axios';
-import isEqual from 'lodash/isEqual';
 import { useCallback, useEffect } from 'react';
 import { useStorageStore } from '../../lib/store';
 import { LayoutProps } from '../Layout';
@@ -34,22 +33,6 @@ export const AccountProvider = ({ children }: LayoutProps) => {
     [setNotification],
   );
 
-  const me = async (
-    config: AxiosRequestConfig = {},
-    onSuccess?: () => void,
-    onError?: (error: unknown) => void,
-  ) => {
-    try {
-      const response = await query.me(config);
-      setAccountDetails(response.data);
-      if (onSuccess) return onSuccess();
-    } catch (error: unknown) {
-      onErrorRaiseNotification(error);
-      setAccountDetails(null);
-      if (onError) return onError(error);
-    }
-  }
-
   const login = async (
     provider: 'guest' | 'google',
     config: AxiosRequestConfig = {},
@@ -59,7 +42,15 @@ export const AccountProvider = ({ children }: LayoutProps) => {
     try {
       const response = await query.login(provider, config);
       setToken(response.data);
-      await me(config);
+      query
+        .me(config)
+        .then((response) => setAccountDetails(response.data))
+        .catch((error) => {
+          if (error.name === 'AbortError') {
+            return;
+          }
+          setAccountDetails(null);
+        });
       if (onSuccess) return onSuccess();
     } catch (error: unknown) {
       console.error('Login failed:', error);
@@ -93,7 +84,16 @@ export const AccountProvider = ({ children }: LayoutProps) => {
     }
     const controller = new AbortController();
     const signal = controller.signal;
-    me({ signal }).then();
+    query
+      .me({ signal })
+      .then((response) => setAccountDetails(response.data))
+      .catch((error) => {
+        if (error.name === 'AbortError') {
+          return;
+        }
+        onErrorRaiseNotification(error);
+        setAccountDetails(null);
+      });
     return () => {
       controller.abort();
     };

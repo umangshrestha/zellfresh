@@ -7,18 +7,18 @@ import {
   createHttpLink,
   split,
 } from '@apollo/client';
-import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
-import { getMainDefinition } from '@apollo/client/utilities';
-import { createClient } from 'graphql-ws';
-import { LayoutProps } from './Layout';
-import _ from 'lodash'
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
 import { onError } from '@apollo/client/link/error';
 import { createPersistedQueryLink } from '@apollo/client/link/persisted-queries';
 import { RetryLink } from '@apollo/client/link/retry';
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
+import { getMainDefinition } from '@apollo/client/utilities';
 import { sha256 } from 'crypto-hash';
+import { createClient } from 'graphql-ws';
+import _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { Token, useAccount } from './Account';
+import { LayoutProps } from './Layout';
 import { useNotification } from './Notification';
 
 let wsUri = '';
@@ -48,9 +48,9 @@ const createNewHttpLink = (token: Token) => {
 
   if (token === null) {
     /* empty */
-  } else if (_.has(token,'accessToken')){
+  } else if (_.has(token, 'accessToken')) {
     headers['Authorization'] = `Bearer ${token.accessToken}`;
-  } else if (_.has(token,'guestToken')){
+  } else if (_.has(token, 'guestToken')) {
     headers['Authorization'] = `Bearer ${token.guestToken}`;
   }
   const httpLink = createPersistedQueryLink({ sha256 }).concat(

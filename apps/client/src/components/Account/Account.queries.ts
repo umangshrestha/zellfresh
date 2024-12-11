@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
+import _ from 'lodash';
 import { useStorageStore } from '../../lib/store';
-import _ from 'lodash'
 
 export const axiosClient = axios.create();
 
@@ -11,7 +11,7 @@ const refresh = (config: AxiosRequestConfig = {}) => {
       ...config.headers,
       Authorization: token.refreshToken,
     };
-    return axios.get('/api/auth/refresh', config);
+    return axios.post('/api/auth/refresh', {}, config);
   } else {
     return Promise.reject();
   }
@@ -21,7 +21,7 @@ const login = (
   provider: 'guest' | 'google' = 'guest',
   config: AxiosRequestConfig = {},
 ) => {
-  return axios.get(`/api/auth/${provider}/login`, config);
+  return axios.post(`/api/auth/${provider}/login`, {}, config);
 };
 
 axiosClient.interceptors.response.use(
@@ -67,12 +67,12 @@ const me = (config: AxiosRequestConfig = {}) => {
   const token = useStorageStore.getState().token;
   if (token === null) {
     /* empty */
-  } else if (_.has(token,'accessToken')){
+  } else if (_.has(token, 'accessToken')) {
     config.headers = {
       ...config.headers,
       Authorization: `Bearer ${token.accessToken}`,
     };
-  } else if (_.has(token,'guestToken')) {
+  } else if (_.has(token, 'guestToken')) {
     config.headers = {
       ...config.headers,
       Authorization: `Bearer ${token.guestToken}`,

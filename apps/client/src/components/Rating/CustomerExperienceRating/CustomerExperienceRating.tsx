@@ -9,6 +9,7 @@ import Snackbar from '@mui/material/Snackbar';
 import { styled } from '@mui/material/styles';
 import * as React from 'react';
 import { useState } from 'react';
+import { useStorageStore } from '../../../lib/store';
 import { CustomerExperienceRatingProps } from './CustomerExperienceRating.types.ts';
 
 const StyledRating = styled(Rating)(({ theme }) => ({
@@ -55,6 +56,7 @@ export const CustomerExperienceRating = ({
   rating,
 }: CustomerExperienceRatingProps) => {
   const [open, setOpen] = useState(rating === undefined);
+  const theme = useStorageStore((state) => state.theme);
 
   return (
     <Snackbar
@@ -64,7 +66,18 @@ export const CustomerExperienceRating = ({
       message="Feedback submitted!"
       anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
     >
-      <Box className="flex justify-center flex-wrap flex-col bg-amber-200 p-4 rounded-lg">
+      <Box
+        className="flex justify-center flex-wrap flex-col p-4 rounded-lg"
+        sx={{
+          backgroundColor:
+            theme === 'dark'
+              ? 'rgba(0, 0, 0, 0.8)'
+              : 'rgba(255, 255, 255, 0.8)',
+          backdropFilter: 'blur(4px)',
+          boxShadow: 1,
+          borderRadius: 1,
+        }}
+      >
         Please rate your experience with our service
         <StyledRating
           name="highlight-selected-only"
