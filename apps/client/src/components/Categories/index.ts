@@ -8,6 +8,6 @@ const EnhancedCategoriesCollapsableButton = withCategoriesQuery(
 const EnhancedCategoriesSection = withCategoriesQuery(CategoriesSection);
 
 export {
-  EnhancedCategoriesCollapsableButton as CollapsableButton,
-  EnhancedCategoriesSection as Section,
+  EnhancedCategoriesCollapsableButton as CategoriesCollapsableButton,
+  EnhancedCategoriesSection as CategoriesSection,
 };

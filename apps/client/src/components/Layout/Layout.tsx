@@ -20,11 +20,10 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { APP_NAME } from '../../config';
 import Account from '../Account';
 import CartIcon from '../Cart/CartIcon';
-import * as Categories from '../Categories';
+import { CategoriesCollapsableButton } from '../Categories';
 import ErrorBoundary from '../ErrorBoundary';
 import Footer from '../Footer';
 import Notification from '../Notification';
-import { CustomerExperienceRating } from '../Rating/CustomerExperienceRating/CustomerExperienceRating.tsx';
 import ThemeToggle from '../ThemeToggle';
 import { Breadcrumbs } from './Breadcrumbs';
 
@@ -72,8 +71,7 @@ export const Layout = () => {
       >
         <Toolbar />
         <List>
-          <CustomerExperienceRating onSubmitFeedback={() => {}} />
-          <Categories.CollapsableButton />
+          <CategoriesCollapsableButton />
           <Divider />
           <ListItemButton onClick={() => onClick('/orders')}>
             <ListItemIcon

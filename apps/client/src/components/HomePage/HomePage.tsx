@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import React from 'react';
-import * as Categories from '../Categories';
+import { CategoriesSection } from '../Categories';
 
 export const HomePage = () => {
   return (
@@ -20,7 +20,7 @@ export const HomePage = () => {
           Please select a category to get started
         </Typography>
       </Box>
-      <Categories.Section />
+      <CategoriesSection />
     </React.Fragment>
   );
 };

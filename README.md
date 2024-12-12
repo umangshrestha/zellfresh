@@ -16,6 +16,7 @@
 | AWS ECS              | For running docker containers                          |
 | AWS DynamoDB         | For storing user data                                  |
 | AWS S3               | For terraform state management                         |
+
 ---
 
 ## Running AWS setup locally using Localstack
@@ -113,5 +114,5 @@ terraform apply --auto-approve
 ```
 
 ## Contributing
-Contributions are welcome! If you have suggestions or improvements, please open an issue or submit a pull request.
 
+Contributions are welcome! If you have suggestions or improvements, please open an issue or submit a pull request.

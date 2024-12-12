@@ -114,9 +114,7 @@ type OrderItem {
   createdAt: String!
   updatedAt: String!
 
-  """
-  Price at the time of order creation
-  """
+  """Price at the time of order creation"""
   price: Float!
 }
 
@@ -186,9 +184,7 @@ type Query {
     cursor: String
     name: String
 
-    """
-    Supported categories: chicken, beef, pork, mutton, fish, eggs
-    """
+    """Supported categories: chicken, beef, pork, mutton, fish, eggs"""
     category: String
     tags: [String!]
     minPrice: Float
@@ -207,9 +203,7 @@ type Query {
     minRating: Float
     maxRating: Float
 
-    """
-    Sort by rating
-    """
+    """Sort by rating"""
     sortAsc: Boolean = true
   ): [ProductReview!]!
   review(productId: String!): ProductReview
