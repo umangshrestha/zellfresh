@@ -5,3 +5,4 @@ dist/
 .turbo/
 __generated__/
 contentful
+apps/server/schema/schema.graphql

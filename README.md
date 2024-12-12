@@ -16,9 +16,6 @@
 | AWS ECS              | For running docker containers                          |
 | AWS DynamoDB         | For storing user data                                  |
 | AWS S3               | For terraform state management                         |
-
-| AWS
-
 ---
 
 ## Running AWS setup locally using Localstack
@@ -66,6 +63,13 @@ cd -
  aws secretsmanager get-secret-value --secret-id MyAppSecrets --region ap-south-1
 ```
 
+- Run the application
+
+```sh
+yarn install --ignore-engines --frozen-lockfile
+yarn run dev
+```
+
 ## Creating docker image
 
 ```sh
@@ -109,5 +113,5 @@ terraform apply --auto-approve
 ```
 
 ## Contributing
-
 Contributions are welcome! If you have suggestions or improvements, please open an issue or submit a pull request.
+

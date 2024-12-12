@@ -22,7 +22,8 @@ import { LayoutProps } from './Layout';
 import { useNotification } from './Notification';
 
 let wsUri = '';
-if (import.meta.env.NODE_ENV === 'development') {
+if (import.meta.env.DEV) {
+  console.log('Loading Apollo Client in development mode');
   loadDevMessages();
   loadErrorMessages();
   wsUri = 'ws://localhost:3000/graphql';
