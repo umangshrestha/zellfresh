@@ -12,6 +12,20 @@ resource "aws_subnet" "public" {
   }
 }
 
+resource "aws_subnet" "private" {
+  count             = length(var.availability_zones)
+  cidr_block        = cidrsubnet(var.vpc_cidr_block, 8, count.index)
+  availability_zone = var.availability_zones[count.index]
+  vpc_id            = aws_vpc.default.id
+
+  tags = {
+    Name        = "private | ${var.availability_zones[count.index]}"
+    Project     = var.project_name
+    Environment = var.environment
+  }
+}
+
+
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.default.id
 
@@ -26,6 +40,23 @@ resource "aws_route_table" "public" {
   }
 }
 
+
+resource "aws_route_table" "private" {
+  count  = !var.nat_gateway_enabled ? length(var.availability_zones) : 0
+  vpc_id = aws_vpc.default.id
+
+  route {
+    cidr_block           = "0.0.0.0/0"
+    nat_gateway_id       = var.nat_gateway_enabled ? aws_nat_gateway.nat_gateway[count.index].id : null
+    network_interface_id = var.nat_gateway_enabled ? null : aws_network_interface.network_interface[count.index].id
+  }
+
+  tags = {
+    Name        = "private | ${var.availability_zones[count.index]}"
+    Project     = var.project_name
+    Environment = var.environment
+  }
+}
 
 resource "aws_route_table_association" "public" {
   count          = length(var.availability_zones)
@@ -50,6 +81,12 @@ resource "aws_eip" "nat" {
   }
 }
 
+resource "aws_eip_association" "nat_instance" {
+  count         = !var.nat_gateway_enabled ? length(var.availability_zones) : 0
+  instance_id   = aws_instance.nat_instance[count.index].id
+  allocation_id = aws_eip.nat[count.index].id
+}
+
 ###### NAT Gateway ######
 #
 # NAT Gateway is expensive, so I am replacing it with a NAT Instance
@@ -65,21 +102,6 @@ resource "aws_nat_gateway" "nat_gateway" {
     Environment = var.environment
   }
 }
-resource "aws_route_table" "private_nat" {
-  count  = var.nat_gateway_enabled ? length(var.availability_zones) : 0
-  vpc_id = aws_vpc.default.id
-
-  route {
-    cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.nat_gateway[count.index].id
-  }
-
-  tags = {
-    Name        = "private | ${var.availability_zones[count.index]}"
-    Project     = var.project_name
-    Environment = var.environment
-  }
-}
 ###### NAT Gateway ######
 
 
@@ -87,7 +109,7 @@ resource "aws_route_table" "private_nat" {
 ###### NAT Instance ######
 resource "aws_key_pair" "terraform_key" {
   key_name   = "terraform"
-  public_key = file("~/.ssh/id_rsa.pub")
+  public_key = file("~/.ssh/aws.pub")
 
   tags = {
     Name        = "terraform_key"
@@ -96,34 +118,7 @@ resource "aws_key_pair" "terraform_key" {
   }
 }
 
-resource "aws_instance" "nat_instance" {
-  count                       = !var.nat_gateway_enabled ? length(var.availability_zones) : 0
-  ami                         = "ami-0614680123427b75e"
-  instance_type               = "t3.micro"
-  subnet_id                   = aws_subnet.public[count.index].id
-  key_name                    = aws_key_pair.terraform_key.key_name
-  iam_instance_profile        = aws_iam_instance_profile.nat_instance_profile.name
-  security_groups             = [aws_security_group.nat_sg.id]
-  associate_public_ip_address = true
-  source_dest_check           = false
-
-  tags = {
-    Name        = "nat_instance | ${var.availability_zones[count.index]}"
-    Project     = var.project_name
-    Environment = var.environment
-  }
-
-  user_data = <<-EOF
-              #!/bin/bash
-              yum install -y aws-cli
-              echo "net.ipv4.ip_forward = 1" >> /etc/sysctl.conf
-              sysctl -p
-              iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-              EOF
-}
-
-
-resource "aws_security_group" "nat_sg" {
+resource "aws_security_group" "nat_instance_security_group" {
   name        = "nat_sg"
   description = "Security group for NAT instance"
   vpc_id      = aws_vpc.default.id
@@ -149,47 +144,48 @@ resource "aws_security_group" "nat_sg" {
   }
 }
 
-resource "aws_eip_association" "nat_instance" {
-  count         = !var.nat_gateway_enabled ? length(var.availability_zones) : 0
-  instance_id   = aws_instance.nat_instance[count.index].id
-  allocation_id = aws_eip.nat[count.index].id
-}
-
-resource "aws_route_table" "private" {
-  count  = !var.nat_gateway_enabled ? length(var.availability_zones) : 0
-  vpc_id = aws_vpc.default.id
-
-  route {
-    cidr_block           = "0.0.0.0/0"
-    network_interface_id = aws_instance.nat_instance[count.index].primary_network_interface_id
-  }
+resource "aws_network_interface" "network_interface" {
+  count             = !var.nat_gateway_enabled ? length(var.availability_zones) : 0
+  subnet_id         = aws_subnet.public[count.index].id
+  source_dest_check = false
+  security_groups   = [aws_security_group.nat_instance_security_group.id]
 
   tags = {
-    Name        = "private | ${var.availability_zones[count.index]}"
+    Name = "nat_instance | ${var.availability_zones[count.index]}"
+  }
+}
+
+resource "aws_instance" "nat_instance" {
+  count                = !var.nat_gateway_enabled ? length(var.availability_zones) : 0
+  ami                  = "ami-0614680123427b75e"
+  instance_type        = "t3.micro"
+  key_name             = aws_key_pair.terraform_key.key_name
+  iam_instance_profile = aws_iam_instance_profile.nat_instance_profile.name
+
+  network_interface {
+    network_interface_id = aws_network_interface.network_interface[count.index].id
+    device_index         = 0
+  }
+
+
+  tags = {
+    Name        = "nat_instance | ${var.availability_zones[count.index]}"
     Project     = var.project_name
     Environment = var.environment
   }
 
-  depends_on = [aws_instance.nat_instance]
+  user_data = <<-EOF
+              #!/bin/bash
+              yum install -y aws-cli
+              sysctl -w net.ipv4.ip_forward=1
+              iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+              EOF
 }
 ###### NAT Instance ######
-
-resource "aws_subnet" "private" {
-  count             = length(var.availability_zones)
-  cidr_block        = cidrsubnet(var.vpc_cidr_block, 8, count.index)
-  availability_zone = var.availability_zones[count.index]
-  vpc_id            = aws_vpc.default.id
-
-  tags = {
-    Name        = "private | ${var.availability_zones[count.index]}"
-    Project     = var.project_name
-    Environment = var.environment
-  }
-}
 
 
 resource "aws_route_table_association" "private" {
   count          = length(var.availability_zones)
   subnet_id      = aws_subnet.private[count.index].id
-  route_table_id = var.nat_gateway_enabled ? aws_route_table.private_nat[count.index].id : aws_route_table.private[count.index].id
+  route_table_id = aws_route_table.private[count.index].id
 }

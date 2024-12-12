@@ -1,5 +1,5 @@
 # ECS Task Execution Role
-resource "aws_iam_role" "ecs_task_execution_role" {
+resource "aws_iam_role" "ecs_execution_role" {
   name               = "${var.project_name}-ecs-task-execution-role"
   assume_role_policy = data.aws_iam_policy_document.task_assume_role_policy.json
 
@@ -10,7 +10,7 @@ resource "aws_iam_role" "ecs_task_execution_role" {
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_policy" {
-  role       = aws_iam_role.ecs_task_execution_role.name
+  role       = aws_iam_role.ecs_execution_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
@@ -26,7 +26,7 @@ data "aws_iam_policy_document" "task_assume_role_policy" {
 }
 
 # ECS Task IAM Role
-resource "aws_iam_role" "ecs_task_iam_role" {
+resource "aws_iam_role" "ecs_task_role" {
   name               = "${var.project_name}-iam-role"
   assume_role_policy = data.aws_iam_policy_document.task_assume_role_policy.json
 
@@ -65,15 +65,31 @@ data "aws_iam_policy_document" "dynamodb" {
   }
 }
 
+
 resource "aws_iam_policy" "dynamodb_policy" {
   name        = "${var.project_name}-dynamodb-policy"
-  description = "Allow ECS task to interact with DynamoDB"
+  description = "Allow ECS task to interact with DynamoDB for ZellFresh"
   policy      = data.aws_iam_policy_document.dynamodb.json
 }
 
-resource "aws_iam_role_policy_attachment" "ecs_task_dynamodb_policy" {
-  role       = aws_iam_role.ecs_task_iam_role.name
+resource "aws_iam_role_policy_attachment" "ecs_task_iam_role_policy" {
+  role       = aws_iam_role.ecs_task_role.name
   policy_arn = aws_iam_policy.dynamodb_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "ecs_task_iam_role_dynamodb_policy" {
+  role       = aws_iam_role.ecs_task_role.name
+  policy_arn = aws_iam_policy.dynamodb_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "ecs_task_iam_role_readonly_policy" {
+  role       = aws_iam_role.ecs_task_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+}
+
+resource "aws_iam_role_policy_attachment" "ecs_task_iam_role_poweruser_policy" {
+  role       = aws_iam_role.ecs_task_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser"
 }
 
 # Nat Gateway IAM Role
@@ -108,30 +124,10 @@ resource "aws_iam_instance_profile" "nat_instance_profile" {
   }
 }
 
-data "aws_iam_policy_document" "nat_instance_policy" {
-  statement {
-    actions = [
-      "ecr:GetDownloadUrlForLayer",
-      "ecr:BatchGetImage",
-      "ecr:BatchCheckLayerAvailability",
-      "ecr:GetAuthorizationToken",
-    ]
-
-    resources = ["*"]
-  }
-}
-
-resource "aws_iam_policy" "nat_instance_policy" {
-  name        = "${var.project_name}-nat-instance-policy"
-  description = "Allow NAT instance to interact with ECR"
-  policy      = data.aws_iam_policy_document.nat_instance_policy.json
-}
-
 resource "aws_iam_role_policy_attachment" "nat_instance_policy" {
   role       = aws_iam_role.nat_instance_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
 }
-
 
 resource "aws_iam_role_policy_attachment" "nat_instance_power_user_policy" {
   role       = aws_iam_role.nat_instance_role.name

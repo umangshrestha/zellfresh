@@ -30,7 +30,7 @@ locals {
     for key, value in local.secrets : {
       name  = key
       value = value
-    } if key != "AWS_ACCESS_KEY_ID" && key != "AWS_SECRET_ACCESS_KEY"
+    }
     ], [
     {
       name  = "PORT",
@@ -48,8 +48,8 @@ resource "aws_ecs_task_definition" "zell_fresh_task_definition" {
   memory                   = var.memory
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
-  task_role_arn            = aws_iam_role.ecs_task_iam_role.arn
+  execution_role_arn       = aws_iam_role.ecs_execution_role.arn
+  task_role_arn            = aws_iam_role.ecs_task_role.arn
   container_definitions = jsonencode([
     {
       name      = var.project_name
