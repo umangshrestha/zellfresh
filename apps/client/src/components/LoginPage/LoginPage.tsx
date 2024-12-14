@@ -7,7 +7,6 @@ import { GoogleLogin } from '@react-oauth/google';
 import _ from 'lodash';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useAccount } from '../Account';
-import Footer from '../Footer';
 import Notification, { useNotification } from '../Notification';
 
 export const LoginPage = () => {
@@ -71,15 +70,18 @@ export const LoginPage = () => {
             size="large"
           />
           <Link component={RouterLink} to="/" underline="always" ml="2">
-            continue as guest
+            Continue as Guest
           </Link>
         </Box>
         <Typography variant="subtitle1" gutterBottom color="textSecondary">
-          By signing in, you agree to our Terms and Privacy Policy
+          By signing in, you agree to our
+          <Link component={RouterLink} to="/terms-and-conditions">
+            Terms and Privacy
+          </Link>{' '}
+          Policy
         </Typography>
       </Box>
       <Notification />
-      <Footer />
     </Container>
   );
 };

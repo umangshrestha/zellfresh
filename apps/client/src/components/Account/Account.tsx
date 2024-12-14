@@ -13,6 +13,7 @@ export const Account = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const isGuest = accountDetails?.role === 'guest';
+  const isAdmin = accountDetails?.role === 'user';
   const onLogout = () => {
     logout({}, () => {
       navigate('/');
@@ -52,6 +53,19 @@ export const Account = () => {
             Profile
           </Button>
         </MenuItem>
+        {
+          isAdmin && (
+            <MenuItem
+              key="profile"
+              component={RouterLink}
+              to="/admin/orders"
+              onClick={() => setAnchorEl(null)}
+            >
+              <Button className="w-full" aria-label="user profile button">
+                Admin Page
+              </Button>
+            </MenuItem>)
+        }
         {isGuest ? (
           <MenuItem
             component={RouterLink}

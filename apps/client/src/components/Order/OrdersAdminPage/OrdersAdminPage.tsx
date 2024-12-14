@@ -28,15 +28,9 @@ export const OrdersAdminPage = () => {
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <TableCell>OrderId</TableCell>
-              <TableCell>UserId</TableCell>
+              <TableCell>Order Meta</TableCell>
               <TableCell>Delivery Status</TableCell>
-              <TableCell>Created At</TableCell>
-              <TableCell>Updated At</TableCell>
               <TableCell>Shipping Address</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Phone</TableCell>
-              <TableCell>Email</TableCell>
               <TableCell>Delivery Details</TableCell>
               <TableCell>Payment Method</TableCell>
               <TableCell>Product Details</TableCell>
@@ -45,8 +39,20 @@ export const OrdersAdminPage = () => {
           <TableBody>
             {data?.orders?.items?.map((order) => (
               <TableRow key={order.orderId}>
-                <TableCell>{order.orderId}</TableCell>
-                <TableCell>{order.userId}</TableCell>
+                <TableCell>
+                  <Typography variant="body2">
+                    {`Order id: ${order.orderId}`}
+                  </Typography>
+                  <Typography variant="body2">
+                    {`User id: ${order.orderId}`}
+                  </Typography>
+                  <Typography variant="body2">
+                    {`Created At: ${order.createdAt}`}
+                  </Typography>
+                  <Typography variant="body2">
+                    {`Updated At: ${order.updatedAt}`}
+                  </Typography>
+                </TableCell>
                 <TableCell>
                   <Select
                     variant={'outlined'}
@@ -66,61 +72,40 @@ export const OrdersAdminPage = () => {
                     ))}
                   </Select>
                 </TableCell>
-                <TableCell>{order.createdAt}</TableCell>
-                <TableCell>{order.updatedAt}</TableCell>
-                <TableCell>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Street</TableCell>
-                        <TableCell>Zip Code</TableCell>
-                        <TableCell>Additional Info</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      <TableRow>
-                        <TableCell>{order.shippingAddress.street}</TableCell>
-                        <TableCell>{order.shippingAddress.zip}</TableCell>
-                        <TableCell>
-                          {order.shippingAddress.additionalInfo ||
-                            'No additional info'}
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
+                <TableCell className="flex flex-col">
+                  <Box sx={{ mb: 2 }}>
+                    <Typography variant="h6" gutterBottom>
+                      Shipping Details
+                    </Typography>
+                    <Typography variant="body2" fontWeight="bold">
+                      {`Name: ${order.contactDetails.name}`}
+                    </Typography>
+                    <Typography variant="body2">
+                      {`Phone: ${order.contactDetails.phone}`}
+                    </Typography>
+                    <Typography variant="body2">
+                      {`Address: ${order.shippingAddress.street}`}
+                    </Typography>
+                    <Typography variant="body2">
+                      {`Info: ${order.shippingAddress.additionalInfo || '-'}`}
+                    </Typography>
+                  </Box>
                 </TableCell>
-                <TableCell>{order.contactDetails.name}</TableCell>
-                <TableCell>{order.contactDetails.phone}</TableCell>
-                <TableCell>{order.contactDetails.email}</TableCell>
                 <TableCell>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Delivery Price</TableCell>
-                        <TableCell>Sub Total</TableCell>
-                        <TableCell>Tax</TableCell>
-                        <TableCell>Discount</TableCell>
-                        <TableCell>Total Price</TableCell>
-                        <TableCell>Tax Percentage</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      <TableRow>
-                        <TableCell>
-                          {order.checkoutDetails.deliveryPrice}
-                        </TableCell>
-                        <TableCell>{order.checkoutDetails.subTotal}</TableCell>
-                        <TableCell>{order.checkoutDetails.tax}</TableCell>
-                        <TableCell>{order.checkoutDetails.discount}</TableCell>
-                        <TableCell>
-                          {order.checkoutDetails.totalPrice}
-                        </TableCell>
-                        <TableCell>
-                          {order.checkoutDetails.taxPercentage}
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
+                  <Box sx={{ mb: 2 }}>
+                    <Typography variant="body2">
+                      {`Subtotal: $${order.checkoutDetails.subTotal.toFixed(2)}`}
+                    </Typography>
+                    <Typography variant="body2">
+                      {`Tax: $${order.checkoutDetails.tax.toFixed(2)}`}
+                    </Typography>
+                    <Typography variant="body2">
+                      {`Delivery Price: $${order.checkoutDetails.deliveryPrice.toFixed(2)}`}
+                    </Typography>
+                    <Typography variant="body2" fontWeight="bold">
+                      {`Total Price: $${order.checkoutDetails.totalPrice.toFixed(2)}`}
+                    </Typography>
+                  </Box>
                 </TableCell>
                 <TableCell>{order.paymentMethod}</TableCell>
                 <TableCell>

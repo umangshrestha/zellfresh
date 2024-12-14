@@ -11,6 +11,7 @@ export const Breadcrumbs = () => {
   const navigate = useNavigate();
   const searchParams = new URLSearchParams(location.search);
   const category = searchParams.get('category');
+
   return (
     <div className="flex w-full justify-between">
       <MuiBreadcrumbs
