@@ -6,13 +6,10 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    logger: [process.env.NODE_ENV === 'production' ? 'log' : 'debug'],
+    logger: [process.env.NODE_ENV === 'production' ? 'error' : 'debug'],
   });
   const configService = app.get(ConfigService);
   const PORT = configService.getOrThrow('PORT');
-  console.log(
-    `=================> Environment "${process.env.NODE_ENV}", Port "${PORT}"`,
-  );
   app.setGlobalPrefix('/api');
   app.use(compression());
   await app.listen(PORT, '0.0.0.0');

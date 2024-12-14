@@ -1,7 +1,7 @@
 export const APP_NAME = 'Zell Fresh';
 export const URL = 'www.zellfresh.com';
 export const PHONE_NUMBER = '8123466400';
-export const EMAIL = 'admin@zellfresh.com';
+export const EMAIL = 'zellfreshmeat@gmail.com ';
 export const COMPANY_NAME = 'Zellfresh Foods Pvt Ltd';
 export const CURRENT_YEAR = new Date().getFullYear();
 export const GOOGLE_MAP_URL =

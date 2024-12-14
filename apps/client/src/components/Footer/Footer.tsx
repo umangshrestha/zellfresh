@@ -1,4 +1,5 @@
 import CallIcon from '@mui/icons-material/Call';
+import EmailIcon from '@mui/icons-material/Email';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import { Link as RouterLink } from 'react-router-dom';
@@ -6,6 +7,7 @@ import {
   ADDRESS,
   APP_NAME,
   CURRENT_YEAR,
+  EMAIL,
   GOOGLE_MAP_URL,
   PHONE_NUMBER,
   SHOP_HOURS,
@@ -61,8 +63,10 @@ export const Footer = () => (
         <Link href={`tel:+91${PHONE_NUMBER}`} underline="none">
           <CallIcon /> {PHONE_NUMBER}
         </Link>
+        <Link href={`mailto:${EMAIL}`} underline="none">
+          <EmailIcon /> {EMAIL}
+        </Link>
         <br />
-
         <span className="font-bold text-lg">Follow us</span>
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           {SOCIAL_MEDIA_HANDLES.map(({ key, href, icon: Icon }) => (

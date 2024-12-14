@@ -49,7 +49,7 @@ export AWS_DEFAULT_REGION=ap-south-1
 docker-compose up -d
 ```
 
-- Deploy the aws infrastucture
+- Deploy the aws infrastructure
 
 ```sh
 cd infrastructure/dev
@@ -58,7 +58,7 @@ tflocal apply --auto-approve
 cd -
 ```
 
-- Get the secets for .env file
+- Get the secrets for .env file
 
 ```shell
  aws secretsmanager get-secret-value --secret-id MyAppSecrets --region ap-south-1
