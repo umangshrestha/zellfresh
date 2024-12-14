@@ -153,7 +153,7 @@ resource "aws_security_group" "nat_instance_security_group" {
     from_port   = 0
     to_port     = 65535
     protocol    = "tcp"
-    cidr_blocks = [aws_vpc.default.cidr_block]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
@@ -162,7 +162,6 @@ resource "aws_security_group" "nat_instance_security_group" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
 
   tags = {
     Name        = "nat_sg"
@@ -200,14 +199,16 @@ resource "aws_instance" "nat_instance" {
     Environment = var.environment
   }
 
+  # https://docs.aws.amazon.com/vpc/latest/userguide/work-with-nat-instances.html#create-nat-ami
   user_data = <<-EOL
       #! /bin/bash
       sudo yum install iptables-services aws-cli -y
       sudo systemctl enable iptables
       sudo systemctl start iptables
       sudo sysctl -w net.ipv4.ip_forward=1
-      sudo /sbin/iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+      sudo /sbin/iptables -t nat -A POSTROUTING -o ens5 -j MASQUERADE
       sudo /sbin/iptables -F FORWARD
+      sudo service iptables save
     EOL
 }
 ###### NAT Instance ######
