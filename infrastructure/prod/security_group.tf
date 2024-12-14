@@ -19,6 +19,7 @@ resource "aws_security_group" "alb" {
   }
 
   tags = {
+    Name        = "${var.project_name}-alb"
     Project     = var.project_name
     Environment = var.environment
   }
@@ -46,6 +47,7 @@ resource "aws_security_group" "ecs_container_instance" {
   }
 
   tags = {
+    Name        = "${var.project_name}-ecs-container-instance"
     Project     = var.project_name
     Environment = var.environment
   }

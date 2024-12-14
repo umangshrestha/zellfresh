@@ -35,6 +35,7 @@ resource "aws_route_table" "public" {
   }
 
   tags = {
+    Name        = "public | route_table"
     Project     = var.project_name
     Environment = var.environment
   }
@@ -48,7 +49,7 @@ resource "aws_route_table" "private" {
   route {
     cidr_block           = "0.0.0.0/0"
     nat_gateway_id       = var.nat_gateway_enabled ? aws_nat_gateway.nat_gateway[count.index].id : null
-    network_interface_id = var.nat_gateway_enabled ? null : aws_network_interface.network_interface[count.index].id
+    network_interface_id = var.nat_gateway_enabled ? null : aws_instance.nat_instance[count.index].primary_network_interface_id
   }
 
   tags = {
@@ -62,6 +63,12 @@ resource "aws_route_table_association" "public" {
   count          = length(var.availability_zones)
   subnet_id      = aws_subnet.public[count.index].id
   route_table_id = aws_route_table.public.id
+}
+
+resource "aws_route_table_association" "private" {
+  count          = length(var.availability_zones)
+  subnet_id      = aws_subnet.private[count.index].id
+  route_table_id = aws_route_table.private[count.index].id
 }
 
 resource "aws_main_route_table_association" "public_main" {
@@ -81,16 +88,14 @@ resource "aws_eip" "nat" {
   }
 }
 
-resource "aws_eip_association" "nat_instance" {
-  count         = !var.nat_gateway_enabled ? length(var.availability_zones) : 0
-  instance_id   = aws_instance.nat_instance[count.index].id
+resource "aws_eip_association" "nat" {
+  count         = length(var.availability_zones)
+  instance_id   = var.nat_gateway_enabled ? aws_nat_gateway.nat_gateway[count.index].private_ip : aws_instance.nat_instance[count.index].id
   allocation_id = aws_eip.nat[count.index].id
 }
 
 ###### NAT Gateway ######
-#
 # NAT Gateway is expensive, so I am replacing it with a NAT Instance
-#
 resource "aws_nat_gateway" "nat_gateway" {
   count         = var.nat_gateway_enabled ? length(var.availability_zones) : 0
   subnet_id     = aws_subnet.public[count.index].id
@@ -124,10 +129,31 @@ resource "aws_security_group" "nat_instance_security_group" {
   vpc_id      = aws_vpc.default.id
 
   ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
     from_port   = 0
     to_port     = 65535
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [aws_vpc.default.cidr_block]
   }
 
   egress {
@@ -136,6 +162,7 @@ resource "aws_security_group" "nat_instance_security_group" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
 
   tags = {
     Name        = "nat_sg"
@@ -156,36 +183,53 @@ resource "aws_network_interface" "network_interface" {
 }
 
 resource "aws_instance" "nat_instance" {
-  count                = !var.nat_gateway_enabled ? length(var.availability_zones) : 0
-  ami                  = "ami-0614680123427b75e"
-  instance_type        = "t3.micro"
-  key_name             = aws_key_pair.terraform_key.key_name
-  iam_instance_profile = aws_iam_instance_profile.nat_instance_profile.name
+  count                       = !var.nat_gateway_enabled ? length(var.availability_zones) : 0
+  ami                         = "ami-0614680123427b75e"
+  instance_type               = "t3.micro"
+  user_data_replace_on_change = true
+  key_name                    = aws_key_pair.terraform_key.key_name
+  iam_instance_profile        = aws_iam_instance_profile.nat_instance_profile.name
 
   network_interface {
     network_interface_id = aws_network_interface.network_interface[count.index].id
     device_index         = 0
   }
-
-
   tags = {
     Name        = "nat_instance | ${var.availability_zones[count.index]}"
     Project     = var.project_name
     Environment = var.environment
   }
 
-  user_data = <<-EOF
-              #!/bin/bash
-              yum install -y aws-cli
-              sysctl -w net.ipv4.ip_forward=1
-              iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-              EOF
+  user_data = <<-EOL
+      #! /bin/bash
+      sudo yum install iptables-services aws-cli -y
+      sudo systemctl enable iptables
+      sudo systemctl start iptables
+      sudo sysctl -w net.ipv4.ip_forward=1
+      sudo /sbin/iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+      sudo /sbin/iptables -F FORWARD
+    EOL
 }
 ###### NAT Instance ######
 
 
-resource "aws_route_table_association" "private" {
-  count          = length(var.availability_zones)
-  subnet_id      = aws_subnet.private[count.index].id
-  route_table_id = aws_route_table.private[count.index].id
+resource "aws_instance" "nat_testing_aws_instances" {
+  count           = var.create_nat_test_instance ? 1 : 0
+  ami             = "ami-0614680123427b75e"
+  instance_type   = "t2.micro"
+  subnet_id       = aws_subnet.private[count.index].id
+  key_name        = aws_key_pair.terraform_key.key_name
+  security_groups = [aws_security_group.nat_instance_security_group.id]
+
+  root_block_device {
+    volume_size = "8"
+    volume_type = "gp2"
+    encrypted   = true
+  }
+
+  tags = {
+    Name        = "test | nat_instance | ${var.availability_zones[count.index]}"
+    Project     = var.project_name
+    Environment = var.environment
+  }
 }

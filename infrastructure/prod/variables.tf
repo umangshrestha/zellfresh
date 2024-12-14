@@ -20,6 +20,12 @@ variable "nat_gateway_enabled" {
   default     = false
 }
 
+variable "create_nat_test_instance" {
+  description = "Create a NAT Gateway test instance"
+  type        = bool
+  default     = false
+}
+
 variable "domain_name" {
   description = "The domain name for the certificate"
   type        = string

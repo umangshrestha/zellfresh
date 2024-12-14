@@ -37,7 +37,6 @@ resource "aws_iam_role" "ecs_task_role" {
 }
 
 
-
 data "aws_iam_policy_document" "dynamodb" {
   statement {
     actions = [

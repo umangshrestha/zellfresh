@@ -3,6 +3,7 @@ resource "aws_vpc" "default" {
   enable_dns_support   = true
   enable_dns_hostnames = true
   tags = {
+    Name        = "VPC | ${var.project_name}"
     Project     = var.project_name
     Environment = var.environment
   }
@@ -12,6 +13,7 @@ resource "aws_internet_gateway" "default" {
   vpc_id = aws_vpc.default.id
 
   tags = {
+    Name        = "IGW | ${var.project_name}"
     Project     = var.project_name
     Environment = var.environment
   }
@@ -21,7 +23,7 @@ resource "aws_vpc_endpoint" "dynamodb" {
   vpc_id            = aws_vpc.default.id
   service_name      = "com.amazonaws.${var.aws_region}.dynamodb"
   vpc_endpoint_type = "Gateway"
-  route_table_ids = aws_route_table.private.*.id
+  route_table_ids   = aws_route_table.private.*.id
 
   tags = {
     Name        = "dynamodb-endpoint"
@@ -134,4 +136,3 @@ resource "aws_vpc_endpoint" "secrets_manager" {
     Environment = var.environment
   }
 }
-
