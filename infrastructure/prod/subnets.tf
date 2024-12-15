@@ -95,7 +95,6 @@ resource "aws_eip_association" "nat" {
 }
 
 ###### NAT Gateway ######
-# NAT Gateway is expensive, so I am replacing it with a NAT Instance
 resource "aws_nat_gateway" "nat_gateway" {
   count         = var.nat_gateway_enabled ? length(var.availability_zones) : 0
   subnet_id     = aws_subnet.public[count.index].id
@@ -145,13 +144,6 @@ resource "aws_security_group" "nat_instance_security_group" {
   ingress {
     from_port   = 80
     to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = 0
-    to_port     = 65535
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }

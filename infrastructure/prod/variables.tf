@@ -13,7 +13,6 @@ variable "environment" {
   }
 }
 
-
 variable "nat_gateway_enabled" {
   description = "Enable NAT Gateway for private subnets"
   type        = bool
