@@ -4,6 +4,7 @@ resource "aws_security_group" "alb" {
   vpc_id      = aws_vpc.default.id
 
   ingress {
+    description = "Allow ingress traffic from the internet on HTTP"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
