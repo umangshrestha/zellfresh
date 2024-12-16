@@ -26,7 +26,7 @@
 | Tools     | Localstack Wrapper                                         | Script                        | Reference                                                                            |
 | --------- | ---------------------------------------------------------- | ----------------------------- | ------------------------------------------------------------------------------------ |
 | Terraform | [tflocal](https://github.com/localstack/terraform-local)   | `pip install terraform-local` | [Localstack Guide](https://docs.localstack.cloud/user-guide/integrations/terraform/) |
-| Aws Cli   | [awscli-local](https://github.com/localstack/awscli-local) | `pip install awscli-local` | [Localstack Guide](https://docs.localstack.cloud/user-guide/integrations/aws-cli/)   |
+| Aws Cli   | [awscli-local](https://github.com/localstack/awscli-local) | `pip install awscli-local`    | [Localstack Guide](https://docs.localstack.cloud/user-guide/integrations/aws-cli/)   |
 
 note:
 alternative to AWS Local cli:

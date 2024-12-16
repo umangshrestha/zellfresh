@@ -5,6 +5,7 @@ ENV NODE_ENV=production
 COPY . .
 RUN yarn install --frozen-lockfile --production=false --ignore-engines
 RUN yarn run lint
+RUN yarn run test
 RUN yarn run build
 RUN yarn install --production --frozen-lockfile --ignore-engines
 

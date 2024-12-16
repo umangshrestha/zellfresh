@@ -5,6 +5,16 @@
       "persistent": true,
       "cache": false
     },
+    "test": {
+      "persistent": false,
+      "cache": false,
+      "outputs": []
+    },
+    "test:cov": {
+      "persistent": false,
+      "cache": false,
+      "outputs": []
+    },
     "storybook": {
       "dependsOn": [],
       "outputs": [],

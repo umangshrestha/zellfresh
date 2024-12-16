@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "test": "jest",
+    "test:cov": "jest --coverage",
     "lint": "eslint . --fix",
     "preview": "vite preview",
     "format": "prettier --write .",
@@ -48,9 +50,12 @@
     "@storybook/react": "^8.3.3",
     "@storybook/react-vite": "^8.3.3",
     "@storybook/test": "^8.3.3",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
     "@types/lodash": "^4.17.13",
-    "@types/react": "19.0.1",
-    "@types/react-dom": "19.0.2",
+    "@types/react": "^19.0.1",
+    "@types/react-dom": "^19.0.2",
     "@typescript-eslint/eslint-plugin": "^8.18.1",
     "@typescript-eslint/parser": "^8.18.1",
     "@vitejs/plugin-react-swc": "^3.5.0",
@@ -59,6 +64,8 @@
     "eslint-plugin-react-refresh": "^0.4.9",
     "eslint-plugin-storybook": "^0.11.1",
     "globals": "^15.9.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "jsdom": "^25.0.1",
     "postcss": "^8.4.47",
     "storybook": "^8.3.3",
     "tailwindcss": "^3.4.13",
@@ -71,5 +78,32 @@
     "extends": [
       "plugin:storybook/recommended"
     ]
+  },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.ts"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts",
+      "tsx"
+    ],
+    "rootDir": "src",
+    "testRegex": ".*\\.spec\\.tsx?$",
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "transformIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "moduleNameMapper": {
+      "\\.(css|less|scss|sass)$": "identity-obj-proxy"
+    },
+    "collectCoverageFrom": [
+      "**/*.tsx?"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "jsdom"
   }
 }
