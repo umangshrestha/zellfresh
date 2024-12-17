@@ -12,6 +12,8 @@ export class DynamodbService {
       configService.getOrThrow('NODE_ENV') === 'development' ||
       configService.getOrThrow('NODE_ENV') === 'test'
     ) {
+      console.log("====== dynadb enters ===========");
+      
       const options = {
         region: configService.getOrThrow('AWS_REGION'),
         accessKeyId: 'test',
