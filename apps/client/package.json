@@ -30,6 +30,7 @@
     "graphql-ws": "^5.16.0",
     "libphonenumber-js": "^1.11.12",
     "lodash": "^4.17.21",
+    "razorpay": "^2.9.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-markdown": "^9.0.1",

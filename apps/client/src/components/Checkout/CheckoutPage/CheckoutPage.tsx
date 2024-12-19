@@ -23,6 +23,12 @@ import { LIST_PRODUCTS_QUERY } from '../../Product/Product.queries.ts';
 import { CHECKOUT_MUTATION, CHECKOUT_QUERY } from '../Checkout.queries.tsx';
 import { CheckoutListSection } from '../CheckoutListSection/CheckoutListSection.tsx';
 
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
+
 export const CheckoutPage = () => {
   const navigate = useNavigate();
   const [orderId, setOrderId] = useState<string | undefined>(undefined);
@@ -41,10 +47,70 @@ export const CheckoutPage = () => {
     },
   );
 
-  const handleRazorpayPayment = () => {
-    // Integrate Razorpay API here
-    console.log('Proceeding with Razorpay for card payment');
+  // ========================== Razorpay mehtod ==========================
+  const createRazorpayOrder = async () => {
+    if (!data || !data.cart || !data.cart.checkoutDetails) {
+      throw new Error("Cart data is not available");
+    }
+    try {
+      const response = await fetch('/api/create-razorpay-order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          amount: data.cart.checkoutDetails.totalPrice * 100,
+          currency: 'INR',
+        }),
+      });
+      const result = await response.json();
+      return result.orderId;
+    } catch (error) {
+      console.error('Error creating Razorpay order:', error);
+      throw error;
+    }
   };
+
+  const handleRazorpayPayment = async () => {
+    if (!data || !data.cart || !data.cart.checkoutDetails) {
+      console.error("Cart data is not available");
+      return;
+    }
+    try {
+      const razorpayOrderId = await createRazorpayOrder();
+
+      const options = {
+        key: 'your-razorpay-key',
+        amount: data.cart.checkoutDetails.totalPrice * 100,
+        currency: 'INR',
+        name: 'Your Store Name',
+        description: 'Order Payment',
+        order_id: razorpayOrderId,
+        handler: (response: any) => {
+          console.log('Payment successful:', response);
+          checkoutMutation({
+            variables: {
+              paymentMethod: PaymentMethod.Card,
+            },
+          });
+        },
+        prefill: {
+          name: data.me?.name || '',
+          email: data.me?.email || '',
+          contact: data.me?.phone || '',
+        },
+        theme: {
+          color: '#3399cc',
+        },
+      };
+
+      const razorpay = new window.Razorpay(options);
+      razorpay.open();
+    } catch (error) {
+      console.error('Razorpay payment error:', error);
+    }
+  };
+
 
   const onPlaceOrder = () => {
     checkoutMutation({
@@ -188,7 +254,6 @@ export const CheckoutPage = () => {
                 value={PaymentMethod.Card}
                 control={<Radio />}
                 label="Card (Razorpay)"
-                disabled
               />
             </RadioGroup>
 

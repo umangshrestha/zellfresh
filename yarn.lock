@@ -4962,7 +4962,7 @@ aws-sign@~0.2.0:
   resolved "https://registry.yarnpkg.com/aws-sign/-/aws-sign-0.2.1.tgz#b961b22f0baa4f15ec241140f3776d6c142856d0"
   integrity sha512-cQFl6jK/Lq416OqpT+lb1RIay1wShuQjHF3/kAJbyMvruV8vSpDahaGNkbeupdGRgXR8Ii0O/ZIbTQPdp+l3pA==
 
-axios@^1.7.4, axios@^1.7.7, axios@^1.7.8:
+axios@^1.6.8, axios@^1.7.4, axios@^1.7.7, axios@^1.7.8:
   version "1.7.9"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.7.9.tgz#d7d071380c132a24accda1b2cfc1535b79ec650a"
   integrity sha512-LhLcE7Hbiryz8oMDdDptSrWowmB4Bl6RCt6sIJKpRB4XtVf0iEgewX3au/pJqm+Py1kCASkb/FFKjxQaLtxJvw==
@@ -11180,6 +11180,13 @@ raw-body@2.5.2:
     http-errors "2.0.0"
     iconv-lite "0.4.24"
     unpipe "1.0.0"
+
+razorpay@^2.9.5:
+  version "2.9.5"
+  resolved "https://registry.yarnpkg.com/razorpay/-/razorpay-2.9.5.tgz#6f0b1e31e09f796a360503fc4aebd46501a7e85f"
+  integrity sha512-bmybwyszgfbYWAdO4igyHFk5zFj/D4YuoZAFNbyIYnPwzd+FBY5WvtpfUA9lVBMgnV4NzVEhncxR3It9RI/gCQ==
+  dependencies:
+    axios "^1.6.8"
 
 react-confetti@^6.1.0:
   version "6.1.0"
