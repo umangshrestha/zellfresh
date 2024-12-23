@@ -3,11 +3,11 @@ import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import { Link as RouterLink } from 'react-router-dom';
+import { useCart } from '../../../../../../packages/api-client';
 import ServerErrorComponent from '../../ServerErrorComponent';
 import CartItem from '../CartItem';
 import CartEmptyPage from './CartEmptyPage';
 import CartLoadingPage from './CartLoadingPage';
-import { CartPageProps } from './CartPage.types.ts';
 
 export const CartPage = ({
   data,
@@ -15,7 +15,7 @@ export const CartPage = ({
   error,
   onClearCart,
   ...functions
-}: CartPageProps) => {
+}: ReturnType<typeof useCart>) => {
   if (loading) return <CartLoadingPage />;
 
   if (error) return <ServerErrorComponent error={error} />;

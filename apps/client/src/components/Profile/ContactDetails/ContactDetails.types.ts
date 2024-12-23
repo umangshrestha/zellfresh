@@ -1,9 +1,7 @@
-import { z } from 'zod';
-import { ContactDetailsSchema } from './ContactDetails.schema.ts';
+import { ContactDetailsType } from '@repo/form-validator';
 
-export type ContactDetailsType = z.infer<typeof ContactDetailsSchema>;
 export type ContactDetailsMutationFunction = {
-  onUserDetailsSave: (obj: ContactDetailsType) => void;
+  onUserDetailsSave: (obj: ContactDetailsType) => Promise<object>;
   onUserSaveLoading: boolean;
 };
 

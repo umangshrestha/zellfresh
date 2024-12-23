@@ -1,4 +1,3 @@
-import { useMutation, useQuery } from '@apollo/client';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
@@ -12,46 +11,30 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
+import { PaymentMethod } from '@repo/api-client';
+import { useCheckout } from '@repo/api-client/src/hooks/Checkout.hooks.ts';
 import { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { PaymentMethod } from '../../../__generated__/types.ts';
-import { CARTS_QUERY } from '../../Cart/Cart.queries.ts';
 import LoadingButton from '../../LoadingButton';
 import LoadingSpinner from '../../LoadingSpinner';
 import OrderPlaced from '../../Order/OrderPlaced';
-import { LIST_PRODUCTS_QUERY } from '../../Product/Product.queries.ts';
-import { CHECKOUT_MUTATION, CHECKOUT_QUERY } from '../Checkout.queries.tsx';
 import { CheckoutListSection } from '../CheckoutListSection/CheckoutListSection.tsx';
 
 export const CheckoutPage = () => {
   const navigate = useNavigate();
   const [orderId, setOrderId] = useState<string | undefined>(undefined);
   const [paymentMethod, setPaymentMethod] = useState(PaymentMethod.Cash);
-  const { data, loading, error } = useQuery(CHECKOUT_QUERY);
-
-  const [checkoutMutation, { loading: mutationLoading }] = useMutation(
-    CHECKOUT_MUTATION,
-    {
-      refetchQueries: [{ query: CARTS_QUERY }, { query: LIST_PRODUCTS_QUERY }],
-      onCompleted: (data) => {
-        const orderId = data.checkout.orderId;
-        setOrderId(orderId);
-        window.scrollTo(0, 0);
-      },
+  const { data, loading, error, onPlaceOrder, mutationLoading } = useCheckout(
+    (data) => {
+      const orderId = data.checkout.orderId;
+      setOrderId(orderId);
+      window.scrollTo(0, 0);
     },
   );
 
   const handleRazorpayPayment = () => {
     // Integrate Razorpay API here
     console.log('Proceeding with Razorpay for card payment');
-  };
-
-  const onPlaceOrder = () => {
-    checkoutMutation({
-      variables: {
-        paymentMethod,
-      },
-    }).then();
   };
 
   if (orderId) {
@@ -238,7 +221,7 @@ export const CheckoutPage = () => {
         color="error"
         className="w-full"
         disabled={data.cart.items.length === 0 || hasError}
-        onClick={onPlaceOrder}
+        onClick={() => onPlaceOrder(paymentMethod).then()}
       >
         Place Order
       </LoadingButton>

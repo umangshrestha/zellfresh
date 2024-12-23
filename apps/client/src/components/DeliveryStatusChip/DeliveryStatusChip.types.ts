@@ -1,4 +1,4 @@
-import { DeliveryStatus } from '../../__generated__/types.ts';
+import { DeliveryStatus } from '@repo/api-client';
 
 export interface DeliveryStatusProps {
   deliveryStatus: DeliveryStatus;

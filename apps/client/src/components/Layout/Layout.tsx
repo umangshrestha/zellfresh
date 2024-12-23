@@ -56,7 +56,7 @@ export const Layout = () => {
           <Box sx={{ flexGrow: 1 }} />
           <ThemeToggle />
           <ErrorBoundary>
-            <CartIcon />
+            <CartIcon onClick={() => onClick('/cart')} />
           </ErrorBoundary>
           <Suspense fallback={<CircularProgress />}>
             <Account />

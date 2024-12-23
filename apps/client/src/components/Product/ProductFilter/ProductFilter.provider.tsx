@@ -1,11 +1,8 @@
+import { ProductFilterSchema, ProductFilterType } from '@repo/form-validator';
 import { useSearchParams } from 'react-router-dom';
 import { LayoutProps as ProductFilterProviderProps } from '../../Layout';
 import { ProductFilterContext } from './ProductFilter.context';
-import { ProductFilterSchema } from './ProductFilter.schema';
-import {
-  ProductFilterContextType,
-  ProductFilterType,
-} from './ProductFilter.types';
+import { ProductFilterContextType } from './ProductFilter.types';
 
 export const ProductFilterProvider = ({
   children,

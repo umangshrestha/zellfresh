@@ -1,15 +1,12 @@
 import FormGroup from '@mui/material/FormGroup';
 import TextField from '@mui/material/TextField';
+import { AddressSchema, AddressType } from '@repo/form-validator';
 import { useState } from 'react';
 import { DEFAULT_ADDRESS } from '../../../config/address.ts';
 import LoadingButton from '../../LoadingButton';
+import { useNotification } from '../../Notification';
 import { ADDRESS_FIELDS_MAPPING } from './AddressItem.fields.ts';
-import { AddressItemSchema } from './AddressItem.schema.ts';
-import {
-  AddressItemProps,
-  AddressItemType,
-  AddressTypeKey,
-} from './AddressItem.types.ts';
+import { AddressItemProps } from './AddressItem.types.ts';
 
 export const AddressItem = ({
   addressId,
@@ -20,7 +17,8 @@ export const AddressItem = ({
   additionalInfo,
   onAddressSave,
 }: AddressItemProps) => {
-  const [address, setAddress] = useState<AddressItemType>({
+  const { setNotification } = useNotification();
+  const [address, setAddress] = useState<AddressType>({
     apt,
     street,
     zip,
@@ -28,7 +26,7 @@ export const AddressItem = ({
     ...DEFAULT_ADDRESS,
   });
 
-  const { success, error } = AddressItemSchema.safeParse(address);
+  const { success, error } = AddressSchema.safeParse(address);
   const errorsMap: Record<string, string> =
     error?.errors.reduce(
       (acc, curr) => {
@@ -44,7 +42,7 @@ export const AddressItem = ({
           return (
             <div className="flex flex-row flex-wrap gap-4" key={`nested-${i}`}>
               {field.nestedFields.map((nestedField) => {
-                const name = nestedField.name as AddressTypeKey;
+                const name = nestedField.name as keyof AddressType;
                 const value = address[name] || '';
                 const error = errorsMap[name];
                 return (
@@ -71,7 +69,7 @@ export const AddressItem = ({
             </div>
           );
         }
-        const name = field.name as AddressTypeKey;
+        const name = field.name as keyof AddressType;
         const value = address[name] || '';
         const error = errorsMap[name];
         return (
@@ -99,7 +97,14 @@ export const AddressItem = ({
         loading={onAddressSaveLoading}
         variant="contained"
         color="primary"
-        onClick={() => onAddressSave(address, addressId)}
+        onClick={() =>
+          onAddressSave(address, addressId).then(() => {
+            setNotification({
+              message: 'Address updated successfully',
+              severity: 'success',
+            });
+          })
+        }
         disabled={!success}
       >
         Save

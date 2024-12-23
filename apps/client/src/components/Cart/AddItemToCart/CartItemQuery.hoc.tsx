@@ -1,6 +1,5 @@
+import { useCart, useProduct } from '@repo/api-client';
 import { ComponentType, useEffect } from 'react';
-import { useProduct } from '../../Product/Product.hooks.ts';
-import { useCart } from '../Cart.hooks.ts';
 import type { CartItemProps } from '../CartItem';
 
 export const withCartItemQuery = <T extends CartItemProps>(
@@ -11,7 +10,7 @@ export const withCartItemQuery = <T extends CartItemProps>(
       productId: string;
     },
   ) => {
-    const { getCartItem, onAddItemToCart } = useCart();
+    const { getCartItem, onAddItemToCart } = useCart(() => {});
     const { getProduct } = useProduct();
     const cartItem = getCartItem(props.productId);
 

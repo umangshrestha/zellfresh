@@ -3,7 +3,7 @@ import ServerErrorComponent from '../../ServerErrorComponent';
 import ProductItem from '../ProductItem';
 import { ProductsEmptyPage } from './ProductsEmptyPage';
 import ProductsLoadingPage from './ProductsLoadingPage';
-import { ProductsPageProps } from './ProductsPage.types';
+import { ProductsPageProps } from './ProductsPage.types.ts';
 
 export const ProductsPage = ({
   data,

@@ -8,5 +8,5 @@ export type AddItemToCartContextType = {
 
 export interface AddItemToCartProps extends CartItemProps {
   onClose: () => void;
-  onAddItemToCart: (productId: string, quantity: number) => void;
+  onAddItemToCart: (productId: string, quantity: number) => Promise<object>;
 }
