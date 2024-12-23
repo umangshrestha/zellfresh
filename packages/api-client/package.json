@@ -7,7 +7,7 @@
   "types": "src/index.ts",
   "license": "MIT",
   "dependencies": {
-    "@apollo/client": "^3.11.8",
+    "@apollo/client": "^3.12.4",
     "axios": "^1.7.7",
     "@repo/form-validator": "*"
   }
