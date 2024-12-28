@@ -1,5 +1,5 @@
 import Chip from '@mui/material/Chip';
-import { DeliveryStatus } from '../../__generated__/types.ts';
+import { DeliveryStatus } from '@repo/api-client';
 import { DeliveryStatusProps } from './DeliveryStatusChip.types.ts';
 
 export const DeliveryStatusChip = ({ deliveryStatus }: DeliveryStatusProps) => {

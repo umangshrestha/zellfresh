@@ -12,6 +12,7 @@ import Select from '@mui/material/Select';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Link as RouterLink } from 'react-router-dom';
+import { useNotification } from '../../Notification';
 import AddItemToCartSkeleton from '../AddItemToCartSkeleton';
 import { AddItemToCartProps } from './AddItemToCart.types.ts';
 
@@ -22,6 +23,7 @@ export const AddItemToCart = ({
   onAddItemToCart,
   onClose,
 }: AddItemToCartProps) => {
+  const { setNotification } = useNotification();
   if (!product) {
     return <AddItemToCartSkeleton open={true} onClose={onClose} />;
   }
@@ -79,7 +81,17 @@ export const AddItemToCart = ({
             <InputLabel id="product-quantity-label">Quantity</InputLabel>
             <Select
               value={quantity.toString()}
-              onChange={(e) => onAddItemToCart(productId, +e.target.value)}
+              onChange={(e) => {
+                onAddItemToCart(productId, +e.target.value).then(() => {
+                  setNotification({
+                    message: 'Item added to cart',
+                    severity: 'success',
+                  });
+                  if (+e.target.value === 0) {
+                    onClose();
+                  }
+                });
+              }}
               variant="standard"
               error={isError}
               labelId="product-quantity-label"

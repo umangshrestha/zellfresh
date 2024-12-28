@@ -1,6 +1,6 @@
+import { withCartSubscription } from '../../../../../../packages/api-client';
 import { CartIcon as Icon } from './CartIcon';
-import { withCartIconSubscription } from './CartIconSubscription.hoc';
 
-const CartIcon = withCartIconSubscription(Icon);
+const CartIcon = withCartSubscription(Icon);
 
 export default CartIcon;

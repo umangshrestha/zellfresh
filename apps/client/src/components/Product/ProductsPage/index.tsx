@@ -1,8 +1,9 @@
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { lazy } from 'react';
+import { useProduct } from '../../../../../../packages/api-client';
 import AddItemToCart from '../../Cart/AddItemToCart';
 import { useAddItemToCart } from '../../Cart/AddItemToCart/AddItemToCart.hooks.ts';
-import { useProduct } from '../Product.hooks.ts';
+import { useProductFilter } from '../ProductFilter';
 
 const ProductsPageComponent = lazy(() =>
   import('./ProductsPage.tsx').then((module) => ({
@@ -13,7 +14,8 @@ const ProductFilter = lazy(() => import('../ProductFilter'));
 
 const ProductsPage = () => {
   const isMapping = useMediaQuery('(max-width: 500px)');
-  const productProps = useProduct();
+  const { productFilter } = useProductFilter();
+  const productProps = useProduct(productFilter || {});
   const { setProductId } = useAddItemToCart();
   return (
     <div className={isMapping ? 'flex flex-col' : 'flex'}>

@@ -1,4 +1,3 @@
-import { useMutation, useQuery } from '@apollo/client';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
@@ -12,15 +11,13 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
+import { PaymentMethod } from '@repo/api-client';
+import { useCheckout } from '@repo/api-client/src/hooks/Checkout.hooks.ts';
 import { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { PaymentMethod } from '../../../__generated__/types.ts';
-import { CARTS_QUERY } from '../../Cart/Cart.queries.ts';
 import LoadingButton from '../../LoadingButton';
 import LoadingSpinner from '../../LoadingSpinner';
 import OrderPlaced from '../../Order/OrderPlaced';
-import { LIST_PRODUCTS_QUERY } from '../../Product/Product.queries.ts';
-import { CHECKOUT_MUTATION, CHECKOUT_QUERY } from '../Checkout.queries.tsx';
 import { CheckoutListSection } from '../CheckoutListSection/CheckoutListSection.tsx';
 
 declare global {
@@ -33,17 +30,11 @@ export const CheckoutPage = () => {
   const navigate = useNavigate();
   const [orderId, setOrderId] = useState<string | undefined>(undefined);
   const [paymentMethod, setPaymentMethod] = useState(PaymentMethod.Cash);
-  const { data, loading, error } = useQuery(CHECKOUT_QUERY);
-
-  const [checkoutMutation, { loading: mutationLoading }] = useMutation(
-    CHECKOUT_MUTATION,
-    {
-      refetchQueries: [{ query: CARTS_QUERY }, { query: LIST_PRODUCTS_QUERY }],
-      onCompleted: (data) => {
-        const orderId = data.checkout.orderId;
-        setOrderId(orderId);
-        window.scrollTo(0, 0);
-      },
+  const { data, loading, error, onPlaceOrder, mutationLoading } = useCheckout(
+    (data) => {
+      const orderId = data.checkout.orderId;
+      setOrderId(orderId);
+      window.scrollTo(0, 0);
     },
   );
 
@@ -69,55 +60,6 @@ export const CheckoutPage = () => {
       console.error('Error creating Razorpay order:', error);
       throw error;
     }
-  };
-
-  const handleRazorpayPayment = async () => {
-    if (!data || !data.cart || !data.cart.checkoutDetails) {
-      console.error("Cart data is not available");
-      return;
-    }
-    try {
-      const razorpayOrderId = await createRazorpayOrder();
-
-      const options = {
-        key: 'your-razorpay-key',
-        amount: data.cart.checkoutDetails.totalPrice * 100,
-        currency: 'INR',
-        name: 'Your Store Name',
-        description: 'Order Payment',
-        order_id: razorpayOrderId,
-        handler: (response: any) => {
-          console.log('Payment successful:', response);
-          checkoutMutation({
-            variables: {
-              paymentMethod: PaymentMethod.Card,
-            },
-          });
-        },
-        prefill: {
-          name: data.me?.name || '',
-          email: data.me?.email || '',
-          contact: data.me?.phone || '',
-        },
-        theme: {
-          color: '#3399cc',
-        },
-      };
-
-      const razorpay = new window.Razorpay(options);
-      razorpay.open();
-    } catch (error) {
-      console.error('Razorpay payment error:', error);
-    }
-  };
-
-
-  const onPlaceOrder = () => {
-    checkoutMutation({
-      variables: {
-        paymentMethod,
-      },
-    }).then();
   };
 
   if (orderId) {
@@ -303,7 +245,7 @@ export const CheckoutPage = () => {
         color="error"
         className="w-full"
         disabled={data.cart.items.length === 0 || hasError}
-        onClick={onPlaceOrder}
+        onClick={() => onPlaceOrder(paymentMethod).then()}
       >
         Place Order
       </LoadingButton>

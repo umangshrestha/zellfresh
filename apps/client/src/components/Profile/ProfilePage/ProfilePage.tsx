@@ -1,10 +1,11 @@
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
+import { useProfile } from '@repo/api-client';
+import { DEFAULT_ADDRESS } from '../../../config/address.ts';
 import ServerErrorComponent from '../../ServerErrorComponent';
 import AddressItem from '../AddressItem';
 import ContactDetails from '../ContactDetails';
-import { useProfile } from '../index.ts';
 
 export const ProfilePage = () => {
   const {
@@ -34,6 +35,7 @@ export const ProfilePage = () => {
       <Typography variant="h6">Address</Typography>
       <AddressItem
         {...address}
+        {...DEFAULT_ADDRESS}
         onAddressSave={onAddressSave}
         onAddressSaveLoading={onAddressSaveLoading}
       />

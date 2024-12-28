@@ -3,12 +3,12 @@ import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { useOrders } from '../../../../../../packages/api-client';
 import LoadingSpinner from '../../LoadingSpinner';
 import RatingDialog from '../../Rating/RatingDialog';
 import ServerErrorComponent from '../../ServerErrorComponent';
 import { OrderDetails } from '../OrderDetails';
 import OrderEmptyPage from '../OrderEmptyPage';
-import { useOrders } from '../Orders.hooks.ts';
 
 export const OrdersPage = () => {
   const { loading, error, loadMore, onSubmitFeedback, data, ...props } =

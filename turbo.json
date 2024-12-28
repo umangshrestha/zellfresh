@@ -3,7 +3,8 @@
   "tasks": {
     "dev": {
       "persistent": true,
-      "cache": false
+      "cache": false,
+      "inputs": ["apps/client/**", "apps/server/**"]
     },
     "test": {
       "persistent": false,

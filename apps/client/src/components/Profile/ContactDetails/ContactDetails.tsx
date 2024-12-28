@@ -1,13 +1,11 @@
 import FormGroup from '@mui/material/FormGroup';
 import TextField from '@mui/material/TextField';
+import { ContactDetailsSchema, ContactDetailsType } from '@repo/form-validator';
 import { useState } from 'react';
 import LoadingButton from '../../LoadingButton';
+import { useNotification } from '../../Notification';
 import { CONTACT_DETAILS_FIELDS_MAPPING } from './ContactDetails.fields.ts';
-import { ContactDetailsSchema } from './ContactDetails.schema.ts';
-import {
-  ContactDetailsProps,
-  ContactDetailsType,
-} from './ContactDetails.types';
+import { ContactDetailsProps } from './ContactDetails.types';
 
 export const ContactDetails = ({
   email,
@@ -16,6 +14,7 @@ export const ContactDetails = ({
   onUserSaveLoading,
   onUserDetailsSave,
 }: ContactDetailsProps) => {
+  const { setNotification } = useNotification();
   const [userDetails, setUserDetails] = useState<ContactDetailsType>({
     email,
     name,
@@ -60,7 +59,14 @@ export const ContactDetails = ({
         loading={onUserSaveLoading}
         variant="contained"
         color="primary"
-        onClick={() => onUserDetailsSave(userDetails)}
+        onClick={() =>
+          onUserDetailsSave(userDetails).then(() => {
+            setNotification({
+              message: 'Profile updated successfully',
+              severity: 'success',
+            });
+          })
+        }
         disabled={!success}
       >
         Update

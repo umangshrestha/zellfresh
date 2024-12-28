@@ -128,6 +128,7 @@ resource "aws_security_group" "nat_instance_security_group" {
   vpc_id      = aws_vpc.default.id
 
   ingress {
+    description = "Allow all inbound traffic from the VPC though SSH"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -135,6 +136,7 @@ resource "aws_security_group" "nat_instance_security_group" {
   }
 
   ingress {
+    description = "Allow all inbound traffic from the VPC though HTTPS"
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
@@ -142,6 +144,7 @@ resource "aws_security_group" "nat_instance_security_group" {
   }
 
   ingress {
+    description = "Allow all inbound traffic from the VPC though HTTP"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
@@ -149,6 +152,7 @@ resource "aws_security_group" "nat_instance_security_group" {
   }
 
   egress {
+    description = "Allow all outbound traffic to the internet"
     from_port   = 0
     to_port     = 65535
     protocol    = "tcp"

@@ -1,10 +1,5 @@
-import { ApolloError } from '@apollo/client';
-import { ListProductsQuery } from '../../../__generated__/graphql.ts';
+import { useProduct } from '@repo/api-client';
 
-export type ProductsPageProps = {
-  data?: ListProductsQuery;
-  loading: boolean;
-  error?: ApolloError;
-  loadMore: () => void;
+export type ProductsPageProps = ReturnType<typeof useProduct> & {
   onAddItemToCart: (productId: string) => void;
 };

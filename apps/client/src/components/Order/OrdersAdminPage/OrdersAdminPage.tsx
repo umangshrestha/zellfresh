@@ -11,9 +11,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
-import { DeliveryStatus } from '../../../__generated__/types.ts';
+import {
+  DeliveryStatus,
+  useOrders,
+} from '../../../../../../packages/api-client';
 import ServerErrorComponent from '../../ServerErrorComponent';
-import { useOrders } from '../Orders.hooks.ts';
 
 export const OrdersAdminPage = () => {
   const { loading, error, loadMore, data, onChangeOrderStatus } = useOrders();

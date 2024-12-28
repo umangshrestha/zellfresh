@@ -1,15 +1,11 @@
-import { z } from 'zod';
-import { AddressItemSchema } from './AddressItem.schema.ts';
+import { AddressType } from '@repo/form-validator';
 
-export type AddressItemType = z.infer<typeof AddressItemSchema>;
-
-export type AddressTypeKey = keyof AddressItemType;
 export type AddressMutationFunction = {
-  onAddressSave: (obj: AddressItemType, addressId?: string) => void;
+  onAddressSave: (obj: AddressType, addressId?: string) => Promise<object>;
   onAddressSaveLoading: boolean;
 };
 
-export type AddressItemProps = AddressItemType &
+export type AddressItemProps = AddressType &
   AddressMutationFunction & {
     addressId?: string;
   };

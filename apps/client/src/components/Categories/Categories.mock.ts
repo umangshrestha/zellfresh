@@ -1,4 +1,4 @@
-import { ListCategoriesQuery } from '../../__generated__/graphql.ts';
+import { ListCategoriesQuery } from '@repo/api-client/dist/__generated__/graphql';
 
 export const CATEGORIES_MOCK_DATA: ListCategoriesQuery['categories'] = [
   {

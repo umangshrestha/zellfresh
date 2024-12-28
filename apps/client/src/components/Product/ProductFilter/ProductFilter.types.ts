@@ -1,9 +1,6 @@
-import { z } from 'zod';
-import { ProductFilterSchema } from './ProductFilter.schema';
+import { ProductFilterType } from '@repo/form-validator';
 
 export type ProductPageOrderBy = Pick<ProductFilterType, 'sortBy' | 'sortAsc'>;
-
-export type ProductFilterType = z.infer<typeof ProductFilterSchema>;
 
 export type ProductFilterContextType = {
   productFilter?: ProductFilterType;

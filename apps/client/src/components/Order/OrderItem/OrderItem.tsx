@@ -3,7 +3,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
-import { OrderItemProps } from './OrderItem.types';
+import { OrderItemType as OrderItemProps } from '@repo/api-client';
 
 export const OrderItem = ({ price, quantity, product }: OrderItemProps) => {
   const { name, unit, imageUrl, description } = product || {
