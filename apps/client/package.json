@@ -95,6 +95,9 @@
     "collectCoverageFrom": [
       "**/*.tsx?"
     ],
+    "resolutions": {
+      "hawk": "^X.X.X"
+    },
     "coverageDirectory": "../coverage",
     "testEnvironment": "jsdom"
   }

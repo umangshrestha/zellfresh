@@ -80,6 +80,10 @@ export const CheckoutPage = () => {
     !data.me?.phone ||
     !data.me?.defaultAddress;
 
+  const handleRazorpayPayment = () => {
+    
+  }
+
   return (
     <Box className="flex flex-col gap-4 max-w-xl mx-auto pt-3">
       <Typography variant="h5">Checkout Page</Typography>
