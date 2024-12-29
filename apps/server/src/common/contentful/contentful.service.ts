@@ -42,7 +42,7 @@ export class ContentfulService {
       });
   }
 
-  getSyncUrl() {
+  private getSyncUrl() {
     return this.prismaService.syncToken.findFirst({
       select: {
         nextSyncUrl: true,
@@ -53,7 +53,7 @@ export class ContentfulService {
     });
   }
 
-  async setSyncUrl(url: string) {
+  private async setSyncUrl(url: string) {
     this.nextSyncUrl = url;
     try {
       await this.prismaService.syncToken.create({
@@ -69,6 +69,10 @@ export class ContentfulService {
   // Run every day at midnight
   @Cron('0 0 * * *')
   async cronSyncUp() {
+    this.sync()
+  }
+
+  async sync() {
     this.loggerService.log(
       `Starting sync: ================> ${this.nextSyncUrl}`,
     );
@@ -140,5 +144,6 @@ export class ContentfulService {
       return false;
     }
     await this.productsService.syncProducts(listOfUpdatedIds);
+    return true;
   }
 }
