@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography';
 import {
   DeliveryStatus,
   useOrders,
-} from '../../../../../../packages/api-client';
+} from '@repo/api-client';
 import ServerErrorComponent from '../../ServerErrorComponent';
 
 export const OrdersAdminPage = () => {
