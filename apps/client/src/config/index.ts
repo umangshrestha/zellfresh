@@ -11,16 +11,12 @@ export const ADDRESS = {
   state: 'Karnataka',
   country: 'India',
   zip: '560078',
-  street: '20, 7th Main Rd, Silver Oak Layout, JP Nagar 7th Phase',
+  street: '20, 7th Main Rd, Silver Oak Layout',
+  street2: 'JP Nagar 7th Phase',
   landmark: 'Opposite Brigade Miilenium',
 };
 
 export const SHOP_HOURS = [
-  { day: 'Monday', time: '6:30am - 8:30pm' },
-  { day: 'Tuesday', time: '6:30am - 8:30pm' },
-  { day: 'Wednesday', time: '6:30am - 8:30pm' },
-  { day: 'Thursday', time: '6:30am - 8:30pm' },
-  { day: 'Friday', time: '6:30am - 8:30pm' },
-  { day: 'Saturday', time: '6:30am - 8:30pm' },
-  { day: 'Sunday', time: '6:30am - 2:00pm' },
+  { day: 'Mon-Sat', time: '6:30am - 8:30pm' },
+  { day: 'Sun', time: '6:30am - 2:00pm' },
 ];
