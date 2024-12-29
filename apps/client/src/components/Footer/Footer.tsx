@@ -18,7 +18,6 @@ import AvailabilityBanner from '../Banner.tsx';
 export const Footer = () => (
   <footer style={{ backgroundColor: 'rgb(7, 42, 90)' }} className="text-white py-8">
     <div className="container mx-auto flex flex-wrap gap-8 justify-between px-6">
-      {/* Google Maps Section */}
       <section className="flex-1 min-w-[350px] max-w-[500px]">
         <iframe
           src={GOOGLE_MAP_URL}
@@ -33,7 +32,6 @@ export const Footer = () => (
         ></iframe>
       </section>
 
-      {/* Address and Shop Hours */}
       <section className="flex-1 min-w-[200px] ml-4 text-center">
         <address className="not-italic text-sm mb-4 leading-6">
           <span className="block font-bold text-lg mb-2">Address</span>
@@ -56,7 +54,6 @@ export const Footer = () => (
         </div>
       </section>
 
-      {/* Information Links */}
       <section className="flex-1 min-w-[300px] mx-4 text-center">
         <span className="block font-bold text-lg mb-2">Information</span>
         <Box className="flex flex-col gap-2">
@@ -69,7 +66,6 @@ export const Footer = () => (
         </Box>
       </section>
 
-      {/* Contact and Social Media */}
       <section className="flex-1 min-w-[300px] text-center">
         <span className="block font-bold text-lg mb-2">Contact Us</span>
         <Box className="flex flex-col items-center gap-2">
@@ -100,7 +96,6 @@ export const Footer = () => (
       </section>
     </div>
 
-    {/* Footer Bottom */}
     <div className="mt-8 text-center text-sm text-gray-400">
       <p>© {CURRENT_YEAR} {APP_NAME}. All rights reserved.</p>
     </div>
