@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
-import { useOrders } from '../../../../../../packages/api-client';
+import { useOrders } from '@repo/api-client';
 import LoadingSpinner from '../../LoadingSpinner';
 import RatingDialog from '../../Rating/RatingDialog';
 import ServerErrorComponent from '../../ServerErrorComponent';

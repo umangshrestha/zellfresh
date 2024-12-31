@@ -4,6 +4,7 @@ import { CategoriesModule } from '../../categories/categories.module';
 import { ProductsModule } from '../../products/products.module';
 import { PrismaModule } from '../prisma/prisma.module';
 import { ContentfulService } from './contentful.service';
+import { ContentfulController } from './contentful.controller';
 
 @Module({
   imports: [
@@ -15,5 +16,6 @@ import { ContentfulService } from './contentful.service';
   ],
   providers: [ConfigService, ContentfulService],
   exports: [ContentfulService],
+  controllers: [ContentfulController],
 })
 export class ContentfulModule {}

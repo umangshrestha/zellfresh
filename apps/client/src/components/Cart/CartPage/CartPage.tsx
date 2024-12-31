@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import { Link as RouterLink } from 'react-router-dom';
-import { useCart } from '../../../../../../packages/api-client';
+import { useCart } from '@repo/api-client';
 import ServerErrorComponent from '../../ServerErrorComponent';
 import CartItem from '../CartItem';
 import CartEmptyPage from './CartEmptyPage';
