@@ -38,13 +38,23 @@ export const CartPage = ({
       <Box className="flex  justify-end gap-4 pb-10">
         Sub total: <b>Rs. {data.cart.checkoutDetails.subTotal}</b>
       </Box>
-      <Button
+      {/* <Button
         component={RouterLink}
         variant="contained"
         color="warning"
         className="w-full"
         disabled={!data.cart.checkoutDetails.enableCheckout}
         to={'/cart/checkout'}
+      >
+        Checkout
+      </Button> */}
+      <Button
+        component={RouterLink}
+        variant="contained"
+        color="warning"
+        className="w-full"
+        disabled={!data.cart.checkoutDetails.enableCheckout}
+        to={'/cart/user-from'}
       >
         Checkout
       </Button>

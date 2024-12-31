@@ -21,7 +21,7 @@ export const Breadcrumbs = () => {
         aria-label="breadcrumb"
       >
         <Link underline="hover" key="1" color="inherit" href="/">
-          <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+          <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" className='text-[30px]'/>
         </Link>
         {pathNames.map((name, index) => (
           <Link

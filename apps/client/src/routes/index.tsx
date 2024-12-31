@@ -12,6 +12,7 @@ import OrdersAdminPage from '../components/Order/OrdersAdminPage';
 import OrdersPage from '../components/Order/OrdersPage';
 import ProductsPage from '../components/Product/ProductsPage';
 import ProfilePage from '../components/Profile/ProfilePage';
+import DeliveryDetailsForm from '../pages/userDetails/index.tsx';
 
 export const router = createBrowserRouter([
   {
@@ -27,7 +28,11 @@ export const router = createBrowserRouter([
         element: <CartPage />,
       },
       {
-        path: '/cart/checkout',
+        path: '/cart/user-from',
+        element: <DeliveryDetailsForm />,
+      },
+      {
+        path: '/cart/user-from/checkout',
         element: <CheckoutPage />,
       },
       {
