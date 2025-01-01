@@ -15,7 +15,7 @@ export class ProductsCacheService {
   ) {}
 
   async checkIfCategoryExists(category: string): Promise<boolean> {
-    return !(await this.prismaService.product.findFirst({
+    return !!(await this.prismaService.product.findFirst({
       where: { category, availableQuantity: { gt: 0 } },
     }));
   }
