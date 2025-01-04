@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, TextInputField } from '../../components/commonComponent/textInputForm';
+import { useNavigate } from 'react-router-dom';
 
 type FormData = {
     name: string;
@@ -21,6 +22,7 @@ const DeliveryDetailsForm: React.FC = () => {
         zip: "",
         additionalInfo: "",
     });
+    const navigate = useNavigate();
 
     const [errors, setErrors] = useState<Partial<FormData>>({});
 
@@ -41,8 +43,7 @@ const DeliveryDetailsForm: React.FC = () => {
         setErrors(newErrors);
 
         if (Object.keys(newErrors).length === 0) {
-            console.log(formData);
-            alert("Form Submitted Successfully!");
+            navigate('/cart/user-from/payment', { state: formData });
         }
     };
 
@@ -119,7 +120,7 @@ const DeliveryDetailsForm: React.FC = () => {
                 </div>
 
                 <div className="sm:col-span-2 flex justify-end">
-                    <Button type="theme" label="Next" to='/cart/user-from/checkout'/>
+                    <Button type="theme" label="Next" to='/cart/user-from/payment'/>
                 </div>
             </form>
         </div>

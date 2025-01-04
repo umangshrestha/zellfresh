@@ -74,6 +74,9 @@ export const Button: React.FC<ButtonProps> = ({
     case "theme":
       buttonClassName = "bg-orange-500 text-white hover:bg-orange-600";
       break;
+    case "casual":
+      buttonClassName = "border border-blue-500 text-blue-500 hover:border-blue-600 hover:text-blue-600";
+      break;
     default:
       buttonClassName = "bg-blue-500 text-white hover:bg-blue-600";
   }
@@ -92,5 +95,32 @@ export const Button: React.FC<ButtonProps> = ({
     <button type={type} onClick={onClick} className={finalClassName}>
       {label}
     </button>
+  );
+};
+
+// Radio field
+interface RadioButtonProps {
+  name: string;
+  value: string;
+  label: string;
+  checked: boolean;
+  onChange: () => void;
+  disabled?: any;
+}
+
+export const RadioButton: React.FC<RadioButtonProps> = ({ name, value, label, checked, onChange, disabled }) => {
+  return (
+    <label className={`inline-flex items-center mr-4 ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}>
+      <input
+        type="radio"
+        name={name}
+        value={value}
+        checked={checked}
+        onChange={onChange}
+        className="form-radio"
+        disabled={disabled}
+      />
+      <span className={`ml-2 ${disabled ? "text-[#797979]" : ""}`}>{label}</span>
+    </label>
   );
 };
