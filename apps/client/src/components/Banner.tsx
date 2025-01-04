@@ -7,7 +7,7 @@ export default function Banner() {
       sx={{
         backgroundColor: '#f50057',
         color: '#ffffff',
-        py: 2,
+        py: 1,
         textAlign: 'center',
       }}
     >
