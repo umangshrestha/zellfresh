@@ -1,6 +1,6 @@
-import { ListCategoriesQuery } from '@repo/api-client/dist/__generated__/graphql';
+import { g } from '@repo/api-client';
 
 export interface WithCategoriesProps {
-  categories: ListCategoriesQuery['categories'];
+  categories: g.ListCategoriesQuery['categories'];
   navigateTo: (navigateUrl: string) => void;
 }

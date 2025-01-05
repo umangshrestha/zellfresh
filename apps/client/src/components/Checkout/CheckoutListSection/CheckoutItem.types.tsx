@@ -1,5 +1,5 @@
-import { CheckoutPageQuery } from '@repo/api-client/dist/__generated__/graphql';
+import { g } from '@repo/api-client';
 
 export type CheckoutListSectionProps = {
-  cart: CheckoutPageQuery['cart'];
+  cart: g.CheckoutPageQuery['cart'];
 };

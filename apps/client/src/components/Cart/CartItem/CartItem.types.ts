@@ -1,5 +1,5 @@
-import { ListCartsQuery } from '@repo/api-client/dist/__generated__/graphql';
+import { g } from '@repo/api-client';
 
-export type CartItemProps = ListCartsQuery['cart']['items'][0] & {
+export type CartItemProps = g.ListCartsQuery['cart']['items'][0] & {
   onAddItemToCart?: (productId: string, quantity: number) => void;
 };

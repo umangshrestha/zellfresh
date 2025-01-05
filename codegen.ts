@@ -2,9 +2,9 @@ import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
   schema: 'apps/server/schema/schema.graphql',
-  documents: ['packages/core-client-utils/src/**/*.{ts,tsx}'],
+  documents: ['packages/api-client/src/**/*.{ts,tsx}'],
   generates: {
-    'packages/core-client-utils/src/__generated__/': {
+    'packages/api-client/src/__generated__/': {
       preset: 'client',
       presetConfig: {
         gqlTagName: 'gql',
@@ -14,7 +14,7 @@ const config: CodegenConfig = {
       },
       plugins: [],
     },
-    'packages/core-client-utils/src/__generated__/types.ts': {
+    'packages/api-client/src/__generated__/types.ts': {
       plugins: ['typescript', 'typescript-resolvers'],
     },
   },

@@ -1,6 +1,6 @@
-import { ListCategoriesQuery } from '@repo/api-client/dist/__generated__/graphql';
+import { g } from '@repo/api-client';
 
-export const CATEGORIES_MOCK_DATA: ListCategoriesQuery['categories'] = [
+export const CATEGORIES_MOCK_DATA: g.ListCategoriesQuery['categories'] = [
   {
     name: 'chicken',
     icon: '🐔',
