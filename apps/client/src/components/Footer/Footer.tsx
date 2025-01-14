@@ -16,7 +16,10 @@ import { SOCIAL_MEDIA_HANDLES } from '../../config/social';
 import AvailabilityBanner from '../Banner.tsx';
 
 export const Footer = () => (
-  <footer style={{ backgroundColor: 'rgb(7, 42, 90)' }} className="text-white py-8">
+  <footer
+    style={{ backgroundColor: 'rgb(7, 42, 90)' }}
+    className="text-white py-8"
+  >
     <div className="container mx-auto flex flex-wrap gap-8 justify-between px-6">
       <section className="flex-1 min-w-[350px] max-w-[500px]">
         <iframe
@@ -45,7 +48,10 @@ export const Footer = () => (
           <span className="block font-bold text-lg mb-2">Shop Hours</span>
           <Box className="flex flex-col items-center gap-1">
             {SHOP_HOURS.map((shopHour) => (
-              <Box key={shopHour.day} className="flex justify-start items-center gap-x-4">
+              <Box
+                key={shopHour.day}
+                className="flex justify-start items-center gap-x-4"
+              >
                 <span>{shopHour.day}</span>
                 <span>{shopHour.time}</span>
               </Box>
@@ -57,10 +63,18 @@ export const Footer = () => (
       <section className="flex-1 min-w-[300px] mx-4 text-center">
         <span className="block font-bold text-lg mb-2">Information</span>
         <Box className="flex flex-col gap-2">
-          <Link component={RouterLink} to="/terms-and-conditions" className="text-sm hover:underline">
+          <Link
+            component={RouterLink}
+            to="/terms-and-conditions"
+            className="text-sm hover:underline"
+          >
             Terms of Service
           </Link>
-          <Link component={RouterLink} to="/privacy-policy" className="text-sm hover:underline">
+          <Link
+            component={RouterLink}
+            to="/privacy-policy"
+            className="text-sm hover:underline"
+          >
             Privacy Policy
           </Link>
         </Box>
@@ -69,10 +83,18 @@ export const Footer = () => (
       <section className="flex-1 min-w-[300px] text-center">
         <span className="block font-bold text-lg mb-2">Contact Us</span>
         <Box className="flex flex-col items-center gap-2">
-          <Link href={`tel:+91${PHONE_NUMBER}`} underline="none" className="flex items-center gap-2">
+          <Link
+            href={`tel:+91${PHONE_NUMBER}`}
+            underline="none"
+            className="flex items-center gap-2"
+          >
             <CallIcon /> {PHONE_NUMBER}
           </Link>
-          <Link href={`mailto:${EMAIL}`} underline="none" className="flex items-center gap-2">
+          <Link
+            href={`mailto:${EMAIL}`}
+            underline="none"
+            className="flex items-center gap-2"
+          >
             <EmailIcon /> {EMAIL}
           </Link>
         </Box>
@@ -97,7 +119,9 @@ export const Footer = () => (
     </div>
 
     <div className="mt-8 text-center text-sm text-gray-400">
-      <p>© {CURRENT_YEAR} {APP_NAME}. All rights reserved.</p>
+      <p>
+        © {CURRENT_YEAR} {APP_NAME}. All rights reserved.
+      </p>
     </div>
     <AvailabilityBanner />
   </footer>

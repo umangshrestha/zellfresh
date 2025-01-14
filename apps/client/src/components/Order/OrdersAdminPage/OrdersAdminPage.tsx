@@ -11,10 +11,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
-import {
-  DeliveryStatus,
-  useOrders,
-} from '@repo/api-client';
+import { DeliveryStatus, useOrders } from '@repo/api-client';
 import ServerErrorComponent from '../../ServerErrorComponent';
 
 export const OrdersAdminPage = () => {

@@ -1,5 +1,5 @@
-import { lazy } from 'react';
 import { useCart } from '@repo/api-client';
+import { lazy } from 'react';
 import { useNotification } from '../../Notification';
 
 const CartPageComponent = lazy(() =>

@@ -1,8 +1,8 @@
 import { useMutation, useQuery } from '@apollo/client';
 
 import { useState } from 'react';
-import { DeliveryStatus } from '../__generated__/types';
 import { ListOrdersQuery } from '../__generated__/graphql';
+import { DeliveryStatus } from '../__generated__/types';
 import {
   CANCEL_ORDER_MUTATION,
   CHANGE_ORDER_STATUS_MUTATION,

@@ -1,6 +1,6 @@
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { lazy } from 'react';
 import { useProduct } from '@repo/api-client';
+import { lazy } from 'react';
 import AddItemToCart from '../../Cart/AddItemToCart';
 import { useAddItemToCart } from '../../Cart/AddItemToCart/AddItemToCart.hooks.ts';
 import { useProductFilter } from '../ProductFilter';
