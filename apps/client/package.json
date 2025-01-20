@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.48.0",
-    "@chromatic-com/storybook": "^3.2.3",
+    "@chromatic-com/storybook": "^3.2.4",
     "@react-oauth/google": "^0.12.1",
     "@storybook/addon-essentials": "^8.3.3",
     "@storybook/addon-interactions": "^8.3.3",
