@@ -1,4 +1,4 @@
-import g, { DeliveryStatus, PaymentMethod } from '@repo/api-client';
+import { DeliveryStatus, PaymentMethod } from '@repo/api-client';
 import type { Meta, StoryObj } from '@storybook/react';
 import { OrderDetails } from './OrderDetails';
 

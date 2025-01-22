@@ -15,8 +15,5 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     categories: CATEGORIES_MOCK_DATA,
-    onClick: (url: string) => {
-      console.log(url);
-    },
   },
 };

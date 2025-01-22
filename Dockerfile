@@ -3,11 +3,11 @@ FROM --platform=linux/amd64  node:22-alpine AS server_build
 WORKDIR /app
 ENV NODE_ENV=production
 COPY . .
-RUN yarn install --frozen-lockfile --production=false --ignore-engines
+RUN yarn install --frozen-lockfile --production=false
 RUN yarn run lint
 RUN yarn run test
 RUN yarn run build
-RUN yarn install --production --frozen-lockfile --ignore-engines
+RUN yarn install --production --frozen-lockfile
 
 FROM --platform=linux/amd64 node:22-alpine
 WORKDIR /app

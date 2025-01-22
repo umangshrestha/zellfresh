@@ -67,7 +67,7 @@ cd -
 - Run the application
 
 ```sh
-yarn install --ignore-engines --frozen-lockfile
+yarn install --frozen-lockfile
 yarn run dev
 ```
 
