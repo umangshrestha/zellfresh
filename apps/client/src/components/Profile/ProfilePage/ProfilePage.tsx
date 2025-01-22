@@ -1,9 +1,9 @@
+import { DEFAULT_ADDRESS } from '@/components/../config/address.ts';
+import ServerErrorComponent from '@/components/ServerErrorComponent';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import { useProfile } from '@repo/api-client';
-import { DEFAULT_ADDRESS } from '../../../config/address.ts';
-import ServerErrorComponent from '../../ServerErrorComponent';
 import AddressItem from '../AddressItem';
 import ContactDetails from '../ContactDetails';
 

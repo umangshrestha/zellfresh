@@ -1,9 +1,9 @@
+import CartItemSkeleton from '@/components/Cart/CartItemSkeleton';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
-import CartItemSkeleton from '../../CartItemSkeleton';
 
 export const CartLoadingPage = () => (
   <Box className="flex flex-col gap-4 max-w-xl mx-auto pt-3">

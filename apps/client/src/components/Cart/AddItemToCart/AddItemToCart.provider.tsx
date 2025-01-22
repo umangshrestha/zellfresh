@@ -1,5 +1,5 @@
+import { LayoutProps as AddItemToCarProviderProps } from '@/components/Layout';
 import { useState } from 'react';
-import { LayoutProps as AddItemToCarProviderProps } from '../../Layout';
 import { AddItemToCartContext } from './AddItemToCart.context.ts';
 import { AddItemToCartContextType } from './AddItemToCart.types.ts';
 

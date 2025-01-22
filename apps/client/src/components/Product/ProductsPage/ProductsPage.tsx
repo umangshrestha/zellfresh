@@ -1,5 +1,5 @@
+import ServerErrorComponent from '@/components/ServerErrorComponent';
 import Button from '@mui/material/Button';
-import ServerErrorComponent from '../../ServerErrorComponent';
 import ProductItem from '../ProductItem';
 import { ProductsEmptyPage } from './ProductsEmptyPage';
 import ProductsLoadingPage from './ProductsLoadingPage';

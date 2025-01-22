@@ -1,3 +1,4 @@
+import { useNotification } from '@/components/Notification';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -12,7 +13,6 @@ import Select from '@mui/material/Select';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Link as RouterLink } from 'react-router-dom';
-import { useNotification } from '../../Notification';
 import AddItemToCartSkeleton from '../AddItemToCartSkeleton';
 import { AddItemToCartProps } from './AddItemToCart.types.ts';
 

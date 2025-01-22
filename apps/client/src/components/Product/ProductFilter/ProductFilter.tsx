@@ -1,3 +1,4 @@
+import SplitButton from '@/components/SplitButton';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import FilterListOffIcon from '@mui/icons-material/FilterListOff';
 import Checkbox from '@mui/material/Checkbox';
@@ -8,7 +9,6 @@ import ListItemText from '@mui/material/ListItemText';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
-import SplitButton from '../../SplitButton';
 import { ProductOrderOptions } from './ProductFilter.config';
 import { useProductFilter } from './ProductFilter.hooks';
 import { ProductPageOrderBy } from './ProductFilter.types';

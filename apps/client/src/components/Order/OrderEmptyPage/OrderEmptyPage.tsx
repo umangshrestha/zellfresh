@@ -1,4 +1,4 @@
-import ErrorComponent from '../../ErrorComponent';
+import ErrorComponent from '@/components/ErrorComponent';
 
 export const OrderEmptyPage = () => (
   <ErrorComponent

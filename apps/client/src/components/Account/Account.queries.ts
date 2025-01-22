@@ -1,6 +1,6 @@
+import { useStorageStore } from '@/lib/store';
 import axios, { AxiosRequestConfig } from 'axios';
 import _ from 'lodash';
-import { useStorageStore } from '../../lib/store';
 
 export const axiosClient = axios.create();
 

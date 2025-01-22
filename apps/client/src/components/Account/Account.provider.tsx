@@ -1,8 +1,8 @@
+import { LayoutProps } from '@/components/Layout';
+import { useNotification } from '@/components/Notification';
+import { useStorageStore } from '@/lib/store';
 import { AxiosRequestConfig, isAxiosError, isCancel } from 'axios';
 import { useCallback, useEffect } from 'react';
-import { useStorageStore } from '../../lib/store';
-import { LayoutProps } from '../Layout';
-import { useNotification } from '../Notification';
 import { AccountContext } from './Account.context.ts';
 import * as query from './Account.queries.ts';
 import { AccountContextType } from './Account.types';

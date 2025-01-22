@@ -1,7 +1,7 @@
+import { AccountDetails, Token } from '@/components/Account';
 import { PaletteMode } from '@mui/material';
 import { create } from 'zustand';
 import { persist, PersistOptions } from 'zustand/middleware';
-import { AccountDetails, Token } from '../../components/Account';
 import { StorageState } from './types';
 
 const DEFAULT_MODE: PaletteMode = window.matchMedia(

@@ -1,9 +1,9 @@
+import LoadingButton from '@/components/LoadingButton';
+import { useNotification } from '@/components/Notification';
 import FormGroup from '@mui/material/FormGroup';
 import TextField from '@mui/material/TextField';
 import { ContactDetailsSchema, ContactDetailsType } from '@repo/form-validator';
 import { useState } from 'react';
-import LoadingButton from '../../LoadingButton';
-import { useNotification } from '../../Notification';
 import { CONTACT_DETAILS_FIELDS_MAPPING } from './ContactDetails.fields.ts';
 import { ContactDetailsProps } from './ContactDetails.types';
 

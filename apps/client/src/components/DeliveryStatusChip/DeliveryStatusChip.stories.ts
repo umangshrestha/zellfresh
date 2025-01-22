@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { DeliveryStatus } from '../../__generated__/types';
+import { DeliveryStatus } from '@repo/api-client';
 import { DeliveryStatusChip } from './DeliveryStatusChip';
 
 const meta = {

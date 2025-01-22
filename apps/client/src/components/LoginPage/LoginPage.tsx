@@ -1,3 +1,5 @@
+import { useAccount } from '@/components/Account';
+import Notification, { useNotification } from '@/components/Notification';
 import Fingerprint from '@mui/icons-material/Fingerprint';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -6,8 +8,6 @@ import Typography from '@mui/material/Typography';
 import { GoogleLogin } from '@react-oauth/google';
 import _ from 'lodash';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { useAccount } from '../Account';
-import Notification, { useNotification } from '../Notification';
 
 export const LoginPage = () => {
   const { setNotification } = useNotification();

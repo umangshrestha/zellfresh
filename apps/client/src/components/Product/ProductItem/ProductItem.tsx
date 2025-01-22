@@ -1,3 +1,5 @@
+import Badge from '@/components/Badge';
+import Veil from '@/components/Veil.tsx';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -5,8 +7,6 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
-import Badge from '../../Badge';
-import Veil from '../../Veil.tsx';
 import { ProductProps } from './ProductItem.types';
 
 export const ProductItem = ({

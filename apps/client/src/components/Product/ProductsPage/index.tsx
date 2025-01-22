@@ -1,8 +1,8 @@
+import AddItemToCart from '@/components/Cart/AddItemToCart';
+import { useAddItemToCart } from '@/components/Cart/AddItemToCart/AddItemToCart.hooks.ts';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useProduct } from '@repo/api-client';
 import { lazy } from 'react';
-import AddItemToCart from '../../Cart/AddItemToCart';
-import { useAddItemToCart } from '../../Cart/AddItemToCart/AddItemToCart.hooks.ts';
 import { useProductFilter } from '../ProductFilter';
 
 const ProductsPageComponent = lazy(() =>

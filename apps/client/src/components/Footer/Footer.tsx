@@ -1,8 +1,3 @@
-import CallIcon from '@mui/icons-material/Call';
-import EmailIcon from '@mui/icons-material/Email';
-import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
-import { Link as RouterLink } from 'react-router-dom';
 import {
   ADDRESS,
   APP_NAME,
@@ -11,8 +6,13 @@ import {
   GOOGLE_MAP_URL,
   PHONE_NUMBER,
   SHOP_HOURS,
-} from '../../config';
-import { SOCIAL_MEDIA_HANDLES } from '../../config/social';
+} from '@/config';
+import { SOCIAL_MEDIA_HANDLES } from '@/config/social';
+import CallIcon from '@mui/icons-material/Call';
+import EmailIcon from '@mui/icons-material/Email';
+import Box from '@mui/material/Box';
+import Link from '@mui/material/Link';
+import { Link as RouterLink } from 'react-router-dom';
 import AvailabilityBanner from '../Banner.tsx';
 
 export const Footer = () => (

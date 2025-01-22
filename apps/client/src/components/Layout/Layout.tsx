@@ -1,3 +1,11 @@
+import Account from '@/components/Account';
+import CartIcon from '@/components/Cart/CartIcon';
+import { CategoriesCollapsableButton } from '@/components/Categories';
+import ErrorBoundary from '@/components/ErrorBoundary';
+import Footer from '@/components/Footer';
+import Notification from '@/components/Notification';
+import ThemeToggle from '@/components/ThemeToggle';
+import { APP_NAME } from '@/config';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import MenuCloseIcon from '@mui/icons-material/Menu';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
@@ -17,14 +25,6 @@ import Paper from '@mui/material/Paper';
 import Toolbar from '@mui/material/Toolbar';
 import { Suspense, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { APP_NAME } from '../../config';
-import Account from '../Account';
-import CartIcon from '../Cart/CartIcon';
-import { CategoriesCollapsableButton } from '../Categories';
-import ErrorBoundary from '../ErrorBoundary';
-import Footer from '../Footer';
-import Notification from '../Notification';
-import ThemeToggle from '../ThemeToggle';
 import { Breadcrumbs } from './Breadcrumbs';
 
 export const Layout = () => {

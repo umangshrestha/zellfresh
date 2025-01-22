@@ -1,10 +1,10 @@
+import ServerErrorComponent from '@/components/ServerErrorComponent';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import { useCart } from '@repo/api-client';
 import { Link as RouterLink } from 'react-router-dom';
-import ServerErrorComponent from '../../ServerErrorComponent';
 import CartItem from '../CartItem';
 import CartEmptyPage from './CartEmptyPage';
 import CartLoadingPage from './CartLoadingPage';
