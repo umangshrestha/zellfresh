@@ -1,6 +1,6 @@
+import { useNotification } from '@/components/Notification';
 import { useCart } from '@repo/api-client';
 import { lazy } from 'react';
-import { useNotification } from '../../Notification';
 
 const CartPageComponent = lazy(() =>
   import('./CartPage').then((module) => ({ default: module.CartPage })),

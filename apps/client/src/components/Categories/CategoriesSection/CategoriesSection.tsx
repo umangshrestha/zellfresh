@@ -1,5 +1,5 @@
+import ImageButton from '@/components/ImageButton';
 import Box from '@mui/material/Box';
-import ImageButton from '../../ImageButton';
 import { WithCategoriesProps as CategoriesSectionProps } from '../Categories.types.ts';
 
 export const CategoriesSection = ({

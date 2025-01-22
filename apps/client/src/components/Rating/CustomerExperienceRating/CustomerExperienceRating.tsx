@@ -1,3 +1,4 @@
+import { useStorageStore } from '@/lib/store';
 import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
 import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAltOutlined';
@@ -9,7 +10,6 @@ import Snackbar from '@mui/material/Snackbar';
 import { styled } from '@mui/material/styles';
 import * as React from 'react';
 import { useState } from 'react';
-import { useStorageStore } from '../../../lib/store';
 import { CustomerExperienceRatingProps } from './CustomerExperienceRating.types.ts';
 
 const StyledRating = styled(Rating)(({ theme }) => ({

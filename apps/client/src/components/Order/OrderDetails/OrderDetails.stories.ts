@@ -1,6 +1,5 @@
+import g, { DeliveryStatus, PaymentMethod } from '@repo/api-client';
 import type { Meta, StoryObj } from '@storybook/react';
-import { ListOrdersQuery } from '../../../__generated__/graphql';
-import { DeliveryStatus, PaymentMethod } from '../../../__generated__/types';
 import { OrderDetails } from './OrderDetails';
 
 const meta = {
@@ -12,7 +11,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const order: ListOrdersQuery['orders']['items'][0] = {
+const order: g.ListOrdersQuery['orders']['items'][0] = {
   orderId: 'b7235aa3-7bb0-4bf0-8d17-689591955d09',
   userId: '112579807565445456696',
   items: [

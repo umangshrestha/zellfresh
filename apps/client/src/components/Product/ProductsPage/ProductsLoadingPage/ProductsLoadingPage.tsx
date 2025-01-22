@@ -1,4 +1,4 @@
-import ProductSkeleton from '../../ProductSkeleton';
+import ProductSkeleton from '@/components/Product/ProductSkeleton';
 
 export const ProductsLoadingPage = () => (
   <div>

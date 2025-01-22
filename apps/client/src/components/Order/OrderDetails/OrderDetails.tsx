@@ -1,3 +1,4 @@
+import { DeliveryStatusChip } from '@/components/DeliveryStatusChip/DeliveryStatusChip.tsx';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid2';
@@ -5,7 +6,6 @@ import List from '@mui/material/List';
 import ListItemText from '@mui/material/ListItemText';
 import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
-import { DeliveryStatusChip } from '../../DeliveryStatusChip/DeliveryStatusChip.tsx';
 import OrderItem from '../OrderItem';
 import { OrderDetailsProps } from './OrderDetails.types.ts';
 

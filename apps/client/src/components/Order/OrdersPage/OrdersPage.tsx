@@ -1,12 +1,12 @@
+import LoadingSpinner from '@/components/LoadingSpinner';
+import RatingDialog from '@/components/Rating/RatingDialog';
+import ServerErrorComponent from '@/components/ServerErrorComponent';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import { useOrders } from '@repo/api-client';
 import { useState } from 'react';
-import LoadingSpinner from '../../LoadingSpinner';
-import RatingDialog from '../../Rating/RatingDialog';
-import ServerErrorComponent from '../../ServerErrorComponent';
 import { OrderDetails } from '../OrderDetails';
 import OrderEmptyPage from '../OrderEmptyPage';
 

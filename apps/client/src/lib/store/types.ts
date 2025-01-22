@@ -1,5 +1,5 @@
+import { AccountDetails, Token } from '@/components/Account/';
 import { PaletteMode } from '@mui/material';
-import { AccountDetails, Token } from '../../components/Account/';
 
 export interface StorageState {
   theme: PaletteMode;

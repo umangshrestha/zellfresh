@@ -1,6 +1,6 @@
+import { LayoutProps as ProductFilterProviderProps } from '@/components/Layout';
 import { ProductFilterSchema, ProductFilterType } from '@repo/form-validator';
 import { useSearchParams } from 'react-router-dom';
-import { LayoutProps as ProductFilterProviderProps } from '../../Layout';
 import { ProductFilterContext } from './ProductFilter.context';
 import { ProductFilterContextType } from './ProductFilter.types';
 

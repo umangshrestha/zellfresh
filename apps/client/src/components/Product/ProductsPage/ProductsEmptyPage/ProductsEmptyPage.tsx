@@ -1,4 +1,4 @@
-import ErrorComponent from '../../../ErrorComponent';
+import ErrorComponent from '@/components/ErrorComponent';
 import { ProductEmptyPageProps } from './ProductsEmptyPage.types.ts';
 
 export const ProductsEmptyPage = ({ category }: ProductEmptyPageProps) => (

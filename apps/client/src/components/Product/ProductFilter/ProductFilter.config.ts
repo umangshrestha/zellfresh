@@ -1,4 +1,4 @@
-import { SplitButtonType } from '../../SplitButton/SplitButton.types';
+import { SplitButtonType } from '@/components/SplitButton/SplitButton.types';
 import { ProductPageOrderBy } from './ProductFilter.types';
 
 export const ProductOrderOptions: SplitButtonType<ProductPageOrderBy>[] = [

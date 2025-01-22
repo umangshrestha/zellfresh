@@ -1,6 +1,6 @@
+import { APP_NAME, COMPANY_NAME, EMAIL, PHONE_NUMBER } from '@/config';
 import axios from 'axios';
 import { ComponentType, useEffect, useState } from 'react';
-import { APP_NAME, COMPANY_NAME, EMAIL, PHONE_NUMBER } from '../../config';
 import { MarkdownProps } from './Markdown.types.ts';
 
 export const withMarkdownFile = (

@@ -1,4 +1,4 @@
-import ErrorComponent from '../../ErrorComponent';
+import ErrorComponent from '@/components/ErrorComponent';
 import { OrderPlacedProps } from './OrderPlaced.types.ts';
 
 export const OrderPlaced = ({ orderId }: OrderPlacedProps) => (

@@ -1,10 +1,10 @@
+import LoadingButton from '@/components/LoadingButton';
+import { useNotification } from '@/components/Notification';
+import { DEFAULT_ADDRESS } from '@/config/address.ts';
 import FormGroup from '@mui/material/FormGroup';
 import TextField from '@mui/material/TextField';
 import { AddressSchema, AddressType } from '@repo/form-validator';
 import { useState } from 'react';
-import { DEFAULT_ADDRESS } from '../../../config/address.ts';
-import LoadingButton from '../../LoadingButton';
-import { useNotification } from '../../Notification';
 import { ADDRESS_FIELDS_MAPPING } from './AddressItem.fields.ts';
 import { AddressItemProps } from './AddressItem.types.ts';
 
